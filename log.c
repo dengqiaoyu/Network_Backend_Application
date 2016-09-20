@@ -1,10 +1,9 @@
 #include "log.h"
 
-#define MAXLINE 4096
-
 int init_log(char *log_file, int argc, char **argv)
 {
-    int logfd = open(log_file, O_WRONLY | O_APPEND | O_CREAT);
+    mode_t mode = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
+    int logfd = open(log_file, O_WRONLY | O_APPEND | O_CREAT, mode);
     int i, ret;
     if (logfd == -1)
     {

@@ -105,13 +105,13 @@ int main(int argc, char **argv)
         }
     }
 
-    return 0;
     ret = fclose(logfp);
     if (ret != 0)
     {
         fprintf(stderr, "Failed close file pointer.\n");
         exit(1);
     }
+    return 0;
 }
 
 void sigtstp_handler()
