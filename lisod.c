@@ -19,10 +19,8 @@ int main(int argc, char **argv)
     signal(SIGINT, sigtstp_handler);
     signal(SIGPIPE, SIG_IGN);
 
-    dbg_cp2_printf("----- Echo Server -----\n");
+    dbg_cp2_printf("----- http1.1 Server -----\n");
 
-    lisod_param.HTTP_port[0] = '\0';
-    lisod_param.log_file[0] = '\0';
     ret = check_argv(argc, argv, &lisod_param);
     if (ret < 0)
     {
@@ -32,8 +30,14 @@ int main(int argc, char **argv)
     //Temperary use
     strncpy(lisod_param.log_file, "./lisod.log\0", MAXLINE);
     dbg_cp2_printf("Settings:\n");
-    dbg_cp2_printf("HTTP_port: %s\n", lisod_param.HTTP_port);
+    dbg_cp2_printf("http_port: %s\n", lisod_param.http_port);
+    dbg_cp2_printf("https_port: %s\n", lisod_param.https_port);
     dbg_cp2_printf("Log file: %s\n", lisod_param.log_file);
+    dbg_cp2_printf("lock file: %s\n", lisod_param.lock_file);
+    dbg_cp2_printf("www folder: %s\n", lisod_param.www_folder);
+    dbg_cp2_printf("CGI script path: %s\n", lisod_param.cgi_script_path);
+    dbg_cp2_printf("private key file: %s\n", lisod_param.private_key_file);
+    dbg_cp2_printf("certificate file: %s\n", lisod_param.certificated_file);
 
     logfd = init_log(lisod_param.log_file, argc, argv);
     if (logfd < 0)
@@ -42,7 +46,7 @@ int main(int argc, char **argv)
     }
     logfp = fdopen(logfd, "a");
 
-    if ((listenfd = open_listenfd(lisod_param.HTTP_port)) < 0)
+    if ((listenfd = open_listenfd(lisod_param.http_port)) < 0)
     {
         return -1;
     }
@@ -99,9 +103,9 @@ int main(int argc, char **argv)
             }
         }
 
-        if (check_clients(&pool) < 0)
+        if (server_clients(&pool) < 0)
         {
-            fprintf(logfp, "check_clients Failed.\n");
+            fprintf(logfp, "server_clients Failed.\n");
         }
     }
 
@@ -136,8 +140,15 @@ int check_argv(int argc, char **argv, parameters *lisod_param)
 {
     if (argc < 4)
     {
-        fprintf(stderr, "Usage: %s <HTTP port> <HTTPs port> <log file>\n",
-                argv[0]);
+        fprintf(stderr, "Usage: %s ", argv[0]);
+        fprintf(stderr, "<HTTP port> ");
+        fprintf(stderr, "<HTTPS port> ");
+        fprintf(stderr, "<log file> ");
+        fprintf(stderr, "<lock file> ");
+        fprintf(stderr, "<www folder> ");
+        fprintf(stderr, "<CGI script path> ");
+        fprintf(stderr, "<private key file> ");
+        fprintf(stderr, "<certificate file>\n");
         return -1;
     }
 
@@ -148,8 +159,19 @@ int check_argv(int argc, char **argv, parameters *lisod_param)
     }
     else
     {
-        strncpy(lisod_param->HTTP_port, argv[1], MAXLINE);
-        lisod_param->HTTP_port[MAXLINE - 1] = '\0';
+        strncpy(lisod_param->http_port, argv[1], MAXLINE);
+        lisod_param->http_port[MAXLINE - 1] = '\0';
+    }
+
+    if (atoi(argv[2]) < 1024 || atoi(argv[2]) > 65535)
+    {
+        fprintf(stderr, "Usage: HTTPs port should be between 1024 and 65535.");
+        return -1;
+    }
+    else
+    {
+        strncpy(lisod_param->https_port, argv[2], MAXLINE);
+        lisod_param->https_port[MAXLINE - 1] = '\0';
     }
 
     if (strlen(argv[3]) >= MAXLINE)
@@ -161,6 +183,61 @@ int check_argv(int argc, char **argv, parameters *lisod_param)
     {
         strncpy(lisod_param->log_file, argv[3], MAXLINE);
         lisod_param->log_file[MAXLINE - 1] = '\0';
+    }
+
+    if (strlen(argv[4]) >= MAXLINE)
+    {
+        fprintf(stderr, "Lock file path too long.");
+        return -1;
+    }
+    else
+    {
+        strncpy(lisod_param->lock_file, argv[4], MAXLINE);
+        lisod_param->lock_file[MAXLINE - 1] = '\0';
+    }
+
+    if (strlen(argv[5]) >= MAXLINE)
+    {
+        fprintf(stderr, "WWW folder too long.");
+        return -1;
+    }
+    else
+    {
+        strncpy(lisod_param->www_folder, argv[5], MAXLINE);
+        lisod_param->www_folder[MAXLINE - 1] = '\0';
+    }
+
+    if (strlen(argv[6]) >= MAXLINE)
+    {
+        fprintf(stderr, "CGI script path too long.");
+        return -1;
+    }
+    else
+    {
+        strncpy(lisod_param->cgi_script_path, argv[6], MAXLINE);
+        lisod_param->cgi_script_path[MAXLINE - 1] = '\0';
+    }
+
+    if (strlen(argv[7]) >= MAXLINE)
+    {
+        fprintf(stderr, "Private key file path too long.");
+        return -1;
+    }
+    else
+    {
+        strncpy(lisod_param->private_key_file, argv[7], MAXLINE);
+        lisod_param->private_key_file[MAXLINE - 1] = '\0';
+    }
+
+    if (strlen(argv[8]) >= MAXLINE)
+    {
+        fprintf(stderr, "Certificated file path too long.");
+        return -1;
+    }
+    else
+    {
+        strncpy(lisod_param->certificated_file, argv[8], MAXLINE);
+        lisod_param->certificated_file[MAXLINE - 1] = '\0';
     }
     return 0;
 }
@@ -238,7 +315,13 @@ void init_pool(int listenfd, pools *p)
     FD_ZERO(&p->active_set);
     FD_SET(listenfd, &p->active_set);
     for (i = 0; i < FD_SETSIZE; i++)
+    {
         p->clientfd[i] = -1;
+        p->if_ignore_first[i] = -1;
+        p->if_too_long[i] = -1;
+        memset(p->cached_buffer[i], 0, REQUEST_BUF_SIZE + 1);
+    }
+
 }
 
 int add_client(int connfd, pools *p)
@@ -280,10 +363,10 @@ int add_client(int connfd, pools *p)
     return 0;
 }
 
-int check_clients(pools *p)
+int server_clients(pools *p)
 {
-    int i, connfd, readret, read_or_not, writeret, write_offset;
-    char buf[BUF_SIZE];
+    int i, connfd, read_ret, read_or_not, write_ret, write_offset;
+    char socket_recv_buf[SOCKET_RECV_BUF_SIZE + 1];
     struct timeval tv_out;
 
     for (i = 0; (i <= p->maxi) && (p->num_ready > 0); i++)
@@ -297,12 +380,14 @@ int check_clients(pools *p)
             read_or_not = 1;
             while (read_or_not)
             {
-                memset(buf, 0, BUF_SIZE);
-                readret = recv(connfd, buf, BUF_SIZE, MSG_WAITALL);
-                dbg_cp1_printf("readret: %d\n", readret);
-                if (readret < 0)
+                memset(socket_recv_buf, 0, SOCKET_RECV_BUF_SIZE + 1);
+                read_ret = recv(connfd, socket_recv_buf, SOCKET_RECV_BUF_SIZE,
+                                MSG_WAITALL);
+                dbg_cp1_printf("read_ret: %d\n", read_ret);
+                if (read_ret < 0)
                 {
-                    fprintf(logfp, "Failed receiving data from fd %d.\n", connfd);
+                    fprintf(logfp, "Failed receiving data from fd %d.\n",
+                            connfd);
                     if (close(connfd) < 0)
                     {
                         fprintf(logfp, "Failed closing connection ");
@@ -313,7 +398,7 @@ int check_clients(pools *p)
                     p->clientfd[i] = -1;
                     break;
                 }
-                else if (readret == 0)
+                else if (read_ret == 0)
                 {
                     if (close(connfd) < 0)
                     {
@@ -325,7 +410,7 @@ int check_clients(pools *p)
                     p->clientfd[i] = -1;
                     break;
                 }
-                if (readret == sizeof(buf))
+                if (read_ret == sizeof(socket_recv_buf))
                 {
                     dbg_cp1_printf("again!\n");
                     read_or_not = 1;
@@ -336,10 +421,10 @@ int check_clients(pools *p)
                 write_offset = 0;
                 while (1)
                 {
-                    writeret = send(connfd, buf + write_offset, readret,
-                                    MSG_WAITALL);
-                    dbg_cp1_printf("writeret: %d\n", writeret);
-                    if (writeret < 0)
+                    write_ret = send(connfd, socket_recv_buf + write_offset, read_ret,
+                                     MSG_WAITALL);
+                    dbg_cp1_printf("write_ret: %d\n", write_ret);
+                    if (write_ret < 0)
                     {
                         if (close(connfd) < 0)
                         {
@@ -352,14 +437,14 @@ int check_clients(pools *p)
                         break;
                     }
 
-                    if (writeret == readret)
+                    if (write_ret == read_ret)
                     {
                         dbg_cp1_printf("completed!\n");
                         break;
                     }
 
-                    readret = readret - writeret;
-                    write_offset = write_offset + writeret;
+                    read_ret = read_ret - write_ret;
+                    write_offset = write_offset + write_ret;
                 }
             }
         }
