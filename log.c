@@ -1,4 +1,4 @@
-#include "log.h"
+#include "lisod.h"
 
 int init_log(char *log_file, int argc, char **argv)
 {

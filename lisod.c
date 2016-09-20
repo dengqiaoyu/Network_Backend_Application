@@ -1,8 +1,9 @@
 #include "lisod.h"
-#include "log.h"
 
 FILE *logfp = NULL;
 int logfd = -1;
+
+// ./lisod 2090 7114 ../tmp/lisod.log ../tmp/lisod.lock ../tmp/www ../tmp/cgi/cgi_script.py ../tmp/grader.key ../tmp/grader.crt
 
 int main(int argc, char **argv)
 {
@@ -418,6 +419,11 @@ int server_clients(pools *p)
                 else
                     read_or_not = 0;
 
+                Requests *requests = parse(socket_recv_buf, read_ret, connfd, p);
+                destory_requests(requests);
+                requests = NULL;
+                dbg_cp2_printf("parse complete!\n");
+                exit(1);
                 write_offset = 0;
                 while (1)
                 {
@@ -451,4 +457,17 @@ int server_clients(pools *p)
     }
 
     return 0;
+}
+
+void destory_requests(Requests *requests)
+{
+    Requests *request_rover = requests;
+    while (request_rover != NULL)
+    {
+        Requests *next_request = request_rover->next_request;
+        free(request_rover->headers);
+        request_rover->headers = NULL;
+        free(request_rover);
+        request_rover = next_request;
+    }
 }
