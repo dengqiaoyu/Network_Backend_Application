@@ -5,9 +5,10 @@
 */
 ssize_t search_last_position(char *str1, char *str2);
 ssize_t search_first_position(char *str1, char *str2);
+void initiate_request(Requests *request);
 
 Requests * parse(char *socket_recv_buf, size_t recv_buf_size, int socketFd,
-                pools *p)
+                 pools *p)
 {
     //Differant states in the read_state machine
     enum Request_Read_State {
@@ -29,22 +30,28 @@ Requests * parse(char *socket_recv_buf, size_t recv_buf_size, int socketFd,
 
     int if_ignore_first = p->if_ignore_first[socketFd];
     int if_too_long = p->if_too_long[socketFd];
-    int if_contain_crlf = 0;
+    int if_contain_2crlf = 0;
     ssize_t read_count = 0;
     ssize_t full_requests_size = 0;
 
     Requests *requests_ptr = NULL;
     Requests *request_last_ptr = NULL;
+    Requests *request = NULL;
 
     int ret = 0;
 
+    // dbg_cp2_printf("socket_recv_buf in parse.c:[\n%s]\n", socket_recv_buf);
+    // dbg_cp2_printf("if_ignore_first: %d\n", if_ignore_first);
+    // dbg_cp2_printf("if_too_long: %d\n", if_too_long);
+    // dbg_cp2_printf("chached_buffer[0]: %d\n", chached_buffer[0]);
+
     if (search_first_position(socket_recv_buf, "\r\n\r\n") != -1)
     {
-        if_contain_crlf = 1;
+        if_contain_2crlf = 1;
     }
     else
     {
-        if_contain_crlf = 0;
+        if_contain_2crlf = 0;
     }
 
     if (chached_buffer[0] != 0)
@@ -64,7 +71,8 @@ Requests * parse(char *socket_recv_buf, size_t recv_buf_size, int socketFd,
         }
     }
 
-    if (if_contain_crlf == 1)
+    // dbg_cp2_printf("if_contain_2crlf: %d\n", if_contain_2crlf);
+    if (if_contain_2crlf == 1)
     {
         full_requests_size =
             search_last_position("\r\n\r\n", socket_recv_buf) + 4;
@@ -104,9 +112,8 @@ Requests * parse(char *socket_recv_buf, size_t recv_buf_size, int socketFd,
 
             if (request_size <= REQUEST_BUF_SIZE)
             {
-                Requests *request = (Requests *) malloc(sizeof(Requests));
-                request->next_request = NULL;
-                request->headers = (Request_header *) malloc(sizeof(Request_header) * 1);
+                request = (Requests *) malloc(sizeof(Requests));
+                initiate_request(request);
                 set_parsing_options(request_buffer, request_size, request);
                 yyrestart();
                 if (yyparse() != SUCCESS)
@@ -117,9 +124,20 @@ Requests * parse(char *socket_recv_buf, size_t recv_buf_size, int socketFd,
                 }
                 else
                 {
+                    // int index;
+                    // dbg_cp2_printf("headers:\n");
+                    // for (index = 0; index < request->header_count; index++)
+                    // {
+                    //     dbg_cp2_printf("%d:%s: %s\n", index,
+                    //                    request->headers[index].header_name,
+                    //                    request->headers[index].header_value);
+                    // }
+                    // printf("----------------------------------------------\n");
+
                     if (request_last_ptr != NULL)
                     {
                         request_last_ptr->next_request = request;
+                        dbg_cp2_printf("Impossible!\n");
                     }
                     else
                     {
@@ -231,4 +249,14 @@ ssize_t search_first_position(char *str1, char *str2)
     {
         return -1;
     }
+}
+
+void initiate_request(Requests *request)
+{
+    memset(request->http_version, 0, MAX_SIZE_SMALL + 1);
+    memset(request->http_method, 0, MAX_SIZE_SMALL + 1);
+    memset(request->http_uri, 0, MAX_SIZE_SMALL + 1);
+    request->headers = (Request_header *) malloc(sizeof(Request_header) * 1);
+    request->next_request = NULL;
+    request->header_count = 0;
 }

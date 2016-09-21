@@ -549,17 +549,17 @@ case 18:
 	{
     YPRINTF("request_Header:%s: %s\n", yystack.l_mark[-6].str, yystack.l_mark[-2].str);
     int index = parsing_request->header_count;
-    /*dbg_printf("index get!\n");*/
+    /*dbg_cp2_printf("index get!\n");*/
     strcpy(parsing_request->headers[index].header_name, yystack.l_mark[-6].str);
-    /*dbg_printf("strcpy1 complete!\n");*/
+    /*dbg_cp2_printf("strcpy1 complete!\n");*/
     strcpy(parsing_request->headers[index].header_value, yystack.l_mark[-2].str);
-    /*dbg_printf("strcpy2 complete!\n");*/
+    /*dbg_cp2_printf("strcpy2 complete!\n");*/
     index++;
     parsing_request->header_count = index;
-    /*dbg_printf("realloc begin!\n");*/
-    /*dbg_printf("index: %d\n", index);*/
+    /*dbg_cp2_printf("realloc begin!\n");*/
+    /*dbg_cp2_printf("index: %d\n", index);*/
     Request_header *new_headers = realloc(parsing_request->headers, sizeof(Request_header) * (index + 1));
-    /*dbg_printf("realloc complete!\n");*/
+    /*dbg_cp2_printf("realloc complete!\n");*/
     if (!new_headers)
     {
         YPRINTF("realloc failed\n");

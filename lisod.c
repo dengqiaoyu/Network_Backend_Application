@@ -336,7 +336,9 @@ int add_client(int connfd, pools *p)
         if (p->clientfd[i] < 0)
         {
             p->clientfd[i] = connfd;
-
+            p->if_ignore_first[connfd] = 0;
+            p->if_too_long[connfd] = 0;
+            memset(p->cached_buffer[connfd], 0, REQUEST_BUF_SIZE + 1);
             FD_SET(connfd, &p->active_set);
 
             if (connfd > p->maxfd)
@@ -418,13 +420,19 @@ int server_clients(pools *p)
                 }
                 else
                     read_or_not = 0;
-
+                //dbg_cp2_printf("socket_recv_buf in lisod.c:[\n%s]\n", socket_recv_buf);
                 Requests *requests = parse(socket_recv_buf, read_ret, connfd, p);
+                // dbg_cp2_printf("parse complete!\n");
+                print_request(requests);
                 destory_requests(requests);
                 requests = NULL;
-                dbg_cp2_printf("parse complete!\n");
-                exit(1);
-                write_offset = 0;
+                send(connfd, "HTTP/1.1 204 No Content\r\n", 64, MSG_WAITALL);
+                send(connfd, "Server: bfe/1.0.8.18\r\n", 64, MSG_WAITALL);
+                send(connfd, "\r\n", 64, MSG_WAITALL);
+                Close_connection(connfd, i, p);
+
+                //exit(1);
+                /*write_offset = 0;
                 while (1)
                 {
                     write_ret = send(connfd, socket_recv_buf + write_offset, read_ret,
@@ -451,7 +459,7 @@ int server_clients(pools *p)
 
                     read_ret = read_ret - write_ret;
                     write_offset = write_offset + write_ret;
-                }
+                }*/
             }
         }
     }
@@ -470,4 +478,42 @@ void destory_requests(Requests *requests)
         free(request_rover);
         request_rover = next_request;
     }
+}
+
+void print_request(Requests *requests)
+{
+    Requests *request_rover = requests;
+    int index = 0;
+    while (request_rover != NULL)
+    {
+        int index;
+        printf("Http Method %s\n", request_rover->http_method);
+        printf("Http Version %s\n", request_rover->http_version);
+        printf("Http Uri %s\n", request_rover->http_uri);
+        for (index = 0; index < request_rover->header_count; index++) {
+            printf("Request Header\n");
+            printf("Header name %s Header Value %s\n",
+                   request_rover->headers[index].header_name,
+                   request_rover->headers[index].header_value);
+        }
+        printf("**********************************************************\n");
+        request_rover = request_rover->next_request;
+    }
+}
+
+int Close_connection(int connfd, int index, pools *p)
+{
+    close(connfd);
+    if (close(connfd) < 0)
+    {
+        fprintf(logfp, "Failed closing connection ");
+        fprintf(logfp, "file descriptor.\n");
+        return -1;
+    }
+    FD_CLR(connfd, &p->active_set);
+    p->clientfd[index] = -1;
+    p->if_ignore_first[connfd] = 0;
+    p->if_too_long[connfd] = 0;
+    memset(p->cached_buffer[connfd], 0, REQUEST_BUF_SIZE + 1);
+    return 0;
 }

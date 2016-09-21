@@ -86,6 +86,72 @@ typedef struct Requests
     int header_count;
 } Requests;
 
+typedef struct
+{
+    char connection[MAX_SIZE_SMALL];
+    char accept_charset[MAX_SIZE_SMALL];
+    char accept_encoding[MAX_SIZE_SMALL];
+    char accept_language[MAX_SIZE_SMALL];
+    char host[MAX_SIZE];
+    char user_agent[MAX_SIZE];
+} Request_analyzed;
+
+typedef struct
+{
+    char http_version[MAX_SIZE_SMALL];
+    char status_code[MAX_SIZE_SMALL];
+    char reason_phrase[MAX_SIZE_SMALL];
+} Status_line;
+
+typedef struct
+{
+    char cache_control[MAX_SIZE_SMALL];
+    char connection[MAX_SIZE_SMALL];
+    char date[MAX_SIZE_SMALL];
+    char paragma[MAX_SIZE_SMALL];
+    char trailer[MAX_SIZE_SMALL];
+    char transfer_encoding[MAX_SIZE_SMALL];
+    char upgrade[MAX_SIZE_SMALL];
+    char via[MAX_SIZE_SMALL];
+    char warning[MAX_SIZE_SMALL];
+} General_header;
+
+typedef struct
+{
+    char accept_ranges[MAX_SIZE_SMALL];
+    char etag[MAX_SIZE_SMALL];
+    char proxy_authenticate[MAX_SIZE_SMALL];
+    char retry_after[MAX_SIZE_SMALL];
+    char server[MAX_SIZE_SMALL];
+    char vary[MAX_SIZE_SMALL];
+    char www_authenticate[MAX_SIZE_SMALL];
+    int age;
+    char location[MAX_SIZE];
+} Response_header;
+
+typedef struct
+{
+    char allow[MAX_SIZE_SMALL];
+    char content_encoding[MAX_SIZE_SMALL];
+    char content_language[MAX_SIZE_SMALL];
+    long content_length;
+    char content_md5[MAX_SIZE_SMALL];
+    char content_range[MAX_SIZE_SMALL];
+    char content_type[MAX_SIZE_SMALL];
+    char expries[MAX_SIZE_SMALL];
+    char last_modified[MAX_SIZE_SMALL];
+    char entension_header[MAX_SIZE_SMALL];
+    char content_location[MAX_SIZE];
+} Entity_header;
+
+typedef struct
+{
+    Status_line *status_line;
+    General_header *general_header;
+    Response_header *response_header;
+    Entity_header *entity_header;
+} Response_headers;
+
 
 void sigtstp_handler();
 int check_argv(int argc, char **argv, parameters *lisod_param);
@@ -94,6 +160,8 @@ void init_pool(int listenfd, pools *p);
 int add_client(int connfd, pools *p);
 int server_clients(pools *p);
 void destory_requests(Requests *requests);
+void print_request(Requests *requests);
+int Close_connection(int connfd, int index);
 
 Requests* parse(char *socket_recv_buf, size_t recv_buf_size , int socketFd,
                pools *p);

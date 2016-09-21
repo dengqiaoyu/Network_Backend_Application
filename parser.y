@@ -200,17 +200,17 @@ request_headers:
 request_header: token ows t_colon ows text ows t_crlf {
     YPRINTF("request_Header:%s: %s\n", $1, $5);
     int index = parsing_request->header_count;
-    //dbg_printf("index get!\n");
+    //dbg_cp2_printf("index get!\n");
     strcpy(parsing_request->headers[index].header_name, $1);
-    //dbg_printf("strcpy1 complete!\n");
+    //dbg_cp2_printf("strcpy1 complete!\n");
     strcpy(parsing_request->headers[index].header_value, $5);
-    //dbg_printf("strcpy2 complete!\n");
+    //dbg_cp2_printf("strcpy2 complete!\n");
     index++;
     parsing_request->header_count = index;
-    //dbg_printf("realloc begin!\n");
-    //dbg_printf("index: %d\n", index);
+    //dbg_cp2_printf("realloc begin!\n");
+    //dbg_cp2_printf("index: %d\n", index);
     Request_header *new_headers = realloc(parsing_request->headers, sizeof(Request_header) * (index + 1));
-    //dbg_printf("realloc complete!\n");
+    //dbg_cp2_printf("realloc complete!\n");
     if (!new_headers)
     {
         YPRINTF("realloc failed\n");
