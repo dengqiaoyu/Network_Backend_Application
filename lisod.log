@@ -458,3 +458,56 @@ Terminated by user.
 -------------------------------------------------------
 *           EndTime: Tue Sep 20 20:12:34 2016         *
 *******************************************************
+
+
+
+
+*******************************************************
+*                    Server Start                     *
+*          Start Time: Tue Sep 20 20:54:48 2016       *
+-------------------------------------------------------
+Command Line:
+./lisod 2090 7114 ../tmp/lisod.log ../tmp/lisod.lock ../tmp/www ../tmp/cgi/cgi_script.py ../tmp/grader.key ../tmp/grader.crt 
+-------------------------------------------------------
+Accept connection from client 123.57.163.79:34107.
+Failed closing connection file descriptor.
+Accept connection from client 123.57.163.79:33475.
+Failed closing connection file descriptor.
+Terminated by user.
+-------------------------------------------------------
+*           EndTime: Tue Sep 20 20:56:41 2016         *
+*******************************************************
+
+
+
+
+*******************************************************
+*                    Server Start                     *
+*          Start Time: Tue Sep 20 20:56:48 2016       *
+-------------------------------------------------------
+Command Line:
+./lisod 2090 7114 ../tmp/lisod.log ../tmp/lisod.lock ../tmp/www ../tmp/cgi/cgi_script.py ../tmp/grader.key ../tmp/grader.crt 
+-------------------------------------------------------
+Accept connection from client 123.57.163.79:38283.
+Failed closing connection file descriptor.
+Terminated by user.
+-------------------------------------------------------
+*           EndTime: Tue Sep 20 20:57:56 2016         *
+*******************************************************
+
+
+
+
+*******************************************************
+*                    Server Start                     *
+*          Start Time: Tue Sep 20 20:58:01 2016       *
+-------------------------------------------------------
+Command Line:
+./lisod 2090 7114 ../tmp/lisod.log ../tmp/lisod.lock ../tmp/www ../tmp/cgi/cgi_script.py ../tmp/grader.key ../tmp/grader.crt 
+-------------------------------------------------------
+Accept connection from client 123.57.163.79:33636.
+Failed closing connection file descriptor.
+Terminated by user.
+-------------------------------------------------------
+*           EndTime: Tue Sep 20 22:20:14 2016         *
+*******************************************************

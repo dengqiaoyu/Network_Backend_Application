@@ -3,8 +3,6 @@
 /**
 * Given a char buffer returns the parsed request headers
 */
-ssize_t search_last_position(char *str1, char *str2);
-ssize_t search_first_position(char *str1, char *str2);
 void initiate_request(Requests *request);
 
 Requests * parse(char *socket_recv_buf, size_t recv_buf_size, int socketFd,

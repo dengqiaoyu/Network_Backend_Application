@@ -7,6 +7,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/socket.h>
+#include <sys/stat.h>
 #include <errno.h>
 #include <netdb.h>
 #include <fcntl.h>
@@ -26,6 +27,8 @@
 #define SUCCESS 0
 #define MAX_SIZE 4096
 #define MAX_SIZE_SMALL 64
+#define MAX_TEXT 8192
+#define TYPE_SIZE 5
 
 
 //#define DEBUG_CP1
@@ -42,6 +45,12 @@
 #else
 #define dbg_cp2_printf(...)
 #endif
+
+const char *FILE_SUFFIX[TYPE_SIZE] =
+{ ".html", ".css", ".gif", ".png", ".jpg"};
+
+const char *FILE_TYPE[TYPE_SIZE] =
+{ "text/html", "text/css", "image/gif", "image/png", "image/jpeg"};
 
 typedef struct parameters
 {
@@ -66,6 +75,7 @@ typedef struct pools
     int if_ignore_first[FD_SETSIZE];
     int if_too_long[FD_SETSIZE];
     char cached_buffer[FD_SETSIZE][REQUEST_BUF_SIZE + 1];
+    char client_ip[FD_SETSIZE][MAX_SIZE_SMALL];
 } pools;
 
 //Header field
@@ -109,24 +119,12 @@ typedef struct
     char connection[MAX_SIZE_SMALL];
     char date[MAX_SIZE_SMALL];
     char paragma[MAX_SIZE_SMALL];
-    char trailer[MAX_SIZE_SMALL];
     char transfer_encoding[MAX_SIZE_SMALL];
-    char upgrade[MAX_SIZE_SMALL];
-    char via[MAX_SIZE_SMALL];
-    char warning[MAX_SIZE_SMALL];
 } General_header;
 
 typedef struct
 {
-    char accept_ranges[MAX_SIZE_SMALL];
-    char etag[MAX_SIZE_SMALL];
-    char proxy_authenticate[MAX_SIZE_SMALL];
-    char retry_after[MAX_SIZE_SMALL];
     char server[MAX_SIZE_SMALL];
-    char vary[MAX_SIZE_SMALL];
-    char www_authenticate[MAX_SIZE_SMALL];
-    int age;
-    char location[MAX_SIZE];
 } Response_header;
 
 typedef struct
@@ -134,22 +132,16 @@ typedef struct
     char allow[MAX_SIZE_SMALL];
     char content_encoding[MAX_SIZE_SMALL];
     char content_language[MAX_SIZE_SMALL];
-    long content_length;
-    char content_md5[MAX_SIZE_SMALL];
-    char content_range[MAX_SIZE_SMALL];
+    char content_length[MAX_SIZE_SMALL];
     char content_type[MAX_SIZE_SMALL];
-    char expries[MAX_SIZE_SMALL];
-    char last_modified[MAX_SIZE_SMALL];
-    char entension_header[MAX_SIZE_SMALL];
-    char content_location[MAX_SIZE];
 } Entity_header;
 
 typedef struct
 {
-    Status_line *status_line;
-    General_header *general_header;
-    Response_header *response_header;
-    Entity_header *entity_header;
+    Status_line status_line;
+    General_header general_header;
+    Response_header response_header;
+    Entity_header entity_header;
 } Response_headers;
 
 
@@ -157,15 +149,35 @@ void sigtstp_handler();
 int check_argv(int argc, char **argv, parameters *lisod_param);
 int open_listenfd(char *port);
 void init_pool(int listenfd, pools *p);
-int add_client(int connfd, pools *p);
+int add_client(int connfd, pools *p, char *client_hostname);
 int server_clients(pools *p);
+void get_request_analyzed(Request_analyzed *request_analyzed,
+                          Requests *request);
+int send_response(Request_analyzed *request_analyzed, Requests *request,
+                  int connfd);
+int check_http_method(char *http_method);
+void get_response_headers(char *response_headers_text,
+                          Response_headers *response_headers)
+void get_error_content(int status_code, char *body,
+                       Response_headers *response_headers);
+int get_contentfd(Requests *request, Response_headers *response_headers,
+                  int *contentfd);
+int get_file_type(char *file_name, char *file_type);
+int write_to_socket(int status_code, char *response_headers_text,
+                     char *response_content_text, char *response_content_ptr,
+                     size_t content_size, int connfd);
+void decode_asc(char *str);
 void destory_requests(Requests *requests);
 void print_request(Requests *requests);
-int Close_connection(int connfd, int index);
+int Close_connection(int connfd, int index, pools *p);
 
 Requests* parse(char *socket_recv_buf, size_t recv_buf_size , int socketFd,
-               pools *p);
+                pools *p);
 
 int init_log(char *log_file, int argc, char **argv);
 int close_log(FILE *logfp);
 char *get_current_time();
+char *rfc1123_date();
+
+ssize_t search_last_position(char *str1, char *str2);
+ssize_t search_first_position(char *str1, char *str2);
