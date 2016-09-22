@@ -8,6 +8,7 @@
 #include <sys/stat.h>
 #include <sys/socket.h>
 #include <sys/stat.h>
+#include <sys/mman.h>
 #include <errno.h>
 #include <netdb.h>
 #include <fcntl.h>
@@ -46,10 +47,10 @@
 #define dbg_cp2_printf(...)
 #endif
 
-const char *FILE_SUFFIX[TYPE_SIZE] =
+static const char *FILE_SUFFIX[TYPE_SIZE] =
 { ".html", ".css", ".gif", ".png", ".jpg"};
 
-const char *FILE_TYPE[TYPE_SIZE] =
+static const char *FILE_TYPE[TYPE_SIZE] =
 { "text/html", "text/css", "image/gif", "image/png", "image/jpeg"};
 
 typedef struct parameters
@@ -132,7 +133,7 @@ typedef struct
     char allow[MAX_SIZE_SMALL];
     char content_encoding[MAX_SIZE_SMALL];
     char content_language[MAX_SIZE_SMALL];
-    char content_length[MAX_SIZE_SMALL];
+    size_t content_length;
     char content_type[MAX_SIZE_SMALL];
 } Entity_header;
 
@@ -157,7 +158,7 @@ int send_response(Request_analyzed *request_analyzed, Requests *request,
                   int connfd);
 int check_http_method(char *http_method);
 void get_response_headers(char *response_headers_text,
-                          Response_headers *response_headers)
+                          Response_headers *response_headers);
 void get_error_content(int status_code, char *body,
                        Response_headers *response_headers);
 int get_contentfd(Requests *request, Response_headers *response_headers,
@@ -166,7 +167,7 @@ int get_file_type(char *file_name, char *file_type);
 int write_to_socket(int status_code, char *response_headers_text,
                      char *response_content_text, char *response_content_ptr,
                      size_t content_size, int connfd);
-void decode_asc(char *str);
+int decode_asc(char *str);
 void destory_requests(Requests *requests);
 void print_request(Requests *requests);
 int Close_connection(int connfd, int index, pools *p);

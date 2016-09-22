@@ -1,8 +1,8 @@
 CC = gcc
 CFLAGS = -I.
 DEPS = lisod.h y.tab.h
-OBJ = y.tab.o lex.yy.o parse.o log.o lisod.o
-FLAGS = -g -Wall
+OBJ = y.tab.o lex.yy.o parse.o log.o time_now.o lisod.o
+FLAGS = -g -Wall -Werror
 
 default:all
 

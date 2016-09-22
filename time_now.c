@@ -18,7 +18,7 @@ char *rfc1123_date()
     char *buf = (char *)malloc(rfc1123_date_length + 1);
 
     time(&t);
-    gmtime_s(&tm, &t);
+    gmtime_r(&t, &tm);
 
     strftime(buf, rfc1123_date_length + 1, "---, %d --- %Y %H:%M:%S GMT", &tm);
     memcpy(buf, DAY[tm.tm_wday], 3);
