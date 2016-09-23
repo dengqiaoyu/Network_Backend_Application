@@ -4,26 +4,78 @@
 
 *******************************************************
 *                    Server Start                     *
-*          Start Time: Thu Sep 22 21:09:49 2016       *
+*          Start Time: Fri Sep 23 00:18:00 2016       *
 -------------------------------------------------------
 Command Line:
 ./lisod 2090 7114 ../tmp/lisod.log ../tmp/lisod.lock ../tmp/www ../tmp/cgi/cgi_script.py ../tmp/grader.key ../tmp/grader.crt 
 -------------------------------------------------------
-Accept connection from client 123.57.163.79:45194.
-
-
-
-
-*******************************************************
-*                    Server Start                     *
-*          Start Time: Thu Sep 22 21:10:30 2016       *
--------------------------------------------------------
-Command Line:
-./lisod 2090 7114 ../tmp/lisod.log ../tmp/lisod.lock ../tmp/www ../tmp/cgi/cgi_script.py ../tmp/grader.key ../tmp/grader.crt 
--------------------------------------------------------
+Accept connection from client 71.199.115.230:62515.
+Accept connection from client 71.199.115.230:62516.
+  Get GET /index.html request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+  Get GET /style.css request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+  Get GET /images/liso_header.png request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+  Get GET /favicon.ico request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+  Get GET /index.html request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+  Get GET /style.css request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+  Get GET /images/liso_header.png request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+  Get GET /index.html request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+  Get GET /style.css request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+  Get GET /images/liso_header.png request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+  Get GET /index.html request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+  Get GET /style.css request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+  Get GET /images/liso_header.png request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+  Get GET /index.html request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+  Get GET /style.css request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+  Get GET /images/liso_header.png request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+  Get GET /index.html request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+  Get GET /style.css request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+  Get GET /images/liso_header.png request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+  Get GET /index.html request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+  Get GET /style.css request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+  Get GET /images/liso_header.png request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+  Get GET /index.html request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+  Get GET /style.css request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+  Get GET /images/liso_header.png request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+  Get GET /index.html request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+  Get GET /style.css request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+  Get GET /images/liso_header.png request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+  Get GET /index.html request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+  Get GET /style.css request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+  Get GET /images/liso_header.png request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
 Terminated by user.
 ------------------------------------------------------
-*           EndTime: Thu Sep 22 21:11:15 2016         *
+*           EndTime: Fri Sep 23 00:19:21 2016         *
 ******************************************************
 
 
@@ -31,308 +83,92 @@ Terminated by user.
 
 *******************************************************
 *                    Server Start                     *
-*          Start Time: Thu Sep 22 21:11:53 2016       *
+*          Start Time: Fri Sep 23 00:23:13 2016       *
 -------------------------------------------------------
 Command Line:
 ./lisod 2090 7114 ../tmp/lisod.log ../tmp/lisod.lock ../tmp/www ../tmp/cgi/cgi_script.py ../tmp/grader.key ../tmp/grader.crt 
 -------------------------------------------------------
-Accept connection from client 123.57.163.79:38932.
-
-
-
-
-*******************************************************
-*                    Server Start                     *
-*          Start Time: Thu Sep 22 21:13:24 2016       *
--------------------------------------------------------
-Command Line:
-./lisod 2090 7114 ../tmp/lisod.log ../tmp/lisod.lock ../tmp/www ../tmp/cgi/cgi_script.py ../tmp/grader.key ../tmp/grader.crt 
--------------------------------------------------------
-Accept connection from client 123.57.163.79:37305.
-Failed closing connection file descriptor.
+Accept connection from client 71.199.115.230:62579.
+  Get GET /index.html request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+  Get GET /style.css request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+Accept connection from client 71.199.115.230:62580.
+  Get GET /images/liso_header.png request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+  Get GET /index.html request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+  Get GET /style.css request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+  Get GET /images/liso_header.png request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+  Get GET /index.html request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+  Get GET /style.css request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+  Get GET /images/liso_header.png request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+  Get GET /index.html request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+  Get GET /style.css request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+  Get GET /images/liso_header.png request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+  Get GET /index.html request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+  Get GET /style.css request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+  Get GET /images/liso_header.png request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+  Get GET /index.html request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+  Get GET /style.css request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+  Get GET /images/liso_header.png request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+  Get GET /index.html request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+  Get GET /style.css request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+  Get GET /images/liso_header.png request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+  Get GET /index.html request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+  Get GET /style.css request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+  Get GET /images/liso_header.png request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+  Get GET /index.html request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+  Get GET /style.css request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+  Get GET /images/liso_header.png request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+  Get GET /index.html request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+  Get GET /style.css request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+  Get GET /images/liso_header.png request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+  Get GET /index.html request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+  Get GET /style.css request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+  Get GET /images/liso_header.png request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+  Get GET /index.html request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+  Get GET /style.css request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+  Get GET /images/liso_header.png request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+  Get GET /index.html request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+  Get GET /style.css request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+  Get GET /images/liso_header.png request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
 Terminated by user.
 ------------------------------------------------------
-*           EndTime: Thu Sep 22 21:13:37 2016         *
-******************************************************
-
-
-
-
-*******************************************************
-*                    Server Start                     *
-*          Start Time: Thu Sep 22 21:21:26 2016       *
--------------------------------------------------------
-Command Line:
-./lisod 2090 7114 ../tmp/lisod.log ../tmp/lisod.lock ../tmp/www ../tmp/cgi/cgi_script.py ../tmp/grader.key ../tmp/grader.crt 
--------------------------------------------------------
-Accept connection from client 123.57.163.79:34224.
-Get GET request from 123.57.163.79.
-Failed closing connection file descriptor.
-Accept connection from client 123.57.163.79:41034.
-Get GET request from 123.57.163.79.
-Failed closing connection file descriptor.
-Accept connection from client 123.57.163.79:55002.
-Get GET request from 123.57.163.79.
-Failed closing connection file descriptor.
-Terminated by user.
-------------------------------------------------------
-*           EndTime: Thu Sep 22 21:24:33 2016         *
-******************************************************
-
-
-
-
-*******************************************************
-*                    Server Start                     *
-*          Start Time: Thu Sep 22 21:38:51 2016       *
--------------------------------------------------------
-Command Line:
-./lisod 2090 7114 ../tmp/lisod.log ../tmp/lisod.lock ../tmp/www ../tmp/cgi/cgi_script.py ../tmp/grader.key ../tmp/grader.crt 
--------------------------------------------------------
-Accept connection from client 123.57.163.79:43923.
-Get GET request from 123.57.163.79.
-Failed closing connection file descriptor.
-Accept connection from client 123.57.163.79:45819.
-Get GET request from 123.57.163.79.
-Failed closing connection file descriptor.
-Accept connection from client 123.57.163.79:44819.
-Get GET request from 123.57.163.79.
-Failed closing connection file descriptor.
-Terminated by user.
-------------------------------------------------------
-*           EndTime: Thu Sep 22 21:39:41 2016         *
-******************************************************
-
-
-
-
-*******************************************************
-*                    Server Start                     *
-*          Start Time: Thu Sep 22 21:43:48 2016       *
--------------------------------------------------------
-Command Line:
-./lisod 2090 7114 ../tmp/lisod.log ../tmp/lisod.lock ../tmp/www ../tmp/cgi/cgi_script.py ../tmp/grader.key ../tmp/grader.crt 
--------------------------------------------------------
-Accept connection from client 123.57.163.79:55989.
-Get GET request from 123.57.163.79.
-    User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:42.0) Gecko/20100101 Firefox/42.0
-Failed closing connection file descriptor.
-Accept connection from client 123.57.163.79:35667.
-Get GET request from 123.57.163.79.
-    User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:42.0) Gecko/20100101 Firefox/42.0
-Failed closing connection file descriptor.
-Accept connection from client 123.57.163.79:56988.
-Get GET request from 123.57.163.79.
-    User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:42.0) Gecko/20100101 Firefox/42.0
-Failed closing connection file descriptor.
-Terminated by user.
-------------------------------------------------------
-*           EndTime: Thu Sep 22 21:43:58 2016         *
-******************************************************
-
-
-
-
-*******************************************************
-*                    Server Start                     *
-*          Start Time: Thu Sep 22 21:45:30 2016       *
--------------------------------------------------------
-Command Line:
-./lisod 2090 7114 ../tmp/lisod.log ../tmp/lisod.lock ../tmp/www ../tmp/cgi/cgi_script.py ../tmp/grader.key ../tmp/grader.crt 
--------------------------------------------------------
-Accept connection from client 123.57.163.79:57873.
-Get GET request from 123.57.163.79.
-    User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:42.0) Gecko/20100101 Firefox/42.0
-Failed closing connection file descriptor.
-Terminated by user.
-------------------------------------------------------
-*           EndTime: Thu Sep 22 21:45:35 2016         *
-******************************************************
-
-
-
-
-*******************************************************
-*                    Server Start                     *
-*          Start Time: Thu Sep 22 21:45:52 2016       *
--------------------------------------------------------
-Command Line:
-./lisod 2090 7114 ../tmp/lisod.log ../tmp/lisod.lock ../tmp/www ../tmp/cgi/cgi_script.py ../tmp/grader.key ../tmp/grader.crt 
--------------------------------------------------------
-Accept connection from client 123.57.163.79:59771.
-Get GET request from 123.57.163.79.
-    User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:42.0) Gecko/20100101 Firefox/42.0
-Accept connection from client 123.57.163.79:55314.
-Get GET request from 123.57.163.79.
-    User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:42.0) Gecko/20100101 Firefox/42.0
-Terminated by user.
-------------------------------------------------------
-*           EndTime: Thu Sep 22 21:46:00 2016         *
-******************************************************
-
-
-
-
-*******************************************************
-*                    Server Start                     *
-*          Start Time: Thu Sep 22 21:49:49 2016       *
--------------------------------------------------------
-Command Line:
-./lisod 2090 7114 ../tmp/lisod.log ../tmp/lisod.lock ../tmp/www ../tmp/cgi/cgi_script.py ../tmp/grader.key ../tmp/grader.crt 
--------------------------------------------------------
-Accept connection from client 123.57.163.79:46654.
-  Get GET request from 123.57.163.79.
-    User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:42.0) Gecko/20100101 Firefox/42.0
-Accept connection from client 123.57.163.79:46303.
-  Get GET request from 123.57.163.79.
-    User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:42.0) Gecko/20100101 Firefox/42.0
-Terminated by user.
-------------------------------------------------------
-*           EndTime: Thu Sep 22 21:50:02 2016         *
-******************************************************
-
-
-
-
-*******************************************************
-*                    Server Start                     *
-*          Start Time: Thu Sep 22 21:52:16 2016       *
--------------------------------------------------------
-Command Line:
-./lisod 2090 7114 ../tmp/lisod.log ../tmp/lisod.lock ../tmp/www ../tmp/cgi/cgi_script.py ../tmp/grader.key ../tmp/grader.crt 
--------------------------------------------------------
-Accept connection from client 123.57.163.79:50901.
-  Get GET request from 123.57.163.79.
-    User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:42.0) Gecko/20100101 Firefox/42.0
-
-
-
-
-*******************************************************
-*                    Server Start                     *
-*          Start Time: Thu Sep 22 21:53:02 2016       *
--------------------------------------------------------
-Command Line:
-./lisod 2090 7114 ../tmp/lisod.log ../tmp/lisod.lock ../tmp/www ../tmp/cgi/cgi_script.py ../tmp/grader.key ../tmp/grader.crt 
--------------------------------------------------------
-Accept connection from client 123.57.163.79:33118.
-  Get GET request from 123.57.163.79.
-    User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:42.0) Gecko/20100101 Firefox/42.0
-
-
-
-
-*******************************************************
-*                    Server Start                     *
-*          Start Time: Thu Sep 22 21:54:14 2016       *
--------------------------------------------------------
-Command Line:
-./lisod 2090 7114 ../tmp/lisod.log ../tmp/lisod.lock ../tmp/www ../tmp/cgi/cgi_script.py ../tmp/grader.key ../tmp/grader.crt 
--------------------------------------------------------
-Accept connection from client 123.57.163.79:56981.
-  Get GET request from 123.57.163.79.
-    User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:42.0) Gecko/20100101 Firefox/42.0
-
-
-
-
-*******************************************************
-*                    Server Start                     *
-*          Start Time: Thu Sep 22 21:56:15 2016       *
--------------------------------------------------------
-Command Line:
-./lisod 2090 7114 ../tmp/lisod.log ../tmp/lisod.lock ../tmp/www ../tmp/cgi/cgi_script.py ../tmp/grader.key ../tmp/grader.crt 
--------------------------------------------------------
-Accept connection from client 123.57.163.79:33250.
-  Get GET request from 123.57.163.79.
-    User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:42.0) Gecko/20100101 Firefox/42.0
-
-
-
-
-*******************************************************
-*                    Server Start                     *
-*          Start Time: Thu Sep 22 21:57:33 2016       *
--------------------------------------------------------
-Command Line:
-./lisod 2090 7114 ../tmp/lisod.log ../tmp/lisod.lock ../tmp/www ../tmp/cgi/cgi_script.py ../tmp/grader.key ../tmp/grader.crt 
--------------------------------------------------------
-Accept connection from client 123.57.163.79:54002.
-  Get GET request from 123.57.163.79.
-    User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:42.0) Gecko/20100101 Firefox/42.0
-
-
-
-
-*******************************************************
-*                    Server Start                     *
-*          Start Time: Thu Sep 22 21:58:48 2016       *
--------------------------------------------------------
-Command Line:
-./lisod 2090 7114 ../tmp/lisod.log ../tmp/lisod.lock ../tmp/www ../tmp/cgi/cgi_script.py ../tmp/grader.key ../tmp/grader.crt 
--------------------------------------------------------
-Accept connection from client 123.57.163.79:43884.
-  Get GET request from 123.57.163.79.
-    User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:42.0) Gecko/20100101 Firefox/42.0
-
-
-
-
-*******************************************************
-*                    Server Start                     *
-*          Start Time: Thu Sep 22 22:01:53 2016       *
--------------------------------------------------------
-Command Line:
-./lisod 2090 7114 ../tmp/lisod.log ../tmp/lisod.lock ../tmp/www ../tmp/cgi/cgi_script.py ../tmp/grader.key ../tmp/grader.crt 
--------------------------------------------------------
-
-
-
-
-*******************************************************
-*                    Server Start                     *
-*          Start Time: Thu Sep 22 22:08:22 2016       *
--------------------------------------------------------
-Command Line:
-./lisod 2090 7114 ../tmp/lisod.log ../tmp/lisod.lock ../tmp/www ../tmp/cgi/cgi_script.py ../tmp/grader.key ../tmp/grader.crt 
--------------------------------------------------------
-Accept connection from client 123.57.163.79:56747.
-  Get HEAD request from 123.57.163.79.
-    User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:42.0) Gecko/20100101 Firefox/42.0
-Accept connection from client 123.57.163.79:53392.
-  Get HEAD request from 123.57.163.79.
-    User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:42.0) Gecko/20100101 Firefox/42.0
-Accept connection from client 123.57.163.79:51455.
-  Get HEAD request from 123.57.163.79.
-    User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:42.0) Gecko/20100101 Firefox/42.0
-Terminated by user.
-------------------------------------------------------
-*           EndTime: Thu Sep 22 22:08:35 2016         *
-******************************************************
-
-
-
-
-*******************************************************
-*                    Server Start                     *
-*          Start Time: Thu Sep 22 22:12:05 2016       *
--------------------------------------------------------
-Command Line:
-./lisod 2090 7114 ../tmp/lisod.log ../tmp/lisod.lock ../tmp/www ../tmp/cgi/cgi_script.py ../tmp/grader.key ../tmp/grader.crt 
--------------------------------------------------------
-Accept connection from client 123.57.163.79:48793.
-  Get HEAD /index.html request from 123.57.163.79.
-    User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:42.0) Gecko/20100101 Firefox/42.0
-Accept connection from client 123.57.163.79:41230.
-  Get GET /index.html request from 123.57.163.79.
-    User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:42.0) Gecko/20100101 Firefox/42.0
-Accept connection from client 123.57.163.79:52525.
-  Get HEAD /index.html request from 123.57.163.79.
-    User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:42.0) Gecko/20100101 Firefox/42.0
-Accept connection from client 123.57.163.79:43688.
-  Get DELETE /index.html request from 123.57.163.79.
-    User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:42.0) Gecko/20100101 Firefox/42.0
-Terminated by user.
-------------------------------------------------------
-*           EndTime: Thu Sep 22 22:12:42 2016         *
+*           EndTime: Fri Sep 23 00:25:05 2016         *
 ******************************************************

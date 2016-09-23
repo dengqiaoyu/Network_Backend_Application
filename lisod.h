@@ -40,7 +40,7 @@
 #define dbg_cp1_printf(...)
 #endif
 
-#define DEBUG_CP2
+//#define DEBUG_CP2
 #ifdef DEBUG_CP2
 #define dbg_cp2_printf(...) printf(__VA_ARGS__)
 #else

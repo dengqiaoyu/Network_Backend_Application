@@ -471,12 +471,6 @@ void get_request_analyzed(Request_analyzed *request_analyzed,
 {
     int index = 0;
     int ret = 0;
-    // memset(request_analyzed->connection, 0, MAX_SIZE_SMALL);
-    // memset(request_analyzed->accept_charset, 0, MAX_SIZE_SMALL);
-    // memset(request_analyzed->accept_encoding, 0, MAX_SIZE_SMALL);
-    // memset(request_analyzed->accept_language, 0, MAX_SIZE_SMALL);
-    // memset(request_analyzed->host, 0, MAX_SIZE);
-    // memset(request_analyzed->user_agent, 0, MAX_SIZE);
 
     memset(request_analyzed, 0, sizeof(Request_analyzed));
 
@@ -1157,16 +1151,16 @@ void print_request(Requests *requests)
     while (request_rover != NULL)
     {
         int index = 0;
-        printf("Http Method %s\n", request_rover->http_method);
-        printf("Http Version %s\n", request_rover->http_version);
-        printf("Http Uri %s\n", request_rover->http_uri);
+        dbg_cp2_printf("Http Method %s\n", request_rover->http_method);
+        dbg_cp2_printf("Http Version %s\n", request_rover->http_version);
+        dbg_cp2_printf("Http Uri %s\n", request_rover->http_uri);
         for (index = 0; index < request_rover->header_count; index++) {
-            printf("Request Header\n");
-            printf("Header name %s Header Value %s\n",
-                   request_rover->headers[index].header_name,
-                   request_rover->headers[index].header_value);
+            dbg_cp2_printf("Request Header\n");
+            dbg_cp2_printf("Header name %s Header Value %s\n",
+                           request_rover->headers[index].header_name,
+                           request_rover->headers[index].header_value);
         }
-        printf("**********************************************************\n");
+        dbg_cp2_printf("**********************************************************\n");
         request_rover = request_rover->next_request;
     }
 }
