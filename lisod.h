@@ -31,7 +31,6 @@
 #define MAX_TEXT 8192
 #define TYPE_SIZE 5
 
-
 //#define DEBUG_CP1
 #ifdef DEBUG_CP1
 /* When debugging is enabled, the underlying functions get called */
