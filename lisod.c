@@ -440,8 +440,10 @@ int server_clients(pools *p)
                 {
                     Request_analyzed request_analyzed;
                     get_request_analyzed(&request_analyzed, request_rover);
-                    fprintf(logfp, "Get %s request from %s.\n",
-                            request_rover->http_method, p->client_ip[connfd]);
+                    fprintf(logfp, "  Get %s %s request from %s.\n",
+                            request_rover->http_method,
+                            request_rover->http_uri,
+                            p->client_ip[connfd]);
                     fprintf(logfp, "    User-Agent: %s\n",
                             request_analyzed.user_agent);
                     printf_request_analyzed(&request_analyzed);
@@ -621,7 +623,7 @@ int send_response(Request_analyzed *request_analyzed, Requests *request,
         //dbg_cp2_printf("line 617\n");
         //exit(1);
     }
-
+    //dbg_cp2_printf("status_code: %d\n", status_code);
     if (status_code == 200)
     {
         content_size = response_headers.entity_header.content_length;
@@ -642,8 +644,7 @@ int send_response(Request_analyzed *request_analyzed, Requests *request,
     if (!strncmp(request->http_method, "HEAD", MAX_SIZE_SMALL))
     {
         ret = write_to_socket(status_code, response_headers_text,
-                              response_content_text, NULL, 0,
-                              connfd);
+                              NULL, NULL, 0, connfd);
     }
     else
     {
@@ -856,9 +857,11 @@ int get_contentfd(Requests *request, Response_headers *response_headers,
     {
         char path_home[MAX_SIZE] = {0};
         char path_index[MAX_SIZE] = {0};
-        snprintf(path_home, MAX_SIZE, "%s%s\0", lisod_param.www_folder, "/home.html");
+        snprintf(path_home, MAX_SIZE, "%s%s\0", lisod_param.www_folder,
+                 "/home.html");
         //dbg_cp2_printf("path_home: %s\n", path_home);
-        snprintf(path_index, MAX_SIZE, "%s%s\0", lisod_param.www_folder, "/index.html");
+        snprintf(path_index, MAX_SIZE, "%s%s\0", lisod_param.www_folder,
+                 "/index.html");
         //dbg_cp2_printf("path_index: %s\n", path_index);
         if (stat(path_home, &sbuf) == 0)
         {
@@ -868,15 +871,14 @@ int get_contentfd(Requests *request, Response_headers *response_headers,
         {
             strncpy(request->http_uri, path_index, MAX_SIZE - 1);
         }
-        //dbg_cp2_printf("line 822, file_name: %s\n", file_name);
+        snprintf(file_name, MAX_SIZE, "%s", request->http_uri);
     }
     else
     {
         //dbg_cp2_printf("line 826, file_name: %s\n", file_name);
-        strncpy(request->http_uri, request->http_uri, MAX_SIZE - 1);
+        snprintf(file_name, MAX_SIZE, "%s%s\0", lisod_param.www_folder,
+                 request->http_uri);
     }
-    //dbg_cp2_printf("line 829, file_name: %s\n", request->http_uri);
-    snprintf(file_name, MAX_SIZE, "%s", request->http_uri);
     //dbg_cp2_printf("line 831, file_name: %s\n", file_name);
     if (stat(file_name, &sbuf) < 0)
     {
@@ -985,7 +987,16 @@ int write_to_socket(int status_code, char *response_headers_text,
     }
     dbg_cp2_printf("line 982\n");
     if (response_content_ptr == NULL)
-        content_size = strlen(response_content);
+    {
+        if (response_content_text == NULL)
+        {
+            return 0;
+        }
+        else
+        {
+            content_size = strlen(response_content);
+        }
+    }
     write_offset = 0;
     while (1)
     {

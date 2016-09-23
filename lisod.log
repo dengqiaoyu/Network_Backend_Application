@@ -169,3 +169,170 @@ Terminated by user.
 ------------------------------------------------------
 *           EndTime: Thu Sep 22 21:46:00 2016         *
 ******************************************************
+
+
+
+
+*******************************************************
+*                    Server Start                     *
+*          Start Time: Thu Sep 22 21:49:49 2016       *
+-------------------------------------------------------
+Command Line:
+./lisod 2090 7114 ../tmp/lisod.log ../tmp/lisod.lock ../tmp/www ../tmp/cgi/cgi_script.py ../tmp/grader.key ../tmp/grader.crt 
+-------------------------------------------------------
+Accept connection from client 123.57.163.79:46654.
+  Get GET request from 123.57.163.79.
+    User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:42.0) Gecko/20100101 Firefox/42.0
+Accept connection from client 123.57.163.79:46303.
+  Get GET request from 123.57.163.79.
+    User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:42.0) Gecko/20100101 Firefox/42.0
+Terminated by user.
+------------------------------------------------------
+*           EndTime: Thu Sep 22 21:50:02 2016         *
+******************************************************
+
+
+
+
+*******************************************************
+*                    Server Start                     *
+*          Start Time: Thu Sep 22 21:52:16 2016       *
+-------------------------------------------------------
+Command Line:
+./lisod 2090 7114 ../tmp/lisod.log ../tmp/lisod.lock ../tmp/www ../tmp/cgi/cgi_script.py ../tmp/grader.key ../tmp/grader.crt 
+-------------------------------------------------------
+Accept connection from client 123.57.163.79:50901.
+  Get GET request from 123.57.163.79.
+    User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:42.0) Gecko/20100101 Firefox/42.0
+
+
+
+
+*******************************************************
+*                    Server Start                     *
+*          Start Time: Thu Sep 22 21:53:02 2016       *
+-------------------------------------------------------
+Command Line:
+./lisod 2090 7114 ../tmp/lisod.log ../tmp/lisod.lock ../tmp/www ../tmp/cgi/cgi_script.py ../tmp/grader.key ../tmp/grader.crt 
+-------------------------------------------------------
+Accept connection from client 123.57.163.79:33118.
+  Get GET request from 123.57.163.79.
+    User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:42.0) Gecko/20100101 Firefox/42.0
+
+
+
+
+*******************************************************
+*                    Server Start                     *
+*          Start Time: Thu Sep 22 21:54:14 2016       *
+-------------------------------------------------------
+Command Line:
+./lisod 2090 7114 ../tmp/lisod.log ../tmp/lisod.lock ../tmp/www ../tmp/cgi/cgi_script.py ../tmp/grader.key ../tmp/grader.crt 
+-------------------------------------------------------
+Accept connection from client 123.57.163.79:56981.
+  Get GET request from 123.57.163.79.
+    User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:42.0) Gecko/20100101 Firefox/42.0
+
+
+
+
+*******************************************************
+*                    Server Start                     *
+*          Start Time: Thu Sep 22 21:56:15 2016       *
+-------------------------------------------------------
+Command Line:
+./lisod 2090 7114 ../tmp/lisod.log ../tmp/lisod.lock ../tmp/www ../tmp/cgi/cgi_script.py ../tmp/grader.key ../tmp/grader.crt 
+-------------------------------------------------------
+Accept connection from client 123.57.163.79:33250.
+  Get GET request from 123.57.163.79.
+    User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:42.0) Gecko/20100101 Firefox/42.0
+
+
+
+
+*******************************************************
+*                    Server Start                     *
+*          Start Time: Thu Sep 22 21:57:33 2016       *
+-------------------------------------------------------
+Command Line:
+./lisod 2090 7114 ../tmp/lisod.log ../tmp/lisod.lock ../tmp/www ../tmp/cgi/cgi_script.py ../tmp/grader.key ../tmp/grader.crt 
+-------------------------------------------------------
+Accept connection from client 123.57.163.79:54002.
+  Get GET request from 123.57.163.79.
+    User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:42.0) Gecko/20100101 Firefox/42.0
+
+
+
+
+*******************************************************
+*                    Server Start                     *
+*          Start Time: Thu Sep 22 21:58:48 2016       *
+-------------------------------------------------------
+Command Line:
+./lisod 2090 7114 ../tmp/lisod.log ../tmp/lisod.lock ../tmp/www ../tmp/cgi/cgi_script.py ../tmp/grader.key ../tmp/grader.crt 
+-------------------------------------------------------
+Accept connection from client 123.57.163.79:43884.
+  Get GET request from 123.57.163.79.
+    User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:42.0) Gecko/20100101 Firefox/42.0
+
+
+
+
+*******************************************************
+*                    Server Start                     *
+*          Start Time: Thu Sep 22 22:01:53 2016       *
+-------------------------------------------------------
+Command Line:
+./lisod 2090 7114 ../tmp/lisod.log ../tmp/lisod.lock ../tmp/www ../tmp/cgi/cgi_script.py ../tmp/grader.key ../tmp/grader.crt 
+-------------------------------------------------------
+
+
+
+
+*******************************************************
+*                    Server Start                     *
+*          Start Time: Thu Sep 22 22:08:22 2016       *
+-------------------------------------------------------
+Command Line:
+./lisod 2090 7114 ../tmp/lisod.log ../tmp/lisod.lock ../tmp/www ../tmp/cgi/cgi_script.py ../tmp/grader.key ../tmp/grader.crt 
+-------------------------------------------------------
+Accept connection from client 123.57.163.79:56747.
+  Get HEAD request from 123.57.163.79.
+    User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:42.0) Gecko/20100101 Firefox/42.0
+Accept connection from client 123.57.163.79:53392.
+  Get HEAD request from 123.57.163.79.
+    User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:42.0) Gecko/20100101 Firefox/42.0
+Accept connection from client 123.57.163.79:51455.
+  Get HEAD request from 123.57.163.79.
+    User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:42.0) Gecko/20100101 Firefox/42.0
+Terminated by user.
+------------------------------------------------------
+*           EndTime: Thu Sep 22 22:08:35 2016         *
+******************************************************
+
+
+
+
+*******************************************************
+*                    Server Start                     *
+*          Start Time: Thu Sep 22 22:12:05 2016       *
+-------------------------------------------------------
+Command Line:
+./lisod 2090 7114 ../tmp/lisod.log ../tmp/lisod.lock ../tmp/www ../tmp/cgi/cgi_script.py ../tmp/grader.key ../tmp/grader.crt 
+-------------------------------------------------------
+Accept connection from client 123.57.163.79:48793.
+  Get HEAD /index.html request from 123.57.163.79.
+    User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:42.0) Gecko/20100101 Firefox/42.0
+Accept connection from client 123.57.163.79:41230.
+  Get GET /index.html request from 123.57.163.79.
+    User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:42.0) Gecko/20100101 Firefox/42.0
+Accept connection from client 123.57.163.79:52525.
+  Get HEAD /index.html request from 123.57.163.79.
+    User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:42.0) Gecko/20100101 Firefox/42.0
+Accept connection from client 123.57.163.79:43688.
+  Get DELETE /index.html request from 123.57.163.79.
+    User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:42.0) Gecko/20100101 Firefox/42.0
+Terminated by user.
+------------------------------------------------------
+*           EndTime: Thu Sep 22 22:12:42 2016         *
+******************************************************
