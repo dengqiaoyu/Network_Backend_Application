@@ -578,7 +578,7 @@ int send_response(Request_analyzed *request_analyzed, Requests *request,
             MAX_SIZE_SMALL);
     strncpy(response_headers.general_header.transfer_encoding, "identity",
             MAX_SIZE_SMALL);
-    strncpy(response_headers.response_header.server, "lisod-qdeng",
+    strncpy(response_headers.response_header.server, "liso/1.0",
             MAX_SIZE_SMALL);
     strncpy(response_headers.entity_header.allow, "GET, HEAD",
             MAX_SIZE_SMALL);
@@ -676,7 +676,7 @@ int check_http_method(char *http_method)
     }
     else if (!strncmp("POST", http_method, MAX_SIZE_SMALL))
     {
-        status_code = 200;
+        status_code = 501;
     }
     else
     {
@@ -876,6 +876,7 @@ int get_contentfd(Requests *request, Response_headers *response_headers,
     //dbg_cp2_printf("line 831, file_name: %s\n", file_name);
     if (stat(file_name, &sbuf) < 0)
     {
+        dbg_cp2_printf("line 879\n");
         status_code = 404;
         *contentfd = -1;
         return status_code;

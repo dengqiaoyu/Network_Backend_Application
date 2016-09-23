@@ -172,3 +172,389 @@ Terminated by user.
 ------------------------------------------------------
 *           EndTime: Fri Sep 23 00:25:05 2016         *
 ******************************************************
+
+
+
+
+*******************************************************
+*                    Server Start                     *
+*          Start Time: Fri Sep 23 00:43:11 2016       *
+-------------------------------------------------------
+Command Line:
+./lisod 2090 7114 ../tmp/lisod.log ../tmp/lisod.lock ../www ../tmp/cgi/cgi_script.py ../tmp/grader.key ../tmp/grader.crt 
+-------------------------------------------------------
+Accept connection from client 71.199.115.230:63374.
+  Get GET /index.html request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+  Get GET /index.html request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+Terminated by user.
+------------------------------------------------------
+*           EndTime: Fri Sep 23 00:43:55 2016         *
+******************************************************
+
+
+
+
+*******************************************************
+*                    Server Start                     *
+*          Start Time: Fri Sep 23 00:44:13 2016       *
+-------------------------------------------------------
+Command Line:
+./lisod 2090 7114 ../tmp/lisod.log ../tmp/lisod.lock ../www ../tmp/cgi/cgi_script.py ../tmp/grader.key ../tmp/grader.crt 
+-------------------------------------------------------
+Accept connection from client 71.199.115.230:63382.
+  Get GET /index.html request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+  Get GET /index.html request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+  Get GET /index.html request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+  Get GET /index.html request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+Terminated by user.
+------------------------------------------------------
+*           EndTime: Fri Sep 23 00:47:24 2016         *
+******************************************************
+
+
+
+
+*******************************************************
+*                    Server Start                     *
+*          Start Time: Fri Sep 23 00:47:29 2016       *
+-------------------------------------------------------
+Command Line:
+./lisod 2090 7114 ../tmp/lisod.log ../tmp/lisod.lock ../www ../tmp/cgi/cgi_script.py ../tmp/grader.key ../tmp/grader.crt 
+-------------------------------------------------------
+Terminated by user.
+------------------------------------------------------
+*           EndTime: Fri Sep 23 00:47:37 2016         *
+******************************************************
+
+
+
+
+*******************************************************
+*                    Server Start                     *
+*          Start Time: Fri Sep 23 00:47:44 2016       *
+-------------------------------------------------------
+Command Line:
+./lisod 2090 7114 ../tmp/lisod.log ../tmp/lisod.lock /www ../tmp/cgi/cgi_script.py ../tmp/grader.key ../tmp/grader.crt 
+-------------------------------------------------------
+Accept connection from client 71.199.115.230:63419.
+  Get GET /index.html request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+Terminated by user.
+------------------------------------------------------
+*           EndTime: Fri Sep 23 00:48:12 2016         *
+******************************************************
+
+
+
+
+*******************************************************
+*                    Server Start                     *
+*          Start Time: Fri Sep 23 00:54:34 2016       *
+-------------------------------------------------------
+Command Line:
+./lisod 2090 7114 ../tmp/lisod.log ../tmp/lisod.lock /www ../tmp/cgi/cgi_script.py ../tmp/grader.key ../tmp/grader.crt 
+-------------------------------------------------------
+Accept connection from client 71.199.115.230:63773.
+  Get GET /index.html request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+Terminated by user.
+------------------------------------------------------
+*           EndTime: Fri Sep 23 00:58:15 2016         *
+******************************************************
+
+
+
+
+*******************************************************
+*                    Server Start                     *
+*          Start Time: Fri Sep 23 00:58:25 2016       *
+-------------------------------------------------------
+Command Line:
+./lisod 2090 7114 ../tmp/lisod.log ../tmp/lisod.lock ./www ../tmp/cgi/cgi_script.py ../tmp/grader.key ../tmp/grader.crt 
+-------------------------------------------------------
+Accept connection from client 71.199.115.230:63890.
+  Get GET /index.html request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+  Get GET /style.css request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+Accept connection from client 71.199.115.230:63891.
+  Get GET /images/liso_header.png request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+  Get GET / request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+Accept connection from client 71.199.115.230:63912.
+Accept connection from client 71.199.115.230:63914.
+Accept connection from client 71.199.115.230:63913.
+Accept connection from client 71.199.115.230:63915.
+  Get GET /style.css request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+  Get GET /images/liso_header.png request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+Accept connection from client 71.199.115.230:64225.
+  Get GET / request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+  Get GET /style.css request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+Accept connection from client 71.199.115.230:64227.
+  Get GET /images/liso_header.png request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+Terminated by user.
+------------------------------------------------------
+*           EndTime: Fri Sep 23 01:07:33 2016         *
+******************************************************
+
+
+
+
+*******************************************************
+*                    Server Start                     *
+*          Start Time: Fri Sep 23 01:09:50 2016       *
+-------------------------------------------------------
+Command Line:
+./lisod 2090 7114 ../tmp/lisod.log ../tmp/lisod.lock ./www ../tmp/cgi/cgi_script.py ../tmp/grader.key ../tmp/grader.crt 
+-------------------------------------------------------
+Accept connection from client 71.199.115.230:64314.
+  Get GET / request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+  Get GET /style.css request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+Accept connection from client 71.199.115.230:64315.
+  Get GET /images/liso_header.png request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+  Get GET / request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+  Get GET /style.css request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+  Get GET /images/liso_header.png request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+  Get GET / request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+  Get GET /style.css request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+  Get GET /images/liso_header.png request from 71.199.115.230.
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36
+Accept connection from client 128.2.13.161:36258.
+  Get HEAD /style.css request from 128.2.13.161.
+    User-Agent: python-requests/2.6.0 CPython/2.7.5 Linux/3.10.0-327.22.2.el7.x86_64
+Accept connection from client 128.2.13.161:36260.
+  Get HEAD /style.css request from 128.2.13.161.
+    User-Agent: python-requests/2.6.0 CPython/2.7.5 Linux/3.10.0-327.22.2.el7.x86_64
+Accept connection from client 128.2.13.161:36262.
+  Get HEAD /images/liso_header.png request from 128.2.13.161.
+    User-Agent: python-requests/2.6.0 CPython/2.7.5 Linux/3.10.0-327.22.2.el7.x86_64
+Accept connection from client 128.2.13.161:36264.
+  Get HEAD /index.html request from 128.2.13.161.
+    User-Agent: python-requests/2.6.0 CPython/2.7.5 Linux/3.10.0-327.22.2.el7.x86_64
+Accept connection from client 128.2.13.161:36266.
+  Get HEAD /index.html request from 128.2.13.161.
+    User-Agent: 
+Accept connection from client 128.2.13.161:36268.
+  Get GET /style.css request from 128.2.13.161.
+    User-Agent: python-requests/2.6.0 CPython/2.7.5 Linux/3.10.0-327.22.2.el7.x86_64
+Accept connection from client 128.2.13.161:36270.
+  Get GET /images/liso_header.png request from 128.2.13.161.
+    User-Agent: python-requests/2.6.0 CPython/2.7.5 Linux/3.10.0-327.22.2.el7.x86_64
+Accept connection from client 128.2.13.161:36272.
+  Get GET /index.html request from 128.2.13.161.
+    User-Agent: python-requests/2.6.0 CPython/2.7.5 Linux/3.10.0-327.22.2.el7.x86_64
+Accept connection from client 128.2.13.161:36274.
+  Get POST /style.css request from 128.2.13.161.
+    User-Agent: python-requests/2.6.0 CPython/2.7.5 Linux/3.10.0-327.22.2.el7.x86_64
+Failed mapping request file.
+Failed closing content file descriptor.
+Accept connection from client 128.2.13.161:36276.
+  Get POST /images/liso_header.png request from 128.2.13.161.
+    User-Agent: python-requests/2.6.0 CPython/2.7.5 Linux/3.10.0-327.22.2.el7.x86_64
+Failed mapping request file.
+Failed closing content file descriptor.
+Accept connection from client 128.2.13.161:36278.
+  Get POST /index.html request from 128.2.13.161.
+    User-Agent: python-requests/2.6.0 CPython/2.7.5 Linux/3.10.0-327.22.2.el7.x86_64
+Failed mapping request file.
+Failed closing content file descriptor.
+Accept connection from client 128.2.13.161:36280.
+  Get HEAD /bad.html request from 128.2.13.161.
+    User-Agent: python-requests/2.6.0 CPython/2.7.5 Linux/3.10.0-327.22.2.el7.x86_64
+Terminated by user.
+------------------------------------------------------
+*           EndTime: Fri Sep 23 01:20:03 2016         *
+******************************************************
+
+
+
+
+*******************************************************
+*                    Server Start                     *
+*          Start Time: Fri Sep 23 01:21:08 2016       *
+-------------------------------------------------------
+Command Line:
+./lisod 2090 7114 ../tmp/lisod.log ../tmp/lisod.lock ./www ../tmp/cgi/cgi_script.py ../tmp/grader.key ../tmp/grader.crt 
+-------------------------------------------------------
+Accept connection from client 128.2.13.161:36334.
+  Get HEAD /style.css request from 128.2.13.161.
+    User-Agent: python-requests/2.6.0 CPython/2.7.5 Linux/3.10.0-327.22.2.el7.x86_64
+Accept connection from client 128.2.13.161:36336.
+  Get HEAD /style.css request from 128.2.13.161.
+    User-Agent: python-requests/2.6.0 CPython/2.7.5 Linux/3.10.0-327.22.2.el7.x86_64
+Accept connection from client 128.2.13.161:36338.
+  Get HEAD /images/liso_header.png request from 128.2.13.161.
+    User-Agent: python-requests/2.6.0 CPython/2.7.5 Linux/3.10.0-327.22.2.el7.x86_64
+Accept connection from client 128.2.13.161:36340.
+  Get HEAD /index.html request from 128.2.13.161.
+    User-Agent: python-requests/2.6.0 CPython/2.7.5 Linux/3.10.0-327.22.2.el7.x86_64
+Accept connection from client 128.2.13.161:36342.
+  Get HEAD /index.html request from 128.2.13.161.
+    User-Agent: 
+Accept connection from client 128.2.13.161:36344.
+  Get GET /style.css request from 128.2.13.161.
+    User-Agent: python-requests/2.6.0 CPython/2.7.5 Linux/3.10.0-327.22.2.el7.x86_64
+Accept connection from client 128.2.13.161:36346.
+  Get GET /images/liso_header.png request from 128.2.13.161.
+    User-Agent: python-requests/2.6.0 CPython/2.7.5 Linux/3.10.0-327.22.2.el7.x86_64
+Accept connection from client 128.2.13.161:36348.
+  Get GET /index.html request from 128.2.13.161.
+    User-Agent: python-requests/2.6.0 CPython/2.7.5 Linux/3.10.0-327.22.2.el7.x86_64
+Accept connection from client 128.2.13.161:36350.
+  Get POST /style.css request from 128.2.13.161.
+    User-Agent: python-requests/2.6.0 CPython/2.7.5 Linux/3.10.0-327.22.2.el7.x86_64
+Failed mapping request file.
+Failed closing content file descriptor.
+Accept connection from client 128.2.13.161:36352.
+  Get POST /images/liso_header.png request from 128.2.13.161.
+    User-Agent: python-requests/2.6.0 CPython/2.7.5 Linux/3.10.0-327.22.2.el7.x86_64
+Failed mapping request file.
+Failed closing content file descriptor.
+Accept connection from client 128.2.13.161:36354.
+  Get POST /index.html request from 128.2.13.161.
+    User-Agent: python-requests/2.6.0 CPython/2.7.5 Linux/3.10.0-327.22.2.el7.x86_64
+Failed mapping request file.
+Failed closing content file descriptor.
+Accept connection from client 128.2.13.161:36356.
+  Get HEAD /bad.html request from 128.2.13.161.
+    User-Agent: python-requests/2.6.0 CPython/2.7.5 Linux/3.10.0-327.22.2.el7.x86_64
+Terminated by user.
+------------------------------------------------------
+*           EndTime: Fri Sep 23 01:23:20 2016         *
+******************************************************
+
+
+
+
+*******************************************************
+*                    Server Start                     *
+*          Start Time: Fri Sep 23 01:28:55 2016       *
+-------------------------------------------------------
+Command Line:
+./lisod 2090 7114 ../tmp/lisod.log ../tmp/lisod.lock ./www ../tmp/cgi/cgi_script.py ../tmp/grader.key ../tmp/grader.crt 
+-------------------------------------------------------
+Accept connection from client 128.2.13.145:54866.
+  Get HEAD /style.css request from 128.2.13.145.
+    User-Agent: python-requests/2.6.0 CPython/2.7.5 Linux/3.10.0-327.28.2.el7.x86_64
+Accept connection from client 128.2.13.145:54868.
+  Get HEAD /style.css request from 128.2.13.145.
+    User-Agent: python-requests/2.6.0 CPython/2.7.5 Linux/3.10.0-327.28.2.el7.x86_64
+Accept connection from client 128.2.13.145:54870.
+  Get HEAD /images/liso_header.png request from 128.2.13.145.
+    User-Agent: python-requests/2.6.0 CPython/2.7.5 Linux/3.10.0-327.28.2.el7.x86_64
+Accept connection from client 128.2.13.145:54872.
+  Get HEAD /index.html request from 128.2.13.145.
+    User-Agent: python-requests/2.6.0 CPython/2.7.5 Linux/3.10.0-327.28.2.el7.x86_64
+Accept connection from client 128.2.13.145:54874.
+  Get HEAD /index.html request from 128.2.13.145.
+    User-Agent: 
+Accept connection from client 128.2.13.145:54876.
+  Get GET /style.css request from 128.2.13.145.
+    User-Agent: python-requests/2.6.0 CPython/2.7.5 Linux/3.10.0-327.28.2.el7.x86_64
+Accept connection from client 128.2.13.145:54878.
+  Get GET /images/liso_header.png request from 128.2.13.145.
+    User-Agent: python-requests/2.6.0 CPython/2.7.5 Linux/3.10.0-327.28.2.el7.x86_64
+Accept connection from client 128.2.13.145:54880.
+  Get GET /index.html request from 128.2.13.145.
+    User-Agent: python-requests/2.6.0 CPython/2.7.5 Linux/3.10.0-327.28.2.el7.x86_64
+Accept connection from client 128.2.13.145:54882.
+  Get POST /style.css request from 128.2.13.145.
+    User-Agent: python-requests/2.6.0 CPython/2.7.5 Linux/3.10.0-327.28.2.el7.x86_64
+Failed mapping request file.
+Failed closing content file descriptor.
+Accept connection from client 128.2.13.145:54884.
+  Get POST /images/liso_header.png request from 128.2.13.145.
+    User-Agent: python-requests/2.6.0 CPython/2.7.5 Linux/3.10.0-327.28.2.el7.x86_64
+Failed mapping request file.
+Failed closing content file descriptor.
+Accept connection from client 128.2.13.145:54886.
+  Get POST /index.html request from 128.2.13.145.
+    User-Agent: python-requests/2.6.0 CPython/2.7.5 Linux/3.10.0-327.28.2.el7.x86_64
+Failed mapping request file.
+Failed closing content file descriptor.
+Accept connection from client 128.2.13.145:54888.
+  Get HEAD /bad.html request from 128.2.13.145.
+    User-Agent: python-requests/2.6.0 CPython/2.7.5 Linux/3.10.0-327.28.2.el7.x86_64
+Terminated by user.
+------------------------------------------------------
+*           EndTime: Fri Sep 23 01:34:19 2016         *
+******************************************************
+
+
+
+
+*******************************************************
+*                    Server Start                     *
+*          Start Time: Fri Sep 23 01:34:27 2016       *
+-------------------------------------------------------
+Command Line:
+./lisod 2090 7114 ../tmp/lisod.log ../tmp/lisod.lock ./www ../tmp/cgi/cgi_script.py ../tmp/grader.key ../tmp/grader.crt 
+-------------------------------------------------------
+Accept connection from client 128.2.13.145:54926.
+  Get HEAD /style.css request from 128.2.13.145.
+    User-Agent: python-requests/2.6.0 CPython/2.7.5 Linux/3.10.0-327.28.2.el7.x86_64
+Accept connection from client 128.2.13.145:54928.
+  Get HEAD /style.css request from 128.2.13.145.
+    User-Agent: python-requests/2.6.0 CPython/2.7.5 Linux/3.10.0-327.28.2.el7.x86_64
+Accept connection from client 128.2.13.145:54930.
+  Get HEAD /images/liso_header.png request from 128.2.13.145.
+    User-Agent: python-requests/2.6.0 CPython/2.7.5 Linux/3.10.0-327.28.2.el7.x86_64
+Accept connection from client 128.2.13.145:54932.
+  Get HEAD /index.html request from 128.2.13.145.
+    User-Agent: python-requests/2.6.0 CPython/2.7.5 Linux/3.10.0-327.28.2.el7.x86_64
+Accept connection from client 128.2.13.145:54934.
+  Get HEAD /index.html request from 128.2.13.145.
+    User-Agent: 
+Accept connection from client 128.2.13.145:54936.
+  Get GET /style.css request from 128.2.13.145.
+    User-Agent: python-requests/2.6.0 CPython/2.7.5 Linux/3.10.0-327.28.2.el7.x86_64
+Accept connection from client 128.2.13.145:54938.
+  Get GET /images/liso_header.png request from 128.2.13.145.
+    User-Agent: python-requests/2.6.0 CPython/2.7.5 Linux/3.10.0-327.28.2.el7.x86_64
+Accept connection from client 128.2.13.145:54940.
+  Get GET /index.html request from 128.2.13.145.
+    User-Agent: python-requests/2.6.0 CPython/2.7.5 Linux/3.10.0-327.28.2.el7.x86_64
+Accept connection from client 128.2.13.145:54942.
+  Get GET /index.html request from 128.2.13.145.
+    User-Agent: 
+Accept connection from client 128.2.13.145:54944.
+  Get POST /style.css request from 128.2.13.145.
+    User-Agent: python-requests/2.6.0 CPython/2.7.5 Linux/3.10.0-327.28.2.el7.x86_64
+Accept connection from client 128.2.13.145:54946.
+  Get HEAD /bad.html request from 128.2.13.145.
+    User-Agent: python-requests/2.6.0 CPython/2.7.5 Linux/3.10.0-327.28.2.el7.x86_64
+Terminated by user.
+------------------------------------------------------
+*           EndTime: Fri Sep 23 01:36:17 2016         *
+******************************************************
+
+
+
+
+*******************************************************
+*                    Server Start                     *
+*          Start Time: Fri Sep 23 01:36:26 2016       *
+-------------------------------------------------------
+Command Line:
+./lisod 2090 7114 ../tmp/lisod.log ../tmp/lisod.lock ./www ../tmp/cgi/cgi_script.py ../tmp/grader.key ../tmp/grader.crt 
+-------------------------------------------------------
