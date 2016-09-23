@@ -38,20 +38,24 @@ Requests * parse(char *socket_recv_buf, size_t recv_buf_size, int socketFd,
 
     int ret = 0;
 
-    // dbg_cp2_printf("socket_recv_buf in parse.c:[\n%s]\n", socket_recv_buf);
-    // dbg_cp2_printf("if_ignore_first: %d\n", if_ignore_first);
-    // dbg_cp2_printf("if_too_long: %d\n", if_too_long);
-    // dbg_cp2_printf("chached_buffer[0]: %d\n", chached_buffer[0]);
+    //dbg_cp2_printf("socket_recv_buf in parse.c:[\n%s]\n", socket_recv_buf);
+    //dbg_cp2_printf("if_ignore_first: %d\n", if_ignore_first);
+    //dbg_cp2_printf("if_too_long: %d\n", if_too_long);
+    //dbg_cp2_printf("chached_buffer[0]: %d\n", chached_buffer[0]);
 
+    //dbg_cp2_printf("parse.c: line 46\n");
     if (search_first_position(socket_recv_buf, "\r\n\r\n") != -1)
     {
+        //dbg_cp2_printf("parse.c: line 49\n");
         if_contain_2crlf = 1;
     }
     else
     {
+        //dbg_cp2_printf("parse.c: line 54\n");
         if_contain_2crlf = 0;
     }
 
+    //dbg_cp2_printf("parse.c: line 55\n");
     if (chached_buffer[0] != 0)
     {
         request_size = strlen(chached_buffer);
@@ -69,6 +73,7 @@ Requests * parse(char *socket_recv_buf, size_t recv_buf_size, int socketFd,
         }
     }
 
+    //dbg_cp2_printf("parse.c: line 72\n");
     // dbg_cp2_printf("if_contain_2crlf: %d\n", if_contain_2crlf);
     if (if_contain_2crlf == 1)
     {
@@ -107,7 +112,8 @@ Requests * parse(char *socket_recv_buf, size_t recv_buf_size, int socketFd,
                 else
                     read_state = STATE_START;
             }
-
+            //dbg_cp2_printf("parse.c: line 115\n");
+            //dbg_cp2_printf("@@request_buffer: [\n%s]\n", request_buffer);
             if (request_size <= REQUEST_BUF_SIZE)
             {
                 request = (Requests *) malloc(sizeof(Requests));
@@ -144,6 +150,7 @@ Requests * parse(char *socket_recv_buf, size_t recv_buf_size, int socketFd,
                     request_count++;
                     request_last_ptr = request;
                 }
+                //dbg_cp2_printf("parse.c: line 153\n");
             }
             else
             {
@@ -155,7 +162,7 @@ Requests * parse(char *socket_recv_buf, size_t recv_buf_size, int socketFd,
             request_size = 0;
             request_buf_offset = 0;
         }
-
+        //dbg_cp2_printf("parse.c: line 163\n");
         if (full_requests_size != recv_buf_size)
         {
             size_t length = strlen(&socket_recv_buf[full_requests_size]);
@@ -238,6 +245,7 @@ ssize_t search_last_position(char *str1, char *str2)
 
 ssize_t search_first_position(char *str1, char *str2)
 {
+    //dbg_cp2_printf("parse.c: line 246\n");
     char *first_position = strstr(str1, str2);
     if (first_position != NULL)
     {

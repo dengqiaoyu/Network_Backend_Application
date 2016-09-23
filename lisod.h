@@ -47,12 +47,6 @@
 #define dbg_cp2_printf(...)
 #endif
 
-static const char *FILE_SUFFIX[TYPE_SIZE] =
-{ ".html", ".css", ".gif", ".png", ".jpg"};
-
-static const char *FILE_TYPE[TYPE_SIZE] =
-{ "text/html", "text/css", "image/gif", "image/png", "image/jpeg"};
-
 typedef struct parameters
 {
     char http_port[MAXLINE];
@@ -135,6 +129,7 @@ typedef struct
     char content_language[MAX_SIZE_SMALL];
     size_t content_length;
     char content_type[MAX_SIZE_SMALL];
+    char last_modified[MAX_SIZE_SMALL];
 } Entity_header;
 
 typedef struct
@@ -165,9 +160,10 @@ int get_contentfd(Requests *request, Response_headers *response_headers,
                   int *contentfd);
 int get_file_type(char *file_name, char *file_type);
 int write_to_socket(int status_code, char *response_headers_text,
-                     char *response_content_text, char *response_content_ptr,
-                     size_t content_size, int connfd);
+                    char *response_content_text, char *response_content_ptr,
+                    size_t content_size, int connfd);
 int decode_asc(char *str);
+int convert2path(char *uri);
 void destory_requests(Requests *requests);
 void print_request(Requests *requests);
 int Close_connection(int connfd, int index, pools *p);
@@ -178,7 +174,7 @@ Requests* parse(char *socket_recv_buf, size_t recv_buf_size , int socketFd,
 int init_log(char *log_file, int argc, char **argv);
 int close_log(FILE *logfp);
 char *get_current_time();
-char *rfc1123_date();
-
+char *get_rfc1123_date();
+char *get_last_modified_date(time_t *t);
 ssize_t search_last_position(char *str1, char *str2);
 ssize_t search_first_position(char *str1, char *str2);
