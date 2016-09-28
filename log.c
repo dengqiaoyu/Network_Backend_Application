@@ -1,4 +1,10 @@
-#include "lisod.h"
+#include <stdio.h>
+#include <fcntl.h>
+#include <time.h>
+#include <string.h>
+#include "log.h"
+
+char *get_local_date();
 
 int init_log(char *log_file, int argc, char **argv)
 {
@@ -20,7 +26,7 @@ int init_log(char *log_file, int argc, char **argv)
     fprintf(logfp, "\n\n\n\n");
     fprintf(logfp, "*******************************************************\n");
     fprintf(logfp, "*                    Server Start                     *\n");
-    fprintf(logfp, "*          Start Time: %s       *\n", get_current_time());
+    fprintf(logfp, "*          Start Time: %s       *\n", get_local_date());
     fprintf(logfp, "-------------------------------------------------------\n");
     fprintf(logfp, "Command Line:\n");
     for (i = 0; i < argc; i++)
@@ -38,7 +44,21 @@ int init_log(char *log_file, int argc, char **argv)
     return logfd;
 }
 
-char *get_current_time()
+void close_log(FILE *logfp)
+{
+    ssize_t ret;
+    fprintf(logfp, "Terminated by user.\n");
+    fprintf(logfp, "------------------------------------------------------\n");
+    fprintf(logfp, "*           EndTime: %s         *\n", get_local_date());
+    fprintf(logfp, "******************************************************\n");
+    ret = fclose(logfp);
+    if (ret != 0)
+    {
+        fprintf(stderr, "Failed close file pointer from close_log.\n");
+    }
+}
+
+char *get_local_date()
 {
     char *time_descrip = NULL;
     time_t t;

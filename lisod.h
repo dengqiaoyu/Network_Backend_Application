@@ -169,10 +169,6 @@ int Close_connection(int connfd, int index, pools *p);
 
 Requests* parse(char *socket_recv_buf, size_t recv_buf_size , int socketFd,
                 pools *p);
-
-int init_log(char *log_file, int argc, char **argv);
-int close_log(FILE *logfp);
-char *get_current_time();
 char *get_rfc1123_date();
 char *get_last_modified_date(time_t *t);
 ssize_t search_last_position(char *str1, char *str2);

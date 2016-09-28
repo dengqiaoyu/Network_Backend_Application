@@ -1,29 +1,23 @@
 #include "lisod.h"
+#include "log.h"
+#include "pdef_type.h"
+#include "dbg_func.h"
+
 
 FILE *logfp = NULL;
 int logfd = -1;
-
+static parameters lisod_param;
 // ./lisod 2090 7114 ../tmp/lisod.log ../tmp/lisod.lock ../tmp/www ../tmp/cgi/cgi_script.py ../tmp/grader.key ../tmp/grader.crt
-
-static const char *FILE_SUFFIX[TYPE_SIZE] =
-{ ".html", ".css", ".gif", ".png", ".jpg"};
-
-static const char *FILE_TYPE[TYPE_SIZE] =
-{ "text/html", "text/css", "image/gif", "image/png", "image/jpeg"};
-
-parameters lisod_param;
-
-void printf_request_analyzed(Request_analyzed *request_analyzed);
 
 int main(int argc, char **argv)
 {
-
     int listenfd, connfd, ret;
     socklen_t client_len;
     struct sockaddr_storage client_addr;
     static pools pool;
-    struct timeval timeout_select;
-    struct timeval timeout_recv = {S_RECV_TIMEOUT, US_RECV_TIMEOUT};
+    struct timeval tv_selt;
+    struct timeval tv_recv = {S_RECV_TIMEOUT, US_RECV_TIMEOUT};
+
     signal(SIGTSTP, sigtstp_handler);
     signal(SIGINT, sigtstp_handler);
     signal(SIGPIPE, SIG_IGN);
@@ -36,7 +30,6 @@ int main(int argc, char **argv)
         return -1;
     }
 
-    //Temperary use
     dbg_cp2_printf("Settings:\n");
     dbg_cp2_printf("http_port: %s\n", lisod_param.http_port);
     dbg_cp2_printf("https_port: %s\n", lisod_param.https_port);
@@ -65,10 +58,10 @@ int main(int argc, char **argv)
     while (1)
     {
         pool.ready_set = pool.active_set;
-        timeout_select.tv_sec = S_SELECT_TIMEOUT;
-        timeout_select.tv_usec = US_SELECT_TIMEOUT;
+        tv_selt.tv_sec = S_SELECT_TIMEOUT;
+        tv_selt.tv_usec = US_SELECT_TIMEOUT;
         pool.num_ready = select(pool.maxfd + 1, &pool.ready_set, NULL, NULL,
-                                &timeout_select);
+                                &tv_selt);
 
         if (FD_ISSET(listenfd, &pool.ready_set))
         {
@@ -97,11 +90,11 @@ int main(int argc, char **argv)
             }
 
             ret = setsockopt(connfd, SOL_SOCKET, SO_RCVTIMEO,
-                             (char *)&timeout_recv,
+                             (char *)&tv_recv,
                              sizeof(struct timeval));
             if (ret < 0)
             {
-                fprintf(logfp, "Failed setting timeout_recv.\n");
+                fprintf(logfp, "Failed setting tv_recv.\n");
             }
 
             if (add_client(connfd, &pool, client_hostname) == -1)
@@ -128,19 +121,7 @@ int main(int argc, char **argv)
 
 void sigtstp_handler()
 {
-    int ret;
-
-    fprintf(logfp, "Terminated by user.\n");
-    fprintf(logfp, "------------------------------------------------------\n");
-    fprintf(logfp, "*           EndTime: %s         *\n", get_current_time());
-    fprintf(logfp, "******************************************************\n");
-    ret = fclose(logfp);
-    if (ret != 0)
-    {
-        fprintf(stderr, "Failed close file pointer.\n");
-        exit(1);
-    }
-    dbg_cp2_printf("\nTerminated by user.\n");
+    close_log(logfp);
     exit(1);
 }
 
@@ -446,7 +427,7 @@ int server_clients(pools *p)
                             p->client_ip[connfd]);
                     fprintf(logfp, "    User-Agent: %s\n",
                             request_analyzed.user_agent);
-                    printf_request_analyzed(&request_analyzed);
+                    print_request_analyzed(&request_analyzed);
                     dbg_cp2_printf("get_request_analyzed complete!\n");
                     ret = send_response(&request_analyzed, request_rover,
                                         connfd);
@@ -462,7 +443,6 @@ int server_clients(pools *p)
             }
         }
     }
-
     return 0;
 }
 
@@ -1168,26 +1148,6 @@ void destory_requests(Requests *requests)
 
 }
 
-void print_request(Requests *requests)
-{
-    Requests *request_rover = requests;
-    while (request_rover != NULL)
-    {
-        int index = 0;
-        dbg_cp2_printf("Http Method %s\n", request_rover->http_method);
-        dbg_cp2_printf("Http Version %s\n", request_rover->http_version);
-        dbg_cp2_printf("Http Uri %s\n", request_rover->http_uri);
-        for (index = 0; index < request_rover->header_count; index++) {
-            dbg_cp2_printf("Request Header\n");
-            dbg_cp2_printf("Header name %s Header Value %s\n",
-                           request_rover->headers[index].header_name,
-                           request_rover->headers[index].header_value);
-        }
-        dbg_cp2_printf("**********************************************************\n");
-        request_rover = request_rover->next_request;
-    }
-}
-
 int Close_connection(int connfd, int index, pools *p)
 {
     close(connfd);
@@ -1219,46 +1179,4 @@ int Close_connection(int connfd, int index, pools *p)
     memset(p->cached_buffer[connfd], 0, REQUEST_BUF_SIZE + 1);
     memset(p->client_ip[connfd], 0, MAX_SIZE_SMALL);
     return 0;
-}
-
-void printf_request_analyzed(Request_analyzed *request_analyzed)
-{
-    dbg_cp2_printf("connection: %s\n", request_analyzed->connection);
-    dbg_cp2_printf("accept_charset: %s\n", request_analyzed->accept_charset);
-    dbg_cp2_printf("accept_encoding: %s\n", request_analyzed->accept_encoding);
-    dbg_cp2_printf("accept_language: %s\n", request_analyzed->accept_language);
-    dbg_cp2_printf("host: %s\n", request_analyzed->host);
-    dbg_cp2_printf("user_agent: %s\n", request_analyzed->user_agent);
-}
-
-print_response_headers(Response_headers *response_headers)
-{
-    dbg_cp2_printf("%s %s %s\n",
-                   response_headers->status_line.http_version,
-                   response_headers->status_line.status_code,
-                   response_headers->status_line.reason_phrase);
-    dbg_cp2_printf("cache_control: %s\n",
-                   response_headers->general_header.cache_control);
-    dbg_cp2_printf("connection: %s\n",
-                   response_headers->general_header.connection);
-    dbg_cp2_printf("date: %s\n",
-                   response_headers->general_header.date);
-    dbg_cp2_printf("paragma: %s\n",
-                   response_headers->general_header.paragma);
-    dbg_cp2_printf("transfer_encoding: %s\n",
-                   response_headers->general_header.transfer_encoding);
-    dbg_cp2_printf("server: %s\n",
-                   response_headers->response_header.server);
-    dbg_cp2_printf("allow: %s\n",
-                   response_headers->entity_header.allow);
-    dbg_cp2_printf("content_encoding: %s\n",
-                   response_headers->entity_header.content_encoding);
-    dbg_cp2_printf("content_language: %s\n",
-                   response_headers->entity_header.content_language);
-    dbg_cp2_printf("content_length: %ld\n",
-                   response_headers->entity_header.content_length);
-    dbg_cp2_printf("content_type: %s\n",
-                   response_headers->entity_header.content_type);
-    dbg_cp2_printf("last_modified: %s\n",
-                   response_headers->entity_header.last_modified);
 }
