@@ -6,16 +6,16 @@
 
 FILE *logfp = NULL;
 int logfd = -1;
-static parameters lisod_param;
+static param lisod_param;
 // ./lisod 2090 7114 ../tmp/lisod.log ../tmp/lisod.lock ../tmp/www ../tmp/cgi/cgi_script.py ../tmp/grader.key ../tmp/grader.crt
 
-int main(int argc, char **argv)
-{
-    int listenfd, connfd, ret;
+int main(int argc, char **argv) {
+    int listenfd, connfd;
+    ssize_t ret;
     socklen_t client_len;
     struct sockaddr_storage client_addr;
     static pools pool;
-    struct timeval tv_selt;
+    struct timeval tv_selt = {S_SELT_TIMEOUT, US_SELT_TIMEOUT};
     struct timeval tv_recv = {S_RECV_TIMEOUT, US_RECV_TIMEOUT};
 
     signal(SIGTSTP, sigtstp_handler);
@@ -25,81 +25,64 @@ int main(int argc, char **argv)
     dbg_cp2_printf("----- http1.1 Server -----\n");
 
     ret = check_argv(argc, argv, &lisod_param);
-    if (ret < 0)
-    {
+    if (ret < 0) {
+        fprintf(logfp, "Argumens is not valid, server terminated.\n");
         return -1;
     }
 
-    dbg_cp2_printf("Settings:\n");
-    dbg_cp2_printf("http_port: %s\n", lisod_param.http_port);
-    dbg_cp2_printf("https_port: %s\n", lisod_param.https_port);
-    dbg_cp2_printf("Log file: %s\n", lisod_param.log_file);
-    dbg_cp2_printf("lock file: %s\n", lisod_param.lock_file);
-    dbg_cp2_printf("www folder: %s\n", lisod_param.www_folder);
-    dbg_cp2_printf("CGI script path: %s\n", lisod_param.cgi_script_path);
-    dbg_cp2_printf("private key file: %s\n", lisod_param.private_key_file);
-    dbg_cp2_printf("certificate file: %s\n", lisod_param.certificated_file);
-
-    logfd = init_log(lisod_param.log_file, argc, argv);
-    if (logfd < 0)
-    {
+    logfd = init_log(lisod_param.log, argc, argv);
+    if (logfd < 0) {
+        fprintf(logfp, "Log file initialnizing failed, server terminated.\n");
         return -1;
     }
     logfp = fdopen(logfd, "a");
 
-    if ((listenfd = open_listenfd(lisod_param.http_port)) < 0)
-    {
+    listenfd = open_listenfd(lisod_param.http_port);
+    if (listenfd < 0) {
+        fprintf(logfp, "Port listening failed, server terminated\n");
         return -1;
     }
+
     init_pool(listenfd, &pool);
 
-    dbg_cp2_printf("Listen port %d\n", atoi(argv[1]));
-
-    while (1)
-    {
+    while (1) {
         pool.ready_set = pool.active_set;
-        tv_selt.tv_sec = S_SELECT_TIMEOUT;
-        tv_selt.tv_usec = US_SELECT_TIMEOUT;
-        pool.num_ready = select(pool.maxfd + 1, &pool.ready_set, NULL, NULL,
+        pool.num_ready = select(FD_SETSIZE, &pool.ready_set, NULL, NULL,
                                 &tv_selt);
 
-        if (FD_ISSET(listenfd, &pool.ready_set))
-        {
+        if (FD_ISSET(listenfd, &pool.ready_set)) {
             client_len = sizeof(struct sockaddr_storage);
             connfd = accept(listenfd, (struct sockaddr *)&client_addr,
                             &client_len);
-            if (connfd < 0)
-            {
-                fprintf(logfp, "Failed accepting connection.\n");
+            // TODO Should we check for connfd for more than 1024?
+            if (connfd < 0) {
+                fprintf(logfp, "Failed accepting connection in main.\n");
                 continue;
             }
 
-            char client_hostname[MAXLINE], client_port[MAXLINE];
+            char c_host[MAXLINE], c_port[MAXLINE];
             int flags = NI_NUMERICHOST | NI_NUMERICSERV;
             ret = getnameinfo((struct sockaddr *)&client_addr, client_len,
-                              client_hostname, MAXLINE,
-                              client_port, MAXLINE, flags);
-            if (ret != 0)
-            {
-                fprintf(logfp, "Can not resolve client's IP or port.\n");
+                              c_host, MAXLINE, c_port, MAXLINE, flags);
+            if (ret != 0) {
+                fprintf(logfp, "Can not resolve client's IP or port in main.\n");
             }
-            else
-            {
+            else {
                 fprintf(logfp, "Accept connection from client %s:%s.\n",
-                        client_hostname, client_port);
+                        c_host, c_port);
             }
 
             ret = setsockopt(connfd, SOL_SOCKET, SO_RCVTIMEO,
-                             (char *)&tv_recv,
-                             sizeof(struct timeval));
+                             (char *)&tv_recv, sizeof(struct timeval));
             if (ret < 0)
             {
-                fprintf(logfp, "Failed setting tv_recv.\n");
+                fprintf(logfp, "Failed setting tv_recv in main.\n");
             }
 
-            if (add_client(connfd, &pool, client_hostname) == -1)
+            ret = add_client(connfd, &pool, c_host);
+            if (ret < 0)
             {
-                fprintf(logfp, "add_client Failed.\n");
+                fprintf(logfp, "Client adding failed in main.\n");
             }
         }
 
@@ -125,10 +108,9 @@ void sigtstp_handler()
     exit(1);
 }
 
-int check_argv(int argc, char **argv, parameters *lisod_param)
-{
-    if (argc < 4)
-    {
+int check_argv(int argc, char **argv, param *lisod_param) {
+    memset(lisod_param, 0, sizeof(lisod_param));
+    if (argc < 9) {
         fprintf(stderr, "Usage: %s ", argv[0]);
         fprintf(stderr, "<HTTP port> ");
         fprintf(stderr, "<HTTPS port> ");
@@ -141,92 +123,72 @@ int check_argv(int argc, char **argv, parameters *lisod_param)
         return -1;
     }
 
-    if (atoi(argv[1]) < 1024 || atoi(argv[1]) > 65535)
-    {
-        fprintf(stderr, "Usage: HTTP port should be between 1024 and 65535.");
+    if (atoi(argv[1]) < 1024 || atoi(argv[1]) > 65535) {
+        fprintf(stderr, "Usage: HTTP port should be between 1024 and 65535.\n");
         return -1;
     }
-    else
-    {
+    else {
         strncpy(lisod_param->http_port, argv[1], MAXLINE);
-        lisod_param->http_port[MAXLINE - 1] = '\0';
     }
 
-    if (atoi(argv[2]) < 1024 || atoi(argv[2]) > 65535)
-    {
-        fprintf(stderr, "Usage: HTTPs port should be between 1024 and 65535.");
+    if (atoi(argv[2]) < 1024 || atoi(argv[2]) > 65535) {
+        fprintf(stderr, "Usage: HTTPs port should be between 1024 and 65535.\n");
         return -1;
     }
-    else
-    {
+    else if (!strcmp(argv[1], argv[2])) {
+        fprintf(stderr, "Usage: HTTPs port should not equal HTTP port.\n");
+        return -1;
+    }
+    else {
         strncpy(lisod_param->https_port, argv[2], MAXLINE);
-        lisod_param->https_port[MAXLINE - 1] = '\0';
     }
 
-    if (strlen(argv[3]) >= MAXLINE)
-    {
-        fprintf(stderr, "Log file path too long.");
+    if (strlen(argv[3]) > MAXLINE) {
+        fprintf(stderr, "Log file path too long.\n");
         return -1;
     }
-    else
-    {
-        strncpy(lisod_param->log_file, argv[3], MAXLINE);
-        lisod_param->log_file[MAXLINE - 1] = '\0';
+    else {
+        strncpy(lisod_param->log, argv[3], MAXLINE);
     }
 
-    if (strlen(argv[4]) >= MAXLINE)
-    {
-        fprintf(stderr, "Lock file path too long.");
+    if (strlen(argv[4]) > MAXLINE) {
+        fprintf(stderr, "Lock file path too long.\n");
         return -1;
     }
-    else
-    {
-        strncpy(lisod_param->lock_file, argv[4], MAXLINE);
-        lisod_param->lock_file[MAXLINE - 1] = '\0';
+    else {
+        strncpy(lisod_param->lock, argv[4], MAXLINE);
     }
 
-    if (strlen(argv[5]) >= MAXLINE)
-    {
-        fprintf(stderr, "WWW folder too long.");
+    if (strlen(argv[5]) > MAXLINE) {
+        fprintf(stderr, "WWW folder too long.\n");
         return -1;
     }
-    else
-    {
-        strncpy(lisod_param->www_folder, argv[5], MAXLINE);
-        lisod_param->www_folder[MAXLINE - 1] = '\0';
+    else {
+        strncpy(lisod_param->www, argv[5], MAXLINE);
     }
 
-    if (strlen(argv[6]) >= MAXLINE)
-    {
-        fprintf(stderr, "CGI script path too long.");
+    if (strlen(argv[6]) > MAXLINE) {
+        fprintf(stderr, "CGI script path too long.\n");
         return -1;
     }
-    else
-    {
-        strncpy(lisod_param->cgi_script_path, argv[6], MAXLINE);
-        lisod_param->cgi_script_path[MAXLINE - 1] = '\0';
+    else {
+        strncpy(lisod_param->cgi_scp, argv[6], MAXLINE);
     }
 
-    if (strlen(argv[7]) >= MAXLINE)
-    {
-        fprintf(stderr, "Private key file path too long.");
+    if (strlen(argv[7]) > MAXLINE) {
+        fprintf(stderr, "Private key file path too long.\n");
         return -1;
     }
-    else
-    {
-        strncpy(lisod_param->private_key_file, argv[7], MAXLINE);
-        lisod_param->private_key_file[MAXLINE - 1] = '\0';
+    else {
+        strncpy(lisod_param->priv_key, argv[7], MAXLINE);
     }
 
-    if (strlen(argv[8]) >= MAXLINE)
-    {
-        fprintf(stderr, "Certificated file path too long.");
+    if (strlen(argv[8]) > MAXLINE) {
+        fprintf(stderr, "Certificated file path too long.\n");
         return -1;
     }
-    else
-    {
-        strncpy(lisod_param->certificated_file, argv[8], MAXLINE);
-        lisod_param->certificated_file[MAXLINE - 1] = '\0';
+    else {
+        strncpy(lisod_param->cert_file, argv[8], MAXLINE);
     }
     return 0;
 }
@@ -235,57 +197,54 @@ int open_listenfd(char *port)
 {
     struct addrinfo hints, *listp, *p;
     int listenfd, optval = 1;
+    ssize_t ret;
 
     memset(&hints, 0, sizeof(struct addrinfo));
     hints.ai_socktype = SOCK_STREAM;
     hints.ai_flags = AI_PASSIVE | AI_ADDRCONFIG;
     hints.ai_flags |= AI_NUMERICSERV;
-    if (getaddrinfo(NULL, port, &hints, &listp) != 0)
-    {
-        fprintf(logfp, "Failed getting address information.\n");
+
+    ret = getaddrinfo(NULL, port, &hints, &listp);
+    if (ret != 0) {
+        fprintf(logfp, "Failed getting address information in open_listenfd.\n");
         return -1;
     }
 
-    for (p = listp; p; p = p->ai_next)
-    {
+    for (p = listp; p != NULL; p = p->ai_next) {
         listenfd = socket(p->ai_family, p->ai_socktype, p->ai_protocol);
-        if (listenfd < 0)
-        {
+        if (listenfd < 0) {
             continue;
         }
 
         if (setsockopt(listenfd, SOL_SOCKET, SO_REUSEADDR,
-                       (const void *)&optval, sizeof(int)) < 0)
-        {
+                       (const void *)&optval, sizeof(int)) < 0) {
             continue;
         }
-
-        if (bind(listenfd, p->ai_addr, p->ai_addrlen) == 0)
-        {
+        if (bind(listenfd, p->ai_addr, p->ai_addrlen) == 0) {
             break;
         }
-        else
-        {
+        else {
             if (close(listenfd) < 0)
             {
-                fprintf(logfp, "Failed closing listening file descriptor.\n");
+                fprintf(logfp, "Failed closing listening file descriptor in");
+                fprintf(logfp, "open_listenfd.\n");
                 return -1;
             }
         }
     }
 
     freeaddrinfo(listp);
-    if (!p)
-    {
-        fprintf(logfp, "No address worked.\n");
+    if (!p) {
+        fprintf(logfp, "No address worked in open_listenfd.\n");
         return -1;
     }
 
-    if (listen(listenfd, LISTENQ) < 0)
-    {
-        if (close(listenfd) < 0)
-        {
-            fprintf(logfp, "Failed closing listening file descriptor.\n");
+    ret = listen(listenfd, LISTENQ);
+    if (ret < 0) {
+        ret = close(listenfd);
+        if (ret < 0) {
+            fprintf(logfp, "Failed closing listening file descriptor ");
+            fprintf(logfp, "in open_listenfd.\n");
             return -1;
         }
         fprintf(logfp, "Failed listening on socket.\n");
@@ -295,40 +254,36 @@ int open_listenfd(char *port)
     return listenfd;
 }
 
-void init_pool(int listenfd, pools *p)
-{
-    int i;
+void init_pool(int listenfd, pools *p) {
+    size_t i;
 
-    p->maxi = -1;
-    p->maxfd = listenfd;
     FD_ZERO(&p->active_set);
     FD_SET(listenfd, &p->active_set);
-    for (i = 0; i < FD_SETSIZE; i++)
-    {
+    for (i = 0; i < FD_SETSIZE; i++) {
         p->clientfd[i] = -1;
-        p->if_ignore_first[i] = -1;
-        p->if_too_long[i] = -1;
-        memset(p->cached_buffer[i], 0, REQUEST_BUF_SIZE + 1);
+        p->ign_first[i] = -1;
+        p->too_long[i] = -1;
+        memset(p->cached_buf[i], 0, REQ_BUF_SIZE + 1);
+        memset(p->clientip[i], 0, MAX_SIZE_S + 1);
     }
-
 }
 
-int add_client(int connfd, pools *p, char *client_hostname)
+int add_client(int connfd, pools *p, char *c_host)
 {
     int i;
 
     p->num_ready--;
 
-    for (i = 0; i < FD_SETSIZE; i++)
+    for (i = 6; i < FD_SETSIZE; i++)
     {
         if (p->clientfd[i] < 0)
         {
             p->clientfd[i] = connfd;
-            p->if_ignore_first[connfd] = 0;
-            p->if_too_long[connfd] = 0;
-            memset(p->cached_buffer[connfd], 0, REQUEST_BUF_SIZE + 1);
+            p->ign_first[connfd] = 0;
+            p->too_long[connfd] = 0;
+            memset(p->cached_buf[connfd], 0, REQ_BUF_SIZE + 1);
             FD_SET(connfd, &p->active_set);
-            strncpy(p->client_ip[connfd], client_hostname, MAX_SIZE_SMALL);
+            strncpy(p->clientip[connfd], c_host, MAX_SIZE_S);
 
             if (connfd > p->maxfd)
             {
@@ -424,7 +379,7 @@ int server_clients(pools *p)
                     fprintf(logfp, "  Get %s %s request from %s.\n",
                             request_rover->http_method,
                             request_rover->http_uri,
-                            p->client_ip[connfd]);
+                            p->clientip[connfd]);
                     fprintf(logfp, "    User-Agent: %s\n",
                             request_analyzed.user_agent);
                     print_request_analyzed(&request_analyzed);
@@ -461,8 +416,8 @@ void get_request_analyzed(Request_analyzed *request_analyzed,
         if (!ret)
         {
             strncpy(request_analyzed->connection,
-                    request->headers[index].header_value, MAX_SIZE_SMALL);
-            request_analyzed->connection[MAX_SIZE_SMALL - 1] = 0;
+                    request->headers[index].header_value, MAX_SIZE_S);
+            request_analyzed->connection[MAX_SIZE_S - 1] = 0;
         }
 
         ret = strncasecmp("accept-charset",
@@ -471,8 +426,8 @@ void get_request_analyzed(Request_analyzed *request_analyzed,
         if (!ret)
         {
             strncpy(request_analyzed->accept_charset,
-                    request->headers[index].header_value, MAX_SIZE_SMALL);
-            request_analyzed->accept_charset[MAX_SIZE_SMALL - 1] = 0;
+                    request->headers[index].header_value, MAX_SIZE_S);
+            request_analyzed->accept_charset[MAX_SIZE_S - 1] = 0;
         }
 
         ret = strncasecmp("accept-encoding", request->headers[index].header_name,
@@ -480,8 +435,8 @@ void get_request_analyzed(Request_analyzed *request_analyzed,
         if (!ret)
         {
             strncpy(request_analyzed->accept_encoding,
-                    request->headers[index].header_value, MAX_SIZE_SMALL);
-            request_analyzed->accept_encoding[MAX_SIZE_SMALL - 1] = 0;
+                    request->headers[index].header_value, MAX_SIZE_S);
+            request_analyzed->accept_encoding[MAX_SIZE_S - 1] = 0;
         }
 
         ret = strncasecmp("accept-language", request->headers[index].header_name,
@@ -489,8 +444,8 @@ void get_request_analyzed(Request_analyzed *request_analyzed,
         if (!ret)
         {
             strncpy(request_analyzed->accept_language,
-                    request->headers[index].header_value, MAX_SIZE_SMALL);
-            request_analyzed->accept_language[MAX_SIZE_SMALL - 1] = 0;
+                    request->headers[index].header_value, MAX_SIZE_S);
+            request_analyzed->accept_language[MAX_SIZE_S - 1] = 0;
         }
 
         ret = strncasecmp("host", request->headers[index].header_name,
@@ -498,8 +453,8 @@ void get_request_analyzed(Request_analyzed *request_analyzed,
         if (!ret)
         {
             strncpy(request_analyzed->host,
-                    request->headers[index].header_value, MAX_SIZE_SMALL);
-            request_analyzed->host[MAX_SIZE_SMALL - 1] = 0;
+                    request->headers[index].header_value, MAX_SIZE_S);
+            request_analyzed->host[MAX_SIZE_S - 1] = 0;
         }
 
         ret = strncasecmp("user-agent", request->headers[index].header_name,
@@ -530,11 +485,11 @@ int send_response(Request_analyzed *request_analyzed, Requests *request,
     contentfd = -1;
 
 
-    if (!strncmp("HTTP/1.0", request->http_version, MAX_SIZE_SMALL))
+    if (!strncmp("HTTP/1.0", request->http_version, MAX_SIZE_S))
     {
         if_close_connnection = 1;
     }
-    else if (!strncmp("HTTP/1.1", request->http_version, MAX_SIZE_SMALL))
+    else if (!strncmp("HTTP/1.1", request->http_version, MAX_SIZE_S))
     {
         if_close_connnection = 0;
     }
@@ -543,37 +498,37 @@ int send_response(Request_analyzed *request_analyzed, Requests *request,
         status_code = 505;
     }
     strncpy(response_headers.status_line.http_version, "HTTP/1.1",
-            MAX_SIZE_SMALL);
+            MAX_SIZE_S);
     strncpy(response_headers.general_header.cache_control, "no-cache",
-            MAX_SIZE_SMALL);
-    if (!strncmp("close", request_analyzed->connection, MAX_SIZE_SMALL))
+            MAX_SIZE_S);
+    if (!strncmp("close", request_analyzed->connection, MAX_SIZE_S))
     {
         strncpy(response_headers.general_header.connection, "close",
-                MAX_SIZE_SMALL);
+                MAX_SIZE_S);
         if_close_connnection = 1;
     }
     else
     {
         strncpy(response_headers.general_header.connection, "keep-alive",
-                MAX_SIZE_SMALL);
+                MAX_SIZE_S);
     }
 
     char *time_GMT = get_rfc1123_date();
     strncpy(response_headers.general_header.date, time_GMT,
-            MAX_SIZE_SMALL);
+            MAX_SIZE_S);
     free(time_GMT);
     strncpy(response_headers.general_header.paragma, "no-cache",
-            MAX_SIZE_SMALL);
+            MAX_SIZE_S);
     strncpy(response_headers.general_header.transfer_encoding, "identity",
-            MAX_SIZE_SMALL);
+            MAX_SIZE_S);
     strncpy(response_headers.response_header.server, "liso/1.0",
-            MAX_SIZE_SMALL);
+            MAX_SIZE_S);
     strncpy(response_headers.entity_header.allow, "GET, HEAD",
-            MAX_SIZE_SMALL);
+            MAX_SIZE_S);
     strncpy(response_headers.entity_header.content_encoding, "identity",
-            MAX_SIZE_SMALL);
+            MAX_SIZE_S);
     strncpy(response_headers.entity_header.content_language, "en",
-            MAX_SIZE_SMALL);
+            MAX_SIZE_S);
     //dbg_cp2_printf("line 591\n");
     //print_response_headers(&response_headers);
 
@@ -581,19 +536,19 @@ int send_response(Request_analyzed *request_analyzed, Requests *request,
 
     if (status_code == 200)
     {
-        if (!strncmp(request->http_method, "POST", MAX_SIZE_SMALL))
+        if (!strncmp(request->http_method, "POST", MAX_SIZE_S))
         {
             response_headers.entity_header.content_length = 0;
             strncpy(response_headers.entity_header.content_type,
-                    "\0", MAX_SIZE_SMALL);
+                    "\0", MAX_SIZE_S);
             strncpy(response_headers.entity_header.last_modified,
-                    "\0", MAX_SIZE_SMALL);
-            snprintf(response_headers.status_line.status_code, MAX_SIZE_SMALL,
+                    "\0", MAX_SIZE_S);
+            snprintf(response_headers.status_line.status_code, MAX_SIZE_S,
                      "%d", status_code);
             strncpy(response_headers.status_line.reason_phrase,
-                    "OK", MAX_SIZE_SMALL);
+                    "OK", MAX_SIZE_S);
         }
-        else if (!strncmp(request->http_method, "GET", MAX_SIZE_SMALL))
+        else if (!strncmp(request->http_method, "GET", MAX_SIZE_S))
         {
             //dbg_cp2_printf("line 601\n");
             status_code = get_contentfd(request, &response_headers, &contentfd);
@@ -663,15 +618,15 @@ int send_response(Request_analyzed *request_analyzed, Requests *request,
 int check_http_method(char *http_method)
 {
     int status_code;
-    if (!strncmp("GET", http_method, MAX_SIZE_SMALL))
+    if (!strncmp("GET", http_method, MAX_SIZE_S))
     {
         status_code = 200;
     }
-    else if (!strncmp("HEAD", http_method, MAX_SIZE_SMALL))
+    else if (!strncmp("HEAD", http_method, MAX_SIZE_S))
     {
         status_code = 200;
     }
-    else if (!strncmp("POST", http_method, MAX_SIZE_SMALL))
+    else if (!strncmp("POST", http_method, MAX_SIZE_S))
     {
         status_code = 200;
     }
@@ -794,12 +749,12 @@ void get_error_content(int status_code, char *body,
                 MAX_TEXT);
         break;
     }
-    snprintf(response_headers->status_line.status_code, MAX_SIZE_SMALL, "%d",
+    snprintf(response_headers->status_line.status_code, MAX_SIZE_S, "%d",
              status_code);
     strncpy(response_headers->status_line.reason_phrase,
-            shortmsg, MAX_SIZE_SMALL);
+            shortmsg, MAX_SIZE_S);
     strncpy(response_headers->entity_header.content_type,
-            "text/html", MAX_SIZE_SMALL);
+            "text/html", MAX_SIZE_S);
 
     sprintf(body, "<html>");
     sprintf(body, "%s<head><title>Opps</title></head>\r\n", body);
@@ -811,7 +766,7 @@ void get_error_content(int status_code, char *body,
     sprintf(body, "%s</html>\r\n", body);
     char *time_GMT = get_rfc1123_date();
     strncpy(response_headers->entity_header.last_modified, time_GMT,
-            MAX_SIZE_SMALL);
+            MAX_SIZE_S);
     free(time_GMT);
     response_headers->entity_header.content_length = strlen(body);
 }
@@ -851,10 +806,10 @@ int get_contentfd(Requests *request, Response_headers *response_headers,
     {
         char path_home[MAX_SIZE] = {0};
         char path_index[MAX_SIZE] = {0};
-        snprintf(path_home, MAX_SIZE, "%s%s\0", lisod_param.www_folder,
+        snprintf(path_home, MAX_SIZE, "%s%s\0", lisod_param.www,
                  "/home.html");
         dbg_cp2_printf("path_home: %s\n", path_home);
-        snprintf(path_index, MAX_SIZE, "%s%s\0", lisod_param.www_folder,
+        snprintf(path_index, MAX_SIZE, "%s%s\0", lisod_param.www,
                  "/index.html");
         dbg_cp2_printf("path_index: %s\n", path_index);
         if (stat(path_home, &sbuf) == 0)
@@ -870,7 +825,7 @@ int get_contentfd(Requests *request, Response_headers *response_headers,
     else
     {
         //dbg_cp2_printf("line 826, file_name: %s\n", file_name);
-        snprintf(file_name, MAX_SIZE, "%s%s\0", lisod_param.www_folder,
+        snprintf(file_name, MAX_SIZE, "%s%s\0", lisod_param.www,
                  request->http_uri);
     }
     dbg_cp2_printf("line 831, file_name: %s\n", file_name);
@@ -890,7 +845,7 @@ int get_contentfd(Requests *request, Response_headers *response_headers,
         return status_code;
     }
     //dbg_cp2_printf("line 845\n");
-    if (!strncmp(request->http_method, "POST", MAX_SIZE_SMALL))
+    if (!strncmp(request->http_method, "POST", MAX_SIZE_S))
     {
         //TODO
     }
@@ -901,7 +856,7 @@ int get_contentfd(Requests *request, Response_headers *response_headers,
         //dbg_cp2_printf("file_type: %s\n", file_type);
         response_headers->entity_header.content_length = sbuf.st_size;
         strncpy(response_headers->entity_header.content_type,
-                file_type, MAX_SIZE_SMALL);
+                file_type, MAX_SIZE_S);
         *contentfd = open(file_name, O_RDONLY, 0);
         if (*contentfd == -1)
         {
@@ -912,15 +867,15 @@ int get_contentfd(Requests *request, Response_headers *response_headers,
         }
         char *last_modified = NULL;
         last_modified = get_last_modified_date(&sbuf.st_mtime);
-        snprintf(response_headers->entity_header.last_modified, MAX_SIZE_SMALL, "%s",
+        snprintf(response_headers->entity_header.last_modified, MAX_SIZE_S, "%s",
                  last_modified);
         free(last_modified);
     }
 
-    snprintf(response_headers->status_line.status_code, MAX_SIZE_SMALL, "%d",
+    snprintf(response_headers->status_line.status_code, MAX_SIZE_S, "%d",
              status_code);
     strncpy(response_headers->status_line.reason_phrase,
-            "OK", MAX_SIZE_SMALL);
+            "OK", MAX_SIZE_S);
 
     //print_response_headers(response_headers);
     return status_code;
@@ -1174,9 +1129,9 @@ int Close_connection(int connfd, int index, pools *p)
 
     FD_CLR(connfd, &p->active_set);
     p->clientfd[index] = -1;
-    p->if_ignore_first[connfd] = 0;
-    p->if_too_long[connfd] = 0;
-    memset(p->cached_buffer[connfd], 0, REQUEST_BUF_SIZE + 1);
-    memset(p->client_ip[connfd], 0, MAX_SIZE_SMALL);
+    p->ign_first[connfd] = 0;
+    p->too_long[connfd] = 0;
+    memset(p->cached_buf[connfd], 0, REQ_BUF_SIZE + 1);
+    memset(p->clientip[connfd], 0, MAX_SIZE_S);
     return 0;
 }

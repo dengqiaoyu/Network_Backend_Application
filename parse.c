@@ -26,8 +26,8 @@ Requests * parse(char *socket_recv_buf, size_t recv_buf_size, int socketFd,
     char *chached_buffer = p->cached_buffer[socketFd];
     memset(chached_buffer, 0, REQUEST_BUF_SIZE + 1);
 
-    int if_ignore_first = p->if_ignore_first[socketFd];
-    int if_too_long = p->if_too_long[socketFd];
+    int ign_first = p->ign_first[socketFd];
+    int too_long = p->too_long[socketFd];
     int if_contain_2crlf = 0;
     ssize_t read_count = 0;
     ssize_t full_requests_size = 0;
@@ -39,8 +39,8 @@ Requests * parse(char *socket_recv_buf, size_t recv_buf_size, int socketFd,
     int ret = 0;
 
     //dbg_cp2_printf("socket_recv_buf in parse.c:[\n%s]\n", socket_recv_buf);
-    //dbg_cp2_printf("if_ignore_first: %d\n", if_ignore_first);
-    //dbg_cp2_printf("if_too_long: %d\n", if_too_long);
+    //dbg_cp2_printf("ign_first: %d\n", ign_first);
+    //dbg_cp2_printf("too_long: %d\n", too_long);
     //dbg_cp2_printf("chached_buffer[0]: %d\n", chached_buffer[0]);
 
     //dbg_cp2_printf("parse.c: line 46\n");
@@ -66,7 +66,7 @@ Requests * parse(char *socket_recv_buf, size_t recv_buf_size, int socketFd,
     }
     else
     {
-        if (if_ignore_first == 1)
+        if (ign_first == 1)
         {
             read_count = search_first_position(socket_recv_buf, "\r\n\r\n") + 4;
             recv_buf_offset = read_count;
@@ -171,19 +171,19 @@ Requests * parse(char *socket_recv_buf, size_t recv_buf_size, int socketFd,
                 memset(chached_buffer, 0, REQUEST_BUF_SIZE + 1);
                 strncpy(chached_buffer, &socket_recv_buf[full_requests_size],
                         REQUEST_BUF_SIZE);
-                if_too_long = 0;
-                if_ignore_first = 0;
+                too_long = 0;
+                ign_first = 0;
             }
             else
             {
-                if_too_long = 1;
-                if_ignore_first = 1;
+                too_long = 1;
+                ign_first = 1;
             }
         }
     }
     else
     {
-        if (if_ignore_first == 0)
+        if (ign_first == 0)
         {
             if (chached_buffer[0] != 0)
             {
@@ -194,13 +194,13 @@ Requests * parse(char *socket_recv_buf, size_t recv_buf_size, int socketFd,
                     strncpy(chached_buffer + strlen(chached_buffer),
                             socket_recv_buf,
                             REQUEST_BUF_SIZE - strlen(chached_buffer));
-                    if_too_long = 0;
-                    if_ignore_first = 0;
+                    too_long = 0;
+                    ign_first = 0;
                 }
                 else
                 {
-                    if_too_long = 1;
-                    if_ignore_first = 1;
+                    too_long = 1;
+                    ign_first = 1;
                 }
             }
             else
@@ -210,20 +210,20 @@ Requests * parse(char *socket_recv_buf, size_t recv_buf_size, int socketFd,
                 {
                     strncpy(chached_buffer, socket_recv_buf,
                             REQUEST_BUF_SIZE);
-                    if_too_long = 0;
-                    if_ignore_first = 0;
+                    too_long = 0;
+                    ign_first = 0;
                 }
                 else
                 {
-                    if_too_long = 1;
-                    if_ignore_first = 1;
+                    too_long = 1;
+                    ign_first = 1;
                 }
             }
         }
     }
 
-    p->if_ignore_first[socketFd] = if_ignore_first;
-    p->if_too_long[socketFd] = if_too_long;
+    p->ign_first[socketFd] = ign_first;
+    p->too_long[socketFd] = too_long;
 
     return requests_ptr;
 }
