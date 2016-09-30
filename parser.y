@@ -7,6 +7,13 @@
 %{
 #include "lisod.h"
 
+#define SUCCESS 0
+#define F_MELONG 1
+#define F_URLONG 2
+#define F_VELONG 3
+#define F_HNLONG 4
+#define F_HVLONG 5
+
 /* Define YACCDEBUG to enable debug messages for this lex file */
 //#define YACCDEBUG
 #define YYERROR_VERBOSE
@@ -188,9 +195,19 @@ t_ws {
 
 request_line: token t_sp text t_sp text t_crlf {
     YPRINTF("request_Line:\n%s\n%s\n%s\n",$1, $3,$5);
-    strcpy(parsing_request->http_method, $1);
-    strcpy(parsing_request->http_uri, $3);
-    strcpy(parsing_request->http_version, $5);
+    if (strlen($1) > MAX_SIZE_S) {
+        return F_MELONG;
+    }
+    else if (strlen($3) > MAX_SIZE) {
+        return F_URLONG;
+    }
+    else if (strlen($5) > MAX_SIZE_S) {
+        return F_VELONG;
+    }
+        
+    strncpy(parsing_request->http_method, $1, MAX_SIZE_S);
+    strncpy(parsing_request->http_uri, $3, MAX_SIZE);
+    strncpy(parsing_request->http_version, $5, MAX_SIZE_S);
 }
 
 request_headers:
@@ -199,18 +216,19 @@ request_headers:
 
 request_header: token ows t_colon ows text ows t_crlf {
     YPRINTF("request_Header:%s: %s\n", $1, $5);
-    int index = parsing_request->header_count;
-    //dbg_cp2_printf("index get!\n");
-    strcpy(parsing_request->headers[index].header_name, $1);
-    //dbg_cp2_printf("strcpy1 complete!\n");
-    strcpy(parsing_request->headers[index].header_value, $5);
-    //dbg_cp2_printf("strcpy2 complete!\n");
+    int index = parsing_request->h_count;
+    if (strlen($1) > MAX_SIZE) {
+        return F_HNLONG;
+    }
+    else if (strlen($5) > MAX_SIZE) {
+        return F_HVLONG;
+    }
+
+    strncpy(parsing_request->headers[index].h_name, $1, MAX_SIZE);
+    strncpy(parsing_request->headers[index].h_value, $5, MAX_SIZE);
     index++;
-    parsing_request->header_count = index;
-    //dbg_cp2_printf("realloc begin!\n");
-    //dbg_cp2_printf("index: %d\n", index);
+    parsing_request->h_count = index;
     Request_header *new_headers = realloc(parsing_request->headers, sizeof(Request_header) * (index + 1));
-    //dbg_cp2_printf("realloc complete!\n");
     if (!new_headers)
     {
         YPRINTF("realloc failed\n");

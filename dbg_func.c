@@ -15,34 +15,34 @@ void print_settings(param *lisod_param)
     dbg_cp2_printf("certificate file: %s\n", lisod_param->cert_file);
 }
 
-void print_request(Requests *requests)
+void print_request(Requests *reqs)
 {
-    Requests *request_rover = requests;
-    while (request_rover != NULL)
+    Requests *req_rover = reqs;
+    while (req_rover != NULL)
     {
         int index = 0;
-        dbg_cp2_printf("Http Method %s\n", request_rover->http_method);
-        dbg_cp2_printf("Http Version %s\n", request_rover->http_version);
-        dbg_cp2_printf("Http Uri %s\n", request_rover->http_uri);
-        for (index = 0; index < request_rover->header_count; index++) {
+        dbg_cp2_printf("Http Method %s\n", req_rover->http_method);
+        dbg_cp2_printf("Http Version %s\n", req_rover->http_version);
+        dbg_cp2_printf("Http Uri %s\n", req_rover->http_uri);
+        for (index = 0; index < req_rover->h_count; index++) {
             dbg_cp2_printf("Request Header\n");
             dbg_cp2_printf("Header name %s Header Value %s\n",
-                           request_rover->headers[index].header_name,
-                           request_rover->headers[index].header_value);
+                           req_rover->headers[index].h_name,
+                           req_rover->headers[index].h_value);
         }
         dbg_cp2_printf("**********************************************************\n");
-        request_rover = request_rover->next_request;
+        req_rover = req_rover->next_req;
     }
 }
 
-void print_request_analyzed(Request_analyzed *request_analyzed)
+void print_request_analyzed(Request_analyzed *request_anlzed)
 {
-    dbg_cp2_printf("connection: %s\n", request_analyzed->connection);
-    dbg_cp2_printf("accept_charset: %s\n", request_analyzed->accept_charset);
-    dbg_cp2_printf("accept_encoding: %s\n", request_analyzed->accept_encoding);
-    dbg_cp2_printf("accept_language: %s\n", request_analyzed->accept_language);
-    dbg_cp2_printf("host: %s\n", request_analyzed->host);
-    dbg_cp2_printf("user_agent: %s\n", request_analyzed->user_agent);
+    dbg_cp2_printf("connection: %s\n", request_anlzed->connection);
+    dbg_cp2_printf("accept_charset: %s\n", request_anlzed->accept_charset);
+    dbg_cp2_printf("accept_encoding: %s\n", request_anlzed->accept_encoding);
+    dbg_cp2_printf("accept_language: %s\n", request_anlzed->accept_language);
+    dbg_cp2_printf("host: %s\n", request_anlzed->host);
+    dbg_cp2_printf("user_agent: %s\n", request_anlzed->user_agent);
 }
 
 void print_response_headers(Response_headers *response_headers)

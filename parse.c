@@ -1,13 +1,20 @@
 #include "lisod.h"
+#include <dbg_func.h>
+
+#define SUCCESS 0
+#define F_MELONG 1
+#define F_URLONG 2
+#define F_VELONG 3
+#define F_HNLONG 4
+#define F_HVLONG 5
 
 /**
-* Given a char buffer returns the parsed request headers
+* Given a char buffer returns the parsed req headers
 */
-void initiate_request(Requests *request);
+void initiate_request(Requests *req);
 
-Requests * parse(char *socket_recv_buf, size_t recv_buf_size, int socketFd,
-                 pools *p)
-{
+Requests * parse(char *skt_recv_buf, size_t recv_buf_size, int socketfd,
+                 pools *p) {
     //Differant states in the read_state machine
     enum Request_Read_State {
         STATE_START = 0, STATE_CR, STATE_CRLF, STATE_CRLFCR, STATE_CRLFCRLF
@@ -15,82 +22,74 @@ Requests * parse(char *socket_recv_buf, size_t recv_buf_size, int socketFd,
     enum Request_Read_State read_state;
 
     size_t recv_buf_offset = 0;
-    size_t request_buf_offset = 0;
+    size_t req_buf_offset = 0;
 
     char ch = 0;
-    char request_buffer[REQUEST_BUF_SIZE + 1];
-    memset(request_buffer, 0, REQUEST_BUF_SIZE + 1);
-    size_t request_size = 0;
-    size_t request_count = 0;
+    char req_buffer[REQ_BUF_SIZE + 1];
+    memset(req_buffer, 0, REQ_BUF_SIZE + 1);
+    size_t req_size = 0;
+    size_t req_count = 0;
 
-    char *chached_buffer = p->cached_buffer[socketFd];
-    memset(chached_buffer, 0, REQUEST_BUF_SIZE + 1);
+    char *cached_buf = p->cached_buf[socketfd];
+    memset(cached_buf, 0, REQ_BUF_SIZE + 1);
 
-    int ign_first = p->ign_first[socketFd];
-    int too_long = p->too_long[socketFd];
-    int if_contain_2crlf = 0;
+    int ign_first = p->ign_first[socketfd];
+    int too_long = p->too_long[socketfd];
+    int if_2crlf = 0;
     ssize_t read_count = 0;
-    ssize_t full_requests_size = 0;
+    ssize_t full_req_size = 0;
 
-    Requests *requests_ptr = NULL;
-    Requests *request_last_ptr = NULL;
-    Requests *request = NULL;
+    Requests *reqs_ptr = NULL;
+    Requests *req_last_ptr = NULL;
+    Requests *req = NULL;
 
-    int ret = 0;
+    ssize_t ret = 0;
 
-    //dbg_cp2_printf("socket_recv_buf in parse.c:[\n%s]\n", socket_recv_buf);
+    //dbg_cp2_printf("skt_recv_buf in parse.c:[\n%s]\n", skt_recv_buf);
     //dbg_cp2_printf("ign_first: %d\n", ign_first);
     //dbg_cp2_printf("too_long: %d\n", too_long);
-    //dbg_cp2_printf("chached_buffer[0]: %d\n", chached_buffer[0]);
+    //dbg_cp2_printf("cached_buf[0]: %d\n", cached_buf[0]);
 
     //dbg_cp2_printf("parse.c: line 46\n");
-    if (search_first_position(socket_recv_buf, "\r\n\r\n") != -1)
-    {
+    if (search_first_position(skt_recv_buf, "\r\n\r\n") != -1) {
         //dbg_cp2_printf("parse.c: line 49\n");
-        if_contain_2crlf = 1;
+        if_2crlf = 1;
     }
-    else
-    {
+    else {
         //dbg_cp2_printf("parse.c: line 54\n");
-        if_contain_2crlf = 0;
+        if_2crlf = 0;
     }
 
     //dbg_cp2_printf("parse.c: line 55\n");
-    if (chached_buffer[0] != 0)
-    {
-        request_size = strlen(chached_buffer);
-        read_count = -request_size;
-        memset(request_buffer, 0, REQUEST_BUF_SIZE + 1);
-        strncpy(request_buffer, chached_buffer, REQUEST_BUF_SIZE);
-        request_buf_offset = request_size;
+    if (cached_buf[0] != 0) {
+        req_size = strlen(cached_buf);
+        read_count = -req_size;
+        memset(req_buffer, 0, REQ_BUF_SIZE + 1);
+        strncpy(req_buffer, cached_buf, REQ_BUF_SIZE);
+        req_buf_offset = req_size;
     }
-    else
-    {
-        if (ign_first == 1)
-        {
-            read_count = search_first_position(socket_recv_buf, "\r\n\r\n") + 4;
+    else {
+        if (ign_first == 1) {
+            read_count = search_first_position(skt_recv_buf, "\r\n\r\n") + 4;
             recv_buf_offset = read_count;
         }
     }
 
     //dbg_cp2_printf("parse.c: line 72\n");
-    // dbg_cp2_printf("if_contain_2crlf: %d\n", if_contain_2crlf);
-    if (if_contain_2crlf == 1)
-    {
-        full_requests_size =
-            search_last_position("\r\n\r\n", socket_recv_buf) + 4;
-        while (read_count != full_requests_size)
-        {
+    // dbg_cp2_printf("if_2crlf: %d\n", if_2crlf);
+    if (if_2crlf == 1) {
+        full_req_size =
+            search_last_position("\r\n\r\n", skt_recv_buf) + 4;
+        while (read_count != full_req_size) {
             read_state = STATE_START;
             while (read_state != STATE_CRLFCRLF) {
                 char expected = 0;
                 if (recv_buf_offset == recv_buf_size)
                     break;
-                ch = socket_recv_buf[recv_buf_offset++];
-                request_size++;
-                if (request_size < REQUEST_BUF_SIZE)
-                {
-                    request_buffer[request_buf_offset++] = ch;
+                ch = skt_recv_buf[recv_buf_offset++];
+                req_size++;
+                if (req_size < REQ_BUF_SIZE) {
+                    req_buffer[req_buf_offset++] = ch;
                 }
 
                 switch (read_state) {
@@ -112,65 +111,74 @@ Requests * parse(char *socket_recv_buf, size_t recv_buf_size, int socketFd,
                 else
                     read_state = STATE_START;
             }
-            //dbg_cp2_printf("parse.c: line 115\n");
-            //dbg_cp2_printf("@@request_buffer: [\n%s]\n", request_buffer);
-            if (request_size <= REQUEST_BUF_SIZE)
-            {
-                request = (Requests *) malloc(sizeof(Requests));
-                initiate_request(request);
-                set_parsing_options(request_buffer, request_size, request);
-                yyrestart();
-                if (yyparse() != SUCCESS)
-                {
-                    free(request->headers);
-                    request->headers = NULL;
-                    free(request);
-                }
-                else
-                {
-                    // int index;
-                    // dbg_cp2_printf("headers:\n");
-                    // for (index = 0; index < request->header_count; index++)
-                    // {
-                    //     dbg_cp2_printf("%d:%s: %s\n", index,
-                    //                    request->headers[index].header_name,
-                    //                    request->headers[index].header_value);
-                    // }
-                    // printf("----------------------------------------------\n");
 
-                    if (request_last_ptr != NULL)
-                    {
-                        request_last_ptr->next_request = request;
-                        dbg_cp2_printf("Impossible!\n");
+            req = (Requests *) malloc(sizeof(Requests));
+            initiate_request(req);
+            if (req_size <= REQ_BUF_SIZE) {
+                set_parsing_options(req_buffer, req_size, req);
+                yyrestart();
+                ret = yyparse();
+                printf("ret: %d\n", ret);
+                print_request(req);
+                printf("line 123\n");
+                if (ret != SUCCESS) {
+                    // TODO to be tested
+                    switch (ret) {
+                    case F_MELONG:
+                        req->error = 501;
+                        break;
+                    case F_URLONG:
+                        req->error = 414;
+                        break;
+                    case F_VELONG:
+                        req->error = 505;
+                        break;
+                    case F_HNLONG:
+                        req->error = 400;
+                        strncpy(req->http_method, "Request header too long.",
+                                MAX_SIZE_S);
+                        break;
+                    case F_HVLONG:
+                        req->error = 400;
+                        strncpy(req->http_method, "Request value too long.",
+                                MAX_SIZE_S);
+                        break;
                     }
-                    else
-                    {
-                        requests_ptr = request;
-                    }
-                    request_count++;
-                    request_last_ptr = request;
                 }
-                //dbg_cp2_printf("parse.c: line 153\n");
+                else {
+                    req->error = 0;
+                }
+            }
+            else {
+                req->error = 400;
+                strncpy(req->http_method, "Request too long.", MAX_SIZE_S);
+            }
+
+            if (req_last_ptr != NULL)
+            {
+                req_last_ptr->next_req = req;
             }
             else
             {
-                printf("------------------------------------------\n");
-                printf("Request too long\r\n\r\n----\n");
+                reqs_ptr = req;
             }
-            read_count = read_count + request_size;
-            memset(request_buffer, 0, REQUEST_BUF_SIZE);
-            request_size = 0;
-            request_buf_offset = 0;
+            req_count++;
+            req_last_ptr = req;
+
+            read_count = read_count + req_size;
+            memset(req_buffer, 0, REQ_BUF_SIZE);
+            req_size = 0;
+            req_buf_offset = 0;
         }
         //dbg_cp2_printf("parse.c: line 163\n");
-        if (full_requests_size != recv_buf_size)
+        if (full_req_size != recv_buf_size)
         {
-            size_t length = strlen(&socket_recv_buf[full_requests_size]);
-            if (length <= REQUEST_BUF_SIZE)
+            size_t length = strlen(&skt_recv_buf[full_req_size]);
+            if (length <= REQ_BUF_SIZE)
             {
-                memset(chached_buffer, 0, REQUEST_BUF_SIZE + 1);
-                strncpy(chached_buffer, &socket_recv_buf[full_requests_size],
-                        REQUEST_BUF_SIZE);
+                memset(cached_buf, 0, REQ_BUF_SIZE + 1);
+                strncpy(cached_buf, &skt_recv_buf[full_req_size],
+                        REQ_BUF_SIZE);
                 too_long = 0;
                 ign_first = 0;
             }
@@ -185,15 +193,15 @@ Requests * parse(char *socket_recv_buf, size_t recv_buf_size, int socketFd,
     {
         if (ign_first == 0)
         {
-            if (chached_buffer[0] != 0)
+            if (cached_buf[0] != 0)
             {
-                size_t new_length = strlen(chached_buffer)
+                size_t new_length = strlen(cached_buf)
                                     + recv_buf_size;
-                if (new_length <= REQUEST_BUF_SIZE)
+                if (new_length <= REQ_BUF_SIZE)
                 {
-                    strncpy(chached_buffer + strlen(chached_buffer),
-                            socket_recv_buf,
-                            REQUEST_BUF_SIZE - strlen(chached_buffer));
+                    strncpy(cached_buf + strlen(cached_buf),
+                            skt_recv_buf,
+                            REQ_BUF_SIZE - strlen(cached_buf));
                     too_long = 0;
                     ign_first = 0;
                 }
@@ -206,10 +214,10 @@ Requests * parse(char *socket_recv_buf, size_t recv_buf_size, int socketFd,
             else
             {
                 size_t length = recv_buf_size;
-                if (length < REQUEST_BUF_SIZE)
+                if (length < REQ_BUF_SIZE)
                 {
-                    strncpy(chached_buffer, socket_recv_buf,
-                            REQUEST_BUF_SIZE);
+                    strncpy(cached_buf, skt_recv_buf,
+                            REQ_BUF_SIZE);
                     too_long = 0;
                     ign_first = 0;
                 }
@@ -222,10 +230,11 @@ Requests * parse(char *socket_recv_buf, size_t recv_buf_size, int socketFd,
         }
     }
 
-    p->ign_first[socketFd] = ign_first;
-    p->too_long[socketFd] = too_long;
+    p->ign_first[socketfd] = ign_first;
+    p->too_long[socketfd] = too_long;
 
-    return requests_ptr;
+    printf("line 236\n");
+    return reqs_ptr;
 }
 
 ssize_t search_last_position(char *str1, char *str2)
@@ -257,12 +266,14 @@ ssize_t search_first_position(char *str1, char *str2)
     }
 }
 
-void initiate_request(Requests *request)
+void initiate_request(Requests *req)
 {
-    memset(request->http_version, 0, MAX_SIZE_SMALL + 1);
-    memset(request->http_method, 0, MAX_SIZE_SMALL + 1);
-    memset(request->http_uri, 0, MAX_SIZE_SMALL + 1);
-    request->headers = (Request_header *) malloc(sizeof(Request_header) * 1);
-    request->next_request = NULL;
-    request->header_count = 0;
+    memset(req->http_version, 0, MAX_SIZE_S + 1);
+    memset(req->http_method, 0, MAX_SIZE_S + 1);
+    memset(req->http_uri, 0, MAX_SIZE + 1);
+    req->headers = (Request_header *) malloc(sizeof(Request_header) * 1);
+    req->entity_body = NULL;
+    req->next_req = NULL;
+    req->h_count = 0;
+    req->error = 0;
 }

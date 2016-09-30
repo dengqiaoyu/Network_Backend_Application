@@ -20,7 +20,7 @@
 #define MAXLINE 4096
 #define LISTENQ 1024
 #define REQ_BUF_SIZE 8192
-#define SOCKET_RECV_BUF_SIZE 65536
+#define SKT_RECV_BUF_SIZE 65536
 #define S_SELT_TIMEOUT 0
 #define US_SELT_TIMEOUT 1000
 #define S_RECV_TIMEOUT 0
@@ -38,7 +38,7 @@
 #define dbg_cp1_printf(...)
 #endif
 
-//#define DEBUG_CP2
+#define DEBUG_CP2
 #ifdef DEBUG_CP2
 #define dbg_cp2_printf(...) printf(__VA_ARGS__)
 #else
@@ -59,11 +59,9 @@ typedef struct param
 
 typedef struct pools
 {
-    int maxfd;
     fd_set active_set;
     fd_set ready_set;
     int num_ready;
-    int maxi;
     int clientfd[FD_SETSIZE];
     size_t ign_first[FD_SETSIZE];
     size_t too_long[FD_SETSIZE];
@@ -74,19 +72,21 @@ typedef struct pools
 //Header field
 typedef struct
 {
-    char header_name[MAX_SIZE];
-    char header_value[MAX_SIZE];
+    char h_name[MAX_SIZE + 1];
+    char h_value[MAX_SIZE + 1];
 } Request_header;
 
 //HTTP Request Header
 typedef struct Requests
 {
-    char http_version[MAX_SIZE_S];
-    char http_method[MAX_SIZE_S];
-    char http_uri[MAX_SIZE];
+    char http_version[MAX_SIZE_S + 1];
+    char http_method[MAX_SIZE_S + 1];
+    char http_uri[MAX_SIZE + 1];
     Request_header *headers;
-    struct Requests *next_request;
-    int header_count;
+    char *entity_body;
+    struct Requests *next_req;
+    size_t h_count;
+    size_t error;
 } Requests;
 
 typedef struct
@@ -101,33 +101,33 @@ typedef struct
 
 typedef struct
 {
-    char http_version[MAX_SIZE_S];
-    char status_code[MAX_SIZE_S];
-    char reason_phrase[MAX_SIZE_S];
+    char http_version[MAX_SIZE_S + 1];
+    char status_code[MAX_SIZE_S + 1];
+    char reason_phrase[MAX_SIZE_S + 1];
 } Status_line;
 
 typedef struct
 {
-    char cache_control[MAX_SIZE_S];
-    char connection[MAX_SIZE_S];
-    char date[MAX_SIZE_S];
-    char paragma[MAX_SIZE_S];
-    char transfer_encoding[MAX_SIZE_S];
+    char cache_control[MAX_SIZE_S + 1];
+    char connection[MAX_SIZE_S + 1];
+    char date[MAX_SIZE_S + 1];
+    char paragma[MAX_SIZE_S + 1];
+    char transfer_encoding[MAX_SIZE_S + 1];
 } General_header;
 
 typedef struct
 {
-    char server[MAX_SIZE_S];
+    char server[MAX_SIZE_S + 1];
 } Response_header;
 
 typedef struct
 {
-    char allow[MAX_SIZE_S];
-    char content_encoding[MAX_SIZE_S];
-    char content_language[MAX_SIZE_S];
+    char allow[MAX_SIZE_S + 1];
+    char content_encoding[MAX_SIZE_S + 1];
+    char content_language[MAX_SIZE_S + 1];
     size_t content_length;
-    char content_type[MAX_SIZE_S];
-    char last_modified[MAX_SIZE_S];
+    char content_type[MAX_SIZE_S + 1];
+    char last_modified[MAX_SIZE_S + 1];
 } Entity_header;
 
 typedef struct
@@ -144,7 +144,7 @@ int check_argv(int argc, char **argv, param *lisod_param);
 int open_listenfd(char *port);
 void init_pool(int listenfd, pools *p);
 int add_client(int connfd, pools *p, char *client_hostname);
-int server_clients(pools *p);
+int serve_clients(pools *p);
 void get_request_analyzed(Request_analyzed *request_analyzed,
                           Requests *request);
 int send_response(Request_analyzed *request_analyzed, Requests *request,
@@ -157,13 +157,16 @@ void get_error_content(int status_code, char *body,
 int get_contentfd(Requests *request, Response_headers *response_headers,
                   int *contentfd);
 int get_file_type(char *file_name, char *file_type);
-int write_to_socket(int status_code, char *response_headers_text,
+int write_to_socket(int connfd, char *response_headers_text,
                     char *response_content_text, char *response_content_ptr,
-                    size_t content_size, int connfd);
+                    size_t content_size);
 int decode_asc(char *str);
 int convert2path(char *uri);
 void destory_requests(Requests *requests);
-int Close_connection(int connfd, int index, pools *p);
+ssize_t Close_conn(int connfd, pools *p);
+ssize_t Close(int fd);
+ssize_t send_maxfderr(int connfd);
+
 Requests* parse(char *socket_recv_buf, size_t recv_buf_size , int socketFd,
                 pools *p);
 char *get_rfc1123_date();
