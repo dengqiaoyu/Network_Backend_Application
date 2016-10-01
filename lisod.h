@@ -38,7 +38,7 @@
 #define dbg_cp1_printf(...)
 #endif
 
-#define DEBUG_CP2
+//#define DEBUG_CP2
 #ifdef DEBUG_CP2
 #define dbg_cp2_printf(...) printf(__VA_ARGS__)
 #else
@@ -166,6 +166,7 @@ void destory_requests(Requests *requests);
 ssize_t Close_conn(int connfd, pools *p);
 ssize_t Close(int fd);
 ssize_t send_maxfderr(int connfd);
+void inline fupdate(FILE *fp);
 
 Requests* parse(char *socket_recv_buf, size_t recv_buf_size , int socketFd,
                 pools *p);

@@ -194,7 +194,7 @@ t_ws {
 };
 
 request_line: token t_sp text t_sp text t_crlf {
-    YPRINTF("request_Line:\n%s\n%s\n%s\n",$1, $3,$5);
+    YPRINTF("request_Line:\n%s\n%s\n%s\n",$1, $3, $5);
     if (strlen($1) > MAX_SIZE_S) {
         return F_MELONG;
     }

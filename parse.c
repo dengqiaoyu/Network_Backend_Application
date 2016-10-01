@@ -68,11 +68,23 @@ Requests * parse(char *skt_recv_buf, size_t recv_buf_size, int socketfd,
         strncpy(req_buffer, cached_buf, REQ_BUF_SIZE);
         req_buf_offset = req_size;
     }
-    else {
-        if (ign_first == 1) {
-            read_count = search_first_position(skt_recv_buf, "\r\n\r\n") + 4;
-            recv_buf_offset = read_count;
+    else if (ign_first == 1) {
+        read_count = search_first_position(skt_recv_buf, "\r\n\r\n") + 4;
+        recv_buf_offset = read_count;
+        req = (Requests *) malloc(sizeof(Requests));
+        initiate_request(req);
+        req->error = 400;
+        strncpy(req->http_method, "Request too long.", MAX_SIZE_S);
+        if (req_last_ptr != NULL)
+        {
+            req_last_ptr->next_req = req;
         }
+        else
+        {
+            reqs_ptr = req;
+        }
+        req_count++;
+        req_last_ptr = req;
     }
 
     //dbg_cp2_printf("parse.c: line 72\n");
@@ -118,9 +130,7 @@ Requests * parse(char *skt_recv_buf, size_t recv_buf_size, int socketfd,
                 set_parsing_options(req_buffer, req_size, req);
                 yyrestart();
                 ret = yyparse();
-                printf("ret: %d\n", ret);
                 print_request(req);
-                printf("line 123\n");
                 if (ret != SUCCESS) {
                     // TODO to be tested
                     switch (ret) {
@@ -143,10 +153,15 @@ Requests * parse(char *skt_recv_buf, size_t recv_buf_size, int socketfd,
                         strncpy(req->http_method, "Request value too long.",
                                 MAX_SIZE_S);
                         break;
+                    default:
+                        req->error = 400;
+                        break;
                     }
+
                 }
                 else {
-                    req->error = 0;
+                    req->error = 200;
+
                 }
             }
             else {
@@ -233,7 +248,6 @@ Requests * parse(char *skt_recv_buf, size_t recv_buf_size, int socketfd,
     p->ign_first[socketfd] = ign_first;
     p->too_long[socketfd] = too_long;
 
-    printf("line 236\n");
     return reqs_ptr;
 }
 
@@ -268,12 +282,6 @@ ssize_t search_first_position(char *str1, char *str2)
 
 void initiate_request(Requests *req)
 {
-    memset(req->http_version, 0, MAX_SIZE_S + 1);
-    memset(req->http_method, 0, MAX_SIZE_S + 1);
-    memset(req->http_uri, 0, MAX_SIZE + 1);
+    memset(req, 0, sizeof(Requests));
     req->headers = (Request_header *) malloc(sizeof(Request_header) * 1);
-    req->entity_body = NULL;
-    req->next_req = NULL;
-    req->h_count = 0;
-    req->error = 0;
 }

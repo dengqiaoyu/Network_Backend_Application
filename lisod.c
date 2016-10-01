@@ -1,12 +1,17 @@
 #include "lisod.h"
 #include "log.h"
-#include "pdef_type.h"
 #include "dbg_func.h"
 
 
-FILE *logfp = NULL;
-int logfd = -1;
-int errfd = -1;
+static const char *FILE_SUFFIX[TYPE_SIZE] =
+{ ".html", ".css", ".gif", ".png", ".jpg"};
+
+static const char *FILE_TYPE[TYPE_SIZE] =
+{ "text/html", "text/css", "image/gif", "image/png", "image/jpeg"};
+
+static FILE *logfp = NULL;
+static int logfd = -1;
+static int errfd = -1;
 static param lisod_param;
 // ./lisod 2090 7114 ../tmp/lisod.log ../tmp/lisod.lock ../tmp/www ../tmp/cgi/cgi_script.py ../tmp/grader.key ../tmp/grader.crt
 
@@ -28,14 +33,14 @@ int main(int argc, char **argv) {
 
     ret = check_argv(argc, argv, &lisod_param);
     if (ret < 0) {
-        fprintf(logfp, "Argumens is not valid, server terminated.\n");
+        fprintf(stderr, "Argumens is not valid, server terminated.\n");
         return -1;
     }
 
     logfd = init_log(lisod_param.log, argc, argv);
     errfd = open("./fd_reserved", O_WRONLY | O_CREAT, m_error);
     if (logfd < 0) {
-        fprintf(logfp, "Log file initialnizing failed, server terminated.\n");
+        fprintf(stderr, "Log file initialnizing failed, server terminated.\n");
         return -1;
     }
     logfp = fdopen(logfd, "a");
@@ -43,6 +48,7 @@ int main(int argc, char **argv) {
     listenfd = open_listenfd(lisod_param.http_port);
     if (listenfd < 0) {
         fprintf(logfp, "Port listening failed, server terminated\n");
+        fupdate(logfp);
         return -1;
     }
 
@@ -70,6 +76,7 @@ int main(int argc, char **argv) {
                 }
                 else {
                     fprintf(logfp, "Failed accepting coonection in main\n");
+                    fupdate(logfp);
                     continue;
                 }
             }
@@ -81,10 +88,12 @@ int main(int argc, char **argv) {
                 if (ret != 0) {
                     fprintf(logfp, "Can not resolve client's IP ");
                     fprintf(logfp, "or port in main.\n");
+                    fupdate(logfp);
                 }
                 else {
                     fprintf(logfp, "Accept connection from client %s:%s.\n",
                             c_host, c_port);
+                    fupdate(logfp);
                 }
 
                 ret = setsockopt(connfd, SOL_SOCKET, SO_RCVTIMEO,
@@ -92,29 +101,32 @@ int main(int argc, char **argv) {
                 if (ret < 0)
                 {
                     fprintf(logfp, "Failed setting tv_recv in main.\n");
+                    fupdate(logfp);
                 }
 
                 ret = add_client(connfd, &pool, c_host);
                 if (ret < 0)
                 {
                     fprintf(logfp, "Client adding failed in main.\n");
+                    fupdate(logfp);
                 }
             }
         }
-        fflush(logfp);
 
         ret = serve_clients(&pool);
         if (ret < 0)
         {
             fprintf(logfp, "serve_clients Failed.\n");
+            fupdate(logfp);
         }
-        fflush(logfp);
+        fupdate(logfp);
     }
 
     ret = fclose(logfp);
     if (ret != 0)
     {
-        fprintf(stderr, "Failed close file pointer.\n");
+        fprintf(logfp, "Failed close file pointer.\n");
+        fupdate(logfp);
         exit(1);
     }
     return 0;
@@ -130,20 +142,22 @@ void sigtstp_handler()
 int check_argv(int argc, char **argv, param *lisod_param) {
     memset(lisod_param, 0, sizeof(lisod_param));
     if (argc < 9) {
-        fprintf(stderr, "Usage: %s ", argv[0]);
-        fprintf(stderr, "<HTTP port> ");
-        fprintf(stderr, "<HTTPS port> ");
-        fprintf(stderr, "<log file> ");
-        fprintf(stderr, "<lock file> ");
-        fprintf(stderr, "<www folder> ");
-        fprintf(stderr, "<CGI script path> ");
-        fprintf(stderr, "<private key file> ");
-        fprintf(stderr, "<certificate file>\n");
+        fprintf(logfp, "Usage: %s ", argv[0]);
+        fprintf(logfp, "<HTTP port> ");
+        fprintf(logfp, "<HTTPS port> ");
+        fprintf(logfp, "<log file> ");
+        fprintf(logfp, "<lock file> ");
+        fprintf(logfp, "<www folder> ");
+        fprintf(logfp, "<CGI script path> ");
+        fprintf(logfp, "<private key file> ");
+        fprintf(logfp, "<certificate file>\n");
+        fupdate(logfp);
         return -1;
     }
 
     if (atoi(argv[1]) < 1024 || atoi(argv[1]) > 65535) {
-        fprintf(stderr, "Usage: HTTP port should be between 1024 and 65535.\n");
+        fprintf(logfp, "Usage: HTTP port should be between 1024 and 65535.\n");
+        fupdate(logfp);
         return -1;
     }
     else {
@@ -151,11 +165,13 @@ int check_argv(int argc, char **argv, param *lisod_param) {
     }
 
     if (atoi(argv[2]) < 1024 || atoi(argv[2]) > 65535) {
-        fprintf(stderr, "Usage: HTTPs port should be between 1024 and 65535.\n");
+        fprintf(logfp, "Usage: HTTPs port should be between 1024 and 65535.\n");
+        fupdate(logfp);
         return -1;
     }
     else if (!strcmp(argv[1], argv[2])) {
-        fprintf(stderr, "Usage: HTTPs port should not equal HTTP port.\n");
+        fprintf(logfp, "Usage: HTTPs port should not equal HTTP port.\n");
+        fupdate(logfp);
         return -1;
     }
     else {
@@ -163,7 +179,8 @@ int check_argv(int argc, char **argv, param *lisod_param) {
     }
 
     if (strlen(argv[3]) > MAXLINE) {
-        fprintf(stderr, "Log file path too long.\n");
+        fprintf(logfp, "Log file path too long.\n");
+        fupdate(logfp);
         return -1;
     }
     else {
@@ -171,7 +188,8 @@ int check_argv(int argc, char **argv, param *lisod_param) {
     }
 
     if (strlen(argv[4]) > MAXLINE) {
-        fprintf(stderr, "Lock file path too long.\n");
+        fprintf(logfp, "Lock file path too long.\n");
+        fupdate(logfp);
         return -1;
     }
     else {
@@ -179,7 +197,8 @@ int check_argv(int argc, char **argv, param *lisod_param) {
     }
 
     if (strlen(argv[5]) > MAXLINE) {
-        fprintf(stderr, "WWW folder too long.\n");
+        fprintf(logfp, "WWW folder too long.\n");
+        fupdate(logfp);
         return -1;
     }
     else {
@@ -187,7 +206,8 @@ int check_argv(int argc, char **argv, param *lisod_param) {
     }
 
     if (strlen(argv[6]) > MAXLINE) {
-        fprintf(stderr, "CGI script path too long.\n");
+        fprintf(logfp, "CGI script path too long.\n");
+        fupdate(logfp);
         return -1;
     }
     else {
@@ -195,7 +215,8 @@ int check_argv(int argc, char **argv, param *lisod_param) {
     }
 
     if (strlen(argv[7]) > MAXLINE) {
-        fprintf(stderr, "Private key file path too long.\n");
+        fprintf(logfp, "Private key file path too long.\n");
+        fupdate(logfp);
         return -1;
     }
     else {
@@ -203,7 +224,8 @@ int check_argv(int argc, char **argv, param *lisod_param) {
     }
 
     if (strlen(argv[8]) > MAXLINE) {
-        fprintf(stderr, "Certificated file path too long.\n");
+        fprintf(logfp, "Certificated file path too long.\n");
+        fupdate(logfp);
         return -1;
     }
     else {
@@ -225,7 +247,8 @@ int open_listenfd(char *port)
 
     ret = getaddrinfo(NULL, port, &hints, &listp);
     if (ret != 0) {
-        fprintf(logfp, "Failed getting address information in open_listenfd.\n");
+        fprintf(logfp, "Failed getting address information in open_listefd.\n");
+        fupdate(logfp);
         return -1;
     }
 
@@ -247,6 +270,7 @@ int open_listenfd(char *port)
             {
                 fprintf(logfp, "Failed closing listening file descriptor in");
                 fprintf(logfp, "open_listenfd.\n");
+                fupdate(logfp);
                 return -1;
             }
         }
@@ -255,6 +279,7 @@ int open_listenfd(char *port)
     freeaddrinfo(listp);
     if (!p) {
         fprintf(logfp, "No address worked in open_listenfd.\n");
+        fupdate(logfp);
         return -1;
     }
 
@@ -264,9 +289,11 @@ int open_listenfd(char *port)
         if (ret < 0) {
             fprintf(logfp, "Failed closing listening file descriptor ");
             fprintf(logfp, "in open_listenfd.\n");
+            fupdate(logfp);
             return -1;
         }
         fprintf(logfp, "Failed listening on socket.\n");
+        fupdate(logfp);
         return -1;
     }
 
@@ -325,10 +352,12 @@ int serve_clients(pools *p)
                 {
                     fprintf(logfp, "Failed receiving data from fd %d.\n",
                             connfd);
+                    fupdate(logfp);
                     ret = Close_conn(connfd, p);
                     if (ret < 0) {
                         fprintf(logfp, "Failed closing connection fd%d\n",
                                 connfd);
+                        fupdate(logfp);
                     }
                     break;
                 }
@@ -338,6 +367,7 @@ int serve_clients(pools *p)
                     if (ret < 0) {
                         fprintf(logfp, "Failed closing connection fd%d\n",
                                 connfd);
+                        fupdate(logfp);
                     }
                     break;
                 }
@@ -348,7 +378,8 @@ int serve_clients(pools *p)
                 }
                 else
                     read_or_not = 0;
-                dbg_cp2_printf("skt_recv_buf in lisod.c:[\n%s]\n", skt_recv_buf);
+                dbg_cp2_printf("skt_recv_buf in lisod.c:[\n%s]\n",
+                               skt_recv_buf);
                 Requests *reqs = parse(skt_recv_buf, read_ret, connfd, p);
                 dbg_cp2_printf("parse complete!\n");
 
@@ -359,6 +390,7 @@ int serve_clients(pools *p)
                 while (req_rover != NULL)
                 {
                     Request_analyzed req_anlzed;
+                    memset(&req_anlzed, 0, sizeof(Request_analyzed));
                     get_request_analyzed(&req_anlzed, req_rover);
                     fprintf(logfp, "  Get %s %s request from %s.\n",
                             req_rover->http_method,
@@ -366,6 +398,7 @@ int serve_clients(pools *p)
                             p->clientip[connfd]);
                     fprintf(logfp, "    User-Agent: %s\n",
                             req_anlzed.user_agent);
+                    fupdate(logfp);
                     print_request_analyzed(&req_anlzed);
                     dbg_cp2_printf("get_request_analyzed complete!\n");
                     ret = send_response(&req_anlzed, req_rover,
@@ -386,167 +419,175 @@ int serve_clients(pools *p)
 }
 
 void get_request_analyzed(Request_analyzed *req_anlzed,
-                          Requests *request)
+                          Requests *req)
 {
     int index = 0;
     int ret = 0;
 
     memset(req_anlzed, 0, sizeof(Request_analyzed));
 
-    for (index = 0; index < request->h_count; index++)
+    for (index = 0; index < req->h_count; index++)
     {
-        ret = strncasecmp("connection", request->headers[index].h_name,
+        ret = strncasecmp("connection", req->headers[index].h_name,
                           MAX_SIZE);
         if (!ret)
         {
             strncpy(req_anlzed->connection,
-                    request->headers[index].h_value, MAX_SIZE_S);
+                    req->headers[index].h_value, MAX_SIZE_S);
             req_anlzed->connection[MAX_SIZE_S - 1] = 0;
         }
 
         ret = strncasecmp("accept-charset",
-                          request->headers[index].h_name,
+                          req->headers[index].h_name,
                           MAX_SIZE);
         if (!ret)
         {
             strncpy(req_anlzed->accept_charset,
-                    request->headers[index].h_value, MAX_SIZE_S);
+                    req->headers[index].h_value, MAX_SIZE_S);
             req_anlzed->accept_charset[MAX_SIZE_S - 1] = 0;
         }
 
-        ret = strncasecmp("accept-encoding", request->headers[index].h_name,
+        ret = strncasecmp("accept-encoding", req->headers[index].h_name,
                           MAX_SIZE);
         if (!ret)
         {
             strncpy(req_anlzed->accept_encoding,
-                    request->headers[index].h_value, MAX_SIZE_S);
+                    req->headers[index].h_value, MAX_SIZE_S);
             req_anlzed->accept_encoding[MAX_SIZE_S - 1] = 0;
         }
 
-        ret = strncasecmp("accept-language", request->headers[index].h_name,
+        ret = strncasecmp("accept-language", req->headers[index].h_name,
                           MAX_SIZE);
         if (!ret)
         {
             strncpy(req_anlzed->accept_language,
-                    request->headers[index].h_value, MAX_SIZE_S);
+                    req->headers[index].h_value, MAX_SIZE_S);
             req_anlzed->accept_language[MAX_SIZE_S - 1] = 0;
         }
 
-        ret = strncasecmp("host", request->headers[index].h_name,
+        ret = strncasecmp("host", req->headers[index].h_name,
                           MAX_SIZE);
         if (!ret)
         {
             strncpy(req_anlzed->host,
-                    request->headers[index].h_value, MAX_SIZE_S);
+                    req->headers[index].h_value, MAX_SIZE_S);
             req_anlzed->host[MAX_SIZE_S - 1] = 0;
         }
 
-        ret = strncasecmp("user-agent", request->headers[index].h_name,
+        ret = strncasecmp("user-agent", req->headers[index].h_name,
                           MAX_SIZE);
         if (!ret)
         {
             strncpy(req_anlzed->user_agent,
-                    request->headers[index].h_value, MAX_SIZE);
+                    req->headers[index].h_value, MAX_SIZE);
             req_anlzed->user_agent[MAX_SIZE - 1] = 0;
         }
     }
 }
 
-int send_response(Request_analyzed *req_anlzed, Requests *request,
+int send_response(Request_analyzed *req_anlzed, Requests *req,
                   int connfd)
 {
     int status_code;
-    Response_headers response_headers;
-    char response_headers_text[MAX_TEXT];
-    char response_content_text[MAX_TEXT];
+    Response_headers resp_hds;
+    char resp_hds_text[MAX_TEXT];
+    char resp_ct_text[MAX_TEXT];
     int contentfd, ret;
-    size_t content_size;
-    char *response_content_ptr = NULL;
-    int if_close_connnection = 0;
-    memset(&response_headers, 0, sizeof(Response_headers));
-    memset(response_headers_text, 0, MAX_TEXT);
-    memset(response_content_text, 0, MAX_TEXT);
+    size_t ct_size;
+    char *resp_ct_ptr = NULL;
+    int if_close_conn = 0;
+    memset(&resp_hds, 0, sizeof(Response_headers));
+    memset(resp_hds_text, 0, MAX_TEXT);
+    memset(resp_ct_text, 0, MAX_TEXT);
     contentfd = -1;
 
+    status_code = req->error;
 
-    if (!strncmp("HTTP/1.0", request->http_version, MAX_SIZE_S))
-    {
-        if_close_connnection = 1;
+    if (status_code == 200) {
+        if (!strncmp("HTTP/1.0", req->http_version, MAX_SIZE_S))
+        {
+            if_close_conn = 1;
+        }
+        else if (!strncmp("HTTP/1.1", req->http_version, MAX_SIZE_S))
+        {
+            if_close_conn = 0;
+        }
+        else
+        {
+            status_code = 505;
+        }
     }
-    else if (!strncmp("HTTP/1.1", request->http_version, MAX_SIZE_S))
-    {
-        if_close_connnection = 0;
-    }
-    else
-    {
-        status_code = 505;
-    }
-    strncpy(response_headers.status_line.http_version, "HTTP/1.1",
+    strncpy(resp_hds.status_line.http_version, "HTTP/1.1",
             MAX_SIZE_S);
-    strncpy(response_headers.general_header.cache_control, "no-cache",
+    strncpy(resp_hds.general_header.cache_control, "no-cache",
             MAX_SIZE_S);
     if (!strncmp("close", req_anlzed->connection, MAX_SIZE_S))
     {
-        strncpy(response_headers.general_header.connection, "close",
+        strncpy(resp_hds.general_header.connection, "close",
                 MAX_SIZE_S);
-        if_close_connnection = 1;
+        if_close_conn = 1;
     }
     else
     {
-        strncpy(response_headers.general_header.connection, "keep-alive",
+        strncpy(resp_hds.general_header.connection, "keep-alive",
                 MAX_SIZE_S);
     }
 
+
     char *time_GMT = get_rfc1123_date();
-    strncpy(response_headers.general_header.date, time_GMT,
+    strncpy(resp_hds.general_header.date, time_GMT,
             MAX_SIZE_S);
     free(time_GMT);
-    strncpy(response_headers.general_header.paragma, "no-cache",
+    strncpy(resp_hds.general_header.paragma, "no-cache",
             MAX_SIZE_S);
-    strncpy(response_headers.general_header.transfer_encoding, "identity",
+    strncpy(resp_hds.general_header.transfer_encoding, "identity",
             MAX_SIZE_S);
-    strncpy(response_headers.response_header.server, "liso/1.0",
+    strncpy(resp_hds.response_header.server, "liso/1.0",
             MAX_SIZE_S);
-    strncpy(response_headers.entity_header.allow, "GET, HEAD",
+    strncpy(resp_hds.entity_header.allow, "GET, HEAD",
             MAX_SIZE_S);
-    strncpy(response_headers.entity_header.content_encoding, "identity",
+    strncpy(resp_hds.entity_header.content_encoding, "identity",
             MAX_SIZE_S);
-    strncpy(response_headers.entity_header.content_language, "en",
+    strncpy(resp_hds.entity_header.content_language, "en",
             MAX_SIZE_S);
     dbg_cp2_printf("line 516\n");
-    print_response_headers(&response_headers);
+    print_response_headers(&resp_hds);
 
-    status_code = check_http_method(request->http_method);
+    if (status_code == 200) {
+        status_code = check_http_method(req->http_method);
+    }
     dbg_cp2_printf("line 520\n");
     dbg_cp2_printf("status_code: %d\n", status_code);
+
+
     if (status_code == 200)
     {
-        if (!strncmp(request->http_method, "POST", MAX_SIZE_S))
+        if (!strncmp(req->http_method, "POST", MAX_SIZE_S))
         {
-            response_headers.entity_header.content_length = 0;
-            strncpy(response_headers.entity_header.content_type,
+            resp_hds.entity_header.content_length = 0;
+            strncpy(resp_hds.entity_header.content_type,
                     "\0", MAX_SIZE_S);
-            strncpy(response_headers.entity_header.last_modified,
+            strncpy(resp_hds.entity_header.last_modified,
                     "\0", MAX_SIZE_S);
-            snprintf(response_headers.status_line.status_code, MAX_SIZE_S,
+            snprintf(resp_hds.status_line.status_code, MAX_SIZE_S,
                      "%d", status_code);
-            strncpy(response_headers.status_line.reason_phrase,
+            strncpy(resp_hds.status_line.reason_phrase,
                     "OK", MAX_SIZE_S);
         }
-        else if (!strncmp(request->http_method, "GET", MAX_SIZE_S))
+        else if (!strncmp(req->http_method, "GET", MAX_SIZE_S))
         {
             dbg_cp2_printf("line 601\n");
-            status_code = get_contentfd(request, &response_headers, &contentfd);
+            status_code = get_contentfd(req, &resp_hds, &contentfd);
             dbg_cp2_printf("status_code: %d\n", status_code);
-            dbg_cp2_printf("response_headers_text:[\n%s]\n", response_headers_text);
+            dbg_cp2_printf("resp_hds_text:[\n%s]\n", resp_hds_text);
             //exit(1);
         }
         else
         {
             //dbg_cp2_printf("line 601\n");
-            status_code = get_contentfd(request, &response_headers, &contentfd);
+            status_code = get_contentfd(req, &resp_hds, &contentfd);
             //dbg_cp2_printf("status_code: %d\n", status_code);
-            //dbg_cp2_printf("response_headers_text:[\n%s]\n", response_headers_text);
+            //dbg_cp2_printf("resp_hds_text:[\n%s]\n", resp_hds_text);
             //exit(1);
             contentfd = -1;
         }
@@ -554,49 +595,52 @@ int send_response(Request_analyzed *req_anlzed, Requests *request,
 
     if (status_code != 200)
     {
-        get_error_content(status_code, response_content_text,
-                          &response_headers);
-        //dbg_cp2_printf("response_headers_text:[\n%s]\n", response_headers_text);
-        //dbg_cp2_printf("response_content_text:[\n%s]\n", response_content_text);
+        get_error_content(status_code, resp_ct_text,
+                          &resp_hds);
+        //dbg_cp2_printf("resp_hds_text:[\n%s]\n", resp_hds_text);
+        //dbg_cp2_printf("resp_ct_text:[\n%s]\n", resp_ct_text);
         //dbg_cp2_printf("line 617\n");
         //exit(1);
     }
     //dbg_cp2_printf("status_code: %d\n", status_code);
-    get_response_headers(response_headers_text, &response_headers);
+    get_response_headers(resp_hds_text, &resp_hds);
     if (status_code == 200 && contentfd != -1)
     {
         dbg_cp2_printf("line 648\n");
-        content_size = response_headers.entity_header.content_length;
-        response_content_ptr = mmap(0, content_size, PROT_READ, MAP_PRIVATE,
-                                    contentfd, 0);
-        if (response_content_ptr == (void *)(-1))
+        ct_size = resp_hds.entity_header.content_length;
+        resp_ct_ptr = mmap(0, ct_size, PROT_READ, MAP_PRIVATE,
+                           contentfd, 0);
+        if (resp_ct_ptr == (void *)(-1))
         {
             fprintf(logfp, "Failed mapping request file.\n");
+            fupdate(logfp);
             status_code = 500;
         }
         if (close(contentfd) < 0)
         {
             fprintf(logfp, "Failed closing content ");
             fprintf(logfp, "file descriptor.\n");
+            fupdate(logfp);
         }
     }
     //dbg_cp2_printf("line 648\n");
-    ret = write_to_socket(connfd, response_headers_text,
-                          response_content_text, response_content_ptr,
-                          response_headers.entity_header.content_length);
+    ret = write_to_socket(connfd, resp_hds_text,
+                          resp_ct_text, resp_ct_ptr,
+                          resp_hds.entity_header.content_length);
 
-    if (response_content_ptr != (void *)(-1) && (response_content_ptr != NULL))
+    if (resp_ct_ptr != (void *)(-1) && (resp_ct_ptr != NULL))
     {
-        ret = munmap(response_content_ptr, content_size);
+        ret = munmap(resp_ct_ptr, ct_size);
         if (ret == -1)
         {
             fprintf(logfp, "Failed unmapping request file.\n");
+            fupdate(logfp);
         }
     }
 
     dbg_cp2_printf("ret: %d\n", ret);
-    dbg_cp2_printf("if_close_connnection: %d\n", if_close_connnection);
-    return ret - if_close_connnection;
+    dbg_cp2_printf("if_close_conn: %d\n", if_close_conn);
+    return ret - if_close_conn;
 }
 
 int check_http_method(char *http_method)
@@ -622,86 +666,86 @@ int check_http_method(char *http_method)
     return status_code;
 }
 
-void get_response_headers(char *response_headers_text,
-                          Response_headers *response_headers)
+void get_response_headers(char *resp_hds_text,
+                          Response_headers *resp_hds)
 {
     char text_tmp[MAX_TEXT] = {0};
     size_t text_len = 0;
     snprintf(text_tmp, MAX_TEXT, "%s %s %s\r\n",
-             response_headers->status_line.http_version,
-             response_headers->status_line.status_code,
-             response_headers->status_line.reason_phrase);
-    strncat(response_headers_text, text_tmp,
+             resp_hds->status_line.http_version,
+             resp_hds->status_line.status_code,
+             resp_hds->status_line.reason_phrase);
+    strncat(resp_hds_text, text_tmp,
             MAX_TEXT - text_len);
     text_len +=  strlen(text_tmp);
     snprintf(text_tmp, MAX_TEXT, "Cache-Control: %s\r\n",
-             response_headers->general_header.cache_control);
-    strncat(response_headers_text, text_tmp,
+             resp_hds->general_header.cache_control);
+    strncat(resp_hds_text, text_tmp,
             MAX_TEXT - text_len);
     text_len +=  strlen(text_tmp);
     snprintf(text_tmp, MAX_TEXT, "Connection: %s\r\n",
-             response_headers->general_header.connection);
-    strncat(response_headers_text, text_tmp,
+             resp_hds->general_header.connection);
+    strncat(resp_hds_text, text_tmp,
             MAX_TEXT - text_len);
     text_len +=  strlen(text_tmp);
     snprintf(text_tmp, MAX_TEXT, "Date: %s\r\n",
-             response_headers->general_header.date);
-    strncat(response_headers_text, text_tmp,
+             resp_hds->general_header.date);
+    strncat(resp_hds_text, text_tmp,
             MAX_TEXT - text_len);
     text_len +=  strlen(text_tmp);
     snprintf(text_tmp, MAX_TEXT, "Paragma: %s\r\n",
-             response_headers->general_header.paragma);
-    strncat(response_headers_text, text_tmp,
+             resp_hds->general_header.paragma);
+    strncat(resp_hds_text, text_tmp,
             MAX_TEXT - text_len);
     text_len +=  strlen(text_tmp);
     snprintf(text_tmp, MAX_TEXT, "Transfer-Encoding: %s\r\n",
-             response_headers->general_header.transfer_encoding);
-    strncat(response_headers_text, text_tmp,
+             resp_hds->general_header.transfer_encoding);
+    strncat(resp_hds_text, text_tmp,
             MAX_TEXT - text_len);
     text_len +=  strlen(text_tmp);
     snprintf(text_tmp, MAX_TEXT, "Server: %s\r\n",
-             response_headers->response_header.server);
-    strncat(response_headers_text, text_tmp,
+             resp_hds->response_header.server);
+    strncat(resp_hds_text, text_tmp,
             MAX_TEXT - text_len);
     text_len +=  strlen(text_tmp);
     snprintf(text_tmp, MAX_TEXT, "Allow: %s\r\n",
-             response_headers->entity_header.allow);
-    strncat(response_headers_text, text_tmp,
+             resp_hds->entity_header.allow);
+    strncat(resp_hds_text, text_tmp,
             MAX_TEXT - text_len);
     text_len +=  strlen(text_tmp);
-    if (response_headers->entity_header.content_length != 0)
+    if (resp_hds->entity_header.content_length != 0)
     {
         snprintf(text_tmp, MAX_TEXT, "Content-Encoding: %s\r\n",
-                 response_headers->entity_header.content_encoding);
-        strncat(response_headers_text, text_tmp,
+                 resp_hds->entity_header.content_encoding);
+        strncat(resp_hds_text, text_tmp,
                 MAX_TEXT - text_len);
         text_len +=  strlen(text_tmp);
         snprintf(text_tmp, MAX_TEXT, "Content-Language: %s\r\n",
-                 response_headers->entity_header.content_language);
-        strncat(response_headers_text, text_tmp,
+                 resp_hds->entity_header.content_language);
+        strncat(resp_hds_text, text_tmp,
                 MAX_TEXT - text_len);
         text_len +=  strlen(text_tmp);
         snprintf(text_tmp, MAX_TEXT, "Content-Length: %d\r\n",
-                 response_headers->entity_header.content_length);
-        strncat(response_headers_text, text_tmp,
+                 resp_hds->entity_header.content_length);
+        strncat(resp_hds_text, text_tmp,
                 MAX_TEXT - text_len);
         text_len +=  strlen(text_tmp);
         snprintf(text_tmp, MAX_TEXT, "Content-Type: %s\r\n",
-                 response_headers->entity_header.content_type);
-        strncat(response_headers_text, text_tmp,
+                 resp_hds->entity_header.content_type);
+        strncat(resp_hds_text, text_tmp,
                 MAX_TEXT - text_len);
         text_len +=  strlen(text_tmp);
         snprintf(text_tmp, MAX_TEXT, "Last-Modified: %s\r\n",
-                 response_headers->entity_header.last_modified);
-        strncat(response_headers_text, text_tmp,
+                 resp_hds->entity_header.last_modified);
+        strncat(resp_hds_text, text_tmp,
                 MAX_TEXT - text_len);
         text_len +=  strlen(text_tmp);
     }
-    strncat(response_headers_text, "\r\n", MAX_TEXT - text_len);
+    strncat(resp_hds_text, "\r\n", MAX_TEXT - text_len);
 }
 
 void get_error_content(int status_code, char *body,
-                       Response_headers *response_headers)
+                       Response_headers *resp_hds)
 {
     char shortmsg[MAX_TEXT];
     char cause[MAX_TEXT];
@@ -722,6 +766,11 @@ void get_error_content(int status_code, char *body,
         strncpy(cause, "The server has not found anything matching the Request-URI.",
                 MAX_TEXT);
         break;
+    case 414:
+        strncpy(shortmsg, "Request-URI Too Large", MAX_TEXT);
+        strncpy(cause, "The server is refusing to service the request because the Request-URI is longer than the server is willing tointerpret.",
+                MAX_TEXT);
+        break;
     case 501:
         strncpy(shortmsg, "Not Implemented", MAX_TEXT);
         strncpy(cause, "The server does not support the functionality required to fulfill the request.",
@@ -733,11 +782,11 @@ void get_error_content(int status_code, char *body,
                 MAX_TEXT);
         break;
     }
-    snprintf(response_headers->status_line.status_code, MAX_SIZE_S, "%d",
+    snprintf(resp_hds->status_line.status_code, MAX_SIZE_S, "%d",
              status_code);
-    strncpy(response_headers->status_line.reason_phrase,
+    strncpy(resp_hds->status_line.reason_phrase,
             shortmsg, MAX_SIZE_S);
-    strncpy(response_headers->entity_header.content_type,
+    strncpy(resp_hds->entity_header.content_type,
             "text/html", MAX_SIZE_S);
 
     sprintf(body, "<html>");
@@ -749,13 +798,13 @@ void get_error_content(int status_code, char *body,
     sprintf(body, "%s</body>\r\n", body);
     sprintf(body, "%s</html>\r\n", body);
     char *time_GMT = get_rfc1123_date();
-    strncpy(response_headers->entity_header.last_modified, time_GMT,
+    strncpy(resp_hds->entity_header.last_modified, time_GMT,
             MAX_SIZE_S);
     free(time_GMT);
-    response_headers->entity_header.content_length = strlen(body);
+    resp_hds->entity_header.content_length = strlen(body);
 }
 
-int get_contentfd(Requests *request, Response_headers *response_headers,
+int get_contentfd(Requests *request, Response_headers *resp_hds,
                   int *contentfd)
 {
     int status_code = 0;
@@ -839,30 +888,31 @@ int get_contentfd(Requests *request, Response_headers *response_headers,
         //dbg_cp2_printf("line 852\n");
         status_code = get_file_type(file_name, file_type);
         //dbg_cp2_printf("file_type: %s\n", file_type);
-        response_headers->entity_header.content_length = sbuf.st_size;
-        strncpy(response_headers->entity_header.content_type,
+        resp_hds->entity_header.content_length = sbuf.st_size;
+        strncpy(resp_hds->entity_header.content_type,
                 file_type, MAX_SIZE_S);
         *contentfd = open(file_name, O_RDONLY, 0);
         if (*contentfd == -1)
         {
             fprintf(logfp, "Failed opening file %s.\n", file_name);
+            fupdate(logfp);
             dbg_cp2_printf("line 929\n");
             status_code = 403;
             return status_code;
         }
         char *last_modified = NULL;
         last_modified = get_last_modified_date(&sbuf.st_mtime);
-        snprintf(response_headers->entity_header.last_modified, MAX_SIZE_S, "%s",
+        snprintf(resp_hds->entity_header.last_modified, MAX_SIZE_S, "%s",
                  last_modified);
         free(last_modified);
     }
 
-    snprintf(response_headers->status_line.status_code, MAX_SIZE_S, "%d",
+    snprintf(resp_hds->status_line.status_code, MAX_SIZE_S, "%d",
              status_code);
-    strncpy(response_headers->status_line.reason_phrase,
+    strncpy(resp_hds->status_line.reason_phrase,
             "OK", MAX_SIZE_S);
 
-    //print_response_headers(response_headers);
+    //print_response_headers(resp_hds);
     return status_code;
 }
 
@@ -885,22 +935,22 @@ int get_file_type(char *file_name, char *file_type)
     return 200;
 }
 
-int write_to_socket(int connfd, char *response_headers_text,
-                    char *response_content_text, char *response_content_ptr,
-                    size_t content_size)
+int write_to_socket(int connfd, char *resp_hds_text,
+                    char *resp_ct_text, char *resp_ct_ptr,
+                    size_t ct_size)
 {
     char *response_content = NULL;
     size_t write_offset = 0;
-    size_t headers_size = strlen(response_headers_text);
+    size_t headers_size = strlen(resp_hds_text);
 
-    if (response_content_ptr != NULL)
+    if (resp_ct_ptr != NULL)
     {
-        response_content = response_content_ptr;
+        response_content = resp_ct_ptr;
     }
-    else if (response_content_text[0] != 0)
+    else if (resp_ct_text[0] != 0)
     {
-        response_content = response_content_text;
-        content_size = strlen(response_content);
+        response_content = resp_ct_text;
+        ct_size = strlen(response_content);
     }
     else
     {
@@ -910,13 +960,14 @@ int write_to_socket(int connfd, char *response_headers_text,
     dbg_cp2_printf("response_content:\n%s\n", response_content);
     while (1)
     {
-        int write_ret = send(connfd, response_headers_text + write_offset,
+        int write_ret = send(connfd, resp_hds_text + write_offset,
                              headers_size, MSG_WAITALL);
         //dbg_cp2_printf("write_ret: %d\n", write_ret);
         if (write_ret < 0)
         {
             fprintf(logfp, "Failed writing headers to socket on %d.\n",
                     connfd);
+            fupdate(logfp);
             return -1;
         }
 
@@ -938,22 +989,23 @@ int write_to_socket(int connfd, char *response_headers_text,
     while (1)
     {
         int write_ret = send(connfd, response_content + write_offset,
-                             content_size, MSG_WAITALL);
+                             ct_size, MSG_WAITALL);
         //dbg_cp2_printf("write_ret: %d\n", write_ret);
         if (write_ret < 0)
         {
             fprintf(logfp, "Failed writing content to socket on %d.\n",
                     connfd);
+            fupdate(logfp);
             return -1;
         }
 
-        if (write_ret == content_size)
+        if (write_ret == ct_size)
         {
             //dbg_cp2_printf("completed!\n");
             break;
         }
 
-        content_size = content_size - write_ret;
+        ct_size = ct_size - write_ret;
         write_offset = write_offset + write_ret;
     }
 
@@ -1102,6 +1154,7 @@ ssize_t Close_conn(int connfd, pools *p)
         {
             fprintf(logfp, "Failed closing connection ");
             fprintf(logfp, "file descriptor.\n");
+            fupdate(logfp);
         }
     }
     else if ((if_close == -1) && (sock_error == EWOULDBLOCK))
@@ -1110,6 +1163,7 @@ ssize_t Close_conn(int connfd, pools *p)
         {
             fprintf(logfp, "Failed closing connection ");
             fprintf(logfp, "file descriptor.\n");
+            fupdate(logfp);
         }
     }
 
@@ -1129,6 +1183,7 @@ ssize_t Close(int fd)
     {
         fprintf(logfp, "Failed closing connection ");
         fprintf(logfp, "file descriptor %d.\n", fd);
+        fupdate(logfp);
         return -1;
     }
     return 0;
@@ -1159,8 +1214,15 @@ ssize_t send_maxfderr(int connfd)
     ret = write_to_socket(connfd, resp_htext, NULL, NULL, 0);
     if (ret < 0) {
         fprintf(logfp, "Failed sending reponse to fd%d\n", connfd);
+        fupdate(logfp);
         return -1;
     }
 
     return 0;
+}
+
+void inline fupdate(FILE *fp)
+{
+    fflush(fp);
+    fsync(logfd);
 }

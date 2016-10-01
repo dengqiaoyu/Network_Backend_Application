@@ -1,7 +1,7 @@
 CC = gcc
 CFLAGS = -I.
-DEPS = y.tab.h pdef_type.h dbg_func.h log.h lisod.h
-OBJ = y.tab.o lex.yy.o parse.o log.o time_now.o dbg_func.o lisod.o
+DEPS = y.tab.h dbg_func.h log.h lisod.h
+OBJ = y.tab.o lex.yy.o parse.o log.o time_gmt.o dbg_func.o lisod.o
 FLAGS = -g -Wall -Werror
 
 default:all
