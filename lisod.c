@@ -9,9 +9,12 @@ static const char *FILE_SUFFIX[TYPE_SIZE] =
 static const char *FILE_TYPE[TYPE_SIZE] =
 { "text/html", "text/css", "image/gif", "image/png", "image/jpeg"};
 
-static FILE *logfp = NULL;
+FILE *logfp = NULL;
 static int logfd = -1;
-static int errfd = -1;
+int errfd = -1;
+int old_stdin;
+int old_stdout;
+int old_stderr;
 static param lisod_param;
 // ./lisod 2090 7114 ../tmp/lisod.log ../tmp/lisod.lock ../tmp/www ../tmp/cgi/cgi_script.py ../tmp/grader.key ../tmp/grader.crt
 
@@ -25,15 +28,17 @@ int main(int argc, char **argv) {
     struct timeval tv_recv = {S_RECV_TIMEOUT, US_RECV_TIMEOUT};
     mode_t m_error = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
 
-    signal(SIGTSTP, sigtstp_handler);
-    signal(SIGINT, sigtstp_handler);
-    signal(SIGPIPE, SIG_IGN);
-
     dbg_cp2_printf("----- http1.1 Server -----\n");
 
     ret = check_argv(argc, argv, &lisod_param);
     if (ret < 0) {
         fprintf(stderr, "Argumens is not valid, server terminated.\n");
+        return -1;
+    }
+
+    ret = daemonize(lisod_param.lock);
+    if (ret < 0) {
+        fprintf(stderr, "Daemonize failed, server terminated.\n");
         return -1;
     }
 

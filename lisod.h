@@ -141,6 +141,7 @@ typedef struct
 
 void sigtstp_handler();
 int check_argv(int argc, char **argv, param *lisod_param);
+int daemonize(char* lock_file);
 int open_listenfd(char *port);
 void init_pool(int listenfd, pools *p);
 int add_client(int connfd, pools *p, char *client_hostname);
