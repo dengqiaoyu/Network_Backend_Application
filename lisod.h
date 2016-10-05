@@ -31,6 +31,7 @@
 #define MAX_SIZE 4096
 #define MAX_SIZE_S 64
 #define MAX_TEXT 8192
+#define MAX_MSG 65536
 #define TYPE_SIZE 5
 
 //#define DEBUG_CP1
@@ -40,7 +41,7 @@
 #define dbg_cp1_printf(...)
 #endif
 
-//#define DEBUG_CP2
+#define DEBUG_CP2
 #ifdef DEBUG_CP2
 #define dbg_cp2_printf(...) printf(__VA_ARGS__)
 #else
@@ -59,6 +60,26 @@ typedef struct param
     char cert_file[MAXLINE + 1];
 } param;
 
+//Header field
+typedef struct
+{
+    char h_name[MAX_SIZE + 1];
+    char h_value[MAX_SIZE + 1];
+} Request_header;
+
+typedef struct Requests
+{
+    char http_version[MAX_SIZE_S + 1];
+    char http_method[MAX_SIZE_S + 1];
+    char http_uri[MAX_SIZE + 1];
+    Request_header *headers;
+    char *entity_body;
+    size_t entity_len;
+    struct Requests *next_req;
+    size_t h_count;
+    size_t error;
+} Requests;
+
 typedef struct pools
 {
     fd_set active_set;
@@ -68,30 +89,12 @@ typedef struct pools
     SSL *SSL_client_ctx[FD_SETSIZE];
     size_t ign_first[FD_SETSIZE];
     size_t too_long[FD_SETSIZE];
-    size_t is_ssl[FD_SETSIZE];
     char cached_buf[FD_SETSIZE][REQ_BUF_SIZE + 1];
+    Requests *cached_req[FD_SETSIZE];
     char clientip[FD_SETSIZE][MAX_SIZE_S + 1];
 } pools;
 
-//Header field
-typedef struct
-{
-    char h_name[MAX_SIZE + 1];
-    char h_value[MAX_SIZE + 1];
-} Request_header;
-
 //HTTP Request Header
-typedef struct Requests
-{
-    char http_version[MAX_SIZE_S + 1];
-    char http_method[MAX_SIZE_S + 1];
-    char http_uri[MAX_SIZE + 1];
-    Request_header *headers;
-    char *entity_body;
-    struct Requests *next_req;
-    size_t h_count;
-    size_t error;
-} Requests;
 
 typedef struct
 {
@@ -151,8 +154,8 @@ int open_tls_listenfd(char *tls_port, char *priv_key, char *cert_file);
 void init_pool(int listenfd, int ssl_listenfd, pools *p);
 ssize_t add_client(int connfd, pools *p, char *c_host, ssize_t if_ssl);
 int serve_clients(pools *p);
-void get_request_analyzed(Request_analyzed *request_analyzed,
-                          Requests *request);
+void get_request_analyzed(Request_analyzed *req_anlzed,
+                          Requests *req);
 ssize_t send_response(Request_analyzed *req_anlzed, Requests *req,
                       int connfd, SSL *client_context);
 int check_http_method(char *http_method);

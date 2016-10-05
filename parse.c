@@ -12,6 +12,7 @@
 * Given a char buffer returns the parsed req headers
 */
 void initiate_request(Requests *req);
+size_t if_contain_ebody(Requests *req);
 
 Requests * parse(char *skt_recv_buf, size_t recv_buf_size, int socketfd,
                  pools *p) {
@@ -35,6 +36,8 @@ Requests * parse(char *skt_recv_buf, size_t recv_buf_size, int socketfd,
     int ign_first = p->ign_first[socketfd];
     int too_long = p->too_long[socketfd];
     int if_2crlf = 0;
+    int end_with_ebody = 0;
+    size_t hdr_offset_end = 0;
     ssize_t read_count = 0;
     ssize_t full_req_size = 0;
 
@@ -58,7 +61,6 @@ Requests * parse(char *skt_recv_buf, size_t recv_buf_size, int socketfd,
         //dbg_cp2_printf("parse.c: line 54\n");
         if_2crlf = 0;
     }
-
     //dbg_cp2_printf("parse.c: line 55\n");
     if (cached_buf[0] != 0) {
         dbg_cp2_printf("enter chache buffer\n");
@@ -86,6 +88,30 @@ Requests * parse(char *skt_recv_buf, size_t recv_buf_size, int socketfd,
         }
         req_count++;
         req_last_ptr = req;
+    }
+    else if (p->cached_req[socketfd] != NULL) {
+        size_t remain_size = p->cached_req[socketfd]->entity_len
+                             - strlen(p->cached_req[socketfd]->entity_body);
+        if (remain_size <= recv_buf_size) {
+            strncat(p->cached_req[socketfd]->entity_body, skt_recv_buf,
+                    remain_size);
+            read_count = remain_size;
+            recv_buf_offset = read_count;
+            if (req_last_ptr != NULL) {
+                req_last_ptr->next_req = p->cached_req[socketfd];
+            }
+            else {
+                reqs_ptr = p->cached_req[socketfd];
+            }
+            req_count++;
+            req_last_ptr = p->cached_req[socketfd];
+            p->cached_req[socketfd] = NULL;
+        }
+        else {
+            strncat(p->cached_req[socketfd]->entity_body, skt_recv_buf,
+                    recv_buf_size);
+            if_2crlf = 0;
+        }
     }
 
     //dbg_cp2_printf("parse.c: line 72\n");
@@ -125,6 +151,7 @@ Requests * parse(char *skt_recv_buf, size_t recv_buf_size, int socketfd,
                     read_state = STATE_START;
             }
 
+            size_t if_req_cached = 0;
             req = (Requests *) malloc(sizeof(Requests));
             initiate_request(req);
             if (req_size <= REQ_BUF_SIZE) {
@@ -158,11 +185,66 @@ Requests * parse(char *skt_recv_buf, size_t recv_buf_size, int socketfd,
                         req->error = 400;
                         break;
                     }
-
                 }
                 else {
                     req->error = 200;
-
+                    req->entity_len = if_contain_ebody(req);
+                    if (req->entity_len) {
+                        if ((read_count + req_size) == full_req_size) {
+                            if (full_req_size != recv_buf_size) {
+                                size_t end_ebody_len =
+                                    recv_buf_size - full_req_size;
+                                if (req->entity_len == end_ebody_len) {
+                                    end_with_ebody = 1;
+                                    req->entity_body =
+                                        malloc(end_ebody_len + 1);
+                                    memset(req->entity_body, 0, end_ebody_len + 1);
+                                    strncmp(req->entity_body,
+                                            &skt_recv_buf[full_req_size],
+                                            end_ebody_len);
+                                }
+                                else if (req->entity_len < end_ebody_len) {
+                                    hdr_offset_end = req->entity_len;
+                                    req->entity_body =
+                                        malloc(req->entity_len + 1);
+                                    memset(req->entity_body, 0,
+                                           req->entity_len + 1);
+                                    strncmp(req->entity_body,
+                                            &skt_recv_buf[full_req_size],
+                                            req->entity_len);
+                                }
+                                else {
+                                    end_with_ebody = -1;
+                                    if_req_cached = 1;
+                                    p->cached_req[socketfd] = req;
+                                    req->entity_body =
+                                        malloc(req->entity_len + 1);
+                                    memset(req->entity_body, 0,
+                                           req->entity_len + 1);
+                                    strncmp(req->entity_body,
+                                            &skt_recv_buf[full_req_size],
+                                            end_ebody_len);
+                                }
+                            }
+                            else {
+                                if_req_cached = 1;
+                                p->cached_req[socketfd] = req;
+                                req->entity_body =
+                                    malloc(req->entity_len + 1);
+                                memset(req->entity_body, 0,
+                                       req->entity_len + 1);
+                            }
+                        }
+                        else {
+                            req->entity_body = malloc(req->entity_len + 1);
+                            memset(req->entity_body, 0, req->entity_len + 1);
+                            strncmp(req->entity_body,
+                                    &skt_recv_buf[recv_buf_offset],
+                                    req->entity_len);
+                            recv_buf_offset = recv_buf_offset + req->entity_len;
+                            read_count = read_count + req->entity_len;
+                        }
+                    }
                 }
             }
             else {
@@ -170,16 +252,16 @@ Requests * parse(char *skt_recv_buf, size_t recv_buf_size, int socketfd,
                 strncpy(req->http_method, "Request too long.", MAX_SIZE_S);
             }
 
-            if (req_last_ptr != NULL)
-            {
-                req_last_ptr->next_req = req;
+            if (if_req_cached == 0) {
+                if (req_last_ptr != NULL) {
+                    req_last_ptr->next_req = req;
+                }
+                else {
+                    reqs_ptr = req;
+                }
+                req_count++;
+                req_last_ptr = req;
             }
-            else
-            {
-                reqs_ptr = req;
-            }
-            req_count++;
-            req_last_ptr = req;
 
             read_count = read_count + req_size;
             memset(req_buffer, 0, REQ_BUF_SIZE);
@@ -187,13 +269,15 @@ Requests * parse(char *skt_recv_buf, size_t recv_buf_size, int socketfd,
             req_buf_offset = 0;
         }
         //dbg_cp2_printf("parse.c: line 163\n");
-        if (full_req_size != recv_buf_size)
+        if (full_req_size != recv_buf_size && end_with_ebody == 0)
         {
-            size_t length = strlen(&skt_recv_buf[full_req_size]);
+            size_t length =
+                strlen(&skt_recv_buf[full_req_size + hdr_offset_end]);
             if (length <= REQ_BUF_SIZE)
             {
                 memset(cached_buf, 0, REQ_BUF_SIZE + 1);
-                strncpy(cached_buf, &skt_recv_buf[full_req_size],
+                strncpy(cached_buf,
+                        &skt_recv_buf[full_req_size + hdr_offset_end],
                         REQ_BUF_SIZE);
                 too_long = 0;
                 ign_first = 0;
@@ -205,7 +289,7 @@ Requests * parse(char *skt_recv_buf, size_t recv_buf_size, int socketfd,
             }
         }
     }
-    else
+    else if (p->cached_req[socketfd] == NULL)
     {
         if (ign_first == 0)
         {
@@ -281,8 +365,17 @@ ssize_t search_first_position(char *str1, char *str2)
     }
 }
 
-void initiate_request(Requests *req)
-{
+void initiate_request(Requests *req) {
     memset(req, 0, sizeof(Requests));
     req->headers = (Request_header *) malloc(sizeof(Request_header) * 1);
+}
+
+size_t if_contain_ebody(Requests *req) {
+    size_t i = 0;
+    for (i = 0; i < req->h_count; i ++) {
+        if (strcasecmp(req->headers[i].h_name, "content-length")) {
+            return strtol(req->headers[i].h_value, NULL, 10);
+        }
+    }
+    return 0;
 }

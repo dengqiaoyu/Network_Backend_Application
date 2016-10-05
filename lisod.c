@@ -453,8 +453,8 @@ void init_pool(int listenfd, int ssl_listenfd, pools *p) {
         p->SSL_client_ctx[i] = NULL;
         p->ign_first[i] = 0;
         p->too_long[i] = 0;
-        p->is_ssl[i] = 0;
         memset(p->cached_buf[i], 0, REQ_BUF_SIZE + 1);
+        p->cached_req[i] = NULL;
         memset(p->clientip[i], 0, MAX_SIZE_S + 1);
     }
 }
@@ -787,7 +787,7 @@ ssize_t send_response(Request_analyzed *req_anlzed, Requests *req,
             dbg_cp2_printf("resp_hds_text:[\n%s]\n", resp_hds_text);
             //exit(1);
         }
-        else
+        else if (!strncmp(req->http_method, "HEAD", MAX_SIZE_S))
         {
             //dbg_cp2_printf("line 601\n");
             status_code = get_contentfd(req, &resp_hds, &contentfd);
@@ -1355,10 +1355,12 @@ int convert2path(char *uri)
 
 void destory_requests(Requests *reqs)
 {
+
     Requests *req_rover = reqs;
     while (req_rover != NULL)
     {
         Requests *next_req = req_rover->next_req;
+        free(req_rover->entity_body);
         free(req_rover->headers);
         req_rover->headers = NULL;
         free(req_rover);
