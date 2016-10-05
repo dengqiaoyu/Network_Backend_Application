@@ -52,7 +52,7 @@ void close_log(FILE *logfp)
     ssize_t ret;
     fprintf(logfp, "Terminated by user.\n");
     fprintf(logfp, "*----------------------------------------------------*\n");
-    fprintf(logfp, "*           End Time: %s         *\n", get_local_date());
+    fprintf(logfp, "*           End Time: %s        *\n", get_local_date());
     fprintf(logfp, "******************************************************\n");
     ret = fclose(logfp);
     if (ret != 0)

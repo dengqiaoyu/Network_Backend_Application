@@ -15,6 +15,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <openssl/ssl.h>
 #include "log.h"
 
 extern FILE *logfp;
@@ -22,6 +23,7 @@ extern int errfd;
 extern int old_stdin;
 extern int old_stdout;
 extern int old_stderr;
+extern SSL_CTX *ssl_context;
 
 void signal_handler(int sig);
 void liso_shutdown();
@@ -100,11 +102,13 @@ int daemonize(char* lock_file)
 
 void liso_shutdown()
 {
+    SSL_CTX_free(ssl_context);
     close_log(logfp);
     close(errfd);
     dup2(old_stdin, STDIN_FILENO);
     dup2(old_stdout, STDOUT_FILENO);
     dup2(old_stderr, STDERR_FILENO);
     printf("Server lisod terminated successfully.\n");
+
     exit(1);
 }

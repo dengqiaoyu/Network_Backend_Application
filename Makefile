@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -I.
+CFLAGS = -I. -lssl
 DEPS = y.tab.h dbg_func.h log.h lisod.h
 OBJ = y.tab.o lex.yy.o parse.o log.o time_gmt.o dbg_func.o daemonize.o lisod.o
 FLAGS = -g -Wall -Werror

@@ -31,7 +31,6 @@ Requests * parse(char *skt_recv_buf, size_t recv_buf_size, int socketfd,
     size_t req_count = 0;
 
     char *cached_buf = p->cached_buf[socketfd];
-    memset(cached_buf, 0, REQ_BUF_SIZE + 1);
 
     int ign_first = p->ign_first[socketfd];
     int too_long = p->too_long[socketfd];
@@ -62,11 +61,13 @@ Requests * parse(char *skt_recv_buf, size_t recv_buf_size, int socketfd,
 
     //dbg_cp2_printf("parse.c: line 55\n");
     if (cached_buf[0] != 0) {
+        dbg_cp2_printf("enter chache buffer\n");
         req_size = strlen(cached_buf);
         read_count = -req_size;
         memset(req_buffer, 0, REQ_BUF_SIZE + 1);
         strncpy(req_buffer, cached_buf, REQ_BUF_SIZE);
         req_buf_offset = req_size;
+        memset(p->cached_buf[socketfd], 0, REQ_BUF_SIZE + 1);
     }
     else if (ign_first == 1) {
         read_count = search_first_position(skt_recv_buf, "\r\n\r\n") + 4;

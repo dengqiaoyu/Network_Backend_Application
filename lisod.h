@@ -15,6 +15,8 @@
 #include <errno.h>
 #include <netdb.h>
 #include <time.h>
+#include <openssl/ssl.h>
+#include <openssl/err.h>
 
 #define BUF_SIZE 65535
 #define MAXLINE 4096
@@ -63,8 +65,10 @@ typedef struct pools
     fd_set ready_set;
     int num_ready;
     int clientfd[FD_SETSIZE];
+    SSL *SSL_client_ctx[FD_SETSIZE];
     size_t ign_first[FD_SETSIZE];
     size_t too_long[FD_SETSIZE];
+    size_t is_ssl[FD_SETSIZE];
     char cached_buf[FD_SETSIZE][REQ_BUF_SIZE + 1];
     char clientip[FD_SETSIZE][MAX_SIZE_S + 1];
 } pools;
@@ -143,13 +147,14 @@ void sigtstp_handler();
 int check_argv(int argc, char **argv, param *lisod_param);
 int daemonize(char* lock_file);
 int open_listenfd(char *port);
-void init_pool(int listenfd, pools *p);
-int add_client(int connfd, pools *p, char *client_hostname);
+int open_tls_listenfd(char *tls_port, char *priv_key, char *cert_file);
+void init_pool(int listenfd, int ssl_listenfd, pools *p);
+ssize_t add_client(int connfd, pools *p, char *c_host, ssize_t if_ssl);
 int serve_clients(pools *p);
 void get_request_analyzed(Request_analyzed *request_analyzed,
                           Requests *request);
-int send_response(Request_analyzed *request_analyzed, Requests *request,
-                  int connfd);
+ssize_t send_response(Request_analyzed *req_anlzed, Requests *req,
+                      int connfd, SSL *client_context);
 int check_http_method(char *http_method);
 void get_response_headers(char *response_headers_text,
                           Response_headers *response_headers);
@@ -158,13 +163,13 @@ void get_error_content(int status_code, char *body,
 int get_contentfd(Requests *request, Response_headers *response_headers,
                   int *contentfd);
 int get_file_type(char *file_name, char *file_type);
-int write_to_socket(int connfd, char *response_headers_text,
-                    char *response_content_text, char *response_content_ptr,
-                    size_t content_size);
+ssize_t write_to_socket(int connfd, SSL *client_context, char *resp_hds_text,
+                        char *resp_ct_text, char *resp_ct_ptr, size_t ct_size);
 int decode_asc(char *str);
 int convert2path(char *uri);
 void destory_requests(Requests *requests);
 ssize_t Close_conn(int connfd, pools *p);
+ssize_t Close_SSL_conn(int connfd, pools *p);
 ssize_t Close(int fd);
 ssize_t send_maxfderr(int connfd);
 void inline fupdate(FILE *fp);

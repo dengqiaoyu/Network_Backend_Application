@@ -15,11 +15,12 @@ int errfd = -1;
 int old_stdin;
 int old_stdout;
 int old_stderr;
+SSL_CTX *ssl_context = NULL;
 static param lisod_param;
 // ./lisod 2090 7114 ../tmp/lisod.log ../tmp/lisod.lock ../tmp/www ../tmp/cgi/cgi_script.py ../tmp/grader.key ../tmp/grader.crt
 
 int main(int argc, char **argv) {
-    int listenfd, connfd;
+    int listenfd, ssl_listenfd, connfd, ssl_connfd;
     ssize_t ret;
     socklen_t client_len;
     struct sockaddr_storage client_addr;
@@ -36,11 +37,14 @@ int main(int argc, char **argv) {
         return -1;
     }
 
-    ret = daemonize(lisod_param.lock);
-    if (ret < 0) {
-        fprintf(stderr, "Daemonize failed, server terminated.\n");
-        return -1;
-    }
+    // ret = daemonize(lisod_param.lock);
+    // if (ret < 0) {
+    //     fprintf(stderr, "Daemonize failed, server terminated.\n");
+    //     return -1;
+    // }
+    signal(SIGPIPE, SIG_IGN);
+    signal(SIGTSTP, sigtstp_handler);
+    signal(SIGINT, sigtstp_handler);
 
     logfd = init_log(lisod_param.log, argc, argv);
     errfd = open("./fd_reserved", O_WRONLY | O_CREAT, m_error);
@@ -57,7 +61,15 @@ int main(int argc, char **argv) {
         return -1;
     }
 
-    init_pool(listenfd, &pool);
+    ssl_listenfd = open_tls_listenfd(lisod_param.https_port,
+                                     lisod_param.priv_key,
+                                     lisod_param.cert_file);
+    if (ret < 0) {
+        fprintf(logfp, "SSL Port listening failed, server terminated\n");
+        fupdate(logfp);
+        return -1;
+    }
+    init_pool(listenfd, ssl_listenfd, &pool);
 
     while (1) {
         pool.ready_set = pool.active_set;
@@ -103,19 +115,51 @@ int main(int argc, char **argv) {
 
                 ret = setsockopt(connfd, SOL_SOCKET, SO_RCVTIMEO,
                                  (char *)&tv_recv, sizeof(struct timeval));
-                if (ret < 0)
-                {
+                if (ret < 0) {
                     fprintf(logfp, "Failed setting tv_recv in main.\n");
                     fupdate(logfp);
                 }
 
-                ret = add_client(connfd, &pool, c_host);
-                if (ret < 0)
-                {
+                ret = add_client(connfd, &pool, c_host, 0);
+                if (ret < 0) {
                     fprintf(logfp, "Client adding failed in main.\n");
                     fupdate(logfp);
                 }
             }
+        }
+        if (FD_ISSET(ssl_listenfd, &pool.ready_set)) {
+            client_len = sizeof(struct sockaddr_storage);
+            ssl_connfd = accept(ssl_listenfd,
+                                (struct sockaddr *)&client_addr,
+                                &client_len);
+            // TODO max_connection
+            if (ssl_connfd < 0) {
+                fprintf(logfp, "Failed accept connection for SSL.\n");
+                fupdate(logfp);
+            }
+            else {
+                char c_host[MAXLINE], c_port[MAXLINE];
+                int flags = NI_NUMERICHOST | NI_NUMERICSERV;
+                ret = getnameinfo((struct sockaddr *)&client_addr, client_len,
+                                  c_host, MAXLINE, c_port, MAXLINE, flags);
+                if (ret != 0) {
+                    fprintf(logfp, "Can not resolve client's IP ");
+                    fprintf(logfp, "or port in main for SSL.\n");
+                    fupdate(logfp);
+                }
+                else {
+                    fprintf(logfp, "Accept connection from client %s:%s.\n",
+                            c_host, c_port);
+                    fupdate(logfp);
+                }
+
+                ret = add_client(ssl_connfd, &pool, c_host, 1);
+                if (ret < 0) {
+                    fprintf(logfp, "Client adding failed in main.\n");
+                    fupdate(logfp);
+                }
+            }
+
         }
 
         ret = serve_clients(&pool);
@@ -145,7 +189,7 @@ void sigtstp_handler()
 }
 
 int check_argv(int argc, char **argv, param *lisod_param) {
-    memset(lisod_param, 0, sizeof(lisod_param));
+    memset(lisod_param, 0, sizeof(param));
     if (argc < 9) {
         fprintf(logfp, "Usage: %s ", argv[0]);
         fprintf(logfp, "<HTTP port> ");
@@ -305,23 +349,159 @@ int open_listenfd(char *port)
     return listenfd;
 }
 
-void init_pool(int listenfd, pools *p) {
+int open_tls_listenfd(char *tls_port, char *priv_key, char *cert_file) {
+    struct addrinfo hints, *listp, *p;
+    int ssl_listenfd, optval = 1;
+    ssize_t ret;
+
+    SSL_load_error_strings();
+    SSL_library_init();
+
+    ssl_context = SSL_CTX_new(TLSv1_server_method());
+    if (ssl_context == NULL) {
+        fprintf(logfp, " Failed creating SSL context.\n");
+        return -1;
+    }
+
+    ret = SSL_CTX_use_PrivateKey_file(ssl_context, priv_key, SSL_FILETYPE_PEM);
+    if (ret == 0) {
+        SSL_CTX_free(ssl_context);
+        fprintf(stderr, "Failed associating private key.\n");
+        return -1;
+    }
+
+    ret = SSL_CTX_use_certificate_file(ssl_context, cert_file,
+                                       SSL_FILETYPE_PEM);
+    if (ret == 0) {
+        SSL_CTX_free(ssl_context);
+        fprintf(stderr, "Failed associating certificate.\n");
+        return -1;
+    }
+
+    memset(&hints, 0, sizeof(struct addrinfo));
+    hints.ai_socktype = SOCK_STREAM;
+    hints.ai_flags = AI_PASSIVE | AI_ADDRCONFIG;
+    hints.ai_flags |= AI_NUMERICSERV;
+
+    ret = getaddrinfo(NULL, tls_port, &hints, &listp);
+    if (ret != 0) {
+        fprintf(logfp, "Failed getting address information in open_listefd.\n");
+        fupdate(logfp);
+        return -1;
+    }
+
+    for (p = listp; p != NULL; p = p->ai_next) {
+        ssl_listenfd = socket(p->ai_family, p->ai_socktype, p->ai_protocol);
+        if (ssl_listenfd < 0) {
+            continue;
+        }
+
+        if (setsockopt(ssl_listenfd, SOL_SOCKET, SO_REUSEADDR,
+                       (const void *)&optval, sizeof(int)) < 0) {
+            continue;
+        }
+        if (bind(ssl_listenfd, p->ai_addr, p->ai_addrlen) == 0) {
+            break;
+        }
+        else {
+            if (close(ssl_listenfd) < 0)
+            {
+                SSL_CTX_free(ssl_context);
+                fprintf(logfp, "Failed closing listening file descriptor in");
+                fprintf(logfp, "open_ssl_listenfd.\n");
+                fupdate(logfp);
+                return -1;
+            }
+        }
+    }
+
+    freeaddrinfo(listp);
+    if (!p) {
+        SSL_CTX_free(ssl_context);
+        fprintf(logfp, "No address worked in open_ssl_listenfd.\n");
+        fupdate(logfp);
+        return -1;
+    }
+
+    ret = listen(ssl_listenfd, LISTENQ);
+    if (ret < 0) {
+        ret = close(ssl_listenfd);
+        if (ret < 0) {
+            SSL_CTX_free(ssl_context);
+            fprintf(logfp, "Failed closing listening file descriptor ");
+            fprintf(logfp, "in open_ssl_listenfd.\n");
+            fupdate(logfp);
+            return -1;
+        }
+        SSL_CTX_free(ssl_context);
+        fprintf(logfp, "Failed listening on socket.\n");
+        fupdate(logfp);
+        return -1;
+    }
+
+    return ssl_listenfd;
+}
+
+void init_pool(int listenfd, int ssl_listenfd, pools *p) {
     size_t i;
 
     FD_ZERO(&p->active_set);
     FD_SET(listenfd, &p->active_set);
+    FD_SET(ssl_listenfd, &p->active_set);
     for (i = 0; i < FD_SETSIZE; i++) {
         p->clientfd[i] = -1;
-        p->ign_first[i] = -1;
-        p->too_long[i] = -1;
+        p->SSL_client_ctx[i] = NULL;
+        p->ign_first[i] = 0;
+        p->too_long[i] = 0;
+        p->is_ssl[i] = 0;
         memset(p->cached_buf[i], 0, REQ_BUF_SIZE + 1);
         memset(p->clientip[i], 0, MAX_SIZE_S + 1);
     }
 }
 
-int add_client(int connfd, pools *p, char *c_host)
+ssize_t add_client(int connfd, pools *p, char *c_host, ssize_t if_ssl)
 {
+    ssize_t ret;
     p->num_ready--;
+    if (if_ssl == 1) {
+        SSL *client_context;
+        client_context = SSL_new(ssl_context);
+        if (client_context == NULL) {
+            close(connfd);
+            fprintf(logfp, "Failed creating client SSL context.\n");
+            fupdate(logfp);
+            return -1;
+        }
+
+        ret = SSL_set_fd(client_context, connfd);
+        if (ret == 0) {
+            close(connfd);
+            SSL_free(client_context);
+            fprintf(logfp, "Failed creating client SSL context.\n");
+            fupdate(logfp);
+            return -1;
+        }
+
+        ret = SSL_accept(client_context);
+        if (ret <= 0) {
+            close(connfd);
+            SSL_free(client_context);
+            fprintf(logfp, "Failed accepting client SSL context.\n");
+            fprintf(logfp, "%d\n", SSL_get_error(client_context, ret));
+            fprintf(logfp, "%d\n", SSL_ERROR_NONE);
+            fprintf(logfp, "%d\n", SSL_ERROR_ZERO_RETURN);
+            fprintf(logfp, "%d\n", SSL_ERROR_WANT_READ);
+            fprintf(logfp, "%d\n", SSL_ERROR_WANT_WRITE);
+            fprintf(logfp, "%d\n", SSL_ERROR_WANT_CONNECT);
+            fprintf(logfp, "%d\n", SSL_ERROR_WANT_ACCEPT);
+            fprintf(logfp, "%d\n", SSL_ERROR_WANT_X509_LOOKUP);
+            fprintf(logfp, "%d\n", SSL_ERROR_SYSCALL);
+            fprintf(logfp, "%d\n", SSL_ERROR_SSL);
+            fupdate(logfp);
+            return -1;
+        }
+        p->SSL_client_ctx[connfd] = client_context;
+    }
     p->clientfd[connfd] = 1;
     p->ign_first[connfd] = 0;
     p->too_long[connfd] = 0;
@@ -331,34 +511,45 @@ int add_client(int connfd, pools *p, char *c_host)
     return 0;
 }
 
-int serve_clients(pools *p)
-{
+int serve_clients(pools *p) {
     int connfd;
     size_t i, read_ret, ret, read_or_not;
     char skt_recv_buf[SKT_RECV_BUF_SIZE + 1];
 
-    for (i = 6; (i < FD_SETSIZE) && (p->num_ready > 0); i++)
-    {
+    //TODO check start
+    for (i = 0; (i < FD_SETSIZE) && (p->num_ready > 0); i++) {
         connfd = i;
         dbg_cp2_printf("connfd: %d, status: %d\n", connfd, p->clientfd[i]);
 
-        if ((p->clientfd[i] == 1) && (FD_ISSET(connfd, &p->ready_set)))
-        {
+        if ((p->clientfd[i] == 1) && (FD_ISSET(connfd, &p->ready_set))) {
+            SSL *client_context = p->SSL_client_ctx[i];
             p->num_ready--;
 
             read_or_not = 1;
             while (read_or_not)
             {
                 memset(skt_recv_buf, 0, SKT_RECV_BUF_SIZE + 1);
-                read_ret = recv(connfd, skt_recv_buf, SKT_RECV_BUF_SIZE,
-                                MSG_WAITALL);
-                dbg_cp1_printf("read_ret: %d\n", read_ret);
+                if (client_context != NULL) {
+                    read_ret = SSL_read(client_context, skt_recv_buf,
+                                        SKT_RECV_BUF_SIZE);
+                }
+                else {
+                    read_ret = recv(connfd, skt_recv_buf, SKT_RECV_BUF_SIZE,
+                                    MSG_WAITALL);
+                }
+                dbg_cp2_printf("line 540 read_ret: %ld\n", read_ret);
                 if (read_ret < 0)
                 {
                     fprintf(logfp, "Failed receiving data from fd %d.\n",
                             connfd);
                     fupdate(logfp);
-                    ret = Close_conn(connfd, p);
+                    if (client_context != NULL) {
+                        ret = Close_SSL_conn(connfd, p);
+                    }
+                    else {
+                        ret = Close_conn(connfd, p);
+                    }
+
                     if (ret < 0) {
                         fprintf(logfp, "Failed closing connection fd%d\n",
                                 connfd);
@@ -368,7 +559,12 @@ int serve_clients(pools *p)
                 }
                 else if (read_ret == 0)
                 {
-                    ret = Close_conn(connfd, p);
+                    if (client_context != NULL) {
+                        ret = Close_SSL_conn(connfd, p);
+                    }
+                    else {
+                        ret = Close_conn(connfd, p);
+                    }
                     if (ret < 0) {
                         fprintf(logfp, "Failed closing connection fd%d\n",
                                 connfd);
@@ -407,10 +603,14 @@ int serve_clients(pools *p)
                     print_request_analyzed(&req_anlzed);
                     dbg_cp2_printf("get_request_analyzed complete!\n");
                     ret = send_response(&req_anlzed, req_rover,
-                                        connfd);
-                    if (ret != 0)
-                    {
-                        Close_conn(connfd, p);
+                                        connfd, client_context);
+                    if (ret != 0) {
+                        if (client_context != NULL) {
+                            ret = Close_SSL_conn(connfd, p);
+                        }
+                        else {
+                            ret = Close_conn(connfd, p);
+                        }
                         break;
                     }
                     req_rover = req_rover->next_req;
@@ -490,8 +690,8 @@ void get_request_analyzed(Request_analyzed *req_anlzed,
     }
 }
 
-int send_response(Request_analyzed *req_anlzed, Requests *req,
-                  int connfd)
+ssize_t send_response(Request_analyzed *req_anlzed, Requests *req,
+                      int connfd, SSL *client_context)
 {
     int status_code;
     Response_headers resp_hds;
@@ -629,10 +829,13 @@ int send_response(Request_analyzed *req_anlzed, Requests *req,
         }
     }
     //dbg_cp2_printf("line 648\n");
-    ret = write_to_socket(connfd, resp_hds_text,
+    ret = write_to_socket(connfd, client_context, resp_hds_text,
                           resp_ct_text, resp_ct_ptr,
                           resp_hds.entity_header.content_length);
-
+    if (ret < 0) {
+        fprintf(logfp, "Failed send response.\n");
+        fupdate(logfp);
+    }
     if (resp_ct_ptr != (void *)(-1) && (resp_ct_ptr != NULL))
     {
         ret = munmap(resp_ct_ptr, ct_size);
@@ -730,7 +933,7 @@ void get_response_headers(char *resp_hds_text,
         strncat(resp_hds_text, text_tmp,
                 MAX_TEXT - text_len);
         text_len +=  strlen(text_tmp);
-        snprintf(text_tmp, MAX_TEXT, "Content-Length: %d\r\n",
+        snprintf(text_tmp, MAX_TEXT, "Content-Length: %ld\r\n",
                  resp_hds->entity_header.content_length);
         strncat(resp_hds_text, text_tmp,
                 MAX_TEXT - text_len);
@@ -813,11 +1016,11 @@ int get_contentfd(Requests *request, Response_headers *resp_hds,
                   int *contentfd)
 {
     int status_code = 0;
-    char file_name[MAX_SIZE];
-    char file_type[MAX_SIZE];
+    char file_name[MAX_SIZE + 1];
+    char file_type[MAX_SIZE + 1];
     struct stat sbuf;
-    memset(file_name, 0, MAX_SIZE);
-    memset(file_type, 0, MAX_SIZE);
+    memset(file_name, 0, MAX_SIZE + 1);
+    memset(file_type, 0, MAX_SIZE + 1);
     strncpy(file_name, request->http_uri, MAX_SIZE);
 
     status_code = decode_asc(request->http_uri);
@@ -843,12 +1046,12 @@ int get_contentfd(Requests *request, Response_headers *resp_hds,
     if (!strncmp(request->http_uri, "/", MAX_SIZE) || \
             !strncmp(request->http_uri, "", MAX_SIZE))
     {
-        char path_home[MAX_SIZE] = {0};
-        char path_index[MAX_SIZE] = {0};
-        snprintf(path_home, MAX_SIZE, "%s%s\0", lisod_param.www,
+        char path_home[MAX_SIZE + 1] = {0};
+        char path_index[MAX_SIZE + 1] = {0};
+        snprintf(path_home, MAX_SIZE, "%s%s", lisod_param.www,
                  "/home.html");
         dbg_cp2_printf("path_home: %s\n", path_home);
-        snprintf(path_index, MAX_SIZE, "%s%s\0", lisod_param.www,
+        snprintf(path_index, MAX_SIZE, "%s%s", lisod_param.www,
                  "/index.html");
         dbg_cp2_printf("path_index: %s\n", path_index);
         if (stat(path_home, &sbuf) == 0)
@@ -864,7 +1067,7 @@ int get_contentfd(Requests *request, Response_headers *resp_hds,
     else
     {
         //dbg_cp2_printf("line 826, file_name: %s\n", file_name);
-        snprintf(file_name, MAX_SIZE, "%s%s\0", lisod_param.www,
+        snprintf(file_name, MAX_SIZE, "%s%s", lisod_param.www,
                  request->http_uri);
     }
     dbg_cp2_printf("line 831, file_name: %s\n", file_name);
@@ -940,9 +1143,8 @@ int get_file_type(char *file_name, char *file_type)
     return 200;
 }
 
-int write_to_socket(int connfd, char *resp_hds_text,
-                    char *resp_ct_text, char *resp_ct_ptr,
-                    size_t ct_size)
+ssize_t write_to_socket(int connfd, SSL *client_context, char *resp_hds_text,
+                        char *resp_ct_text, char *resp_ct_ptr, size_t ct_size)
 {
     char *response_content = NULL;
     size_t write_offset = 0;
@@ -965,8 +1167,18 @@ int write_to_socket(int connfd, char *resp_hds_text,
     dbg_cp2_printf("response_content:\n%s\n", response_content);
     while (1)
     {
-        int write_ret = send(connfd, resp_hds_text + write_offset,
+        ssize_t write_ret = 0;
+        if (client_context != NULL) {
+            write_ret = SSL_write(client_context, resp_hds_text + write_offset,
+                                  headers_size);
+            dbg_cp2_printf("write_ret: %ld\n", write_ret);
+            dbg_cp2_printf("SSL_get_error: %d\n", SSL_get_error(client_context, write_ret));
+        }
+        else {
+            write_ret = send(connfd, resp_hds_text + write_offset,
                              headers_size, MSG_WAITALL);
+        }
+
         //dbg_cp2_printf("write_ret: %d\n", write_ret);
         if (write_ret < 0)
         {
@@ -993,8 +1205,17 @@ int write_to_socket(int connfd, char *resp_hds_text,
     write_offset = 0;
     while (1)
     {
-        int write_ret = send(connfd, response_content + write_offset,
+        ssize_t write_ret = 0;
+        if (client_context != NULL) {
+            write_ret = SSL_write(client_context, response_content + write_offset,
+                                  ct_size);
+            dbg_cp2_printf("write_ret: %ld\n", write_ret);
+            dbg_cp2_printf("SSL_get_error: %d\n", SSL_get_error(client_context, write_ret));
+        }
+        else {
+            write_ret = send(connfd, resp_hds_text + write_offset,
                              ct_size, MSG_WAITALL);
+        }
         //dbg_cp2_printf("write_ret: %d\n", write_ret);
         if (write_ret < 0)
         {
@@ -1146,9 +1367,7 @@ void destory_requests(Requests *reqs)
 
 }
 
-ssize_t Close_conn(int connfd, pools *p)
-{
-    close(connfd);
+ssize_t Close_conn(int connfd, pools *p) {
     char buf[1];
     int if_close = recv(connfd, buf, 1, MSG_PEEK);
     int sock_error = errno;
@@ -1172,6 +1391,20 @@ ssize_t Close_conn(int connfd, pools *p)
         }
     }
 
+    FD_CLR(connfd, &p->active_set);
+    p->clientfd[connfd] = -1;
+    p->ign_first[connfd] = 0;
+    p->too_long[connfd] = 0;
+    memset(p->cached_buf[connfd], 0, REQ_BUF_SIZE + 1);
+    memset(p->clientip[connfd], 0, MAX_SIZE_S);
+    return 0;
+}
+
+ssize_t Close_SSL_conn(int connfd, pools *p) {
+    SSL_shutdown(p->SSL_client_ctx[connfd]);
+    SSL_free(p->SSL_client_ctx[connfd]);
+    p->SSL_client_ctx[connfd] = NULL;
+    close(connfd);
     FD_CLR(connfd, &p->active_set);
     p->clientfd[connfd] = -1;
     p->ign_first[connfd] = 0;
@@ -1216,7 +1449,7 @@ ssize_t send_maxfderr(int connfd)
     strncat(resp_htext, text_tmp, MAX_TEXT - text_len);
     text_len +=  strlen(text_tmp);
 
-    ret = write_to_socket(connfd, resp_htext, NULL, NULL, 0);
+    ret = write_to_socket(connfd, NULL, resp_htext, NULL, NULL, 0);
     if (ret < 0) {
         fprintf(logfp, "Failed sending reponse to fd%d\n", connfd);
         fupdate(logfp);
