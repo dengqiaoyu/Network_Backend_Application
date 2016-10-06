@@ -537,6 +537,7 @@ int serve_clients(pools *p) {
                     read_ret = recv(connfd, skt_recv_buf, SKT_RECV_BUF_SIZE,
                                     MSG_WAITALL);
                 }
+                //dbg_cp3_printf("skt_recv_buf:\n[\n%s]\n", skt_recv_buf);
                 dbg_cp2_printf("line 540 read_ret: %ld\n", read_ret);
                 if (read_ret < 0)
                 {
@@ -579,15 +580,16 @@ int serve_clients(pools *p) {
                 }
                 else
                     read_or_not = 0;
-                dbg_cp2_printf("skt_recv_buf in lisod.c:[\n%s]\n",
+                dbg_cp2_printf("$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n");
+                dbg_cp2_printf("skt_recv_buf in lisod.c:\n%s\n",
                                skt_recv_buf);
+                dbg_cp2_printf("$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n");
                 Requests *reqs = parse(skt_recv_buf, read_ret, connfd, p);
                 dbg_cp2_printf("parse complete!\n");
 
                 Requests *req_rover = reqs;
                 print_request(req_rover);
                 req_rover = reqs;
-
                 while (req_rover != NULL)
                 {
                     Request_analyzed req_anlzed;
@@ -1213,7 +1215,7 @@ ssize_t write_to_socket(int connfd, SSL *client_context, char *resp_hds_text,
             dbg_cp2_printf("SSL_get_error: %d\n", SSL_get_error(client_context, write_ret));
         }
         else {
-            write_ret = send(connfd, resp_hds_text + write_offset,
+            write_ret = send(connfd, response_content + write_offset,
                              ct_size, MSG_WAITALL);
         }
         //dbg_cp2_printf("write_ret: %d\n", write_ret);

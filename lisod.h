@@ -22,7 +22,7 @@
 #define MAXLINE 4096
 #define LISTENQ 1024
 #define REQ_BUF_SIZE 8192
-#define SKT_RECV_BUF_SIZE 65536
+#define SKT_RECV_BUF_SIZE 8192
 #define S_SELT_TIMEOUT 0
 #define US_SELT_TIMEOUT 1000
 #define S_RECV_TIMEOUT 0
@@ -41,11 +41,18 @@
 #define dbg_cp1_printf(...)
 #endif
 
-#define DEBUG_CP2
+//#define DEBUG_CP2
 #ifdef DEBUG_CP2
 #define dbg_cp2_printf(...) printf(__VA_ARGS__)
 #else
 #define dbg_cp2_printf(...)
+#endif
+
+#define DEBUG_CP3
+#ifdef DEBUG_CP3
+#define dbg_cp3_printf(...) printf(__VA_ARGS__)
+#else
+#define dbg_cp3_printf(...)
 #endif
 
 typedef struct param

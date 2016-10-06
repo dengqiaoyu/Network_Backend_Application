@@ -21,16 +21,20 @@ void print_request(Requests *reqs)
     while (req_rover != NULL)
     {
         int index = 0;
-        dbg_cp2_printf("Http Method %s\n", req_rover->http_method);
-        dbg_cp2_printf("Http Version %s\n", req_rover->http_version);
-        dbg_cp2_printf("Http Uri %s\n", req_rover->http_uri);
+        dbg_cp3_printf("Http Method %s\n", req_rover->http_method);
+        dbg_cp3_printf("Http Version %s\n", req_rover->http_version);
+        dbg_cp3_printf("Http Uri %s\n", req_rover->http_uri);
+        if (req_rover->entity_len != 0) {
+            dbg_cp3_printf("entity len: %d\n", req_rover->entity_len);
+            dbg_cp3_printf("entity body: \n[\n%s]\n\n", req_rover->entity_body);
+        }
         for (index = 0; index < req_rover->h_count; index++) {
-            dbg_cp2_printf("Request Header\n");
-            dbg_cp2_printf("Header name %s Header Value %s\n",
+            dbg_cp3_printf("Request Header\n");
+            dbg_cp3_printf("Header name %s Header Value %s\n",
                            req_rover->headers[index].h_name,
                            req_rover->headers[index].h_value);
         }
-        dbg_cp2_printf("**********************************************************\n");
+        dbg_cp3_printf("**********************************************************\n");
         req_rover = req_rover->next_req;
     }
 }
