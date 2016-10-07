@@ -18,7 +18,7 @@
 #include <openssl/ssl.h>
 #include <openssl/err.h>
 
-#define BUF_SIZE 65535
+#define BUF_SIZE 65536
 #define MAXLINE 4096
 #define LISTENQ 1024
 #define REQ_BUF_SIZE 8192
@@ -32,7 +32,10 @@
 #define MAX_SIZE_S 64
 #define MAX_TEXT 8192
 #define MAX_MSG 65536
+#define MAX_CGI_MSG 65536
 #define TYPE_SIZE 5
+#define ENVP_len 22
+#define SCRIPT_NAME "/cgi"
 
 //#define DEBUG_CP1
 #ifdef DEBUG_CP1
@@ -41,7 +44,7 @@
 #define dbg_cp1_printf(...)
 #endif
 
-//#define DEBUG_CP2
+#define DEBUG_CP2
 #ifdef DEBUG_CP2
 #define dbg_cp2_printf(...) printf(__VA_ARGS__)
 #else
@@ -163,8 +166,10 @@ ssize_t add_client(int connfd, pools *p, char *c_host, ssize_t if_ssl);
 int serve_clients(pools *p);
 void get_request_analyzed(Request_analyzed *req_anlzed,
                           Requests *req);
-ssize_t send_response(Request_analyzed *req_anlzed, Requests *req,
-                      int connfd, SSL *client_context);
+ssize_t serve_static(Request_analyzed *req_anlzed, Requests *req,
+                     int connfd, SSL *client_context);
+ssize_t serve_dynamic(Requests *req, pools *p, int connfd,
+                      SSL * client_context, int cgi_rspfd);
 int check_http_method(char *http_method);
 void get_response_headers(char *response_headers_text,
                           Response_headers *response_headers);
@@ -175,11 +180,14 @@ int get_contentfd(Requests *request, Response_headers *response_headers,
 int get_file_type(char *file_name, char *file_type);
 ssize_t write_to_socket(int connfd, SSL *client_context, char *resp_hds_text,
                         char *resp_ct_text, char *resp_ct_ptr, size_t ct_size);
+void get_envp(pools *p, int connfd, Requests *req,
+              char *ENVP[ENVP_len], char *port);
+void add_cgi_rspfd(int cgifd, int connfd, pools *p);
+void execve_error_handler();
 int decode_asc(char *str);
 int convert2path(char *uri);
 void destory_requests(Requests *requests);
 ssize_t Close_conn(int connfd, pools *p);
-ssize_t Close_SSL_conn(int connfd, pools *p);
 ssize_t Close(int fd);
 ssize_t send_maxfderr(int connfd);
 void inline fupdate(FILE *fp);
