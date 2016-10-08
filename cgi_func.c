@@ -63,7 +63,7 @@ static const char* header_name_key[] = {
 void get_envp(pools *p, int connfd, Requests *req,
               char *ENVP[ENVP_len], char *port) {
     size_t i = 0;
-    while (header_name_key[i]) {
+    while (header_name_key[i] != NULL) {
         switch (i) {
         case 2: // GATEWAY_INTERFACE
         {
@@ -141,31 +141,43 @@ void get_envp(pools *p, int connfd, Requests *req,
         }
         break;
         default: // others
-            break;
-        }
-        size_t index = 0;
-        for (index = 0; index < req->h_count; index++) {
-            char *hdr_name = req->headers[index].h_name;
-            if (!strcasecmp(header_name_key[i], hdr_name)) {
-                char hv_pair[(2 * MAX_SIZE + 1) + 1] = {0};
-                snprintf(hv_pair, 2 * MAX_SIZE + 1, "%s=%s", ENVP_key[i],
-                         req->headers[index].h_value);
-                strncpy(ENVP[i], hv_pair, 2 * MAX_SIZE + 1);
-                break;
+        {
+            size_t index = 0;
+            for (index = 0; index < req->h_count; index++) {
+                char *hdr_name = req->headers[index].h_name;
+                if (!strcasecmp(header_name_key[i], hdr_name)) {
+                    char hv_pair[(2 * MAX_SIZE + 1) + 1] = {0};
+                    snprintf(hv_pair, 2 * MAX_SIZE + 1, "%s=%s", ENVP_key[i],
+                             req->headers[index].h_value);
+                    strncpy(ENVP[i], hv_pair, 2 * MAX_SIZE + 1);
+                    break;
+                }
+                else {
+                    char hv_pair[(2 * MAX_SIZE + 1) + 1] = {0};
+                    snprintf(hv_pair, 2 * MAX_SIZE + 1, "%s=", ENVP_key[i]);
+                    strncpy(ENVP[i], hv_pair, 2 * MAX_SIZE + 1);
+                }
             }
         }
+        break;
+        }
+        // dbg_cp3_fprintf(stderr, "i: %ld ", i);
+        // dbg_cp3_fprintf(stderr, "ENVP[i]: %s\n", ENVP[i]);
         i++;
     }
 }
 
 void add_cgi_rspfd(int cgifd, int connfd, pools *p) {
     FD_SET(cgifd, &p->active_set);
+    dbg_cp3_printf("cgifd: %d\n", cgifd);
     p->clientfd[cgifd] = connfd;
+    dbg_cp3_printf("p->clientfd[cgifd]: %d\n", p->clientfd[cgifd]);
+    dbg_cp3_printf("p->clientfd[connfd]: %d\n", p->clientfd[connfd]);
     p->SSL_client_ctx[cgifd] = NULL;
     p->ign_first[cgifd] = 0;
     p->too_long[cgifd] = 0;
     memset(p->cached_buf[cgifd], 0, REQ_BUF_SIZE + 1);
-    memset(p->cached_req[cgifd], 0, REQ_BUF_SIZE + 1);
+    p->cached_req[cgifd] = NULL;
     strncpy(p->clientip[cgifd], "", MAX_SIZE_S);
 }
 

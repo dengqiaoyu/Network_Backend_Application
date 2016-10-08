@@ -36,6 +36,7 @@
 #define TYPE_SIZE 5
 #define ENVP_len 22
 #define SCRIPT_NAME "/cgi"
+#define MAX_CGI_ITER_COUNT 10
 
 //#define DEBUG_CP1
 #ifdef DEBUG_CP1
@@ -44,7 +45,7 @@
 #define dbg_cp1_printf(...)
 #endif
 
-#define DEBUG_CP2
+//#define DEBUG_CP2
 #ifdef DEBUG_CP2
 #define dbg_cp2_printf(...) printf(__VA_ARGS__)
 #else
@@ -54,8 +55,10 @@
 #define DEBUG_CP3
 #ifdef DEBUG_CP3
 #define dbg_cp3_printf(...) printf(__VA_ARGS__)
+#define dbg_cp3_fprintf(...) fprintf(__VA_ARGS__)
 #else
 #define dbg_cp3_printf(...)
+#define dbg_cp3_fprintf(...)
 #endif
 
 typedef struct param
@@ -191,6 +194,7 @@ ssize_t Close_conn(int connfd, pools *p);
 ssize_t Close(int fd);
 ssize_t send_maxfderr(int connfd);
 void inline fupdate(FILE *fp);
+ssize_t inline if_exist(char *file_name);
 
 Requests* parse(char *socket_recv_buf, size_t recv_buf_size , int socketFd,
                 pools *p);
