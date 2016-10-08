@@ -114,8 +114,8 @@ int main(int argc, char **argv) {
                     fupdate(logfp);
                 }
 
-                ret = setsockopt(connfd, SOL_SOCKET, SO_RCVTIMEO,
-                                 (char *)&tv_recv, sizeof(struct timeval));
+                // ret = setsockopt(connfd, SOL_SOCKET, SO_RCVTIMEO,
+                //                  (char *)&tv_recv, sizeof(struct timeval));
                 if (ret < 0) {
                     fprintf(logfp, "Failed setting tv_recv in main.\n");
                     fupdate(logfp);
@@ -123,6 +123,7 @@ int main(int argc, char **argv) {
 
                 ret = add_client(connfd, &pool, c_host, 0);
                 if (ret < 0) {
+                    Close(connfd);
                     fprintf(logfp, "Client adding failed in main.\n");
                     fupdate(logfp);
                 }
@@ -527,6 +528,7 @@ ssize_t add_client(int connfd, pools *p, char *c_host, ssize_t if_ssl)
         }
         p->SSL_client_ctx[connfd] = client_context;
     }
+    fcntl(connfd, F_SETFL, O_NONBLOCK);
     p->clientfd[connfd] = 1;
     p->ign_first[connfd] = 0;
     p->too_long[connfd] = 0;
@@ -537,117 +539,119 @@ ssize_t add_client(int connfd, pools *p, char *c_host, ssize_t if_ssl)
 }
 
 int serve_clients(pools *p) {
-    size_t i, read_or_not;
+    size_t i, iter_count, read_or_not;
     ssize_t read_ret, ret;
-    char skt_recv_buf[SKT_RECV_BUF_SIZE + 1];
+    char skt_read_buf[SKT_READ_BUF_SIZE + 1] = {65};
+    iter_count = 0;
 
     //TODO check start
     for (i = 0; (i < FD_SETSIZE) && (p->num_ready > 0); i++) {
         dbg_cp3_printf("connfd: %ld, status: %d\n", i, p->clientfd[i]);
         if ((p->clientfd[i] == 1) && (FD_ISSET(i, &p->ready_set))) {
             int connfd = i;
+            size_t if_conn_close = 0;
+            size_t read_offset = 0;
             SSL *client_context = p->SSL_client_ctx[i];
             p->num_ready--;
 
             read_or_not = 1;
-            while (read_or_not) {
-                memset(skt_recv_buf, 0, SKT_RECV_BUF_SIZE + 1);
+            if (client_context != NULL) {
+                read_ret = SSL_read(client_context, skt_read_buf,
+                                    SKT_READ_BUF_SIZE);
+            }
+            else {
+                dbg_cp3_printf("line 562, should go to here\n");
+                read_ret = read(connfd, skt_read_buf, SKT_READ_BUF_SIZE);
+            }
+            dbg_cp3_printf("line 564\n");
+            while (read_ret >= 0 && iter_count < MAX_READ_ITER_COUNT) {
+                dbg_cp3_printf("iter_count: %ld\n", iter_count);
+                dbg_cp3_printf("read_ret: %ld\n", read_ret);
+                if (read_ret == 0) {
+                    Close_conn(connfd, p);
+                    if_conn_close = 1;
+                    break;
+                }
+                iter_count++;
+                read_offset = read_offset + read_ret;
+                if (read_offset == SKT_READ_BUF_SIZE) {
+                    break;
+                }
                 if (client_context != NULL) {
-                    read_ret = SSL_read(client_context, skt_recv_buf,
-                                        SKT_RECV_BUF_SIZE);
+                    read_ret = SSL_read(client_context,
+                                        &skt_read_buf[read_offset],
+                                        SKT_READ_BUF_SIZE - read_offset);
                 }
                 else {
-                    read_ret = recv(connfd, skt_recv_buf, SKT_RECV_BUF_SIZE,
-                                    MSG_WAITALL);
+                    read_ret = read(connfd, &skt_read_buf[read_offset],
+                                    SKT_READ_BUF_SIZE - read_offset);
                 }
-                //dbg_cp3_printf("skt_recv_buf:\n[\n%s]\n", skt_recv_buf);
-                dbg_cp2_printf("line 540 read_ret: %ld\n", read_ret);
-                if (read_ret < 0) {
-                    fprintf(logfp, "Failed receiving data from fd %d.\n",
-                            connfd);
-                    fupdate(logfp);
-                    if (connfd == 7) {
-                        dbg_cp3_printf("line 569\n");
-                    }
-                    ret = Close_conn(connfd, p);
-                    if (ret < 0) {
-                        fprintf(logfp, "Failed closing connection fd%d\n",
-                                connfd);
-                        fupdate(logfp);
-                    }
-                    break;
-                }
-                else if (read_ret == 0) {
-                    if (connfd == 7) {
-                        dbg_cp3_printf("line 581\n");
-                    }
-                    ret = Close_conn(connfd, p);
-                    if (ret < 0) {
-                        fprintf(logfp, "Failed closing connection fd%d\n",
-                                connfd);
-                        fupdate(logfp);
-                    }
-                    break;
-                }
-                if (read_ret == sizeof(skt_recv_buf)) {
-                    dbg_cp1_printf("again!\n");
-                    read_or_not = 1;
-                }
-                else
-                    read_or_not = 0;
-                dbg_cp2_printf("$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n");
-                dbg_cp2_printf("skt_recv_buf in lisod.c:\n%s\n",
-                               skt_recv_buf);
-                dbg_cp2_printf("$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n");
-                Requests *reqs = parse(skt_recv_buf, read_ret, connfd, p);
-                dbg_cp2_printf("parse complete!\n");
-
-                Requests *req_rover = reqs;
-                print_request(req_rover);
-                req_rover = reqs;
-                while (req_rover != NULL) {
-                    ret = search_first_position(req_rover->http_uri,
-                                                SCRIPT_NAME);
-                    if (ret != 0) {
-                        Request_analyzed req_anlzed;
-                        memset(&req_anlzed, 0, sizeof(Request_analyzed));
-                        get_request_analyzed(&req_anlzed, req_rover);
-                        fprintf(logfp, "  Get %s %s request from %s.\n",
-                                req_rover->http_method,
-                                req_rover->http_uri,
-                                p->clientip[connfd]);
-                        fprintf(logfp, "    User-Agent: %s\n",
-                                req_anlzed.user_agent);
-                        fupdate(logfp);
-                        print_request_analyzed(&req_anlzed);
-                        dbg_cp2_printf("get_request_analyzed complete!\n");
-                        ret = serve_static(&req_anlzed, req_rover,
-                                           connfd, client_context);
-                    }
-                    else {
-                        dbg_cp3_printf("entering cgi\n");
-                        ret = serve_dynamic(req_rover, p, connfd,
-                                            client_context, -1);
-                        dbg_cp3_printf("625 p->clientfd[7]: %d\n", p->clientfd[7]);
-                    }
-                    dbg_cp3_printf("serve_dynamic_ret: %ld\n", ret);
-                    if (ret != 0) {
-                        if (connfd == 7) {
-                            dbg_cp3_printf("line 636\n");
-                        }
-                        ret = Close_conn(connfd, p);
-                        if (ret < 0) {
-                            fprintf(logfp, "Failed closing connection fd%d\n",
-                                    connfd);
-                            fupdate(logfp);
-                        }
-                        break;
-                    }
-                    req_rover = req_rover->next_req;
-                }
-                destory_requests(reqs);
-                reqs = NULL;
+                dbg_cp3_printf("after read_ret: %ld errno: %d\n", read_ret, errno);
             }
+            if (read_ret < 0) {
+                if (errno != EAGAIN && errno != EWOULDBLOCK) {
+                    Close_conn(connfd, p);
+                    if_conn_close = 1;
+                }
+            }
+            if (if_conn_close == 1) {
+                continue;
+            }
+
+            // dbg_cp3_printf("$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n");
+            // dbg_cp3_printf("skt_read_buf in lisod.c:\n%s\n",
+            //                skt_read_buf);
+            // dbg_cp3_printf("$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n");
+            Requests *reqs = parse(skt_read_buf, read_ret, connfd, p);
+            Requests *req_rover = reqs;
+            print_request(req_rover);
+            req_rover = reqs;
+            while (req_rover != NULL) {
+                ret = search_first_position(req_rover->http_uri,
+                                            SCRIPT_NAME);
+                if (ret != 0) {
+                    Request_analyzed req_anlzed;
+                    memset(&req_anlzed, 0, sizeof(Request_analyzed));
+                    get_request_analyzed(&req_anlzed, req_rover);
+                    fprintf(logfp, "  Get %s %s request from %s.\n",
+                            req_rover->http_method,
+                            req_rover->http_uri,
+                            p->clientip[connfd]);
+                    fprintf(logfp, "    User-Agent: %s\n",
+                            req_anlzed.user_agent);
+                    fupdate(logfp);
+                    print_request_analyzed(&req_anlzed);
+                    ret = serve_static(&req_anlzed, req_rover,
+                                       connfd, client_context);
+                }
+                else {
+                    Request_analyzed req_anlzed;
+                    memset(&req_anlzed, 0, sizeof(Request_analyzed));
+                    get_request_analyzed(&req_anlzed, req_rover);
+                    fprintf(logfp, "  Get %s %s request from %s.\n",
+                            req_rover->http_method,
+                            req_rover->http_uri,
+                            p->clientip[connfd]);
+                    fprintf(logfp, "    User-Agent: %s\n",
+                            req_anlzed.user_agent);
+                    fupdate(logfp);
+                    ret = serve_dynamic(req_rover, p, connfd,
+                                        client_context, -1);
+                }
+                dbg_cp3_printf("serve_dynamic_ret: %ld\n", ret);
+                if (ret != 0) {
+                    ret = Close_conn(connfd, p);
+                    if (ret < 0) {
+                        fprintf(logfp, "Failed closing connection fd%d\n",
+                                connfd);
+                        fupdate(logfp);
+                    }
+                    break;
+                }
+                req_rover = req_rover->next_req;
+            }
+            destory_requests(reqs);
+            reqs = NULL;
         }
         else if ((p->clientfd[i] > 1) && (FD_ISSET(i, &p->ready_set))) {
             int cgi_rspfd = i;
@@ -912,22 +916,23 @@ ssize_t serve_dynamic(Requests *req, pools *p, int connfd,
                       SSL * client_context, int cgi_rspfd) {
     ssize_t ret = 0;
     if (req != NULL) {
+        int status_code;
         pid_t pid;
         int stdin_pipe[2];
         int stdout_pipe[2];
+
+        status_code = req->error;
 
         if (pipe(stdin_pipe) < 0) {
             fprintf(logfp, "Failed piping for stdin.\n");
             fupdate(logfp);
             return -1;
         }
-
-        if (pipe(stdout_pipe) < 0) {
+        if (pipe(stdout_pipe) < 0 ) {
             fprintf(logfp, "Failed piping for stdout.\n");
             fupdate(logfp);
             return -1;
         }
-
         pid = fork();
         if (pid < 0) {
             fprintf(logfp, "Failed forking child process.\n");
@@ -969,6 +974,7 @@ ssize_t serve_dynamic(Requests *req, pools *p, int connfd,
             ARGV[0] = (char *) malloc(MAXLINE + 1);
             strncpy(ARGV[0], lisod_param.cgi_scp, MAXLINE);
             ARGV[1] = NULL;
+            // TODO free envp
             ret = execve(ARGV[0], ARGV, ENVP);
             if (ret) {
                 execve_error_handler();
@@ -1000,11 +1006,11 @@ ssize_t serve_dynamic(Requests *req, pools *p, int connfd,
             dbg_cp3_printf("%s", cgi_buf);
             while (read_ret >= 0 && iter_count < MAX_CGI_ITER_COUNT) {
                 if (read_ret > 0) {
-                    ret = write_to_socket(connfd, p->SSL_client_ctx[connfd],
-                                          cgi_buf, NULL, NULL, 0);
-                    // char header_temp[8192] = "HTTP/1.1 OK 200\r\nContent-Length: 754\r\n\r\n";
                     // ret = write_to_socket(connfd, p->SSL_client_ctx[connfd],
-                    //                       header_temp, cgi_buf, NULL, 0);
+                    //                       cgi_buf, NULL, NULL, 0);
+                    char header_temp[8192] = "HTTP/1.1 OK 200\r\nContent-Length: 700\r\n\r\n";
+                    ret = write_to_socket(connfd, p->SSL_client_ctx[connfd],
+                                          header_temp, cgi_buf, NULL, 0);
                     if (ret < 0) {
                         fprintf(logfp,
                                 "Failed sending CGI response to client.\n");
@@ -1039,12 +1045,12 @@ ssize_t serve_dynamic(Requests *req, pools *p, int connfd,
             dbg_cp3_printf("line 1038 read_ret: %d\n", read_ret);
             dbg_cp3_printf("%s", cgi_buf);
             if (read_ret > 0) {
-                ret = write_to_socket(connfd, p->SSL_client_ctx[connfd],
-                                      cgi_buf, NULL, NULL, 0);
-                // char header_temp[8192] = "HTTP/1.1 OK 200\r\nContent-Length: 754\r\n\r\n";
-                // dbg_cp3_printf("line 1042\n");
                 // ret = write_to_socket(connfd, p->SSL_client_ctx[connfd],
-                //                       header_temp, cgi_buf, NULL, 0);
+                //                       cgi_buf, NULL, NULL, 0);
+                char header_temp[8192] = "HTTP/1.1 OK 200\r\nContent-Length: 700\r\n\r\n";
+                dbg_cp3_printf("line 1042\n");
+                ret = write_to_socket(connfd, p->SSL_client_ctx[connfd],
+                                      header_temp, cgi_buf, NULL, 0);
                 if (ret < 0) {
                     fprintf(logfp,
                             "Failed sending CGI response to client.\n");

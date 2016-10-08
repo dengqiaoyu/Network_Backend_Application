@@ -22,11 +22,11 @@
 #define MAXLINE 4096
 #define LISTENQ 1024
 #define REQ_BUF_SIZE 8192
-#define SKT_RECV_BUF_SIZE 8192
+#define SKT_READ_BUF_SIZE 8192
 #define S_SELT_TIMEOUT 0
-#define US_SELT_TIMEOUT 1000
+#define US_SELT_TIMEOUT 0
 #define S_RECV_TIMEOUT 0
-#define US_RECV_TIMEOUT 2000
+#define US_RECV_TIMEOUT 0
 #define SUCCESS 0
 #define MAX_SIZE 4096
 #define MAX_SIZE_S 64
@@ -37,6 +37,7 @@
 #define ENVP_len 22
 #define SCRIPT_NAME "/cgi"
 #define MAX_CGI_ITER_COUNT 10
+#define MAX_READ_ITER_COUNT 10
 
 //#define DEBUG_CP1
 #ifdef DEBUG_CP1
