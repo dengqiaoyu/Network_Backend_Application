@@ -9,6 +9,7 @@
 #include <sys/socket.h>
 #include <sys/stat.h>
 #include <sys/mman.h>
+#include <sys/wait.h>
 #include <errno.h>
 #include <netdb.h>
 #include <fcntl.h>
@@ -24,9 +25,7 @@
 #define REQ_BUF_SIZE 8192
 #define SKT_READ_BUF_SIZE 8192
 #define S_SELT_TIMEOUT 0
-#define US_SELT_TIMEOUT 0
-#define S_RECV_TIMEOUT 0
-#define US_RECV_TIMEOUT 0
+#define US_SELT_TIMEOUT 1000
 #define SUCCESS 0
 #define MAX_SIZE 4096
 #define MAX_SIZE_S 64
@@ -167,10 +166,10 @@ int open_listenfd(char *port);
 int open_tls_listenfd(char *tls_port, char *priv_key, char *cert_file);
 void init_pool(int listenfd, int ssl_listenfd, pools *p);
 ssize_t add_client(int connfd, pools *p, char *c_host, ssize_t if_ssl);
-int serve_clients(pools *p);
+ssize_t serve_clients(pools *p);
 void get_request_analyzed(Request_analyzed *req_anlzed,
                           Requests *req);
-ssize_t serve_static(Request_analyzed *req_anlzed, Requests *req,
+ssize_t serve_static(Request_analyzed *req_anlzed, Requests *req, pools *p,
                      int connfd, SSL *client_context);
 ssize_t serve_dynamic(Requests *req, pools *p, int connfd,
                       SSL * client_context, int cgi_rspfd);
@@ -184,6 +183,7 @@ int get_contentfd(Requests *request, Response_headers *response_headers,
 int get_file_type(char *file_name, char *file_type);
 ssize_t write_to_socket(int connfd, SSL *client_context, char *resp_hds_text,
                         char *resp_ct_text, char *resp_ct_ptr, size_t ct_size);
+ssize_t send_error(int connfd, SSL *client_context, int status_code);
 void get_envp(pools *p, int connfd, Requests *req,
               char *ENVP[ENVP_len], char *port);
 void add_cgi_rspfd(int cgifd, int connfd, pools *p);
