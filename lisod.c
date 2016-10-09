@@ -512,16 +512,16 @@ ssize_t add_client(int connfd, pools *p, char *c_host, ssize_t if_ssl)
             close(connfd);
             SSL_free(client_context);
             fprintf(logfp, "Failed accepting client SSL context.\n");
-            fprintf(logfp, "%d\n", SSL_get_error(client_context, ret));
-            fprintf(logfp, "%d\n", SSL_ERROR_NONE);
-            fprintf(logfp, "%d\n", SSL_ERROR_ZERO_RETURN);
-            fprintf(logfp, "%d\n", SSL_ERROR_WANT_READ);
-            fprintf(logfp, "%d\n", SSL_ERROR_WANT_WRITE);
-            fprintf(logfp, "%d\n", SSL_ERROR_WANT_CONNECT);
-            fprintf(logfp, "%d\n", SSL_ERROR_WANT_ACCEPT);
-            fprintf(logfp, "%d\n", SSL_ERROR_WANT_X509_LOOKUP);
-            fprintf(logfp, "%d\n", SSL_ERROR_SYSCALL);
-            fprintf(logfp, "%d\n", SSL_ERROR_SSL);
+            // fprintf(logfp, "%d\n", SSL_get_error(client_context, ret));
+            // fprintf(logfp, "%d\n", SSL_ERROR_NONE);
+            // fprintf(logfp, "%d\n", SSL_ERROR_ZERO_RETURN);
+            // fprintf(logfp, "%d\n", SSL_ERROR_WANT_READ);
+            // fprintf(logfp, "%d\n", SSL_ERROR_WANT_WRITE);
+            // fprintf(logfp, "%d\n", SSL_ERROR_WANT_CONNECT);
+            // fprintf(logfp, "%d\n", SSL_ERROR_WANT_ACCEPT);
+            // fprintf(logfp, "%d\n", SSL_ERROR_WANT_X509_LOOKUP);
+            // fprintf(logfp, "%d\n", SSL_ERROR_SYSCALL);
+            // fprintf(logfp, "%d\n", SSL_ERROR_SSL);
             fupdate(logfp);
             return -1;
         }
@@ -596,10 +596,10 @@ ssize_t serve_clients(pools *p) {
                 continue;
             }
 
-            // dbg_cp3_printf("$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n");
-            // dbg_cp3_printf("skt_read_buf in lisod.c:\n%s\n",
-            //                skt_read_buf);
-            // dbg_cp3_printf("$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n");
+            dbg_cp3_printf("$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n");
+            dbg_cp3_printf("skt_read_buf in lisod.c:\n%s\n",
+                           skt_read_buf);
+            dbg_cp3_printf("$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n");
             Requests *reqs = parse(skt_read_buf, read_ret, connfd, p);
             Requests *req_rover = reqs;
             print_request(req_rover);
@@ -643,7 +643,6 @@ ssize_t serve_clients(pools *p) {
                                        child_pid, child_stat);
                     }
                 }
-                dbg_cp3_printf("serve_dynamic_ret: %ld\n", ret);
                 if (status_code != 200) {
                     ret = send_error(connfd, client_context, status_code);
                     if (ret < 0) {
@@ -663,6 +662,7 @@ ssize_t serve_clients(pools *p) {
         else if ((p->clientfd[i] > 1) && (FD_ISSET(i, &p->ready_set))) {
             int cgi_rspfd = i;
             int connfd = p->clientfd[i];
+            dbg_cp3_printf("cgi_rspfd: %d, connfd: %d\n", cgi_rspfd, connfd);
             SSL *client_context = p->SSL_client_ctx[connfd];
             p->num_ready--;
             if (p->clientfd[connfd] == -1) {
@@ -813,7 +813,7 @@ ssize_t serve_static(Request_analyzed *req_anlzed, Requests *req, pools *p,
             MAX_SIZE_S);
     strncpy(resp_hds.response_header.server, "liso/1.0",
             MAX_SIZE_S);
-    strncpy(resp_hds.entity_header.allow, "GET, HEAD",
+    strncpy(resp_hds.entity_header.allow, "GET, HEAD, POST",
             MAX_SIZE_S);
     strncpy(resp_hds.entity_header.content_encoding, "identity",
             MAX_SIZE_S);
@@ -828,18 +828,8 @@ ssize_t serve_static(Request_analyzed *req_anlzed, Requests *req, pools *p,
 
     if (!strncmp(req->http_method, "POST", MAX_SIZE_S))
     {
-        snprintf(resp_hds.status_line.status_code, MAX_SIZE_S,
-                 "%d", status_code);
-        strncpy(resp_hds.status_line.reason_phrase,
-                "OK", MAX_SIZE_S);
-        strncpy(resp_ct_text, "Hello\r\n", MAX_TEXT);
-        resp_hds.entity_header.content_length = strlen(resp_ct_text);
-        strncpy(resp_hds.entity_header.content_type,
-                "\0", MAX_SIZE_S);
-        char *time_GMT = get_rfc1123_date();
-        strncpy(resp_hds.entity_header.last_modified, time_GMT,
-                MAX_SIZE_S);
-        free(time_GMT);
+        status_code = 501;
+        return status_code;
     }
     else if (!strncmp(req->http_method, "GET", MAX_SIZE_S))
     {
@@ -891,6 +881,7 @@ ssize_t serve_static(Request_analyzed *req_anlzed, Requests *req, pools *p,
 
     if (if_close_conn == 1) {
         Close_conn(connfd, p);
+        dbg_cp3_printf("Closed!\n");
     }
     return 200;
 }
@@ -983,9 +974,6 @@ ssize_t serve_dynamic(Requests *req, pools *p, int connfd,
                     return status_code;
                 }
             }// TODO Need to be removed
-            else {
-                write(stdin_pipe[1], "hello", strlen("hello"));
-            }
             Close(stdin_pipe[1]);
             fcntl(stdout_pipe[0], F_SETFL, O_NONBLOCK);
             add_cgi_rspfd(stdout_pipe[0], connfd, p);
@@ -994,11 +982,12 @@ ssize_t serve_dynamic(Requests *req, pools *p, int connfd,
             ssize_t read_ret = read(stdout_pipe[0], cgi_buf, MAX_CGI_MSG);
             while (read_ret >= 0 && iter_count < MAX_CGI_ITER_COUNT) {
                 if (read_ret > 0) {
-                    // ret = write_to_socket(connfd, p->SSL_client_ctx[connfd],
-                    //                       cgi_buf, NULL, NULL, 0);
-                    char header_temp[8192] = "HTTP/1.1 OK 200\r\nContent-Length: 700\r\n\r\n";
+                    dbg_cp3_printf("cgi_buf:\n %s\n", cgi_buf);
                     ret = write_to_socket(connfd, p->SSL_client_ctx[connfd],
-                                          header_temp, cgi_buf, NULL, 0);
+                                          cgi_buf, NULL, NULL, 0);
+                    // char header_temp[8192] = "HTTP/1.1 OK 200\r\nContent-Length: 700\r\n\r\n";
+                    // ret = write_to_socket(connfd, p->SSL_client_ctx[connfd],
+                    //                       header_temp, cgi_buf, NULL, 0);
                     if (ret < 0) {
                         fprintf(logfp,
                                 "Failed sending CGI response to client.\n");
@@ -1029,16 +1018,19 @@ ssize_t serve_dynamic(Requests *req, pools *p, int connfd,
         }
     }
     else {
+        dbg_cp3_printf("cgi ready\n");
         char cgi_buf[MAX_CGI_MSG + 1] = {0};
         size_t iter_count = 0;
         ssize_t read_ret = read(cgi_rspfd, cgi_buf, MAX_CGI_MSG);
+        dbg_cp3_printf("line 1028: read_ret: %d\n");
         while (read_ret >= 0 && iter_count < MAX_CGI_ITER_COUNT) {
             if (read_ret > 0) {
-                // ret = write_to_socket(connfd, p->SSL_client_ctx[connfd],
-                //                       cgi_buf, NULL, NULL, 0);
-                char header_temp[8192] = "HTTP/1.1 OK 200\r\nContent-Length: 700\r\n\r\n";
+                dbg_cp3_printf("cgi_buf:\n %s\n", cgi_buf);
                 ret = write_to_socket(connfd, p->SSL_client_ctx[connfd],
-                                      header_temp, cgi_buf, NULL, 0);
+                                      cgi_buf, NULL, NULL, 0);
+                // char header_temp[8192] = "HTTP/1.1 OK 200\r\nContent-Length: 700\r\n\r\n";
+                // ret = write_to_socket(connfd, p->SSL_client_ctx[connfd],
+                //                       header_temp, cgi_buf, NULL, 0);
                 if (ret < 0) {
                     fprintf(logfp,
                             "Failed sending CGI response to client.\n");
@@ -1365,7 +1357,7 @@ ssize_t write_to_socket(int connfd, SSL *client_context, char *resp_hds_text,
     char *response_content = NULL;
     size_t write_offset = 0;
     size_t headers_size = strlen(resp_hds_text);
-    //dbg_cp3_printf("resp_hds_text: %s\n", resp_hds_text);
+    dbg_cp3_printf("resp_hds_text: %s\n", resp_hds_text);
     //dbg_cp3_printf("headers_size: %ld\n", headers_size);
     if (resp_ct_ptr != NULL)
     {
@@ -1381,7 +1373,7 @@ ssize_t write_to_socket(int connfd, SSL *client_context, char *resp_hds_text,
         response_content = NULL;
     }
 
-    //dbg_cp3_printf("response_content:\n%s\n", response_content);
+    dbg_cp3_printf("response_content:\n%s\n", response_content);
     while (1)
     {
         ssize_t write_ret = 0;
@@ -1627,14 +1619,16 @@ void destory_requests(Requests *reqs)
 }
 
 ssize_t Close_conn(int connfd, pools *p) {
+    dbg_cp3_printf("entering Close_conn\n");
     if (p->clientfd[connfd] > 1) {
-        dbg_cp3_printf("connfd: %d\n", connfd);
+        dbg_cp3_printf("pipefd: %d closed\n", connfd);
         Close(connfd);
     }
     else {
         if (p->SSL_client_ctx[connfd] != NULL) {
             SSL_shutdown(p->SSL_client_ctx[connfd]);
             SSL_free(p->SSL_client_ctx[connfd]);
+            dbg_cp3_printf("connfd %d close\n", connfd);
             Close(connfd);
         }
         else {
@@ -1642,17 +1636,16 @@ ssize_t Close_conn(int connfd, pools *p) {
             int if_close = recv(connfd, buf, 1, MSG_PEEK);
             int sock_error = errno;
 
-            if (if_close >= 0) {
-                dbg_cp3_printf("connfd %d close\n", connfd);
-                Close(connfd);
+            if (if_close > 0) {
+                return 0;
             }
             else if ((if_close == -1) && (sock_error == EWOULDBLOCK)) {
-                dbg_cp3_printf("connfd %d close\n", connfd);
-                Close(connfd);
+                return 0;
             }
             else
             {
-                return 0;
+                dbg_cp3_printf("connfd %d close\n", connfd);
+                Close(connfd);
             }
         }
     }

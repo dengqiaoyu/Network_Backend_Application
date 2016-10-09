@@ -558,3 +558,39 @@ Terminated by user.
 Command Line:
 ./lisod 2090 7114 ../tmp/lisod.log ../tmp/lisod.lock ./www ../tmp/cgi/cgi_script.py ../tmp/grader.key ../tmp/grader.crt 
 -------------------------------------------------------
+
+
+
+
+*******************************************************
+*                HTTPS Server Start                   *
+*          Start Time: Sat Oct  8 21:07:14 2016       *
+*-----------------------------------------------------*
+Command Line:
+../lisod 9969 7553 ../lisod.log ../lisod.lock www cgi/cgi_script.py grader.key grader.crt 
+*-----------------------------------------------------*
+Accept connection from client 127.0.0.1:50000.
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+Accept connection from client 127.0.0.1:50002.
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+Accept connection from client 127.0.0.1:50004.
