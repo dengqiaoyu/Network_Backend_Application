@@ -52,7 +52,7 @@
 #define dbg_cp2_printf(...)
 #endif
 
-#define DEBUG_CP3
+//#define DEBUG_CP3
 #ifdef DEBUG_CP3
 #define dbg_cp3_printf(...) printf(__VA_ARGS__)
 #define dbg_cp3_fprintf(...) fprintf(__VA_ARGS__)
@@ -87,7 +87,7 @@ typedef struct Requests
     char http_uri[MAX_SIZE + 1];
     Request_header *headers;
     char *entity_body;
-    size_t entity_len;
+    ssize_t entity_len;
     struct Requests *next_req;
     size_t h_count;
     size_t error;

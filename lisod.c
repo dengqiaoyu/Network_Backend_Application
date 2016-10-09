@@ -38,15 +38,15 @@ int main(int argc, char **argv) {
         return -1;
     }
 
-    // ret = daemonize(lisod_param.lock);
-    // if (ret < 0) {
-    //     fprintf(stderr, "Daemonize failed, server terminated.\n");
-    //     return -1;
-    // }
-    signal(SIGPIPE, signal_handler_dbg);
-    signal(SIGTSTP, signal_handler_dbg);
-    signal(SIGINT, signal_handler_dbg);
-    signal(SIGCHLD, signal_handler_dbg);
+    ret = daemonize(lisod_param.lock);
+    if (ret < 0) {
+        fprintf(stderr, "Daemonize failed, server terminated.\n");
+        return -1;
+    }
+    // signal(SIGPIPE, signal_handler_dbg);
+    // signal(SIGTSTP, signal_handler_dbg);
+    // signal(SIGINT, signal_handler_dbg);
+    // signal(SIGCHLD, signal_handler_dbg);
 
     logfd = init_log(lisod_param.log, argc, argv);
     errfd = open("./fd_reserved", O_WRONLY | O_CREAT, m_error);
@@ -549,33 +549,17 @@ ssize_t serve_clients(pools *p) {
             int connfd = i;
             size_t if_conn_close = 0;
             size_t read_offset = 0;
+            read_ret = 0;
             SSL *client_context = p->SSL_client_ctx[i];
             p->num_ready--;
 
             memset(skt_read_buf, 0, SKT_READ_BUF_SIZE + 1);
-            if (client_context != NULL) {
-                read_ret = SSL_read(client_context, skt_read_buf,
-                                    SKT_READ_BUF_SIZE);
-            }
-            else {
-                dbg_cp3_printf("line 562, should go to here\n");
-                read_ret = read(connfd, skt_read_buf, SKT_READ_BUF_SIZE);
-            }
-            dbg_cp3_printf("####################################\n");
-            dbg_cp3_printf("skt_read_buf in lisod.c:\n%s\n",
-                           skt_read_buf);
-            dbg_cp3_printf("####################################\n");
             size_t iter_count = 0;
-            while (read_ret >= 0 && iter_count < MAX_READ_ITER_COUNT) {
-                dbg_cp3_printf("iter_count: %ld\n", iter_count);
-                dbg_cp3_printf("read_ret: %ld\n", read_ret);
-                if (read_ret == 0) {
-                    Close_conn(connfd, p);
-                    if_conn_close = 1;
-                    break;
-                }
+            do {
                 iter_count++;
+                dbg_cp3_printf("iter_count: %ld ", iter_count);
                 read_offset = read_offset + read_ret;
+                dbg_cp3_printf("read_offset: %ld\n", read_offset);
                 if (read_offset == SKT_READ_BUF_SIZE) {
                     break;
                 }
@@ -588,18 +572,22 @@ ssize_t serve_clients(pools *p) {
                     read_ret = read(connfd, &skt_read_buf[read_offset],
                                     SKT_READ_BUF_SIZE - read_offset);
                 }
-                dbg_cp3_printf("####################################\n");
-                dbg_cp3_printf("skt_read_buf in lisod.c:\n%s\n",
-                               skt_read_buf);
-                dbg_cp3_printf("####################################\n");
-                dbg_cp3_printf("after read_ret: %ld errno: %d\n", read_ret, errno);
-            }
-            if (read_ret < 0) {
-                if (errno != EAGAIN && errno != EWOULDBLOCK) {
+                dbg_cp3_printf("read_ret: %ld\n", read_ret);
+
+                if (read_ret == 0) {
                     Close_conn(connfd, p);
                     if_conn_close = 1;
+                    break;
                 }
-            }
+                else if (read_ret < 0) {
+                    if (errno != EAGAIN && errno != EWOULDBLOCK) {
+                        Close_conn(connfd, p);
+                        if_conn_close = 1;
+                    }
+                    break;
+                }
+
+            } while (iter_count < MAX_READ_ITER_COUNT);
             if (if_conn_close == 1) {
                 continue;
             }
@@ -786,7 +774,7 @@ ssize_t serve_static(Request_analyzed *req_anlzed, Requests *req, pools *p,
             MAX_SIZE_S);
     strncpy(resp_hds.general_header.cache_control, "no-cache",
             MAX_SIZE_S);
-    if (!strncmp("close", req_anlzed->connection, MAX_SIZE_S))
+    if (!strncasecmp("close", req_anlzed->connection, MAX_SIZE_S))
     {
         strncpy(resp_hds.general_header.connection, "close",
                 MAX_SIZE_S);
@@ -891,12 +879,12 @@ ssize_t serve_dynamic(Request_analyzed *req_anlzed, Requests *req, pools *p,
         int stdin_pipe[2];
         int stdout_pipe[2];
 
-        status_code = check_http_method(req->http_method);
+        status_code = req->error;
         if (status_code != 200) {
             return status_code;
         }
+        status_code = check_http_method(req->http_method);
 
-        status_code = req->error;
         if (status_code != 200) {
             return status_code;
         }
@@ -989,23 +977,22 @@ ssize_t serve_dynamic(Request_analyzed *req_anlzed, Requests *req, pools *p,
                 }
             }
             Close(stdin_pipe[1]);
-            if (!strncmp("close", req_anlzed->connection, MAX_SIZE_S)) {
+            if (!strncasecmp("close", req_anlzed->connection, MAX_SIZE_S)) {
                 p->close_fin[connfd] = 1;
             }
             add_cgi_rspfd(stdout_pipe[0], connfd, p);
             char cgi_buf[MAX_CGI_MSG + 1] = {0};
             size_t iter_count = 0;
-            ssize_t read_ret = read(stdout_pipe[0], cgi_buf, MAX_CGI_MSG);
-            dbg_cp3_fprintf(stderr, "line 994 read_ret: %ld, errno:  %d\n", read_ret, errno);
-            dbg_cp3_fprintf(stderr, "line 994 stdout_pipe[0]: %d\n", stdout_pipe[0]);
-            while (read_ret >= 0 && iter_count < MAX_CGI_ITER_COUNT) {
+            do {
+                iter_count++;
+                memset(cgi_buf, 0, MAX_CGI_MSG + 1);
+                ssize_t read_ret = read(stdout_pipe[0], cgi_buf, MAX_CGI_MSG);
+                dbg_cp3_fprintf(stderr, "read_ret: %ld, errno:  %d\n", read_ret, errno);
+                dbg_cp3_fprintf(stderr, "stdout_pipe[0]: %d\n", stdout_pipe[0]);
                 if (read_ret > 0) {
                     dbg_cp3_printf("cgi_buf:\n %s\n", cgi_buf);
                     ret = write_to_socket(connfd, p->SSL_client_ctx[connfd],
                                           cgi_buf, NULL, NULL, 0);
-                    // char header_temp[8192] = "HTTP/1.1 OK 200\r\nContent-Length: 700\r\n\r\n";
-                    // ret = write_to_socket(connfd, p->SSL_client_ctx[connfd],
-                    //                       header_temp, cgi_buf, NULL, 0);
                     if (ret < 0) {
                         fprintf(logfp,
                                 "Failed sending CGI response to client.\n");
@@ -1016,46 +1003,44 @@ ssize_t serve_dynamic(Request_analyzed *req_anlzed, Requests *req, pools *p,
                     Close_conn(stdout_pipe[0], p);
                     if (p->close_fin[connfd] == 1 && p->remain_req[connfd] == 0)
                     {
-                        dbg_cp3_printf("fd %d Connection_close is made\n", connfd);
+                        dbg_cp3_printf("fd %d Connection_close is made\n",
+                                       connfd);
                         Close_conn(connfd, p);
                     }
                     break;
                 }
-                iter_count++;
-                memset(cgi_buf, 0, MAX_CGI_MSG + 1);
-                read_ret = read(stdout_pipe[0], cgi_buf, MAX_CGI_MSG);
-            }
-            if (read_ret < 0) {
-                if (errno != EAGAIN && errno != EWOULDBLOCK) {
-                    fprintf(logfp,
-                            "Failed receiving message from CGI program.\n");
-                    if (iter_count == 0) {
-                        status_code = 500;
-                        return status_code;
+                else {
+                    if (errno != EAGAIN && errno != EWOULDBLOCK) {
+                        fprintf(logfp,
+                                "Failed receiving message from CGI program.\n");
+                        if (iter_count == 1) {
+                            status_code = 500;
+                            return status_code;
+                        }
+                        else {
+                            return -1;
+                        }
                     }
-                    else {
-                        return -1;
-                    }
+                    p->remain_req[connfd]++;
+                    break;
                 }
-            }
-            p->remain_req[connfd]++;
+            } while (iter_count < MAX_CGI_ITER_COUNT);
         }
     }
     else {
         dbg_cp3_printf("cgi ready\n");
         char cgi_buf[MAX_CGI_MSG + 1] = {0};
         size_t iter_count = 0;
-        ssize_t read_ret = read(cgi_rspfd, cgi_buf, MAX_CGI_MSG);
-        dbg_cp3_printf("line 1028: read_ret: %ld\n", read_ret);
-        dbg_cp3_printf("line 1044: errno: %d\n", errno);
-        dbg_cp3_printf("line 1037: cgi_rspfd: %s\n", cgi_buf);
-        while (read_ret >= 0 && iter_count < MAX_CGI_ITER_COUNT) {
+        do {
+            iter_count++;
+            memset(cgi_buf, 0, MAX_CGI_MSG + 1);
+            ssize_t read_ret = read(cgi_rspfd, cgi_buf, MAX_CGI_MSG);
+            dbg_cp3_fprintf(stderr, "read_ret: %ld, errno:  %d\n", read_ret, errno);
+            dbg_cp3_fprintf(stderr, "cgi_rspfd: %d\n", cgi_rspfd);
             if (read_ret > 0) {
+                dbg_cp3_printf("cgi_buf:\n %s\n", cgi_buf);
                 ret = write_to_socket(connfd, p->SSL_client_ctx[connfd],
                                       cgi_buf, NULL, NULL, 0);
-                // char header_temp[8192] = "HTTP/1.1 OK 200\r\nContent-Length: 700\r\n\r\n";
-                // ret = write_to_socket(connfd, p->SSL_client_ctx[connfd],
-                //                       header_temp, cgi_buf, NULL, 0);
                 if (ret < 0) {
                     p->remain_req[connfd]--;
                     fprintf(logfp,
@@ -1067,27 +1052,25 @@ ssize_t serve_dynamic(Request_analyzed *req_anlzed, Requests *req, pools *p,
                 p->remain_req[connfd]--;
                 Close_conn(cgi_rspfd, p);
                 dbg_cp3_printf("remain_req: %ld, close_fin: %ld\n",
-                               p->remain_req[connfd],
-                               p->close_fin[connfd]);
+                               p->remain_req[connfd], p->close_fin[connfd]);
                 if (p->close_fin[connfd] == 1 && p->remain_req[connfd] == 0)
                 {
-                    dbg_cp3_printf("line 1082 fd %d Connection_close is made\n", connfd);
+                    dbg_cp3_printf("fd %d Connection_close is made\n",
+                                   connfd);
                     Close_conn(connfd, p);
                 }
                 break;
             }
-            iter_count++;
-            read_ret = read(cgi_rspfd, cgi_buf, MAX_CGI_MSG);
-            dbg_cp3_printf("after read_ret, read_ret: %ld\n", read_ret);
-        }
-        if (read_ret < 0) {
-            if (errno != EAGAIN && errno != EWOULDBLOCK) {
-                p->remain_req[connfd]--;
-                fprintf(logfp,
-                        "Failed receiving message from CGI program.\n");
-                return -1;
+            else {
+                if (errno != EAGAIN && errno != EWOULDBLOCK) {
+                    p->remain_req[connfd]--;
+                    fprintf(logfp,
+                            "Failed receiving message from CGI program.\n");
+                    return -1;
+                }
+                break;
             }
-        }
+        } while (iter_count < MAX_CGI_ITER_COUNT);
     }
     return 200;
 }

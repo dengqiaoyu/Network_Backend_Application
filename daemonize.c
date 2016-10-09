@@ -47,6 +47,10 @@ void signal_handler(int sig)
     case SIGCHLD: {
         int child_stat = 0;
         pid_t child_pid = waitpid(-1, &child_stat, WNOHANG);
+        if (child_pid != 0) {
+            fprintf(logfp, "child %d terminated with %d\n", child_pid,
+                    child_stat);
+        }
     }
     default:
         break;
@@ -94,12 +98,13 @@ int daemonize(char* lock_file)
     sprintf(str, "%d\n", getpid());
     write(lfp, str, strlen(str)); /* record pid to lockfile */
 
-    signal(SIGCHLD, SIG_IGN); /* child terminate signal */
-    signal(SIGPIPE, SIG_IGN);
+    signal(SIGCHLD, signal_handler); /* child terminate signal */
+    signal(SIGPIPE, signal_handler);
     signal(SIGHUP, signal_handler); /* hangup signal */
     signal(SIGTERM, signal_handler); /* software termination signal from kill */
 
     // TODO: log --> "Successfully daemonized lisod process, pid %d."
+    //fprintf(logfp, "Successfully daemonized lisod process, pid %d.\n", pid);
 
     return EXIT_SUCCESS;
 }

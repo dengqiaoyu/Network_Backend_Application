@@ -1,5 +1,6 @@
 #include <lisod.h>
 #include <dbg_func.h>
+#include <log.h>
 
 extern FILE *logfp;
 extern int errfd;

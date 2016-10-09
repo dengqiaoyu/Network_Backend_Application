@@ -12,7 +12,7 @@
 * Given a char buffer returns the parsed req headers
 */
 void initiate_request(Requests *req);
-size_t if_contain_ebody(Requests *req);
+ssize_t if_contain_ebody(Requests *req);
 
 Requests * parse(char *skt_recv_buf, size_t recv_buf_size, int socketfd,
                  pools *p) {
@@ -199,6 +199,13 @@ Requests * parse(char *skt_recv_buf, size_t recv_buf_size, int socketfd,
                 else {
                     req->error = 200;
                     req->entity_len = if_contain_ebody(req);
+                    if (req->entity_len < 0) {
+                        req->error = 400;
+                        strncpy(req->http_method,
+                                "Nagetive content-length not allowed",
+                                MAX_SIZE_S);
+                        req->entity_len = 0;
+                    }
                     //dbg_cp3_printf("req->entity_len: %ld\n", req->entity_len);
                     if (req->entity_len) {
                         if ((read_count + req_size) == full_req_size) {
@@ -386,7 +393,7 @@ void initiate_request(Requests *req) {
     req->headers = (Request_header *) malloc(sizeof(Request_header) * 1);
 }
 
-size_t if_contain_ebody(Requests *req) {
+ssize_t if_contain_ebody(Requests *req) {
     size_t i = 0;
     for (i = 0; i < req->h_count; i ++) {
         if (!strcasecmp(req->headers[i].h_name, "content-length")) {

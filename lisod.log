@@ -594,3 +594,326 @@ Accept connection from client 127.0.0.1:50002.
   Get HEAD /index.html request from 127.0.0.1.
     User-Agent: 
 Accept connection from client 127.0.0.1:50004.
+
+
+
+
+*******************************************************
+*                HTTPS Server Start                   *
+*          Start Time: Sun Oct  9 16:27:11 2016       *
+*-----------------------------------------------------*
+Command Line:
+../lisod 1964 3890 ../lisod.log ../lisod.lock www cgi/cgi_script.py grader.key grader.crt 
+*-----------------------------------------------------*
+Accept connection from client 127.0.0.1:49520.
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+Accept connection from client 127.0.0.1:49526.
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+Accept connection from client 127.0.0.1:49528.
+
+
+
+
+*******************************************************
+*                HTTPS Server Start                   *
+*          Start Time: Sun Oct  9 16:37:55 2016       *
+*-----------------------------------------------------*
+Command Line:
+../lisod 3607 5642 ../lisod.log ../lisod.lock www cgi/cgi_script.py grader.key grader.crt 
+*-----------------------------------------------------*
+Accept connection from client 127.0.0.1:60240.
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+Accept connection from client 127.0.0.1:60242.
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+Accept connection from client 127.0.0.1:60244.
+
+
+
+
+*******************************************************
+*                HTTPS Server Start                   *
+*          Start Time: Sun Oct  9 16:44:21 2016       *
+*-----------------------------------------------------*
+Command Line:
+../lisod 3924 7948 ../lisod.log ../lisod.lock www cgi/cgi_script.py grader.key grader.crt 
+*-----------------------------------------------------*
+Accept connection from client 127.0.0.1:40744.
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+Accept connection from client 127.0.0.1:40748.
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+Accept connection from client 127.0.0.1:40750.
+
+
+
+
+*******************************************************
+*                HTTPS Server Start                   *
+*          Start Time: Sun Oct  9 16:54:40 2016       *
+*-----------------------------------------------------*
+Command Line:
+../lisod 8586 5746 ../lisod.log ../lisod.lock www cgi/cgi_script.py grader.key grader.crt 
+*-----------------------------------------------------*
+Accept connection from client 127.0.0.1:37374.
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+Accept connection from client 127.0.0.1:37378.
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+Accept connection from client 127.0.0.1:37380.
+
+
+
+
+*******************************************************
+*                HTTPS Server Start                   *
+*          Start Time: Sun Oct  9 16:57:05 2016       *
+*-----------------------------------------------------*
+Command Line:
+../lisod 6105 3181 ../lisod.log ../lisod.lock www cgi/cgi_script.py grader.key grader.crt 
+*-----------------------------------------------------*
+Accept connection from client 127.0.0.1:38978.
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+Accept connection from client 127.0.0.1:38980.
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+Accept connection from client 127.0.0.1:38982.
+  Get Nagetive content-length not allowed /cgi/ request from 127.0.0.1.
+    User-Agent: 
+Accept connection from client 127.0.0.1:41174.
+  Get GET /style.css request from 127.0.0.1.
+    User-Agent: python-requests/2.0.0 CPython/2.7.5 Linux/3.10.0-327.36.1.el7.x86_64
+Accept connection from client 127.0.0.1:41178.
+  Get GET /images/liso_header.png request from 127.0.0.1.
+    User-Agent: python-requests/2.0.0 CPython/2.7.5 Linux/3.10.0-327.36.1.el7.x86_64
+Accept connection from client 127.0.0.1:41182.
+  Get GET /index.html request from 127.0.0.1.
+    User-Agent: python-requests/2.0.0 CPython/2.7.5 Linux/3.10.0-327.36.1.el7.x86_64
+Accept connection from client 127.0.0.1:41186.
+  Get PUT /style.css request from 127.0.0.1.
+    User-Agent: python-requests/2.0.0 CPython/2.7.5 Linux/3.10.0-327.36.1.el7.x86_64
+Accept connection from client 127.0.0.1:41190.
+  Get PUT /images/liso_header.png request from 127.0.0.1.
+    User-Agent: python-requests/2.0.0 CPython/2.7.5 Linux/3.10.0-327.36.1.el7.x86_64
+Accept connection from client 127.0.0.1:41194.
+  Get PUT /index.html request from 127.0.0.1.
+    User-Agent: python-requests/2.0.0 CPython/2.7.5 Linux/3.10.0-327.36.1.el7.x86_64
+Accept connection from client 127.0.0.1:39010.
+  Get GET /cgi/ request from 127.0.0.1.
+    User-Agent: python-requests/2.0.0 CPython/2.7.5 Linux/3.10.0-327.36.1.el7.x86_64
+child 26113 terminated with 0
+
+
+
+
+*******************************************************
+*                HTTPS Server Start                   *
+*          Start Time: Sun Oct  9 17:06:21 2016       *
+*-----------------------------------------------------*
+Command Line:
+../lisod 7177 7111 ../lisod.log ../lisod.lock www cgi/cgi_script.py grader.key grader.crt 
+*-----------------------------------------------------*
+Accept connection from client 127.0.0.1:48022.
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+Accept connection from client 127.0.0.1:48024.
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+Accept connection from client 127.0.0.1:48026.
+  Get Nagetive content-length not allowed /cgi/ request from 127.0.0.1.
+    User-Agent: 
+Accept connection from client 127.0.0.1:52412.
+  Get GET /style.css request from 127.0.0.1.
+    User-Agent: python-requests/2.0.0 CPython/2.7.5 Linux/3.10.0-327.36.1.el7.x86_64
+Accept connection from client 127.0.0.1:52416.
+  Get GET /images/liso_header.png request from 127.0.0.1.
+    User-Agent: python-requests/2.0.0 CPython/2.7.5 Linux/3.10.0-327.36.1.el7.x86_64
+Accept connection from client 127.0.0.1:52420.
+  Get GET /index.html request from 127.0.0.1.
+    User-Agent: python-requests/2.0.0 CPython/2.7.5 Linux/3.10.0-327.36.1.el7.x86_64
+Accept connection from client 127.0.0.1:52424.
+  Get PUT /style.css request from 127.0.0.1.
+    User-Agent: python-requests/2.0.0 CPython/2.7.5 Linux/3.10.0-327.36.1.el7.x86_64
+Accept connection from client 127.0.0.1:52428.
+  Get PUT /images/liso_header.png request from 127.0.0.1.
+    User-Agent: python-requests/2.0.0 CPython/2.7.5 Linux/3.10.0-327.36.1.el7.x86_64
+Accept connection from client 127.0.0.1:52432.
+  Get PUT /index.html request from 127.0.0.1.
+    User-Agent: python-requests/2.0.0 CPython/2.7.5 Linux/3.10.0-327.36.1.el7.x86_64
+Accept connection from client 127.0.0.1:48054.
+  Get GET /cgi/ request from 127.0.0.1.
+    User-Agent: python-requests/2.0.0 CPython/2.7.5 Linux/3.10.0-327.36.1.el7.x86_64
+
+
+
+
+*******************************************************
+*                HTTPS Server Start                   *
+*          Start Time: Sun Oct  9 17:07:26 2016       *
+*-----------------------------------------------------*
+Command Line:
+../lisod 9005 4448 ../lisod.log ../lisod.lock www cgi/cgi_script.py grader.key grader.crt 
+*-----------------------------------------------------*
+Accept connection from client 127.0.0.1:51830.
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+Accept connection from client 127.0.0.1:51832.
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+Accept connection from client 127.0.0.1:51834.
+  Get Nagetive content-length not allowed /cgi/ request from 127.0.0.1.
+    User-Agent: 
+Accept connection from client 127.0.0.1:48334.
+  Get GET /style.css request from 127.0.0.1.
+    User-Agent: python-requests/2.0.0 CPython/2.7.5 Linux/3.10.0-327.36.1.el7.x86_64
+Accept connection from client 127.0.0.1:48338.
+  Get GET /images/liso_header.png request from 127.0.0.1.
+    User-Agent: python-requests/2.0.0 CPython/2.7.5 Linux/3.10.0-327.36.1.el7.x86_64
+Accept connection from client 127.0.0.1:48342.
+  Get GET /index.html request from 127.0.0.1.
+    User-Agent: python-requests/2.0.0 CPython/2.7.5 Linux/3.10.0-327.36.1.el7.x86_64
+Accept connection from client 127.0.0.1:48346.
+  Get PUT /style.css request from 127.0.0.1.
+    User-Agent: python-requests/2.0.0 CPython/2.7.5 Linux/3.10.0-327.36.1.el7.x86_64
+Accept connection from client 127.0.0.1:48350.
+  Get PUT /images/liso_header.png request from 127.0.0.1.
+    User-Agent: python-requests/2.0.0 CPython/2.7.5 Linux/3.10.0-327.36.1.el7.x86_64
+Accept connection from client 127.0.0.1:48354.
+  Get PUT /index.html request from 127.0.0.1.
+    User-Agent: python-requests/2.0.0 CPython/2.7.5 Linux/3.10.0-327.36.1.el7.x86_64
+Accept connection from client 127.0.0.1:51862.
+  Get GET /cgi/ request from 127.0.0.1.
+    User-Agent: python-requests/2.0.0 CPython/2.7.5 Linux/3.10.0-327.36.1.el7.x86_64
+child 29110 terminated with 0
