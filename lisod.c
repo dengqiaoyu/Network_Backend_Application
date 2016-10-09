@@ -9,6 +9,8 @@ static const char *FILE_SUFFIX[TYPE_SIZE] =
 static const char *FILE_TYPE[TYPE_SIZE] =
 { "text/html", "text/css", "image/gif", "image/png", "image/jpeg"};
 
+void signal_handler_dbg(int sig);
+
 FILE *logfp = NULL;
 static int logfd = -1;
 int errfd = -1;
@@ -41,9 +43,10 @@ int main(int argc, char **argv) {
     //     fprintf(stderr, "Daemonize failed, server terminated.\n");
     //     return -1;
     // }
-    signal(SIGPIPE, SIG_IGN);
-    signal(SIGTSTP, sigtstp_handler);
-    signal(SIGINT, sigtstp_handler);
+    signal(SIGPIPE, signal_handler_dbg);
+    signal(SIGTSTP, signal_handler_dbg);
+    signal(SIGINT, signal_handler_dbg);
+    signal(SIGCHLD, signal_handler_dbg);
 
     logfd = init_log(lisod_param.log, argc, argv);
     errfd = open("./fd_reserved", O_WRONLY | O_CREAT, m_error);
@@ -182,11 +185,26 @@ int main(int argc, char **argv) {
     return 0;
 }
 
-void sigtstp_handler()
-{
-    close_log(logfp);
-    close(errfd);
-    exit(1);
+void signal_handler_dbg(int sig) {
+    switch (sig) {
+    case SIGTSTP:
+    case SIGINT:
+        close_log(logfp);
+        close(errfd);
+        exit(1);
+        break;
+    case SIGCHLD: {
+        int child_stat = 0;
+        pid_t child_pid = waitpid(-1, &child_stat, WNOHANG);
+        if (child_pid != 0) {
+            dbg_cp3_printf("child %d terminated with %d\n",
+                           child_pid, child_stat);
+        }
+        break;
+    }
+    default:
+        break;
+    }
 }
 
 int check_argv(int argc, char **argv, param *lisod_param) {
@@ -640,12 +658,6 @@ ssize_t serve_clients(pools *p) {
                     fupdate(logfp);
                     status_code = serve_dynamic(&req_anlzed, req_rover, p,
                                                 connfd, client_context, -1);
-                    int child_stat = 0;
-                    pid_t child_pid = waitpid(-1, &child_stat, WNOHANG);
-                    if (child_pid != 0) {
-                        dbg_cp3_printf("child %d terminated with %d\n",
-                                       child_pid, child_stat);
-                    }
                 }
                 if (status_code != 200) {
                     ret = send_error(connfd, client_context, status_code);
@@ -678,12 +690,6 @@ ssize_t serve_clients(pools *p) {
                                 cgi_rspfd);
             if (ret < 0) {
                 Close_conn(connfd, p);
-            }
-            int child_stat = 0;
-            pid_t child_pid = waitpid(-1, &child_stat, WNOHANG);
-            if (child_pid != 0) {
-                dbg_cp3_printf("child %d terminated with %d\n",
-                               child_pid, child_stat);
             }
         }
     }

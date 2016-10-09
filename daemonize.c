@@ -44,6 +44,10 @@ void signal_handler(int sig)
         // TODO: liso_shutdown(NULL, EXIT_SUCCESS);
         liso_shutdown();
         break;
+    case SIGCHLD: {
+        int child_stat = 0;
+        pid_t child_pid = waitpid(-1, &child_stat, WNOHANG);
+    }
     default:
         break;
         /* unhandled signal */

@@ -160,8 +160,6 @@ typedef struct
     Entity_header entity_header;
 } Response_headers;
 
-
-void sigtstp_handler();
 int check_argv(int argc, char **argv, param *lisod_param);
 int daemonize(char* lock_file);
 int open_listenfd(char *port);
