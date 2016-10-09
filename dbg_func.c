@@ -1,6 +1,30 @@
 #include <lisod.h>
 #include <dbg_func.h>
 
+extern FILE *logfp;
+extern int errfd;
+
+void signal_handler_dbg(int sig) {
+    switch (sig) {
+    case SIGTSTP:
+    case SIGINT:
+        close_log(logfp);
+        close(errfd);
+        exit(1);
+        break;
+    case SIGCHLD: {
+        int child_stat = 0;
+        pid_t child_pid = waitpid(-1, &child_stat, WNOHANG);
+        if (child_pid != 0) {
+            dbg_cp3_printf("child %d terminated with %d\n",
+                           child_pid, child_stat);
+        }
+        break;
+    }
+    default:
+        break;
+    }
+}
 
 void print_settings(param *lisod_param)
 {

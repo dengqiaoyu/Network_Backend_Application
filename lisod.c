@@ -185,28 +185,6 @@ int main(int argc, char **argv) {
     return 0;
 }
 
-void signal_handler_dbg(int sig) {
-    switch (sig) {
-    case SIGTSTP:
-    case SIGINT:
-        close_log(logfp);
-        close(errfd);
-        exit(1);
-        break;
-    case SIGCHLD: {
-        int child_stat = 0;
-        pid_t child_pid = waitpid(-1, &child_stat, WNOHANG);
-        if (child_pid != 0) {
-            dbg_cp3_printf("child %d terminated with %d\n",
-                           child_pid, child_stat);
-        }
-        break;
-    }
-    default:
-        break;
-    }
-}
-
 int check_argv(int argc, char **argv, param *lisod_param) {
     memset(lisod_param, 0, sizeof(param));
     if (argc < 9) {
@@ -560,10 +538,9 @@ ssize_t add_client(int connfd, pools *p, char *c_host, ssize_t if_ssl)
 }
 
 ssize_t serve_clients(pools *p) {
-    size_t i, iter_count;
+    size_t i;
     ssize_t read_ret, ret;
-    char skt_read_buf[SKT_READ_BUF_SIZE + 1] = {65};
-    iter_count = 0;
+    char skt_read_buf[SKT_READ_BUF_SIZE + 1] = {0};
 
     //TODO check start
     for (i = 0; (i < FD_SETSIZE) && (p->num_ready > 0); i++) {
@@ -575,6 +552,7 @@ ssize_t serve_clients(pools *p) {
             SSL *client_context = p->SSL_client_ctx[i];
             p->num_ready--;
 
+            memset(skt_read_buf, 0, SKT_READ_BUF_SIZE + 1);
             if (client_context != NULL) {
                 read_ret = SSL_read(client_context, skt_read_buf,
                                     SKT_READ_BUF_SIZE);
@@ -583,7 +561,11 @@ ssize_t serve_clients(pools *p) {
                 dbg_cp3_printf("line 562, should go to here\n");
                 read_ret = read(connfd, skt_read_buf, SKT_READ_BUF_SIZE);
             }
-            dbg_cp3_printf("line 564\n");
+            dbg_cp3_printf("####################################\n");
+            dbg_cp3_printf("skt_read_buf in lisod.c:\n%s\n",
+                           skt_read_buf);
+            dbg_cp3_printf("####################################\n");
+            size_t iter_count = 0;
             while (read_ret >= 0 && iter_count < MAX_READ_ITER_COUNT) {
                 dbg_cp3_printf("iter_count: %ld\n", iter_count);
                 dbg_cp3_printf("read_ret: %ld\n", read_ret);
@@ -606,6 +588,10 @@ ssize_t serve_clients(pools *p) {
                     read_ret = read(connfd, &skt_read_buf[read_offset],
                                     SKT_READ_BUF_SIZE - read_offset);
                 }
+                dbg_cp3_printf("####################################\n");
+                dbg_cp3_printf("skt_read_buf in lisod.c:\n%s\n",
+                               skt_read_buf);
+                dbg_cp3_printf("####################################\n");
                 dbg_cp3_printf("after read_ret: %ld errno: %d\n", read_ret, errno);
             }
             if (read_ret < 0) {
