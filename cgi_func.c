@@ -63,6 +63,7 @@ static const char* header_name_key[] = {
 void get_envp(pools *p, int connfd, Requests *req,
               char *ENVP[ENVP_len], char *port) {
     size_t i = 0;
+    dbg_cp3_fprintf(stderr, "entering get_envp\n");
     while (header_name_key[i] != NULL) {
         switch (i) {
         case 2: // GATEWAY_INTERFACE
@@ -74,11 +75,19 @@ void get_envp(pools *p, int connfd, Requests *req,
         {
             size_t path_offset =
                 search_first_position(req->http_uri, "/cgi") + 3 + 1;
-            size_t path_len =
-                search_first_position(req->http_uri, "?") - path_offset;
+            ssize_t query_offset = search_first_position(req->http_uri, "?");
+            size_t path_len = 0;
+            if (query_offset < 0) {
+                path_len = strlen(req->http_uri) - path_offset;
+            }
+            else {
+                path_len = query_offset - path_offset;
+            }
             char path[MAX_SIZE] = {0};
             char hv_pair[(2 * MAX_SIZE + 1) + 1] = {0};
-            strncpy(path, &(req->http_uri[path_offset]), path_len);
+            if (path_offset < strlen(req->http_uri)) {
+                strncpy(path, &(req->http_uri[path_offset]), path_len);
+            }
             snprintf(hv_pair, 2 * MAX_SIZE + 1, "%s=%s", ENVP_key[i], path);
             strncpy(ENVP[i], hv_pair, 2 * MAX_SIZE + 1);
         }
@@ -87,7 +96,9 @@ void get_envp(pools *p, int connfd, Requests *req,
         {
             size_t query_offset = search_first_position(req->http_uri, "?") + 1;
             char query[MAX_SIZE] = {0};
-            strncpy(query, &(req->http_uri[query_offset]), MAX_SIZE);
+            if (query_offset > 1 && query_offset < strlen(req->http_uri)) {
+                strncpy(query, &(req->http_uri[query_offset]), MAX_SIZE);
+            }
             char hv_pair[(2 * MAX_SIZE + 1) + 1] = {0};
             snprintf(hv_pair, 2 * MAX_SIZE + 1, "%s=%s", ENVP_key[i], query);
             strncpy(ENVP[i], hv_pair, 2 * MAX_SIZE + 1);
@@ -132,12 +143,18 @@ void get_envp(pools *p, int connfd, Requests *req,
         break;
         case 10: // SERVER_PROTOCOL
         {
-            strncpy(ENVP[i], "HTTP/1.1", 2 * MAX_SIZE + 1);
+            char hv_pair[(2 * MAX_SIZE + 1) + 1] = {0};
+            snprintf(hv_pair, 2 * MAX_SIZE + 1, "%s=%s", ENVP_key[i],
+                     "HTTP/1.1");
+            strncpy(ENVP[i], hv_pair, 2 * MAX_SIZE + 1);
         }
         break;
         case 11: // SERVER_SOFTWARE
         {
-            strncpy(ENVP[i], "Liso/1.0", 2 * MAX_SIZE + 1);
+            char hv_pair[(2 * MAX_SIZE + 1) + 1] = {0};
+            snprintf(hv_pair, 2 * MAX_SIZE + 1, "%s=%s", ENVP_key[i],
+                     "Liso/1.0");
+            strncpy(ENVP[i], hv_pair, 2 * MAX_SIZE + 1);
         }
         break;
         default: // others

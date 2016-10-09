@@ -102,6 +102,8 @@ typedef struct pools
     SSL *SSL_client_ctx[FD_SETSIZE];
     size_t ign_first[FD_SETSIZE];
     size_t too_long[FD_SETSIZE];
+    size_t close_fin[FD_SETSIZE];
+    size_t remain_req[FD_SETSIZE];
     char cached_buf[FD_SETSIZE][REQ_BUF_SIZE + 1];
     Requests *cached_req[FD_SETSIZE];
     char clientip[FD_SETSIZE][MAX_SIZE_S + 1];
@@ -171,8 +173,8 @@ void get_request_analyzed(Request_analyzed *req_anlzed,
                           Requests *req);
 ssize_t serve_static(Request_analyzed *req_anlzed, Requests *req, pools *p,
                      int connfd, SSL *client_context);
-ssize_t serve_dynamic(Requests *req, pools *p, int connfd,
-                      SSL * client_context, int cgi_rspfd);
+ssize_t serve_dynamic(Request_analyzed *req_anlzed, Requests *req, pools *p,
+                      int connfd, SSL * client_context, int cgi_rspfd);
 int check_http_method(char *http_method);
 void get_response_headers(char *response_headers_text,
                           Response_headers *response_headers);
