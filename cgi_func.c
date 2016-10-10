@@ -209,7 +209,7 @@ void get_envp(pools *p, int connfd, Requests *req,
 }
 
 void add_cgi_rspfd(int cgifd, int connfd, pools *p) {
-    FD_SET(cgifd, &p->active_set);
+    FD_SET(cgifd, &p->active_rd_set);
     dbg_cp3_printf("cgifd: %d\n", cgifd);
     p->clientfd[cgifd] = connfd;
     dbg_cp3_printf("p->clientfd[cgifd]: %d\n", p->clientfd[cgifd]);
@@ -221,6 +221,7 @@ void add_cgi_rspfd(int cgifd, int connfd, pools *p) {
     p->remain_req[cgifd] = 0;
     memset(p->cached_buf[cgifd], 0, REQ_BUF_SIZE + 1);
     p->cached_req[cgifd] = NULL;
+    p->resp_ptr[cgifd] = NULL;
     strncpy(p->clientip[cgifd], "", MAX_SIZE_S);
 }
 

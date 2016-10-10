@@ -37,6 +37,7 @@
 #define SCRIPT_NAME "/cgi"
 #define MAX_CGI_ITER_COUNT 10
 #define MAX_READ_ITER_COUNT 10
+#define INIT_WRITE_BUG_SIZE 204800
 
 //#define DEBUG_CP1
 #ifdef DEBUG_CP1
@@ -59,6 +60,15 @@
 #else
 #define dbg_cp3_printf(...)
 #define dbg_cp3_fprintf(...)
+#endif
+
+#define DEBUG_WSELET
+#ifdef DEBUG_WSELET
+#define dbg_wselet_printf(...) printf(__VA_ARGS__)
+#define dbg_wselet_fprintf(...) fprintf(__VA_ARGS__)
+#else
+#define dbg_wselet_printf(...)
+#define dbg_wselet_fprintf(...)
 #endif
 
 typedef struct param
@@ -93,10 +103,24 @@ typedef struct Requests
     size_t error;
 } Requests;
 
+typedef struct Response_ptr_list
+{
+    char *headers;
+    char *body;
+    size_t hdr_size;
+    size_t hdr_offset;
+    size_t body_size;
+    size_t body_offset;
+    char is_body_map;
+    struct Response_ptr_list *next;
+} Response_ptr_list;
+
 typedef struct pools
 {
-    fd_set active_set;
-    fd_set ready_set;
+    fd_set active_rd_set;
+    fd_set active_wt_set;
+    fd_set ready_rd_set;
+    fd_set ready_wt_set;
     int num_ready;
     int clientfd[FD_SETSIZE];
     SSL *SSL_client_ctx[FD_SETSIZE];
@@ -106,6 +130,7 @@ typedef struct pools
     size_t remain_req[FD_SETSIZE];
     char cached_buf[FD_SETSIZE][REQ_BUF_SIZE + 1];
     Requests *cached_req[FD_SETSIZE];
+    Response_ptr_list *resp_ptr[FD_SETSIZE];
     char clientip[FD_SETSIZE][MAX_SIZE_S + 1];
 } pools;
 
@@ -169,8 +194,8 @@ ssize_t add_client(int connfd, pools *p, char *c_host, ssize_t if_ssl);
 ssize_t serve_clients(pools *p);
 void get_request_analyzed(Request_analyzed *req_anlzed,
                           Requests *req);
-ssize_t serve_static(Request_analyzed *req_anlzed, Requests *req, pools *p,
-                     int connfd, SSL *client_context);
+ssize_t que_resp_static(Request_analyzed *req_anlzed, Requests *req, pools *p,
+                        int connfd, SSL *client_context);
 ssize_t serve_dynamic(Request_analyzed *req_anlzed, Requests *req, pools *p,
                       int connfd, SSL * client_context, int cgi_rspfd);
 int check_http_method(char *http_method);
@@ -183,6 +208,8 @@ int get_contentfd(Requests *request, Response_headers *response_headers,
 int get_file_type(char *file_name, char *file_type);
 ssize_t write_to_socket(int connfd, SSL *client_context, char *resp_hds_text,
                         char *resp_ct_text, char *resp_ct_ptr, size_t ct_size);
+ssize_t get_resp_list(int connfd, pools *p, char *resp_hds_text,
+                      char *resp_ct_text, char *resp_ct_ptr, size_t ct_size);
 ssize_t send_error(int connfd, SSL *client_context, int status_code);
 void get_envp(pools *p, int connfd, Requests *req,
               char *ENVP[ENVP_len], char *port);

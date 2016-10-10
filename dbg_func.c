@@ -105,3 +105,17 @@ void print_response_headers(Response_headers *response_headers)
     dbg_cp2_printf("last_modified: %s\n",
                    response_headers->entity_header.last_modified);
 }
+
+void print_resp_ptr(int connfd, pools *p) {
+    Response_ptr_list *rover = p->resp_ptr[connfd];
+    while (rover != NULL) {
+        dbg_wselet_printf("headers:\n%s#########\nresponse: \n%s\n",
+                          rover->headers, rover->body);
+        dbg_wselet_printf("hdr_size:%ld, hdr_offset: %ld\n",
+                          rover->hdr_size, rover->hdr_offset);
+        dbg_wselet_printf("body_size:%ld, body_offset: %ld\n",
+                          rover->body_size, rover->body_offset);
+        rover = rover->next;
+        dbg_wselet_printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
+    }
+}

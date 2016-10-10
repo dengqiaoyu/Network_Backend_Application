@@ -53,7 +53,7 @@ Requests * parse(char *skt_recv_buf, size_t recv_buf_size, int socketfd,
 
     ssize_t ret = 0;
 
-    //dbg_cp3_printf("skt_recv_buf in parse.c:[\n%s]\n", skt_recv_buf);
+    dbg_cp3_printf("skt_recv_buf in parse.c:[\n%s]\n", skt_recv_buf);
     //dbg_cp2_printf("ign_first: %d\n", ign_first);
     //dbg_cp2_printf("too_long: %d\n", too_long);
     //dbg_cp2_printf("cached_buf[0]: %d\n", cached_buf[0]);
@@ -168,6 +168,7 @@ Requests * parse(char *skt_recv_buf, size_t recv_buf_size, int socketfd,
                 memset(p->cached_buf[socketfd], 0, REQ_BUF_SIZE + 1);
             }
             if (req_size <= REQ_BUF_SIZE) {
+                dbg_cp3_printf("req_buffer: \n[\n%s]\n\n", req_buffer);
                 set_parsing_options(req_buffer, req_size, req);
                 yyrestart();
                 ret = yyparse();

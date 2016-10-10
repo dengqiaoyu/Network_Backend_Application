@@ -74,12 +74,12 @@ int main(int argc, char **argv) {
     init_pool(listenfd, ssl_listenfd, &pool);
 
     while (1) {
-        pool.ready_set = pool.active_set;
-        pool.num_ready = select(FD_SETSIZE, &pool.ready_set, NULL, NULL,
+        pool.ready_rd_set = pool.active_rd_set;
+        pool.num_ready = select(FD_SETSIZE, &pool.ready_rd_set, NULL, NULL,
                                 &tv_selt);
         //dbg_cp3_printf("FD_ISSET(7, &p->ready_set): %d\n", FD_ISSET(7, &pool.ready_set));
 
-        if (FD_ISSET(listenfd, &pool.ready_set)) {
+        if (FD_ISSET(listenfd, &pool.ready_rd_set)) {
             client_len = sizeof(struct sockaddr_storage);
             connfd = accept(listenfd, (struct sockaddr *)&client_addr,
                             &client_len);
@@ -131,7 +131,7 @@ int main(int argc, char **argv) {
                 }
             }
         }
-        if (FD_ISSET(ssl_listenfd, &pool.ready_set)) {
+        if (FD_ISSET(ssl_listenfd, &pool.ready_rd_set)) {
             client_len = sizeof(struct sockaddr_storage);
             ssl_connfd = accept(ssl_listenfd,
                                 (struct sockaddr *)&client_addr,
@@ -466,9 +466,12 @@ int open_tls_listenfd(char *tls_port, char *priv_key, char *cert_file) {
 void init_pool(int listenfd, int ssl_listenfd, pools *p) {
     size_t i;
 
-    FD_ZERO(&p->active_set);
-    FD_SET(listenfd, &p->active_set);
-    FD_SET(ssl_listenfd, &p->active_set);
+    FD_ZERO(&p->active_rd_set);
+    FD_ZERO(&p->active_wt_set);
+    FD_ZERO(&p->ready_rd_set);
+    FD_ZERO(&p->ready_wt_set);
+    FD_SET(listenfd, &p->active_rd_set);
+    FD_SET(ssl_listenfd, &p->active_rd_set);
     for (i = 0; i < FD_SETSIZE; i++) {
         p->clientfd[i] = -1;
         p->SSL_client_ctx[i] = NULL;
@@ -478,6 +481,7 @@ void init_pool(int listenfd, int ssl_listenfd, pools *p) {
         p->remain_req[i] = 0;
         memset(p->cached_buf[i], 0, REQ_BUF_SIZE + 1);
         p->cached_req[i] = NULL;
+        p->resp_ptr[i] = NULL;
         memset(p->clientip[i], 0, MAX_SIZE_S + 1);
     }
 }
@@ -532,7 +536,7 @@ ssize_t add_client(int connfd, pools *p, char *c_host, ssize_t if_ssl)
     p->close_fin[connfd] = 0;
     p->remain_req[connfd] = 0;
     memset(p->cached_buf[connfd], 0, REQ_BUF_SIZE + 1);
-    FD_SET(connfd, &p->active_set);
+    FD_SET(connfd, &p->active_rd_set);
     strncpy(p->clientip[connfd], c_host, MAX_SIZE_S);
     return 0;
 }
@@ -545,7 +549,7 @@ ssize_t serve_clients(pools *p) {
     //TODO check start
     for (i = 0; (i < FD_SETSIZE) && (p->num_ready > 0); i++) {
         dbg_cp3_printf("connfd: %ld, status: %d\n", i, p->clientfd[i]);
-        if ((p->clientfd[i] == 1) && (FD_ISSET(i, &p->ready_set))) {
+        if ((p->clientfd[i] == 1) && (FD_ISSET(i, &p->ready_rd_set))) {
             int connfd = i;
             size_t if_conn_close = 0;
             size_t read_offset = 0;
@@ -589,7 +593,7 @@ ssize_t serve_clients(pools *p) {
 
             } while (iter_count < MAX_READ_ITER_COUNT);
             if (if_conn_close == 1) {
-                continue;
+                //continue;
             }
 
             dbg_cp3_printf("$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n");
@@ -600,6 +604,7 @@ ssize_t serve_clients(pools *p) {
             Requests *req_rover = reqs;
             print_request(req_rover);
             req_rover = reqs;
+            dbg_wselet_printf("line 607\n");
             while (req_rover != NULL) {
                 ret = search_first_position(req_rover->http_uri,
                                             SCRIPT_NAME);
@@ -616,8 +621,8 @@ ssize_t serve_clients(pools *p) {
                             req_anlzed.user_agent);
                     fupdate(logfp);
                     print_request_analyzed(&req_anlzed);
-                    status_code = serve_static(&req_anlzed, req_rover, p,
-                                               connfd, client_context);
+                    status_code = que_resp_static(&req_anlzed, req_rover, p,
+                                                  connfd, client_context);
                 }
                 else {
                     Request_analyzed req_anlzed;
@@ -648,8 +653,10 @@ ssize_t serve_clients(pools *p) {
             }
             destory_requests(reqs);
             reqs = NULL;
+            print_resp_ptr(connfd, p);
+            exit(1);
         }
-        else if ((p->clientfd[i] > 1) && (FD_ISSET(i, &p->ready_set))) {
+        else if ((p->clientfd[i] > 1) && (FD_ISSET(i, &p->ready_rd_set))) {
             int cgi_rspfd = i;
             int connfd = p->clientfd[i];
             dbg_cp3_printf("cgi_rspfd: %d, connfd: %d\n", cgi_rspfd, connfd);
@@ -737,8 +744,8 @@ void get_request_analyzed(Request_analyzed *req_anlzed,
     }
 }
 
-ssize_t serve_static(Request_analyzed *req_anlzed, Requests *req, pools *p,
-                     int connfd, SSL *client_context)
+ssize_t que_resp_static(Request_analyzed *req_anlzed, Requests *req, pools *p,
+                        int connfd, SSL *client_context)
 {
     int status_code;
     Response_headers resp_hds;
@@ -847,26 +854,11 @@ ssize_t serve_static(Request_analyzed *req_anlzed, Requests *req, pools *p,
         }
         Close(contentfd);
     }
-    ret = write_to_socket(connfd, client_context, resp_hds_text,
-                          resp_ct_text, resp_ct_ptr,
-                          resp_hds.entity_header.content_length);
-    if (ret < 0) {
-        return -1;
-    }
-    if (resp_ct_ptr != (void *)(-1) && (resp_ct_ptr != NULL))
-    {
-        ret = munmap(resp_ct_ptr, ct_size);
-        if (ret == -1)
-        {
-            fprintf(logfp, "Failed unmapping request file.\n");
-            fupdate(logfp);
-        }
-    }
-
-    if (p->close_fin[connfd] == 1 && p->remain_req[connfd] == 0) {
-        Close_conn(connfd, p);
-        dbg_cp3_printf("Closed!\n");
-    }
+    // ret = write_to_socket(connfd, client_context, resp_hds_text,
+    //                       resp_ct_text, resp_ct_ptr,
+    //                       resp_hds.entity_header.content_length);
+    ret = get_resp_list(connfd, p, resp_hds_text, resp_ct_text, resp_ct_ptr,
+                        resp_hds.entity_header.content_length);
     return 200;
 }
 
@@ -1414,8 +1406,13 @@ ssize_t write_to_socket(int connfd, SSL *client_context, char *resp_hds_text,
     }
 
     dbg_cp3_printf("response_content:\n%s\n", response_content);
+    size_t hdr_attempt = 0;
     while (1)
     {
+        hdr_attempt++;
+        if (hdr_attempt > 1) {
+            dbg_wselet_printf("hdr_attempt: %ld\n", hdr_attempt);
+        }
         ssize_t write_ret = 0;
         if (client_context != NULL) {
             write_ret = SSL_write(client_context, resp_hds_text + write_offset,
@@ -1424,17 +1421,23 @@ ssize_t write_to_socket(int connfd, SSL *client_context, char *resp_hds_text,
             dbg_cp2_printf("SSL_get_error: %d\n", SSL_get_error(client_context, write_ret));
         }
         else {
-            write_ret = send(connfd, resp_hds_text + write_offset,
-                             headers_size, MSG_WAITALL);
+            write_ret = write(connfd, resp_hds_text + write_offset,
+                              headers_size);
         }
 
-        //dbg_cp2_printf("write_ret: %d\n", write_ret);
+        dbg_wselet_printf("write_ret: %d\n", write_ret);
         if (write_ret < 0)
         {
-            fprintf(logfp, "Failed writing headers to socket on %d.\n",
-                    connfd);
-            fupdate(logfp);
-            return -1;
+            dbg_wselet_printf("buffer full\n");
+            if (errno != EAGAIN && errno != EWOULDBLOCK) {
+                fprintf(logfp, "Failed writing content to socket on %d.\n",
+                        connfd);
+                fupdate(logfp);
+                return -1;
+            }
+            else {
+                write_ret = 0;
+            }
         }
 
         if (write_ret == headers_size)
@@ -1451,8 +1454,13 @@ ssize_t write_to_socket(int connfd, SSL *client_context, char *resp_hds_text,
         return 0;
     }
     write_offset = 0;
+    size_t rsp_attempt = 0;
     while (1)
     {
+        rsp_attempt++;
+        if (rsp_attempt > 1) {
+            dbg_wselet_printf("rsp_attempt: %ld\n", rsp_attempt);
+        }
         ssize_t write_ret = 0;
         if (client_context != NULL) {
             write_ret = SSL_write(client_context, response_content + write_offset,
@@ -1461,16 +1469,22 @@ ssize_t write_to_socket(int connfd, SSL *client_context, char *resp_hds_text,
             dbg_cp2_printf("SSL_get_error: %d\n", SSL_get_error(client_context, write_ret));
         }
         else {
-            write_ret = send(connfd, response_content + write_offset,
-                             ct_size, MSG_WAITALL);
+            write_ret = write(connfd, response_content + write_offset,
+                              ct_size);
         }
-        //dbg_cp2_printf("write_ret: %d\n", write_ret);
+        dbg_wselet_printf("write_ret: %d\n", write_ret);
         if (write_ret < 0)
         {
-            fprintf(logfp, "Failed writing content to socket on %d.\n",
-                    connfd);
-            fupdate(logfp);
-            return -1;
+            dbg_wselet_printf("buffer full\n");
+            if (errno != EAGAIN && errno != EWOULDBLOCK) {
+                fprintf(logfp, "Failed writing content to socket on %d.\n",
+                        connfd);
+                fupdate(logfp);
+                return -1;
+            }
+            else {
+                write_ret = 0;
+            }
         }
 
         if (write_ret == ct_size)
@@ -1485,6 +1499,56 @@ ssize_t write_to_socket(int connfd, SSL *client_context, char *resp_hds_text,
 
     return 0;
 }
+
+
+ssize_t get_resp_list(int connfd, pools *p, char *resp_hds_text,
+                      char *resp_ct_text, char *resp_ct_ptr, size_t ct_size) {
+    Response_ptr_list *ptr = NULL;
+    ptr = malloc(sizeof(Response_ptr_list));
+    memset(ptr, 0, sizeof(Response_ptr_list));
+    if (p->resp_ptr[connfd] == NULL) {
+        p->resp_ptr[connfd] = ptr;
+    }
+    else {
+        Response_ptr_list *rover = p->resp_ptr[connfd];
+        while (rover->next != NULL) {
+            rover = rover->next;
+        }
+        rover->next = ptr;
+    }
+    size_t hdr_size = strlen(resp_hds_text);
+    ptr->headers = malloc(hdr_size + 1);
+    ptr->hdr_size = hdr_size;
+    ptr->hdr_offset = 0;
+    memset(ptr->headers, 0, hdr_size + 1);
+    memcpy(ptr->headers, resp_hds_text, hdr_size);
+
+    if (resp_ct_ptr != NULL)
+    {
+        ptr->body = resp_ct_ptr;
+        ptr->body_size = ct_size;
+        ptr->is_body_map = 1;
+    }
+    else if (resp_ct_text != NULL && resp_ct_text[0] != 0)
+    {
+        size_t body_size = strlen(resp_ct_text);
+        ptr->body = malloc(body_size + 1);
+        memset(ptr->body, 0, body_size + 1);
+        memcpy(ptr->body, resp_ct_text, body_size);
+        ptr->body_size = body_size;
+        ptr->is_body_map = 0;
+    }
+    else
+    {
+        ptr->body = NULL;
+        ptr->body_size = 0;
+        ptr->is_body_map = 0;
+    }
+    ptr->body_offset = 0;
+
+    return 0;
+}
+
 
 ssize_t send_error(int connfd, SSL *client_context, int status_code) {
     Response_headers resp_hds;
@@ -1693,7 +1757,8 @@ ssize_t Close_conn(int connfd, pools *p) {
             }
         }
     }
-    FD_CLR(connfd, &p->active_set);
+    FD_CLR(connfd, &p->active_rd_set);
+    FD_CLR(connfd, &p->active_wt_set);
     p->clientfd[connfd] = -1;
     p->SSL_client_ctx[connfd] = NULL;
     p->ign_first[connfd] = 0;
@@ -1703,6 +1768,13 @@ ssize_t Close_conn(int connfd, pools *p) {
     memset(p->cached_buf[connfd], 0, REQ_BUF_SIZE + 1);
     free(p->cached_req[connfd]);
     p->cached_req[connfd] = NULL;
+    Response_ptr_list *rover = p->resp_ptr[connfd];
+    while (rover != NULL) {
+        Response_ptr_list *next = rover->next;
+        free(rover);
+        rover = NULL;
+        rover = next;
+    }
     memset(p->clientip[connfd], 0, MAX_SIZE_S + 1);
     return 0;
 }
