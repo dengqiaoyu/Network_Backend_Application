@@ -21,6 +21,7 @@ static const char* ENVP_key[] = {
     "SERVER_PORT",
     "SERVER_PROTOCOL",
     "SERVER_SOFTWARE",
+    "HTTPS",
     "HOST_NAME",
     "HTTP_ACCEPT",
     "HTTP_REFERER",
@@ -37,6 +38,7 @@ static const char* ENVP_key[] = {
 static const char* header_name_key[] = {
     "Content-Length",
     "Content-Type",
+    "NULL",
     "NULL",
     "NULL",
     "NULL",
@@ -152,8 +154,30 @@ void get_envp(pools *p, int connfd, Requests *req,
         case 11: // SERVER_SOFTWARE
         {
             char hv_pair[(2 * MAX_SIZE + 1) + 1] = {0};
-            snprintf(hv_pair, 2 * MAX_SIZE + 1, "%s=%s", ENVP_key[i],
-                     "Liso/1.0");
+            if (!strncmp("HTTP/1.0", req->http_version, MAX_SIZE_S))
+            {
+                snprintf(hv_pair, 2 * MAX_SIZE + 1, "%s=%s", ENVP_key[i],
+                         "Liso/1.0");
+            }
+            else if (!strncmp("HTTP/1.1", req->http_version, MAX_SIZE_S))
+            {
+                snprintf(hv_pair, 2 * MAX_SIZE + 1, "%s=%s", ENVP_key[i],
+                         "Liso/1.0");
+            }
+            strncpy(ENVP[i], hv_pair, 2 * MAX_SIZE + 1);
+        }
+        break;
+        case 12: // SERVER_SOFTWARE
+        {
+            char hv_pair[(2 * MAX_SIZE + 1) + 1] = {0};
+            if (p->SSL_client_ctx[connfd] != NULL) {
+                snprintf(hv_pair, 2 * MAX_SIZE + 1, "%s=%s", ENVP_key[i],
+                         "on");
+            }
+            else {
+                snprintf(hv_pair, 2 * MAX_SIZE + 1, "%s=%s", ENVP_key[i],
+                         "off");
+            }
             strncpy(ENVP[i], hv_pair, 2 * MAX_SIZE + 1);
         }
         break;
@@ -193,6 +217,8 @@ void add_cgi_rspfd(int cgifd, int connfd, pools *p) {
     p->SSL_client_ctx[cgifd] = NULL;
     p->ign_first[cgifd] = 0;
     p->too_long[cgifd] = 0;
+    p->close_fin[cgifd] = 0;
+    p->remain_req[cgifd] = 0;
     memset(p->cached_buf[cgifd], 0, REQ_BUF_SIZE + 1);
     p->cached_req[cgifd] = NULL;
     strncpy(p->clientip[cgifd], "", MAX_SIZE_S);

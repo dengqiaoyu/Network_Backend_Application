@@ -33,7 +33,7 @@
 #define MAX_MSG 65536
 #define MAX_CGI_MSG 65536
 #define TYPE_SIZE 5
-#define ENVP_len 22
+#define ENVP_len 23
 #define SCRIPT_NAME "/cgi"
 #define MAX_CGI_ITER_COUNT 10
 #define MAX_READ_ITER_COUNT 10
@@ -52,7 +52,7 @@
 #define dbg_cp2_printf(...)
 #endif
 
-//#define DEBUG_CP3
+#define DEBUG_CP3
 #ifdef DEBUG_CP3
 #define dbg_cp3_printf(...) printf(__VA_ARGS__)
 #define dbg_cp3_fprintf(...) fprintf(__VA_ARGS__)
@@ -194,8 +194,7 @@ void destory_requests(Requests *requests);
 ssize_t Close_conn(int connfd, pools *p);
 ssize_t Close(int fd);
 ssize_t send_maxfderr(int connfd);
-void inline fupdate(FILE *fp);
-ssize_t inline if_exist(char *file_name);
+void fupdate(FILE *fp);
 
 Requests* parse(char *socket_recv_buf, size_t recv_buf_size , int socketFd,
                 pools *p);

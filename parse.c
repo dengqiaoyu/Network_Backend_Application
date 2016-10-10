@@ -13,6 +13,9 @@
 */
 void initiate_request(Requests *req);
 ssize_t if_contain_ebody(Requests *req);
+void set_parsing_options(char *buf, size_t siz, Requests *parsing_request);
+int yyparse();
+void yyrestart();
 
 Requests * parse(char *skt_recv_buf, size_t recv_buf_size, int socketfd,
                  pools *p) {

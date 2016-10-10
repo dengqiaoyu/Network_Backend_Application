@@ -2,6 +2,7 @@
 #include <fcntl.h>
 #include <time.h>
 #include <string.h>
+#include <unistd.h>
 #include "log.h"
 
 char *get_local_date();

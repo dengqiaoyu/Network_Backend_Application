@@ -917,3 +917,184 @@ Accept connection from client 127.0.0.1:51862.
   Get GET /cgi/ request from 127.0.0.1.
     User-Agent: python-requests/2.0.0 CPython/2.7.5 Linux/3.10.0-327.36.1.el7.x86_64
 child 29110 terminated with 0
+
+
+
+
+*******************************************************
+*                HTTPS Server Start                   *
+*          Start Time: Mon Oct 10 00:54:04 2016       *
+*-----------------------------------------------------*
+Command Line:
+../lisod 4115 7670 ../lisod.log ../lisod.lock www cgi/cgi_script.py grader.key grader.crt 
+*-----------------------------------------------------*
+Accept connection from client 127.0.0.1:46344.
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+Accept connection from client 127.0.0.1:46346.
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+Accept connection from client 127.0.0.1:46348.
+  Get Nagetive content-length not allowed /cgi/ request from 127.0.0.1.
+    User-Agent: 
+Accept connection from client 127.0.0.1:38402.
+  Get GET /style.css request from 127.0.0.1.
+    User-Agent: python-requests/2.0.0 CPython/2.7.5 Linux/3.10.0-327.28.2.el7.x86_64
+Accept connection from client 127.0.0.1:38406.
+  Get GET /images/liso_header.png request from 127.0.0.1.
+    User-Agent: python-requests/2.0.0 CPython/2.7.5 Linux/3.10.0-327.28.2.el7.x86_64
+Accept connection from client 127.0.0.1:38410.
+  Get GET /index.html request from 127.0.0.1.
+    User-Agent: python-requests/2.0.0 CPython/2.7.5 Linux/3.10.0-327.28.2.el7.x86_64
+Accept connection from client 127.0.0.1:38414.
+  Get PUT /style.css request from 127.0.0.1.
+    User-Agent: python-requests/2.0.0 CPython/2.7.5 Linux/3.10.0-327.28.2.el7.x86_64
+Accept connection from client 127.0.0.1:38418.
+  Get PUT /images/liso_header.png request from 127.0.0.1.
+    User-Agent: python-requests/2.0.0 CPython/2.7.5 Linux/3.10.0-327.28.2.el7.x86_64
+Accept connection from client 127.0.0.1:38422.
+  Get PUT /index.html request from 127.0.0.1.
+    User-Agent: python-requests/2.0.0 CPython/2.7.5 Linux/3.10.0-327.28.2.el7.x86_64
+Accept connection from client 127.0.0.1:46376.
+  Get GET /cgi/ request from 127.0.0.1.
+    User-Agent: python-requests/2.0.0 CPython/2.7.5 Linux/3.10.0-327.28.2.el7.x86_64
+child 7736 terminated with 0
+
+
+
+
+*******************************************************
+*                HTTPS Server Start                   *
+*          Start Time: Mon Oct 10 00:54:18 2016       *
+*-----------------------------------------------------*
+Command Line:
+../lisod 4931 5327 ../lisod.log ../lisod.lock www cgi/cgi_script.py grader.key grader.crt 
+*-----------------------------------------------------*
+Accept connection from client 127.0.0.1:49286.
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+Accept connection from client 127.0.0.1:49296.
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+Accept connection from client 127.0.0.1:49298.
+  Get Nagetive content-length not allowed /cgi/ request from 127.0.0.1.
+    User-Agent: 
+Accept connection from client 127.0.0.1:50956.
+  Get GET /style.css request from 127.0.0.1.
+    User-Agent: python-requests/2.0.0 CPython/2.7.5 Linux/3.10.0-327.28.2.el7.x86_64
+Accept connection from client 127.0.0.1:50960.
+  Get GET /images/liso_header.png request from 127.0.0.1.
+    User-Agent: python-requests/2.0.0 CPython/2.7.5 Linux/3.10.0-327.28.2.el7.x86_64
+Accept connection from client 127.0.0.1:50964.
+  Get GET /index.html request from 127.0.0.1.
+    User-Agent: python-requests/2.0.0 CPython/2.7.5 Linux/3.10.0-327.28.2.el7.x86_64
+Accept connection from client 127.0.0.1:50968.
+  Get PUT /style.css request from 127.0.0.1.
+    User-Agent: python-requests/2.0.0 CPython/2.7.5 Linux/3.10.0-327.28.2.el7.x86_64
+Accept connection from client 127.0.0.1:50972.
+  Get PUT /images/liso_header.png request from 127.0.0.1.
+    User-Agent: python-requests/2.0.0 CPython/2.7.5 Linux/3.10.0-327.28.2.el7.x86_64
+Accept connection from client 127.0.0.1:50976.
+  Get PUT /index.html request from 127.0.0.1.
+    User-Agent: python-requests/2.0.0 CPython/2.7.5 Linux/3.10.0-327.28.2.el7.x86_64
+Accept connection from client 127.0.0.1:49326.
+  Get GET /cgi/ request from 127.0.0.1.
+    User-Agent: python-requests/2.0.0 CPython/2.7.5 Linux/3.10.0-327.28.2.el7.x86_64
+failed, CGI client have close connection
+child 7939 terminated with 0
+
+
+
+
+*******************************************************
+*                HTTPS Server Start                   *
+*          Start Time: Mon Oct 10 00:56:14 2016       *
+*-----------------------------------------------------*
+Command Line:
+../lisod 8203 6928 ../lisod.log ../lisod.lock www cgi/cgi_script.py grader.key grader.crt 
+*-----------------------------------------------------*
+Accept connection from client 127.0.0.1:40516.
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+Accept connection from client 127.0.0.1:40518.
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+  Get HEAD /index.html request from 127.0.0.1.
+    User-Agent: 
+Accept connection from client 127.0.0.1:40520.
+  Get Nagetive content-length not allowed /cgi/ request from 127.0.0.1.
+    User-Agent: 
+Accept connection from client 127.0.0.1:42628.
+  Get GET /style.css request from 127.0.0.1.
+    User-Agent: python-requests/2.0.0 CPython/2.7.5 Linux/3.10.0-327.28.2.el7.x86_64
+Accept connection from client 127.0.0.1:42632.
+  Get GET /images/liso_header.png request from 127.0.0.1.
+    User-Agent: python-requests/2.0.0 CPython/2.7.5 Linux/3.10.0-327.28.2.el7.x86_64
+Accept connection from client 127.0.0.1:42636.
+  Get GET /index.html request from 127.0.0.1.
+    User-Agent: python-requests/2.0.0 CPython/2.7.5 Linux/3.10.0-327.28.2.el7.x86_64
+Accept connection from client 127.0.0.1:42640.
+  Get PUT /style.css request from 127.0.0.1.
+    User-Agent: python-requests/2.0.0 CPython/2.7.5 Linux/3.10.0-327.28.2.el7.x86_64
+Accept connection from client 127.0.0.1:42644.
+  Get PUT /images/liso_header.png request from 127.0.0.1.
+    User-Agent: python-requests/2.0.0 CPython/2.7.5 Linux/3.10.0-327.28.2.el7.x86_64
+Accept connection from client 127.0.0.1:42648.
+  Get PUT /index.html request from 127.0.0.1.
+    User-Agent: python-requests/2.0.0 CPython/2.7.5 Linux/3.10.0-327.28.2.el7.x86_64
+Accept connection from client 127.0.0.1:40548.
+  Get GET /cgi/ request from 127.0.0.1.
+    User-Agent: python-requests/2.0.0 CPython/2.7.5 Linux/3.10.0-327.28.2.el7.x86_64
+child 10941 terminated with 0

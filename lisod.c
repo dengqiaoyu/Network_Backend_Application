@@ -12,13 +12,13 @@ static const char *FILE_TYPE[TYPE_SIZE] =
 void signal_handler_dbg(int sig);
 
 FILE *logfp = NULL;
-static int logfd = -1;
+int logfd = -1;
 int errfd = -1;
 int old_stdin;
 int old_stdout;
 int old_stderr;
 SSL_CTX *ssl_context = NULL;
-static param lisod_param;
+param lisod_param;
 // ./lisod 2090 7114 ../tmp/lisod.log ../tmp/lisod.lock ../tmp/www ../tmp/cgi/cgi_script.py ../tmp/grader.key ../tmp/grader.crt
 
 int main(int argc, char **argv) {
@@ -38,15 +38,15 @@ int main(int argc, char **argv) {
         return -1;
     }
 
-    ret = daemonize(lisod_param.lock);
-    if (ret < 0) {
-        fprintf(stderr, "Daemonize failed, server terminated.\n");
-        return -1;
-    }
-    // signal(SIGPIPE, signal_handler_dbg);
-    // signal(SIGTSTP, signal_handler_dbg);
-    // signal(SIGINT, signal_handler_dbg);
-    // signal(SIGCHLD, signal_handler_dbg);
+    // ret = daemonize(lisod_param.lock);
+    // if (ret < 0) {
+    //     fprintf(stderr, "Daemonize failed, server terminated.\n");
+    //     return -1;
+    // }
+    signal(SIGPIPE, signal_handler_dbg);
+    signal(SIGTSTP, signal_handler_dbg);
+    signal(SIGINT, signal_handler_dbg);
+    signal(SIGCHLD, signal_handler_dbg);
 
     logfd = init_log(lisod_param.log, argc, argv);
     errfd = open("./fd_reserved", O_WRONLY | O_CREAT, m_error);
@@ -889,6 +889,20 @@ ssize_t serve_dynamic(Request_analyzed *req_anlzed, Requests *req, pools *p,
             return status_code;
         }
 
+        if (!strncmp("HTTP/1.0", req->http_version, MAX_SIZE_S))
+        {
+            p->close_fin[connfd] = 1;
+        }
+        else if (!strncmp("HTTP/1.1", req->http_version, MAX_SIZE_S))
+        {
+            p->close_fin[connfd] = 0;
+        }
+        else
+        {
+            status_code = 505;
+            return status_code;
+        }
+
         if (pipe(stdin_pipe) < 0) {
             fprintf(logfp, "Failed piping for stdin.\n");
             fupdate(logfp);
@@ -941,7 +955,11 @@ ssize_t serve_dynamic(Request_analyzed *req_anlzed, Requests *req, pools *p,
             else {
                 get_envp(p, connfd, req, ENVP, lisod_param.https_port);
             }
-
+            dbg_cp3_fprintf(stderr, "@@@@@@@@@@@@@@@@@@@@@@@@@\n");
+            for (i = 0; i < ENVP_len; i++) {
+                dbg_cp3_fprintf(stderr, "%s\n", ENVP[i]);
+            }
+            dbg_cp3_fprintf(stderr, "@@@@@@@@@@@@@@@@@@@@@@@@@\n");
             char *ARGV[2];
             ARGV[0] = (char *) malloc(MAXLINE + 1);
             memset(ARGV[0], 0, MAXLINE + 1);
@@ -954,10 +972,12 @@ ssize_t serve_dynamic(Request_analyzed *req_anlzed, Requests *req, pools *p,
             // }
             dbg_cp3_fprintf(stderr, "line 954\n");
             ret = execve(ARGV[0], ARGV, ENVP);
-            dbg_cp3_fprintf(stderr, "ret: %ld", ret);
+            dbg_cp3_fprintf(stderr, " line 962ret: %ld\n", ret);
             if (ret) {
                 execve_error_handler();
                 fprintf(logfp, "Failed executing execve syscall.\n");
+                dbg_cp3_fprintf(stderr, "error: %s\n", strerror(errno));
+                exit(-1);
                 // TODO error_handling in child
             }
         }
@@ -1730,28 +1750,8 @@ ssize_t send_maxfderr(int connfd)
     return 0;
 }
 
-void inline fupdate(FILE *fp)
+void fupdate(FILE *fp)
 {
     fflush(fp);
     fsync(logfd);
-}
-
-ssize_t if_exist(char *file_name) {
-    dbg_cp3_printf("line 1630\n");
-    FILE *fp = NULL;
-    fp = fopen(file_name, "r");
-    dbg_cp3_printf("line 1633\n");
-    if (fp == NULL) {
-        dbg_cp3_printf("line 1635\n");
-        int i = 0;
-        for (i = 0; i < 8; i++) {
-            dbg_cp3_printf("@@@\n");
-        }
-        return 0;
-    }
-    else {
-        dbg_cp3_printf("line 1637\n");
-        fclose(fp);
-        return 1;
-    }
 }
