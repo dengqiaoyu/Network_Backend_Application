@@ -168,6 +168,7 @@ Requests * parse(char *skt_recv_buf, size_t recv_buf_size, int socketfd,
                 memset(p->cached_buf[socketfd], 0, REQ_BUF_SIZE + 1);
             }
             if (req_size <= REQ_BUF_SIZE) {
+                dbg_cp3_printf("req_buffer: \n[\n%s]\n\n", req_buffer);
                 set_parsing_options(req_buffer, req_size, req);
                 yyrestart();
                 ret = yyparse();
@@ -209,16 +210,14 @@ Requests * parse(char *skt_recv_buf, size_t recv_buf_size, int socketfd,
                                 MAX_SIZE_S);
                         req->entity_len = 0;
                     }
-                    dbg_cp3_printf("req->entity_len: %ld\n", req->entity_len);
+                    //dbg_cp3_printf("req->entity_len: %ld\n", req->entity_len);
                     if (req->entity_len) {
                         if ((read_count + req_size) == full_req_size) {
                             if (full_req_size != recv_buf_size) {
-                                dbg_wselet_printf("recv_buf_size: %ld\n", recv_buf_size);
-                                dbg_wselet_printf("full_req_size: %ld\n", full_req_size);
                                 size_t end_ebody_len =
                                     recv_buf_size - full_req_size;
-                                dbg_cp3_printf("req->entity_len: %ld\n", req->entity_len);
-                                dbg_cp3_printf("end_ebody_len: %ld\n", end_ebody_len);
+                                //dbg_cp3_printf("req->entity_len: %ld\n", req->entity_len);
+                                // dbg_cp3_printf("end_ebody_len: %ld\n", end_ebody_len);
                                 if (req->entity_len == end_ebody_len) {
                                     end_with_ebody = 1;
                                     req->entity_body =
@@ -254,7 +253,6 @@ Requests * parse(char *skt_recv_buf, size_t recv_buf_size, int socketfd,
                                 //dbg_cp3_printf("entity body: \n[\n%s]\n\n", req->entity_body);
                             }
                             else {
-                                dbg_wselet_printf("Needs entity\n");
                                 if_req_cached = 1;
                                 p->cached_req[socketfd] = req;
                                 req->entity_body =

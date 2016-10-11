@@ -38,15 +38,15 @@ int main(int argc, char **argv) {
         return -1;
     }
 
-    // ret = daemonize(lisod_param.lock);
-    // if (ret < 0) {
-    //     fprintf(stderr, "Daemonize failed, server terminated.\n");
-    //     return -1;
-    // }
-    signal(SIGPIPE, signal_handler_dbg);
-    signal(SIGTSTP, signal_handler_dbg);
-    signal(SIGINT, signal_handler_dbg);
-    signal(SIGCHLD, signal_handler_dbg);
+    ret = daemonize(lisod_param.lock);
+    if (ret < 0) {
+        fprintf(stderr, "Daemonize failed, server terminated.\n");
+        return -1;
+    }
+    // signal(SIGPIPE, signal_handler_dbg);
+    // signal(SIGTSTP, signal_handler_dbg);
+    // signal(SIGINT, signal_handler_dbg);
+    // signal(SIGCHLD, signal_handler_dbg);
 
     logfd = init_log(lisod_param.log, argc, argv);
     errfd = open("./fd_reserved", O_WRONLY | O_CREAT, m_error);
@@ -796,16 +796,18 @@ ssize_t que_resp_static(Request_analyzed *req_anlzed, Requests *req, pools *p,
             MAX_SIZE_S);
     strncpy(resp_hds.general_header.cache_control, "no-cache",
             MAX_SIZE_S);
-    if (!strncasecmp("close", req_anlzed->connection, MAX_SIZE_S))
-    {
+    if (!strncasecmp("close", req_anlzed->connection, MAX_SIZE_S)) {
         strncpy(resp_hds.general_header.connection, "close",
                 MAX_SIZE_S);
         p->close_fin[connfd] = 1;
     }
-    else
-    {
+    else if (!strncasecmp("keep-alive", req_anlzed->connection, MAX_SIZE_S)) {
         strncpy(resp_hds.general_header.connection, "keep-alive",
                 MAX_SIZE_S);
+    }
+    else {
+        status_code = 400;
+        return status_code;
     }
 
 

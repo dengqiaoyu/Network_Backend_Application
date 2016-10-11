@@ -53,7 +53,7 @@
 #define dbg_cp2_printf(...)
 #endif
 
-#define DEBUG_CP3
+//#define DEBUG_CP3
 #ifdef DEBUG_CP3
 #define dbg_cp3_printf(...) printf(__VA_ARGS__)
 #define dbg_cp3_fprintf(...) fprintf(__VA_ARGS__)
@@ -62,7 +62,7 @@
 #define dbg_cp3_fprintf(...)
 #endif
 
-#define DEBUG_WSELET
+//#define DEBUG_WSELET
 #ifdef DEBUG_WSELET
 #define dbg_wselet_printf(...) printf(__VA_ARGS__)
 #define dbg_wselet_fprintf(...) fprintf(__VA_ARGS__)
