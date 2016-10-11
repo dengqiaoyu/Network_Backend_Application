@@ -218,10 +218,9 @@ void add_cgi_rspfd(int cgifd, int connfd, pools *p) {
     p->ign_first[cgifd] = 0;
     p->too_long[cgifd] = 0;
     p->close_fin[cgifd] = 0;
-    p->remain_req[cgifd] = 0;
     memset(p->cached_buf[cgifd], 0, REQ_BUF_SIZE + 1);
     p->cached_req[cgifd] = NULL;
-    p->resp_ptr[cgifd] = NULL;
+    p->resp_ptr[cgifd]->next = NULL;
     strncpy(p->clientip[cgifd], "", MAX_SIZE_S);
 }
 

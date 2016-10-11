@@ -75,8 +75,9 @@ int main(int argc, char **argv) {
 
     while (1) {
         pool.ready_rd_set = pool.active_rd_set;
-        pool.num_ready = select(FD_SETSIZE, &pool.ready_rd_set, NULL, NULL,
-                                &tv_selt);
+        pool.ready_wt_set = pool.active_wt_set;
+        pool.num_ready = select(FD_SETSIZE, &pool.ready_rd_set,
+                                &pool.ready_wt_set, NULL, &tv_selt);
         //dbg_cp3_printf("FD_ISSET(7, &p->ready_set): %d\n", FD_ISSET(7, &pool.ready_set));
 
         if (FD_ISSET(listenfd, &pool.ready_rd_set)) {
@@ -478,10 +479,10 @@ void init_pool(int listenfd, int ssl_listenfd, pools *p) {
         p->ign_first[i] = 0;
         p->too_long[i] = 0;
         p->close_fin[i] = 0;
-        p->remain_req[i] = 0;
         memset(p->cached_buf[i], 0, REQ_BUF_SIZE + 1);
         p->cached_req[i] = NULL;
-        p->resp_ptr[i] = NULL;
+        p->resp_ptr[i] = malloc(sizeof(Response_ptr_list));
+        memset(p->resp_ptr[i], 0, sizeof(Response_ptr_list));
         memset(p->clientip[i], 0, MAX_SIZE_S + 1);
     }
 }
@@ -534,7 +535,6 @@ ssize_t add_client(int connfd, pools *p, char *c_host, ssize_t if_ssl)
     p->ign_first[connfd] = 0;
     p->too_long[connfd] = 0;
     p->close_fin[connfd] = 0;
-    p->remain_req[connfd] = 0;
     memset(p->cached_buf[connfd], 0, REQ_BUF_SIZE + 1);
     FD_SET(connfd, &p->active_rd_set);
     strncpy(p->clientip[connfd], c_host, MAX_SIZE_S);
@@ -548,15 +548,15 @@ ssize_t serve_clients(pools *p) {
 
     //TODO check start
     for (i = 0; (i < FD_SETSIZE) && (p->num_ready > 0); i++) {
-        dbg_cp3_printf("connfd: %ld, status: %d\n", i, p->clientfd[i]);
+        dbg_wselet_printf("connfd: %ld, status: %d\n", i, p->clientfd[i]);
         if ((p->clientfd[i] == 1) && (FD_ISSET(i, &p->ready_rd_set))) {
+            dbg_wselet_printf("line 553\n");
             int connfd = i;
             size_t if_conn_close = 0;
             size_t read_offset = 0;
             read_ret = 0;
             SSL *client_context = p->SSL_client_ctx[i];
             p->num_ready--;
-
             memset(skt_read_buf, 0, SKT_READ_BUF_SIZE + 1);
             size_t iter_count = 0;
             do {
@@ -579,12 +579,14 @@ ssize_t serve_clients(pools *p) {
                 dbg_cp3_printf("read_ret: %ld\n", read_ret);
 
                 if (read_ret == 0) {
+                    dbg_wselet_printf("line 582\n");
                     Close_conn(connfd, p);
                     if_conn_close = 1;
                     break;
                 }
                 else if (read_ret < 0) {
                     if (errno != EAGAIN && errno != EWOULDBLOCK) {
+                        dbg_wselet_printf("line 588\n");
                         Close_conn(connfd, p);
                         if_conn_close = 1;
                     }
@@ -593,19 +595,20 @@ ssize_t serve_clients(pools *p) {
 
             } while (iter_count < MAX_READ_ITER_COUNT);
             if (if_conn_close == 1) {
-                //continue;
+                continue;
             }
 
             dbg_cp3_printf("$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n");
             dbg_cp3_printf("skt_read_buf in lisod.c:\n%s\n",
                            skt_read_buf);
             dbg_cp3_printf("$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n");
-            Requests *reqs = parse(skt_read_buf, read_ret, connfd, p);
+            Requests *reqs = parse(skt_read_buf, read_offset, connfd, p);
             Requests *req_rover = reqs;
             print_request(req_rover);
             req_rover = reqs;
             dbg_wselet_printf("line 607\n");
             while (req_rover != NULL) {
+                dbg_wselet_printf("line 610\n");
                 ret = search_first_position(req_rover->http_uri,
                                             SCRIPT_NAME);
                 size_t status_code = 200;
@@ -625,6 +628,7 @@ ssize_t serve_clients(pools *p) {
                                                   connfd, client_context);
                 }
                 else {
+                    dbg_wselet_printf("enter cgi part\n");
                     Request_analyzed req_anlzed;
                     memset(&req_anlzed, 0, sizeof(Request_analyzed));
                     get_request_analyzed(&req_anlzed, req_rover);
@@ -635,17 +639,20 @@ ssize_t serve_clients(pools *p) {
                     fprintf(logfp, "    User-Agent: %s\n",
                             req_anlzed.user_agent);
                     fupdate(logfp);
-                    status_code = serve_dynamic(&req_anlzed, req_rover, p,
-                                                connfd, client_context, -1);
+                    status_code = que_resp_dynamic(&req_anlzed, req_rover, p,
+                                                   connfd, client_context, -1);
                 }
                 if (status_code != 200) {
-                    ret = send_error(connfd, client_context, status_code);
+                    dbg_wselet_printf("status_code: %d\n", status_code);
+                    ret = que_error(connfd, p, status_code);
                     if (ret < 0) {
+                        dbg_wselet_printf("line 649\n");
                         Close_conn(connfd, p);
                         break;
                     }
                 }
                 else if (status_code < 0) {
+                    dbg_wselet_printf("line 655\n");
                     Close_conn(connfd, p);
                     break;
                 }
@@ -653,13 +660,12 @@ ssize_t serve_clients(pools *p) {
             }
             destory_requests(reqs);
             reqs = NULL;
-            print_resp_ptr(connfd, p);
-            exit(1);
+            //print_resp_ptr(connfd, p);
         }
         else if ((p->clientfd[i] > 1) && (FD_ISSET(i, &p->ready_rd_set))) {
             int cgi_rspfd = i;
             int connfd = p->clientfd[i];
-            dbg_cp3_printf("cgi_rspfd: %d, connfd: %d\n", cgi_rspfd, connfd);
+            dbg_wselet_printf("cgi_rspfd: %d, connfd: %d\n", cgi_rspfd, connfd);
             SSL *client_context = p->SSL_client_ctx[connfd];
             p->num_ready--;
             if (p->clientfd[connfd] == -1) {
@@ -667,10 +673,19 @@ ssize_t serve_clients(pools *p) {
                 Close_conn(cgi_rspfd, p);
                 continue;
             }
-            ret = serve_dynamic(NULL, NULL, p, connfd, client_context,
-                                cgi_rspfd);
+            ret = que_resp_dynamic(NULL, NULL, p, connfd, client_context,
+                                   cgi_rspfd);
             if (ret < 0) {
+                dbg_wselet_printf("line 675\n");
                 Close_conn(connfd, p);
+            }
+        }
+        else if ((p->clientfd[i] == 1) && (FD_ISSET(i, &p->ready_wt_set))) {
+            int connfd = i;
+            p->num_ready--;
+            ret = send_response(connfd, p);
+            if (ret < 0) {
+                fprintf(logfp, "send_response() failed\n");
             }
         }
     }
@@ -826,6 +841,7 @@ ssize_t que_resp_static(Request_analyzed *req_anlzed, Requests *req, pools *p,
     {
         status_code = get_contentfd(req, &resp_hds, &contentfd);
         if (status_code != 200) {
+            dbg_wselet_printf("line 839\n");
             return status_code;
         }
     }
@@ -854,16 +870,144 @@ ssize_t que_resp_static(Request_analyzed *req_anlzed, Requests *req, pools *p,
         }
         Close(contentfd);
     }
-    // ret = write_to_socket(connfd, client_context, resp_hds_text,
-    //                       resp_ct_text, resp_ct_ptr,
-    //                       resp_hds.entity_header.content_length);
+
     ret = get_resp_list(connfd, p, resp_hds_text, resp_ct_text, resp_ct_ptr,
                         resp_hds.entity_header.content_length);
+    FD_SET(connfd, &p->active_wt_set);
     return 200;
 }
 
-ssize_t serve_dynamic(Request_analyzed *req_anlzed, Requests *req, pools *p,
-                      int connfd, SSL * client_context, int cgi_rspfd) {
+ssize_t send_response(int connfd, pools *p) {
+    Response_ptr_list *resp_ptr_start = p->resp_ptr[connfd];
+    Response_ptr_list *rover = resp_ptr_start->next;
+    ssize_t write_ret = 0;
+    ssize_t ret = 0;
+    ssize_t headers_size = rover->hdr_size;
+    ssize_t hdr_offset = rover->hdr_offset;
+    ssize_t body_size = rover->body_size;
+    ssize_t body_offset = rover->body_offset;
+    SSL *client_context = p->SSL_client_ctx[connfd];
+
+    while (rover != NULL) {
+        if (rover->headers != NULL) {
+            if (client_context != NULL) {
+                write_ret = SSL_write(client_context,
+                                      rover->headers + hdr_offset,
+                                      headers_size - hdr_offset);
+            }
+            else {
+                write_ret = write(connfd,
+                                  rover->headers + hdr_offset,
+                                  headers_size - hdr_offset);
+            }
+            if (write_ret < 0) {
+                if (errno == EWOULDBLOCK || errno == EAGAIN) {
+                    break;
+                }
+                else {
+                    fprintf(logfp, "Failed sending response to client %s\n",
+                            p->clientip[connfd]);
+                    dbg_wselet_printf("line 910\n");
+                    Close_conn(connfd, p);
+                    return -1;
+                }
+            }
+            else if (write_ret > 0) {
+                if (write_ret == headers_size - hdr_offset) {
+                    free(rover->headers);
+                    rover->headers = NULL;
+                    rover->hdr_size = 0;
+                    rover->hdr_offset = 0;
+                }
+                else {
+                    rover->hdr_offset += write_ret;
+                    break;
+                }
+            }
+            else {
+                dbg_wselet_printf("line 928\n");
+                Close_conn(connfd, p);
+                return 0;
+            }
+        }
+
+
+        if (rover->body != NULL) {
+            if (client_context != NULL) {
+                write_ret = SSL_write(client_context,
+                                      rover->body + body_offset,
+                                      body_size - body_offset);
+            }
+            else {
+                write_ret = write(connfd,
+                                  rover->body + body_offset,
+                                  body_size - body_offset);
+            }
+            if (write_ret < 0) {
+                if (errno == EWOULDBLOCK || errno == EAGAIN) {
+                    break;
+                }
+                else {
+                    fprintf(logfp, "Failed sending response to client %s\n",
+                            p->clientip[connfd]);
+                    dbg_wselet_printf("line 953\n");
+                    Close_conn(connfd, p);
+                    return -1;
+                }
+            }
+            else if (write_ret > 0) {
+                if (write_ret == body_size - body_offset) {
+                    if (rover->is_body_map == 1) {
+                        ret = munmap(rover->body, body_size);
+                        dbg_wselet_printf("free body on map\n");
+                        if (ret == -1)
+                        {
+                            fprintf(logfp, "Failed unmapping file.\n");
+                            fupdate(logfp);
+                        }
+                    }
+                    else {
+                        dbg_wselet_printf("free body on malloc\n");
+                        free(rover->body);
+                    }
+                    rover->body = NULL;
+                    rover->body_size = 0;
+                    rover->body_offset = 0;
+                }
+                else {
+                    rover->body_offset += write_ret;
+                    break;
+                }
+            }
+            else {
+                dbg_wselet_printf("line 983\n");
+                Close_conn(connfd, p);
+                return 0;
+            }
+        }
+        if (rover->headers == NULL && rover->body == NULL) {
+            dbg_wselet_printf("Response complete!\n");
+            resp_ptr_start->next = rover->next;
+            free(rover);
+            rover = resp_ptr_start->next;
+        }
+        else {
+            break;
+        }
+    }
+    if (resp_ptr_start->next == NULL) {
+        if (p->close_fin[connfd] == 1) {
+            dbg_wselet_printf("line 1000\n");
+            Close_conn(connfd, p);
+            dbg_cp3_printf("Closed!\n");
+        }
+        FD_CLR(connfd, &p->active_wt_set);
+    }
+    return 0;
+}
+
+ssize_t que_resp_dynamic(Request_analyzed *req_anlzed, Requests *req, pools *p,
+                         int connfd, SSL * client_context, int cgi_rspfd) {
     ssize_t ret = 0;
     if (req != NULL) {
         int status_code;
@@ -974,10 +1118,8 @@ ssize_t serve_dynamic(Request_analyzed *req_anlzed, Requests *req, pools *p,
             }
         }
         else if (pid > 0) {
-
             Close(stdout_pipe[1]);
             Close(stdin_pipe[0]);
-            fcntl(stdout_pipe[0], F_SETFL, O_NONBLOCK);
             dbg_cp3_fprintf(stderr, "line 976\n");
             if (req->entity_len != 0) {
                 ret = write(stdin_pipe[1], req->entity_body, req->entity_len);
@@ -993,96 +1135,32 @@ ssize_t serve_dynamic(Request_analyzed *req_anlzed, Requests *req, pools *p,
                 p->close_fin[connfd] = 1;
             }
             add_cgi_rspfd(stdout_pipe[0], connfd, p);
-            char cgi_buf[MAX_CGI_MSG + 1] = {0};
-            size_t iter_count = 0;
-            do {
-                iter_count++;
-                memset(cgi_buf, 0, MAX_CGI_MSG + 1);
-                ssize_t read_ret = read(stdout_pipe[0], cgi_buf, MAX_CGI_MSG);
-                dbg_cp3_fprintf(stderr, "read_ret: %ld, errno:  %d\n", read_ret, errno);
-                dbg_cp3_fprintf(stderr, "stdout_pipe[0]: %d\n", stdout_pipe[0]);
-                if (read_ret > 0) {
-                    dbg_cp3_printf("cgi_buf:\n %s\n", cgi_buf);
-                    ret = write_to_socket(connfd, p->SSL_client_ctx[connfd],
-                                          cgi_buf, NULL, NULL, 0);
-                    if (ret < 0) {
-                        fprintf(logfp,
-                                "Failed sending CGI response to client.\n");
-                        return -1;
-                    }
-                }
-                else if (read_ret == 0) {
-                    Close_conn(stdout_pipe[0], p);
-                    if (p->close_fin[connfd] == 1 && p->remain_req[connfd] == 0)
-                    {
-                        dbg_cp3_printf("fd %d Connection_close is made\n",
-                                       connfd);
-                        Close_conn(connfd, p);
-                    }
-                    break;
-                }
-                else {
-                    if (errno != EAGAIN && errno != EWOULDBLOCK) {
-                        fprintf(logfp,
-                                "Failed receiving message from CGI program.\n");
-                        if (iter_count == 1) {
-                            status_code = 500;
-                            return status_code;
-                        }
-                        else {
-                            return -1;
-                        }
-                    }
-                    p->remain_req[connfd]++;
-                    break;
-                }
-            } while (iter_count < MAX_CGI_ITER_COUNT);
         }
     }
     else {
+        dbg_wselet_printf("engtering cgi get result\n");
         dbg_cp3_printf("cgi ready\n");
         char cgi_buf[MAX_CGI_MSG + 1] = {0};
-        size_t iter_count = 0;
-        do {
-            iter_count++;
-            memset(cgi_buf, 0, MAX_CGI_MSG + 1);
-            ssize_t read_ret = read(cgi_rspfd, cgi_buf, MAX_CGI_MSG);
-            dbg_cp3_fprintf(stderr, "read_ret: %ld, errno:  %d\n", read_ret, errno);
-            dbg_cp3_fprintf(stderr, "cgi_rspfd: %d\n", cgi_rspfd);
-            if (read_ret > 0) {
-                dbg_cp3_printf("cgi_buf:\n %s\n", cgi_buf);
-                ret = write_to_socket(connfd, p->SSL_client_ctx[connfd],
-                                      cgi_buf, NULL, NULL, 0);
-                if (ret < 0) {
-                    p->remain_req[connfd]--;
-                    fprintf(logfp,
-                            "Failed sending CGI response to client.\n");
-                    return -1;
-                }
-            }
-            else if (read_ret == 0) {
-                p->remain_req[connfd]--;
-                Close_conn(cgi_rspfd, p);
-                dbg_cp3_printf("remain_req: %ld, close_fin: %ld\n",
-                               p->remain_req[connfd], p->close_fin[connfd]);
-                if (p->close_fin[connfd] == 1 && p->remain_req[connfd] == 0)
-                {
-                    dbg_cp3_printf("fd %d Connection_close is made\n",
-                                   connfd);
-                    Close_conn(connfd, p);
-                }
-                break;
-            }
-            else {
-                if (errno != EAGAIN && errno != EWOULDBLOCK) {
-                    p->remain_req[connfd]--;
-                    fprintf(logfp,
-                            "Failed receiving message from CGI program.\n");
-                    return -1;
-                }
-                break;
-            }
-        } while (iter_count < MAX_CGI_ITER_COUNT);
+        ssize_t read_ret = read(cgi_rspfd, cgi_buf, MAX_CGI_MSG);
+        if (read_ret == 0) {
+            dbg_wselet_printf("cgi_rspfd:%d\n", cgi_rspfd);
+            Close_conn(cgi_rspfd, p);
+        }
+        else if (read_ret > 0) {
+            get_resp_list(connfd, p, cgi_buf, NULL, NULL, 0);
+            dbg_wselet_printf("^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n");
+            dbg_wselet_printf("cgi_buf:\n %s\n", cgi_buf);
+            dbg_wselet_printf("^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n");
+            dbg_wselet_printf("pass get_resp_list\n");
+            FD_SET(connfd, &p->active_wt_set);
+        }
+        else if (errno != EWOULDBLOCK && errno != EAGAIN) {
+            dbg_wselet_printf("cgi_rspfd: %d\n", cgi_rspfd);
+            fprintf(logfp, "Failed sending response to client %s\n",
+                    p->clientip[connfd]);
+            dbg_wselet_printf("line 1159\n");
+            Close_conn(cgi_rspfd, p);
+        }
     }
     return 200;
 }
@@ -1503,54 +1581,53 @@ ssize_t write_to_socket(int connfd, SSL *client_context, char *resp_hds_text,
 
 ssize_t get_resp_list(int connfd, pools *p, char *resp_hds_text,
                       char *resp_ct_text, char *resp_ct_ptr, size_t ct_size) {
-    Response_ptr_list *ptr = NULL;
-    ptr = malloc(sizeof(Response_ptr_list));
-    memset(ptr, 0, sizeof(Response_ptr_list));
-    if (p->resp_ptr[connfd] == NULL) {
-        p->resp_ptr[connfd] = ptr;
+    // dbg_wselet_printf("resp_hds_text:\n[\n%s]\n", resp_hds_text);
+    // dbg_wselet_printf("resp_ct_text:\n[\n%s]\n", resp_ct_text);
+    // dbg_wselet_printf("ct_size: %ld\n", ct_size);
+    // dbg_wselet_printf("connfd: %ld\n", connfd);
+    Response_ptr_list *resp_ptr =
+        (Response_ptr_list *)malloc(sizeof(Response_ptr_list));
+    memset(resp_ptr, 0, sizeof(Response_ptr_list));
+    Response_ptr_list *rover = p->resp_ptr[connfd];
+    while (rover->next != NULL) {
+        rover = rover->next;
     }
-    else {
-        Response_ptr_list *rover = p->resp_ptr[connfd];
-        while (rover->next != NULL) {
-            rover = rover->next;
-        }
-        rover->next = ptr;
-    }
+    rover->next = resp_ptr;
     size_t hdr_size = strlen(resp_hds_text);
-    ptr->headers = malloc(hdr_size + 1);
-    ptr->hdr_size = hdr_size;
-    ptr->hdr_offset = 0;
-    memset(ptr->headers, 0, hdr_size + 1);
-    memcpy(ptr->headers, resp_hds_text, hdr_size);
+    resp_ptr->headers = malloc(hdr_size + 1);
+    resp_ptr->hdr_size = hdr_size;
+    resp_ptr->hdr_offset = 0;
+    memset(resp_ptr->headers, 0, hdr_size + 1);
+    memcpy(resp_ptr->headers, resp_hds_text, hdr_size);
 
     if (resp_ct_ptr != NULL)
     {
-        ptr->body = resp_ct_ptr;
-        ptr->body_size = ct_size;
-        ptr->is_body_map = 1;
+        resp_ptr->body = resp_ct_ptr;
+        resp_ptr->body_size = ct_size;
+        resp_ptr->is_body_map = 1;
     }
     else if (resp_ct_text != NULL && resp_ct_text[0] != 0)
     {
-        size_t body_size = strlen(resp_ct_text);
-        ptr->body = malloc(body_size + 1);
-        memset(ptr->body, 0, body_size + 1);
-        memcpy(ptr->body, resp_ct_text, body_size);
-        ptr->body_size = body_size;
-        ptr->is_body_map = 0;
+        resp_ptr->body = malloc(ct_size + 1);
+        memset(resp_ptr->body, 0, ct_size + 1);
+        memcpy(resp_ptr->body, resp_ct_text, ct_size);
+        resp_ptr->body_size = ct_size;
+        resp_ptr->is_body_map = 0;
     }
     else
     {
-        ptr->body = NULL;
-        ptr->body_size = 0;
-        ptr->is_body_map = 0;
+        resp_ptr->body = NULL;
+        resp_ptr->body_size = 0;
+        resp_ptr->is_body_map = 0;
     }
-    ptr->body_offset = 0;
+    resp_ptr->body_offset = 0;
 
+    // dbg_wselet_printf("p->resp_ptr[connfd]->next->headers: \n%s\n", p->resp_ptr[connfd]->next->headers);
+    // dbg_wselet_printf("p->resp_ptr[connfd]->next->body: \n%s\n", p->resp_ptr[connfd]->next->body);
     return 0;
 }
 
-
-ssize_t send_error(int connfd, SSL *client_context, int status_code) {
+ssize_t que_error(int connfd, pools *p, int status_code) {
     Response_headers resp_hds;
     char resp_hds_text[MAX_TEXT + 1];
     char resp_ct_text[MAX_TEXT + 1];
@@ -1584,12 +1661,14 @@ ssize_t send_error(int connfd, SSL *client_context, int status_code) {
     get_error_content(status_code, resp_ct_text,
                       &resp_hds);
     get_response_headers(resp_hds_text, &resp_hds);
-    ret = write_to_socket(connfd, client_context, resp_hds_text,
-                          resp_ct_text, NULL,
-                          resp_hds.entity_header.content_length);
+
+    ret = get_resp_list(connfd, p, resp_hds_text, resp_ct_text, NULL,
+                        resp_hds.entity_header.content_length);
     if (ret < 0) {
         return -1;
     }
+    FD_SET(connfd, &p->active_wt_set);
+
     return 0;
 }
 
@@ -1723,20 +1802,20 @@ void destory_requests(Requests *reqs)
 }
 
 ssize_t Close_conn(int connfd, pools *p) {
-    dbg_cp3_printf("entering Close_conn\n");
+    dbg_wselet_printf("entering Close_conn\n");
     if (p->clientfd[connfd] > 1) {
-        dbg_cp3_printf("pipefd: %d closed\n", connfd);
+        dbg_wselet_printf("pipefd: %d closed\n", connfd);
         Close(connfd);
     }
     else {
         if (p->SSL_client_ctx[connfd] != NULL) {
             SSL_shutdown(p->SSL_client_ctx[connfd]);
             SSL_free(p->SSL_client_ctx[connfd]);
-            dbg_cp3_printf("connfd %d close\n", connfd);
+            dbg_wselet_printf("connfd %d close\n", connfd);
             Close(connfd);
         }
-        else if (p->close_fin[connfd] == 1 && p->remain_req[connfd] == 0) {
-            dbg_cp3_printf("connfd %d close\n", connfd);
+        else if (p->close_fin[connfd] == 1) {
+            dbg_wselet_printf("connfd %d close\n", connfd);
             Close(connfd);
         }
         else {
@@ -1752,7 +1831,7 @@ ssize_t Close_conn(int connfd, pools *p) {
             }
             else
             {
-                dbg_cp3_printf("connfd %d close\n", connfd);
+                dbg_wselet_printf("connfd %d close\n", connfd);
                 Close(connfd);
             }
         }
@@ -1764,15 +1843,13 @@ ssize_t Close_conn(int connfd, pools *p) {
     p->ign_first[connfd] = 0;
     p->too_long[connfd] = 0;
     p->close_fin[connfd] = 0;
-    p->remain_req[connfd] = 0;
     memset(p->cached_buf[connfd], 0, REQ_BUF_SIZE + 1);
     free(p->cached_req[connfd]);
     p->cached_req[connfd] = NULL;
-    Response_ptr_list *rover = p->resp_ptr[connfd];
+    Response_ptr_list *rover = p->resp_ptr[connfd]->next;
     while (rover != NULL) {
         Response_ptr_list *next = rover->next;
         free(rover);
-        rover = NULL;
         rover = next;
     }
     memset(p->clientip[connfd], 0, MAX_SIZE_S + 1);

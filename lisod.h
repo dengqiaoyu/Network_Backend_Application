@@ -127,7 +127,6 @@ typedef struct pools
     size_t ign_first[FD_SETSIZE];
     size_t too_long[FD_SETSIZE];
     size_t close_fin[FD_SETSIZE];
-    size_t remain_req[FD_SETSIZE];
     char cached_buf[FD_SETSIZE][REQ_BUF_SIZE + 1];
     Requests *cached_req[FD_SETSIZE];
     Response_ptr_list *resp_ptr[FD_SETSIZE];
@@ -196,8 +195,8 @@ void get_request_analyzed(Request_analyzed *req_anlzed,
                           Requests *req);
 ssize_t que_resp_static(Request_analyzed *req_anlzed, Requests *req, pools *p,
                         int connfd, SSL *client_context);
-ssize_t serve_dynamic(Request_analyzed *req_anlzed, Requests *req, pools *p,
-                      int connfd, SSL * client_context, int cgi_rspfd);
+ssize_t que_resp_dynamic(Request_analyzed *req_anlzed, Requests *req, pools *p,
+                         int connfd, SSL * client_context, int cgi_rspfd);
 int check_http_method(char *http_method);
 void get_response_headers(char *response_headers_text,
                           Response_headers *response_headers);
@@ -210,7 +209,8 @@ ssize_t write_to_socket(int connfd, SSL *client_context, char *resp_hds_text,
                         char *resp_ct_text, char *resp_ct_ptr, size_t ct_size);
 ssize_t get_resp_list(int connfd, pools *p, char *resp_hds_text,
                       char *resp_ct_text, char *resp_ct_ptr, size_t ct_size);
-ssize_t send_error(int connfd, SSL *client_context, int status_code);
+ssize_t send_response(int connfd, pools *p);
+ssize_t que_error(int connfd, pools *p, int status_code);
 void get_envp(pools *p, int connfd, Requests *req,
               char *ENVP[ENVP_len], char *port);
 void add_cgi_rspfd(int cgifd, int connfd, pools *p);

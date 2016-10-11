@@ -66,12 +66,12 @@ void print_request(Requests *reqs)
 
 void print_request_analyzed(Request_analyzed *request_anlzed)
 {
-    dbg_cp2_printf("connection: %s\n", request_anlzed->connection);
-    dbg_cp2_printf("accept_charset: %s\n", request_anlzed->accept_charset);
-    dbg_cp2_printf("accept_encoding: %s\n", request_anlzed->accept_encoding);
-    dbg_cp2_printf("accept_language: %s\n", request_anlzed->accept_language);
-    dbg_cp2_printf("host: %s\n", request_anlzed->host);
-    dbg_cp2_printf("user_agent: %s\n", request_anlzed->user_agent);
+    dbg_wselet_printf("connection: %s\n", request_anlzed->connection);
+    dbg_wselet_printf("accept_charset: %s\n", request_anlzed->accept_charset);
+    dbg_wselet_printf("accept_encoding: %s\n", request_anlzed->accept_encoding);
+    dbg_wselet_printf("accept_language: %s\n", request_anlzed->accept_language);
+    dbg_wselet_printf("host: %s\n", request_anlzed->host);
+    dbg_wselet_printf("user_agent: %s\n", request_anlzed->user_agent);
 }
 
 void print_response_headers(Response_headers *response_headers)
