@@ -38,15 +38,15 @@ int main(int argc, char **argv) {
         return -1;
     }
 
-    // ret = daemonize(lisod_param.lock);
-    // if (ret < 0) {
-    //     fprintf(stderr, "Daemonize failed, server terminated.\n");
-    //     return -1;
-    // }
-    signal(SIGPIPE, signal_handler_dbg);
-    signal(SIGTSTP, signal_handler_dbg);
-    signal(SIGINT, signal_handler_dbg);
-    signal(SIGCHLD, signal_handler_dbg);
+    ret = daemonize(lisod_param.lock);
+    if (ret < 0) {
+        fprintf(stderr, "Daemonize failed, server terminated.\n");
+        return -1;
+    }
+    // signal(SIGPIPE, signal_handler_dbg);
+    // signal(SIGTSTP, signal_handler_dbg);
+    // signal(SIGINT, signal_handler_dbg);
+    // signal(SIGCHLD, signal_handler_dbg);
 
     logfd = init_log(lisod_param.log, argc, argv);
     errfd = open("./fd_reserved", O_WRONLY | O_CREAT, m_error);
