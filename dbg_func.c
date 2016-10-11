@@ -67,10 +67,6 @@ void print_request(Requests *reqs)
 void print_request_analyzed(Request_analyzed *request_anlzed)
 {
     dbg_wselet_printf("connection: %s\n", request_anlzed->connection);
-    dbg_wselet_printf("accept_charset: %s\n", request_anlzed->accept_charset);
-    dbg_wselet_printf("accept_encoding: %s\n", request_anlzed->accept_encoding);
-    dbg_wselet_printf("accept_language: %s\n", request_anlzed->accept_language);
-    dbg_wselet_printf("host: %s\n", request_anlzed->host);
     dbg_wselet_printf("user_agent: %s\n", request_anlzed->user_agent);
 }
 
@@ -104,18 +100,4 @@ void print_response_headers(Response_headers *response_headers)
                    response_headers->entity_header.content_type);
     dbg_cp2_printf("last_modified: %s\n",
                    response_headers->entity_header.last_modified);
-}
-
-void print_resp_ptr(int connfd, pools *p) {
-    Response_ptr_list *rover = p->resp_ptr[connfd];
-    while (rover != NULL) {
-        dbg_wselet_printf("headers:\n%s#########\nresponse: \n%s\n",
-                          rover->headers, rover->body);
-        dbg_wselet_printf("hdr_size:%ld, hdr_offset: %ld\n",
-                          rover->hdr_size, rover->hdr_offset);
-        dbg_wselet_printf("body_size:%ld, body_offset: %ld\n",
-                          rover->body_size, rover->body_offset);
-        rover = rover->next;
-        dbg_wselet_printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
-    }
 }

@@ -53,7 +53,7 @@ Requests * parse(char *skt_recv_buf, size_t recv_buf_size, int socketfd,
 
     ssize_t ret = 0;
 
-    dbg_cp3_printf("skt_recv_buf in parse.c:[\n%s]\n", skt_recv_buf);
+    //dbg_cp3_printf("skt_recv_buf in parse.c:[\n%s]\n", skt_recv_buf);
     //dbg_cp2_printf("ign_first: %d\n", ign_first);
     //dbg_cp2_printf("too_long: %d\n", too_long);
     //dbg_cp2_printf("cached_buf[0]: %d\n", cached_buf[0]);
@@ -69,8 +69,8 @@ Requests * parse(char *skt_recv_buf, size_t recv_buf_size, int socketfd,
     }
     //dbg_cp2_printf("parse.c: line 55\n");
     if (cached_buf[0] != 0) {
-        dbg_cp2_printf("enter cache buffer\n");
-        dbg_cp2_printf("cache buffer: %s\n", cached_buf);
+        //dbg_cp2_printf("enter cache buffer\n");
+        //dbg_cp2_printf("cache buffer: %s\n", cached_buf);
         req_size = strlen(cached_buf);
         read_count = -req_size;
         memset(req_buffer, 0, REQ_BUF_SIZE + 1);
@@ -99,7 +99,7 @@ Requests * parse(char *skt_recv_buf, size_t recv_buf_size, int socketfd,
         size_t remain_size = p->cached_req[socketfd]->entity_len
                              - strlen(p->cached_req[socketfd]->entity_body);
         if (remain_size <= recv_buf_size) {
-            dbg_cp3_printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
+            //dbg_cp3_printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
             strncat(p->cached_req[socketfd]->entity_body, skt_recv_buf,
                     remain_size);
             hdr_offset_end2 = remain_size;
@@ -168,13 +168,12 @@ Requests * parse(char *skt_recv_buf, size_t recv_buf_size, int socketfd,
                 memset(p->cached_buf[socketfd], 0, REQ_BUF_SIZE + 1);
             }
             if (req_size <= REQ_BUF_SIZE) {
-                dbg_cp3_printf("req_buffer: \n[\n%s]\n\n", req_buffer);
+                //dbg_cp3_printf("req_buffer: \n[\n%s]\n\n", req_buffer);
                 set_parsing_options(req_buffer, req_size, req);
                 yyrestart();
                 ret = yyparse();
                 //print_request(req);
                 if (ret != SUCCESS) {
-                    // TODO to be tested
                     switch (ret) {
                     case F_MELONG:
                         req->error = 501;
@@ -187,13 +186,9 @@ Requests * parse(char *skt_recv_buf, size_t recv_buf_size, int socketfd,
                         break;
                     case F_HNLONG:
                         req->error = 400;
-                        strncpy(req->http_method, "Request header too long.",
-                                MAX_SIZE_S);
                         break;
                     case F_HVLONG:
                         req->error = 400;
-                        strncpy(req->http_method, "Request value too long.",
-                                MAX_SIZE_S);
                         break;
                     default:
                         req->error = 400;
@@ -205,9 +200,6 @@ Requests * parse(char *skt_recv_buf, size_t recv_buf_size, int socketfd,
                     req->entity_len = if_contain_ebody(req);
                     if (req->entity_len < 0) {
                         req->error = 400;
-                        strncpy(req->http_method,
-                                "Nagetive content-length not allowed",
-                                MAX_SIZE_S);
                         req->entity_len = 0;
                     }
                     //dbg_cp3_printf("req->entity_len: %ld\n", req->entity_len);
@@ -275,7 +267,6 @@ Requests * parse(char *skt_recv_buf, size_t recv_buf_size, int socketfd,
             }
             else {
                 req->error = 400;
-                strncpy(req->http_method, "Request too long.", MAX_SIZE_S);
             }
 
             if (if_req_cached == 0) {
@@ -301,7 +292,6 @@ Requests * parse(char *skt_recv_buf, size_t recv_buf_size, int socketfd,
                 strlen(&skt_recv_buf[full_req_size + hdr_offset_end]);
             if (length <= REQ_BUF_SIZE)
             {
-                memset(cached_buf, 0, REQ_BUF_SIZE + 1);
                 strncpy(cached_buf,
                         &skt_recv_buf[full_req_size + hdr_offset_end],
                         REQ_BUF_SIZE);
@@ -339,7 +329,7 @@ Requests * parse(char *skt_recv_buf, size_t recv_buf_size, int socketfd,
             }
             else
             {
-                dbg_cp3_printf("after @@@@@@@@@@@@");
+                //dbg_cp3_printf("after @@@@@@@@@@@@");
                 size_t length = recv_buf_size;
                 if (length < REQ_BUF_SIZE)
                 {

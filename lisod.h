@@ -62,7 +62,7 @@
 #define dbg_cp3_fprintf(...)
 #endif
 
-//#define DEBUG_WSELET
+#define DEBUG_WSELET
 #ifdef DEBUG_WSELET
 #define dbg_wselet_printf(...) printf(__VA_ARGS__)
 #define dbg_wselet_fprintf(...) fprintf(__VA_ARGS__)
@@ -103,17 +103,17 @@ typedef struct Requests
     size_t error;
 } Requests;
 
-typedef struct Response_ptr_list
+typedef struct Response_list
 {
     char *headers;
     char *body;
-    size_t hdr_size;
+    size_t hdr_len;
     size_t hdr_offset;
-    size_t body_size;
+    size_t body_len;
     size_t body_offset;
     char is_body_map;
-    struct Response_ptr_list *next;
-} Response_ptr_list;
+    struct Response_list *next;
+} Response_list;
 
 typedef struct pools
 {
@@ -129,7 +129,7 @@ typedef struct pools
     size_t close_fin[FD_SETSIZE];
     char cached_buf[FD_SETSIZE][REQ_BUF_SIZE + 1];
     Requests *cached_req[FD_SETSIZE];
-    Response_ptr_list *resp_ptr[FD_SETSIZE];
+    Response_list *resp_list[FD_SETSIZE];
     char clientip[FD_SETSIZE][MAX_SIZE_S + 1];
 } pools;
 
@@ -138,10 +138,6 @@ typedef struct pools
 typedef struct
 {
     char connection[MAX_SIZE_S];
-    char accept_charset[MAX_SIZE_S];
-    char accept_encoding[MAX_SIZE_S];
-    char accept_language[MAX_SIZE_S];
-    char host[MAX_SIZE];
     char user_agent[MAX_SIZE];
 } Request_analyzed;
 
@@ -191,26 +187,30 @@ int open_tls_listenfd(char *tls_port, char *priv_key, char *cert_file);
 void init_pool(int listenfd, int ssl_listenfd, pools *p);
 ssize_t add_client(int connfd, pools *p, char *c_host, ssize_t if_ssl);
 ssize_t serve_clients(pools *p);
-void get_request_analyzed(Request_analyzed *req_anlzed,
-                          Requests *req);
+void inline get_request_analyzed(Request_analyzed *req_anlzed,
+                                 Requests *req);
 ssize_t que_resp_static(Request_analyzed *req_anlzed, Requests *req, pools *p,
                         int connfd, SSL *client_context);
 ssize_t que_resp_dynamic(Request_analyzed *req_anlzed, Requests *req, pools *p,
                          int connfd, SSL * client_context, int cgi_rspfd);
-int check_http_method(char *http_method);
+ssize_t que_error(Request_analyzed *req_anlzed,
+                  int connfd, pools *p, int status_code);
+int inline check_http_method(char *http_method);
 void get_response_headers(char *response_headers_text,
                           Response_headers *response_headers);
-void get_error_content(int status_code, char *body,
-                       Response_headers *response_headers);
-int get_contentfd(Requests *request, Response_headers *response_headers,
-                  int *contentfd);
-int get_file_type(char *file_name, char *file_type);
+void get_error_content(Request_analyzed *req_anlzed, int status_code,
+                       char *resp_hds_text, size_t *hrd_len,
+                       char *resp_ct_text, size_t *body_len);
+int get_contentfd(Requests *request, char *resp_hds_text, size_t *hdr_len,
+                  size_t *body_len, int *contentfd);
+int inline get_file_type(char *file_name, char *file_type);
 ssize_t write_to_socket(int connfd, SSL *client_context, char *resp_hds_text,
                         char *resp_ct_text, char *resp_ct_ptr, size_t ct_size);
-ssize_t get_resp_list(int connfd, pools *p, char *resp_hds_text,
-                      char *resp_ct_text, char *resp_ct_ptr, size_t ct_size);
+ssize_t add_send_list(int connfd, pools *p, char *resp_hds_text,
+                      size_t hdr_len, char *resp_ct_text,
+                      char *resp_ct_ptr, size_t ct_len);
 ssize_t send_response(int connfd, pools *p);
-ssize_t que_error(int connfd, pools *p, int status_code);
+
 void get_envp(pools *p, int connfd, Requests *req,
               char *ENVP[ENVP_len], char *port);
 void add_cgi_rspfd(int cgifd, int connfd, pools *p);

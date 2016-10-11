@@ -210,18 +210,10 @@ void get_envp(pools *p, int connfd, Requests *req,
 
 void add_cgi_rspfd(int cgifd, int connfd, pools *p) {
     FD_SET(cgifd, &p->active_rd_set);
-    dbg_cp3_printf("cgifd: %d\n", cgifd);
+    //dbg_cp3_printf("cgifd: %d\n", cgifd);
     p->clientfd[cgifd] = connfd;
-    dbg_cp3_printf("p->clientfd[cgifd]: %d\n", p->clientfd[cgifd]);
-    dbg_cp3_printf("p->clientfd[connfd]: %d\n", p->clientfd[connfd]);
-    p->SSL_client_ctx[cgifd] = NULL;
-    p->ign_first[cgifd] = 0;
-    p->too_long[cgifd] = 0;
-    p->close_fin[cgifd] = 0;
-    memset(p->cached_buf[cgifd], 0, REQ_BUF_SIZE + 1);
-    p->cached_req[cgifd] = NULL;
-    p->resp_ptr[cgifd]->next = NULL;
-    strncpy(p->clientip[cgifd], "", MAX_SIZE_S);
+    //dbg_cp3_printf("p->clientfd[cgifd]: %d\n", p->clientfd[cgifd]);
+    //dbg_cp3_printf("p->clientfd[connfd]: %d\n", p->clientfd[connfd]);
 }
 
 void execve_error_handler()
