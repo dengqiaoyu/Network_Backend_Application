@@ -1,1 +1,24 @@
-There are a lot of vulnerabilities.
+1. EVNP is not freed when it is transfered to child, which will have danger in
+memory leak.
+
+2. When handle max connection problem, the server has to block send 503 error
+for fast recovery, however, if a client is continuing request the last
+server will always block to send that message, if I have more time, I will
+change it into unclock mode.
+
+3. Performance is so important, but my server seems not so fast even if I use
+select write, there must be some problem about my design, I have tried many ways
+but always end with too slow, this issue mush be solved.
+
+4. Have no mechanism to detect whether a client has closed its connection
+without notifying server. If that always happen, the fd pool of server will soon
+be full filled.
+
+5. When a child process that runs CGI exit abnormally, server needs to capture
+it, and send 500 error back to client. But I am stuck with the situation that
+a child has produced some message but exits immediately. I think this issue 
+should be handled if there is more time.
+
+6. Have no limit on content-length, when a malformed request's content-length
+is too large, the server should return 413 Request Entity Too Large error.
+Otherwise, its memory usage will be full filled by too many large entity request

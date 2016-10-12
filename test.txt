@@ -1,1 +1,109 @@
-Needs to be filled later.
+1. Parse test:
+I use nc tool to sitimulate various ways of receiving request, incluing 
+incomplete request, incomplete entity body, malformed request and body, for
+example:
+{
+    G
+    --------------------
+    ET / HTTP/1.1
+    HOST: 128.2.13.145:2090
+    conne
+    ---------------------
+    ction: close
+
+}
+it should finally be asembled into:
+{
+    GET / HTTP/1.1
+    HOST: 128.2.13.145:2090
+    connection: close
+}
+
+Or a request that is too long for a read buffer, I should save parts in order:
+Or a request with entity body incomplete:
+{
+    POST HTTP1.1
+    Content-Length: 1024
+    Content-Type: text/plain
+
+    alfihwsnlifuhalskdfaieu
+    ------------------------
+    aiweufqaweioufwef
+    wqefiohqwaoeif
+    ------------------------
+    ....
+}
+Or an incomplete request with entire body:
+{
+    ------------------------------
+    Content-Length: 23
+    Content-Type: text/plain
+
+    alfihwsnlifuhalskdfaieu
+}
+Or a malformed request with content-length, but has no content:
+{
+    POST HTTP1.1
+    Content-Length: 1024
+    Content-Type: text/plain
+
+    POST HTTP1.1
+    Content-Length: 1024
+    Content-Type: text/plain
+
+    POST HTTP1.1
+    Content-Length: 1024
+    Content-Type: text/plain
+}
+In this case, I just throw them and ignore the next request untill valid request
+comes out. 
+Or a very long request more than 8192 bytes.
+Or a short request with very long entity body.
+Or several requests at the same time to test pipeline.
+And I use the following conmand line to send server messages:
+nc dengqiaoyu.ddns.net 2090 < pipeline
+
+2. Browser test
+Use chrome or IE to point to my server to see whether it can response rightly, 
+open many pages at the same time to see whether server can handle them. I will 
+use development tools provided in browsers to test my server observing response
+time.
+
+3. HTTP request simulator
+Use Advanced REST client or Postman as basic test script, those app can generate
+well formated request, and I can modified ther content or header to see
+different behaviors. Also I can test my server for invalid request having no
+format error, but having wrong header or content. For example:
+{
+    GET / HTTP/1.1
+    HOST: 128.2.13.145:2090
+    connection: Never close
+}
+In this case, it should send 400 error.
+
+4. Siege
+This application is used to test the performance of server. Use:
+./siege https://dengqiaoyu.ddns.net:7114/ -c25 -r10 -b
+for Benchmark test
+Use:
+./siege https://dengqiaoyu.ddns.net:7114/ -c25 -r100 -d1
+for user test
+And I also use this to test big file:
+./siege https://dengqiaoyu.ddns.net:7114/big.html -c25 -r10 -d1
+which will produce:
+{
+    Transactions:                250 hits
+    Availability:             100.00 %
+    Elapsed time:              23.98 secs
+    Data transferred:        1547.02 MB
+    Response time:              2.30 secs
+    Transaction rate:          10.43 trans/sec
+    Throughput:            64.51 MB/sec
+    Concurrency:               23.96
+    Successful transactions:         250
+    Failed transactions:               0
+    Longest transaction:            4.65
+    Shortest transaction:           0.19
+}
+
+5. Grader provided by TA
