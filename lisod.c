@@ -1,26 +1,48 @@
+/******************************************************************************
+ *                          lisod: HTTPS1.1 SERVER                            *
+ *                          15-641 Computer Network                           *
+ *                                  lisod.c                                   *
+ * This server can handle basic GET, HEAD and POST methods that are defined in*
+ * RFC 2616, and support basic CGI program execution. This file lisod.c       *
+ * contains the main function that most of its code is included.              *
+ * The main lib file is called lisod.h, most of function declaretion is inside*
+ * Usage:                                                                     *
+ * First make and then,                                                       *
+ * ./lisod <HTTP port> <HTTPS port> <log file> <lock file> <www folder>       *
+ * <CGI script path> <private key file> <certificate file>                    *
+ * example:                                                                   *
+ * ./lisod 2090 7114 ../tmp/lisod.log ../tmp/lisod.lock ../tmp/www            *
+ * ../tmp/www/flaskr.py ../tmp/qdeng.key ../tmp/qdeng.crt                     *
+ * Author: Qiaoyu Deng                                                        *
+ * Andrew ID: qdeng                                                           *
+ ******************************************************************************/
 #include "lisod.h"
 #include "log.h"
-#include "dbg_func.h"
+#include "hlp_func.h"
 
-
+/*File type that is used to indicate Content-Type field*/
 static const char *FILE_SUFFIX[TYPE_SIZE] =
 { ".html", ".css", ".gif", ".png", ".jpg"};
 
 static const char *FILE_TYPE[TYPE_SIZE] =
 { "text/html", "text/css", "image/gif", "image/png", "image/jpeg"};
 
-void signal_handler_dbg(int sig);
-
 FILE *logfp = NULL;
 int logfd = -1;
-int errfd = -1;
+int errfd = -1; // reserve for one fd
 int old_stdin;
 int old_stdout;
 int old_stderr;
 SSL_CTX *ssl_context = NULL;
 param lisod_param;
-// ./lisod 2090 7114 ../tmp/lisod.log ../tmp/lisod.lock ../tmp/www ../tmp/cgi/cgi_script.py ../tmp/grader.key ../tmp/grader.crt
+// ./lisod 2090 7114 ../tmp/lisod.log ../tmp/lisod.lock ../tmp/www
+// ../tmp/cgi/cgi_script.py ../tmp/grader.key ../tmp/grader.crt
 
+/**
+ * This is the main function of lisod, and it can listen, accept, add client
+ * and serve the client.
+ * @return      Never returns
+ */
 int main(int argc, char **argv) {
     int listenfd, ssl_listenfd, connfd, ssl_connfd;
     ssize_t ret;
@@ -43,12 +65,9 @@ int main(int argc, char **argv) {
         fprintf(stderr, "Daemonize failed, server terminated.\n");
         return -1;
     }
-    // signal(SIGPIPE, signal_handler_dbg);
-    // signal(SIGTSTP, signal_handler_dbg);
-    // signal(SIGINT, signal_handler_dbg);
-    // signal(SIGCHLD, signal_handler_dbg);
 
     logfd = init_log(lisod_param.log, argc, argv);
+    // To handle max connection, need reserve one more fd to send error message
     errfd = open("./fd_reserved", O_WRONLY | O_CREAT, m_error);
     if (logfd < 0) {
         fprintf(stderr, "Log file initialnizing failed, server terminated.\n");
@@ -78,16 +97,17 @@ int main(int argc, char **argv) {
         pool.ready_wt_set = pool.active_wt_set;
         pool.num_ready = select(FD_SETSIZE, &pool.ready_rd_set,
                                 &pool.ready_wt_set, NULL, &tv_selt);
+        // htttp port accept connection
         if (FD_ISSET(listenfd, &pool.ready_rd_set)) {
             client_len = sizeof(struct sockaddr_storage);
             connfd = accept(listenfd, (struct sockaddr *)&client_addr,
                             &client_len);
             if (connfd < 0) {
+                // handle max connection and send error message back
                 if (errno == EMFILE || errno == ENFILE) {
                     Close(errfd);
                     errfd = accept(listenfd, (struct sockaddr *)&client_addr,
                                    &client_len);
-                    // TODO to be tested
                     ret = send_maxfderr(errfd);
                     Close(errfd);
                     errfd = open("./fd_reserved", O_WRONLY | O_CREAT,
@@ -114,7 +134,7 @@ int main(int argc, char **argv) {
                             c_host, c_port);
                     fupdate(logfp);
                 }
-
+                // Add client to the read-write pools
                 ret = add_client(connfd, &pool, c_host, 0);
                 if (ret < 0) {
                     Close(connfd);
@@ -123,13 +143,14 @@ int main(int argc, char **argv) {
                 }
             }
         }
+        // htttps port accept connection
         if (FD_ISSET(ssl_listenfd, &pool.ready_rd_set)) {
             client_len = sizeof(struct sockaddr_storage);
             ssl_connfd = accept(ssl_listenfd,
                                 (struct sockaddr *)&client_addr,
                                 &client_len);
-            // TODO max_connection
             if (ssl_connfd < 0) {
+                // TODO max_connection handle
                 fprintf(logfp, "Failed accept connection for SSL.\n");
                 fupdate(logfp);
             }
@@ -158,6 +179,7 @@ int main(int argc, char **argv) {
 
         }
 
+        // Serve all of client within the pools
         ret = serve_clients(&pool);
         if (ret < 0)
         {
@@ -177,6 +199,13 @@ int main(int argc, char **argv) {
     return 0;
 }
 
+/**
+ * Validate and copy the execution arguments
+ * @param  argc        number of execution arguments
+ * @param  argv        execution arguments
+ * @param  lisod_param destination
+ * @return             -1 for fail, fd for success
+ */
 int check_argv(int argc, char **argv, param *lisod_param) {
     memset(lisod_param, 0, sizeof(param));
     if (argc < 9) {
@@ -296,6 +325,11 @@ int check_argv(int argc, char **argv, param *lisod_param) {
     return 0;
 }
 
+/**
+ * Open, bind and listen http port
+ * @param  port http port
+ * @return      -1 for fail, fd for success
+ */
 int open_listenfd(char *port)
 {
     struct addrinfo hints, *listp, *p;
@@ -362,6 +396,13 @@ int open_listenfd(char *port)
     return listenfd;
 }
 
+/**
+ * Open, bind and listen https port, and load SSL environment
+ * @param  tls_port  https port
+ * @param  priv_key  TLS private key
+ * @param  cert_file TLS public key
+ * @return           -1 for fail, fd for success
+ */
 int open_tls_listenfd(char *tls_port, char *priv_key, char *cert_file) {
     struct addrinfo hints, *listp, *p;
     int ssl_listenfd, optval = 1;
@@ -455,6 +496,12 @@ int open_tls_listenfd(char *tls_port, char *priv_key, char *cert_file) {
     return ssl_listenfd;
 }
 
+/**
+ * Initiate pool for read&write select
+ * @param listenfd     http fd
+ * @param ssl_listenfd https fd
+ * @param p            pool that needs to be initiated
+ */
 void init_pool(int listenfd, int ssl_listenfd, pools *p) {
     size_t i;
 
@@ -472,12 +519,21 @@ void init_pool(int listenfd, int ssl_listenfd, pools *p) {
         p->close_fin[i] = 0;
         memset(p->cached_buf[i], 0, REQ_BUF_SIZE + 1);
         p->cached_req[i] = NULL;
+        // The first item of list is never used but used as a start point
         p->resp_list[i] = malloc(sizeof(Response_list));
         memset(p->resp_list[i], 0, sizeof(Response_list));
         memset(p->clientip[i], 0, MAX_SIZE_S + 1);
     }
 }
 
+/**
+ * Add client to the read&write pool
+ * @param  connfd the fd of client
+ * @param  p      pool
+ * @param  c_host IP of client
+ * @param  if_ssl whether it it is a https connection
+ * @return        -1 for fail, 0 for success
+ */
 ssize_t add_client(int connfd, pools *p, char *c_host, ssize_t if_ssl)
 {
     ssize_t ret;
@@ -518,13 +574,20 @@ ssize_t add_client(int connfd, pools *p, char *c_host, ssize_t if_ssl)
     return 0;
 }
 
+/**
+ * Select client that is ready for read or write to complete request
+ * @param  p pool
+ * @return   0 for success
+ */
 ssize_t serve_clients(pools *p) {
     size_t i;
     ssize_t read_ret, ret;
     char skt_read_buf[SKT_READ_BUF_SIZE + 1] = {0};
 
+    // Magic number 7 indicates avaliable file descriptor starts from 7.
     for (i = 7; (i < FD_SETSIZE) && (p->num_ready > 0); i++) {
         dbg_wselet_printf("connfd: %ld, status: %d\n", i, p->clientfd[i]);
+        // Client ready for read
         if ((p->clientfd[i] == 1) && (FD_ISSET(i, &p->ready_rd_set))) {
             int connfd = i;
             char if_conn_close = 0;
@@ -535,6 +598,7 @@ ssize_t serve_clients(pools *p) {
             read_ret = 0;
             memset(skt_read_buf, 0, SKT_READ_BUF_SIZE + 1);
 
+            // Read as much as possible, but need iter_count to be unblock
             do {
                 iter_count++;
                 read_offset = read_offset + read_ret;
@@ -550,14 +614,15 @@ ssize_t serve_clients(pools *p) {
                     read_ret = read(connfd, &skt_read_buf[read_offset],
                                     SKT_READ_BUF_SIZE - read_offset);
                 }
-                // dbg_cp3_printf("read_ret: %ld\n", read_ret);
 
+                // Client closes connection
                 if (read_ret == 0) {
                     Close_conn(connfd, p);
                     if_conn_close = 1;
                     break;
                 }
                 else if (read_ret < 0) {
+                    // EWOULDBLOCK indicates no more data to be read
                     if (errno != EAGAIN && errno != EWOULDBLOCK) {
                         Close_conn(connfd, p);
                         if_conn_close = 1;
@@ -570,17 +635,19 @@ ssize_t serve_clients(pools *p) {
                 continue;
             }
 
-            dbg_cp3_printf("$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n");
             dbg_cp3_printf("skt_read_buf in lisod.c:\n%s\n",
                            skt_read_buf);
-            dbg_cp3_printf("$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n");
+            // Uses parse to get request's inofrmation
             Requests *reqs = parse(skt_read_buf, read_offset, connfd, p);
             Requests *req_rover = reqs;
             req_rover = reqs;
+            // For pipeline request, server them one by one
             while (req_rover != NULL) {
                 size_t status_code = 200;
+                // Whether it is a cgi request
                 ret = search_first_position(req_rover->http_uri,
                                             SCRIPT_NAME);
+                // get "Connection" and "User-Agent" information
                 Request_analyzed req_anlzed;
                 memset(&req_anlzed, 0, sizeof(Request_analyzed));
                 get_request_analyzed(&req_anlzed, req_rover);
@@ -591,26 +658,29 @@ ssize_t serve_clients(pools *p) {
                 fprintf(logfp, "    User-Agent: %s\n",
                         req_anlzed.user_agent);
                 if (ret != 0) {
+                    // Put each request into send list, and add them into write
+                    // select loop
                     status_code = que_resp_static(&req_anlzed, req_rover, p,
                                                   connfd, client_context);
                 }
                 else {
                     dbg_wselet_printf("enter cgi part\n");
+                    // The same as above, but for CGI
                     status_code = que_resp_dynamic(&req_anlzed, req_rover, p,
                                                    connfd, client_context, -1);
                 }
+                // If any error encountered, send error page to client
                 if (status_code != 200) {
-                    dbg_wselet_printf("line 615 status_code: %d\n",
-                                      status_code);
+                    dbg_wselet_printf("status_code: %d\n", status_code);
+                    // Put into sending list
                     ret = que_error(&req_anlzed, connfd, p, status_code);
                     if (ret < 0) {
-                        dbg_wselet_printf("line 649\n");
                         Close_conn(connfd, p);
                         break;
                     }
                 }
                 else if (status_code < 0) {
-                    dbg_wselet_printf("line 655\n");
+                    // For fatal error, close connection completely
                     Close_conn(connfd, p);
                     break;
                 }
@@ -618,9 +688,10 @@ ssize_t serve_clients(pools *p) {
             }
             destory_requests(reqs);
             reqs = NULL;
-            //print_resp_ptr(connfd, p);
         }
         else if ((p->clientfd[i] > 1) && (FD_ISSET(i, &p->ready_rd_set))) {
+            // In this case, p->clientfd[i] represents the CGI fd that is owned
+            // by client i can be read, so CGI output can be read
             int cgi_rspfd = i;
             int connfd = p->clientfd[i];
             dbg_wselet_printf("cgi_rspfd: %d, connfd: %d\n", cgi_rspfd, connfd);
@@ -631,14 +702,15 @@ ssize_t serve_clients(pools *p) {
                 Close_conn(cgi_rspfd, p);
                 continue;
             }
+            // Since no more need to creat new CGI, fewer arguments are required
             ret = que_resp_dynamic(NULL, NULL, p, connfd, client_context,
                                    cgi_rspfd);
             if (ret < 0) {
-                dbg_wselet_printf("line 675\n");
                 Close_conn(connfd, p);
             }
         }
         else if ((p->clientfd[i] == 1) && (FD_ISSET(i, &p->ready_wt_set))) {
+            // In this case, client is ready to be send data
             int connfd = i;
             p->num_ready--;
             ret = send_response(connfd, p);
@@ -650,34 +722,16 @@ ssize_t serve_clients(pools *p) {
     return 0;
 }
 
-void inline get_request_analyzed(Request_analyzed *req_anlzed,
-                                 Requests *req)
-{
-    int index = 0;
-    int ret = 0;
-
-    memset(req_anlzed, 0, sizeof(Request_analyzed));
-
-    for (index = 0; index < req->h_count; index++)
-    {
-        ret = strncasecmp("connection", req->headers[index].h_name,
-                          MAX_SIZE);
-        if (!ret)
-        {
-            strncpy(req_anlzed->connection,
-                    req->headers[index].h_value, MAX_SIZE_S);
-        }
-
-        ret = strncasecmp("user-agent", req->headers[index].h_name,
-                          MAX_SIZE);
-        if (!ret)
-        {
-            strncpy(req_anlzed->user_agent,
-                    req->headers[index].h_value, MAX_SIZE);
-        }
-    }
-}
-
+/**
+ * For non-CGI request, put it into sending query
+ * @param  req_anlzed     variable that contains "Connection" and "Usr Agent"
+ * @param  req            Parsed request
+ * @param  p              pool
+ * @param  connfd         client's fd
+ * @param  client_context client ssl "fd"
+ * @return                200 for success, other status code for failure, -1 for
+ *                        fatal failure
+ */
 ssize_t que_resp_static(Request_analyzed *req_anlzed, Requests *req, pools *p,
                         int connfd, SSL *client_context)
 {
@@ -702,6 +756,7 @@ ssize_t que_resp_static(Request_analyzed *req_anlzed, Requests *req, pools *p,
         return status_code;
     }
 
+    // For http1.0, do not need support pipeline
     if (!strncmp("HTTP/1.0", req->http_version, MAX_SIZE_S))
     {
         p->close_fin[connfd] = 1;
@@ -715,9 +770,13 @@ ssize_t que_resp_static(Request_analyzed *req_anlzed, Requests *req, pools *p,
         status_code = 505;
         return status_code;
     }
+    // Magic number is used to reduce unnecessary time consuming, but it seems
+    // having not too much influence on  effectiveness. I wander there is better
+    // way to handle string?
     memcpy(resp_hds_text, "HTTP/1.1 200 OK\r\n", 17);
     hdr_len =  17;
 
+    // For pipeline support
     if (!strncasecmp("close", req_anlzed->connection, MAX_SIZE_S)) {
         memcpy(resp_hds_text + hdr_len, "Connection: Close\r\n", 19);
         hdr_len +=  19;
@@ -750,7 +809,7 @@ ssize_t que_resp_static(Request_analyzed *req_anlzed, Requests *req, pools *p,
     // dbg_wselet_printf("hdr_len: %ld\nresp_hds_text:\n%s",
     //                   hdr_len, resp_hds_text);
 
-
+    // static(non CGI) not support POST method
     if (!strncmp(req->http_method, "POST", MAX_SIZE_S))
     {
         status_code = 501;
@@ -777,6 +836,7 @@ ssize_t que_resp_static(Request_analyzed *req_anlzed, Requests *req, pools *p,
 
     if (contentfd != -1)
     {
+        // map a file from disk to memory
         resp_ct_ptr = mmap(0, body_len, PROT_READ, MAP_PRIVATE,
                            contentfd, 0);
         if (resp_ct_ptr == (void *)(-1))
@@ -789,6 +849,7 @@ ssize_t que_resp_static(Request_analyzed *req_anlzed, Requests *req, pools *p,
         Close(contentfd);
     }
 
+    // Add into sending list
     ret = add_send_list(connfd, p, resp_hds_text, hdr_len, NULL,
                         resp_ct_ptr, body_len);
     FD_SET(connfd, &p->active_wt_set);
@@ -800,135 +861,16 @@ ssize_t que_resp_static(Request_analyzed *req_anlzed, Requests *req, pools *p,
     return 200;
 }
 
-ssize_t send_response(int connfd, pools *p) {
-    Response_list *resp_ptr_start = p->resp_list[connfd];
-    Response_list *rover = resp_ptr_start->next;
-    ssize_t write_ret = 0;
-    ssize_t ret = 0;
-    ssize_t hdr_len = rover->hdr_len;
-    ssize_t hdr_offset = rover->hdr_offset;
-    ssize_t body_len = rover->body_len;
-    ssize_t body_offset = rover->body_offset;
-    SSL *client_context = p->SSL_client_ctx[connfd];
-
-    while (rover != NULL) {
-        if (rover->headers != NULL) {
-            if (client_context != NULL) {
-                write_ret = SSL_write(client_context,
-                                      rover->headers + hdr_offset,
-                                      hdr_len - hdr_offset);
-            }
-            else {
-                write_ret = write(connfd,
-                                  rover->headers + hdr_offset,
-                                  hdr_len - hdr_offset);
-            }
-            if (write_ret < 0) {
-                if (errno == EWOULDBLOCK || errno == EAGAIN) {
-                    break;
-                }
-                else {
-                    fprintf(logfp, "Failed sending response to client %s\n",
-                            p->clientip[connfd]);
-                    dbg_wselet_printf("line 910\n");
-                    Close_conn(connfd, p);
-                    return -1;
-                }
-            }
-            else if (write_ret > 0) {
-                if (write_ret == hdr_len - hdr_offset) {
-                    free(rover->headers);
-                    rover->headers = NULL;
-                    rover->hdr_len = 0;
-                    rover->hdr_offset = 0;
-                }
-                else {
-                    rover->hdr_offset += write_ret;
-                    break;
-                }
-            }
-            else {
-                dbg_wselet_printf("line 928\n");
-                Close_conn(connfd, p);
-                return 0;
-            }
-        }
-
-
-        if (rover->body != NULL) {
-            if (client_context != NULL) {
-                write_ret = SSL_write(client_context,
-                                      rover->body + body_offset,
-                                      body_len - body_offset);
-            }
-            else {
-                write_ret = write(connfd,
-                                  rover->body + body_offset,
-                                  body_len - body_offset);
-            }
-            if (write_ret < 0) {
-                if (errno == EWOULDBLOCK || errno == EAGAIN) {
-                    break;
-                }
-                else {
-                    fprintf(logfp, "Failed sending response to client %s\n",
-                            p->clientip[connfd]);
-                    dbg_wselet_printf("line 953\n");
-                    Close_conn(connfd, p);
-                    return -1;
-                }
-            }
-            else if (write_ret > 0) {
-                if (write_ret == body_len - body_offset) {
-                    if (rover->is_body_map == 1) {
-                        ret = munmap(rover->body, body_len);
-                        dbg_wselet_printf("free body on map\n");
-                        if (ret == -1)
-                        {
-                            fprintf(logfp, "Failed unmapping file.\n");
-                            fupdate(logfp);
-                        }
-                    }
-                    else {
-                        dbg_wselet_printf("free body on malloc\n");
-                        free(rover->body);
-                    }
-                    rover->body = NULL;
-                    rover->body_len = 0;
-                    rover->body_offset = 0;
-                }
-                else {
-                    rover->body_offset += write_ret;
-                    break;
-                }
-            }
-            else {
-                dbg_wselet_printf("line 983\n");
-                Close_conn(connfd, p);
-                return 0;
-            }
-        }
-        if (rover->headers == NULL && rover->body == NULL) {
-            dbg_wselet_printf("Response complete!\n");
-            resp_ptr_start->next = rover->next;
-            free(rover);
-            rover = resp_ptr_start->next;
-        }
-        else {
-            break;
-        }
-    }
-    if (resp_ptr_start->next == NULL) {
-        if (p->close_fin[connfd] == 1) {
-            dbg_wselet_printf("line 1000\n");
-            Close_conn(connfd, p);
-            dbg_cp3_printf("Closed!\n");
-        }
-        FD_CLR(connfd, &p->active_wt_set);
-    }
-    return 0;
-}
-
+/**
+ * For CGI request, put it into sending query
+ * @param  req_anlzed     variable that contains "Connection" and "Usr Agent"
+ * @param  req            Parsed request
+ * @param  p              pool
+ * @param  connfd         client's fd
+ * @param  client_context client ssl "fd"
+ * @return                200 for success, other status code for failure, -1 for
+ *                        fatal failure
+ */
 ssize_t que_resp_dynamic(Request_analyzed *req_anlzed, Requests *req, pools *p,
                          int connfd, SSL * client_context, int cgi_rspfd) {
     ssize_t ret = 0;
@@ -962,6 +904,7 @@ ssize_t que_resp_dynamic(Request_analyzed *req_anlzed, Requests *req, pools *p,
             return status_code;
         }
 
+        // Open pipe for read and write
         if (pipe(stdin_pipe) < 0) {
             fprintf(logfp, "Failed piping for stdin.\n");
             fupdate(logfp);
@@ -975,6 +918,7 @@ ssize_t que_resp_dynamic(Request_analyzed *req_anlzed, Requests *req, pools *p,
             return status_code;
         }
 
+        // Fork child to run CGI program
         pid = fork();
         if (pid < 0) {
             fprintf(logfp, "Failed forking child process.\n");
@@ -982,6 +926,12 @@ ssize_t que_resp_dynamic(Request_analyzed *req_anlzed, Requests *req, pools *p,
             return status_code;
         }
         else if (pid == 0) {
+            // Child
+            /**
+             * ------->stdin[1]--------->stdin[0]----->
+             * client            server            CGI
+             * <-------stdin[0]<---------stdout[1]<-----
+             */
             dbg_cp3_printf("entering child\n");
             Close(stdout_pipe[0]);
             Close(stdin_pipe[1]);
@@ -993,7 +943,6 @@ ssize_t que_resp_dynamic(Request_analyzed *req_anlzed, Requests *req, pools *p,
             if (ret < 0) {
                 fprintf(logfp, "Failed redirecting pipe to stdout of child.\n");
             }
-            dbg_cp3_fprintf(stderr, "line 935\n");
             char *ENVP[ENVP_len + 1];
             size_t i = 0;
             for (i = 0; i < ENVP_len; i++) {
@@ -1010,29 +959,35 @@ ssize_t que_resp_dynamic(Request_analyzed *req_anlzed, Requests *req, pools *p,
             else {
                 get_envp(p, connfd, req, ENVP, lisod_param.https_port);
             }
-            // dbg_cp3_fprintf(stderr, "@@@@@@@@@@@@@@@@@@@@@@@@@\n");
-            // for (i = 0; i < ENVP_len; i++) {
-            //     dbg_cp3_fprintf(stderr, "%s\n", ENVP[i]);
-            // }
-            // dbg_cp3_fprintf(stderr, "@@@@@@@@@@@@@@@@@@@@@@@@@\n");
             char *ARGV[2];
             ARGV[0] = (char *) malloc(MAXLINE + 1);
             memset(ARGV[0], 0, MAXLINE + 1);
             strncpy(ARGV[0], lisod_param.cgi_scp, MAXLINE);
             ARGV[1] = NULL;
-            // TODO free envp
-            // int ii = 0;
-            // for (ii = 0; ii < ENVP_len; ii++) {
-            //     dbg_cp3_fprintf(stderr, "%s\n", ENVP[ii]);
-            // }
+            // TODO Fatal error!!! I have no way to free ENVP or ARGV explicitly
+            // Because execve never returns if executes successfully, only rely
+            // on child exits to free the malloc resource.
+            // execute CGI in child
             ret = execve(ARGV[0], ARGV, ENVP);
             if (ret) {
                 execve_error_handler();
+                for (i = 0; i < ENVP_len; i++) {
+                    free(ENVP[i]);
+                    ENVP[i] = NULL;
+                }
+                free(ARGV[0]);
+                ARGV[0] = NULL;
                 fprintf(logfp, "Failed executing execve syscall.\n");
                 exit(-1);
             }
         }
         else if (pid > 0) {
+            // Parent
+            /**
+             * ------->stdin[1]--------->stdin[0]----->
+             * client            server            CGI
+             * <-------stdin[0]<---------stdout[1]<-----
+             */
             Close(stdout_pipe[1]);
             Close(stdin_pipe[0]);
             if (req->entity_len != 0) {
@@ -1048,10 +1003,12 @@ ssize_t que_resp_dynamic(Request_analyzed *req_anlzed, Requests *req, pools *p,
             if (!strncasecmp("close", req_anlzed->connection, MAX_SIZE_S)) {
                 p->close_fin[connfd] = 1;
             }
+            // Add the fd that child use to put its result into read select
             add_cgi_rspfd(stdout_pipe[0], connfd, p);
         }
     }
     else {
+        // CGI is ready to be read
         dbg_wselet_printf("engtering cgi get result\n");
         char *cgi_buf = malloc(MAX_CGI_MSG + 1);
         memset(cgi_buf, 0, MAX_CGI_MSG + 1);
@@ -1060,128 +1017,68 @@ ssize_t que_resp_dynamic(Request_analyzed *req_anlzed, Requests *req, pools *p,
             Close_conn(cgi_rspfd, p);
         }
         else if (read_ret > 0) {
+            // Add message into sending list
             add_send_list(connfd, p, cgi_buf, read_ret, NULL, NULL, 0);
-            dbg_wselet_printf("^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n");
             dbg_wselet_printf("cgi_buf:\n %s\n", cgi_buf);
-            dbg_wselet_printf("^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n");
-            dbg_wselet_printf("pass add_send_list\n");
             FD_SET(connfd, &p->active_wt_set);
+            // In order not to let client to wait one more time, send CGI
+            // response immediately
             ret = send_response(connfd, p);
             if (ret < 0) {
                 fprintf(logfp, "send_response() failed\n");
             }
         }
         else if (errno != EWOULDBLOCK && errno != EAGAIN) {
+            // Connection broken
             dbg_wselet_printf("cgi_rspfd: %d\n", cgi_rspfd);
             fprintf(logfp, "Failed sending response to client %s\n",
                     p->clientip[connfd]);
-            dbg_wselet_printf("line 1159\n");
             Close_conn(cgi_rspfd, p);
         }
     }
     return 200;
 }
 
-int inline check_http_method(char *http_method)
-{
-    int status_code;
-    if (!strncmp("GET", http_method, MAX_SIZE_S))
-    {
-        status_code = 200;
-    }
-    else if (!strncmp("HEAD", http_method, MAX_SIZE_S))
-    {
-        status_code = 200;
-    }
-    else if (!strncmp("POST", http_method, MAX_SIZE_S))
-    {
-        status_code = 200;
-    }
-    else
-    {
-        status_code = 501;
-    }
+/**
+ * Put error message into sending list, if status code is not 200
+ * @param  req_anlzed  variable that contains "Connection" and "Usr Agent"
+ * @param  connfd      client's fd
+ * @param  p           pool
+ * @param  status_code status code that is defined in RFC 2616
+ * @return             0 for success, -1 for failure
+ */
+ssize_t que_error(Request_analyzed *req_anlzed,
+                  int connfd, pools *p, int status_code) {
+    char *resp_hds_text = malloc(MAX_TEXT + 1);
+    char *resp_ct_ptr = malloc(MAX_TEXT + 1);
+    ssize_t ret = 0;
+    size_t hdr_len = 0;
+    size_t body_len = 0;
+    memset(resp_hds_text, 0, MAX_TEXT + 1);
+    memset(resp_ct_ptr, 0, MAX_TEXT + 1);
 
-    return status_code;
+    // Get headers text and content text.
+    get_error_content(req_anlzed, status_code, resp_hds_text, &hdr_len,
+                      resp_ct_ptr, &body_len);
+
+    ret = add_send_list(connfd, p, resp_hds_text, hdr_len, NULL, resp_ct_ptr,
+                        body_len);
+    if (ret < 0) {
+        return -1;
+    }
+    FD_SET(connfd, &p->active_wt_set);
+    return 0;
 }
 
-void get_response_headers(char *resp_hds_text,
-                          Response_headers *resp_hds)
-{
-    char text_tmp[MAX_TEXT] = {0};
-    size_t text_len = 0;
-    snprintf(text_tmp, MAX_TEXT, "%s %s %s\r\n",
-             resp_hds->status_line.http_version,
-             resp_hds->status_line.status_code,
-             resp_hds->status_line.reason_phrase);
-    strncat(resp_hds_text, text_tmp,
-            MAX_TEXT - text_len);
-    text_len +=  strlen(text_tmp);
-    snprintf(text_tmp, MAX_TEXT, "Cache-Control: %s\r\n",
-             resp_hds->general_header.cache_control);
-    strncat(resp_hds_text, text_tmp,
-            MAX_TEXT - text_len);
-    text_len +=  strlen(text_tmp);
-    snprintf(text_tmp, MAX_TEXT, "Connection: %s\r\n",
-             resp_hds->general_header.connection);
-    strncat(resp_hds_text, text_tmp,
-            MAX_TEXT - text_len);
-    text_len +=  strlen(text_tmp);
-    snprintf(text_tmp, MAX_TEXT, "Date: %s\r\n",
-             resp_hds->general_header.date);
-    strncat(resp_hds_text, text_tmp,
-            MAX_TEXT - text_len);
-    text_len +=  strlen(text_tmp);
-    snprintf(text_tmp, MAX_TEXT, "Paragma: %s\r\n",
-             resp_hds->general_header.paragma);
-    strncat(resp_hds_text, text_tmp,
-            MAX_TEXT - text_len);
-    text_len +=  strlen(text_tmp);
-    snprintf(text_tmp, MAX_TEXT, "Transfer-Encoding: %s\r\n",
-             resp_hds->general_header.transfer_encoding);
-    strncat(resp_hds_text, text_tmp,
-            MAX_TEXT - text_len);
-    text_len +=  strlen(text_tmp);
-    snprintf(text_tmp, MAX_TEXT, "Server: %s\r\n",
-             resp_hds->response_header.server);
-    strncat(resp_hds_text, text_tmp,
-            MAX_TEXT - text_len);
-    text_len +=  strlen(text_tmp);
-    snprintf(text_tmp, MAX_TEXT, "Allow: %s\r\n",
-             resp_hds->entity_header.allow);
-    strncat(resp_hds_text, text_tmp,
-            MAX_TEXT - text_len);
-    text_len +=  strlen(text_tmp);
-    if (resp_hds->entity_header.content_length != 0)
-    {
-        snprintf(text_tmp, MAX_TEXT, "Content-Encoding: %s\r\n",
-                 resp_hds->entity_header.content_encoding);
-        strncat(resp_hds_text, text_tmp,
-                MAX_TEXT - text_len);
-        text_len +=  strlen(text_tmp);
-        snprintf(text_tmp, MAX_TEXT, "Content-Language: %s\r\n",
-                 resp_hds->entity_header.content_language);
-        strncat(resp_hds_text, text_tmp,
-                MAX_TEXT - text_len);
-        text_len +=  strlen(text_tmp);
-        snprintf(text_tmp, MAX_TEXT, "Content-Length: %ld\r\n",
-                 resp_hds->entity_header.content_length);
-        strncat(resp_hds_text, text_tmp,
-                MAX_TEXT - text_len);
-        text_len +=  strlen(text_tmp);
-        snprintf(text_tmp, MAX_TEXT, "Content-Type: %s\r\n",
-                 resp_hds->entity_header.content_type);
-        strncat(resp_hds_text, text_tmp,
-                MAX_TEXT - text_len);
-        text_len +=  strlen(text_tmp);
-        snprintf(text_tmp, MAX_TEXT, "Last-Modified: %s\r\n",
-                 resp_hds->entity_header.last_modified);
-        strncat(resp_hds_text, text_tmp,
-                MAX_TEXT - text_len);
-        text_len +=  strlen(text_tmp);
-    }
-    strncat(resp_hds_text, "\r\n", MAX_TEXT - text_len);
-}
+/**
+ * According to status code, generate corresponding headers and content.
+ * @param req_anlzed    variable that contains "Connection" and "Usr Agent"
+ * @param status_code   status code that is defined in RFC 2616
+ * @param resp_hds_text pointer that is used to store response headers
+ * @param hdr_len       response headers' size
+ * @param resp_ct_text  pointer that is used to store response entity
+ * @param body_len      entity's length
+ */
 
 void get_error_content(Request_analyzed *req_anlzed, int status_code,
                        char *resp_hds_text, size_t *hdr_len,
@@ -1234,6 +1131,7 @@ void get_error_content(Request_analyzed *req_anlzed, int status_code,
     memcpy(resp_hds_text, text_tmp, len_tmp);
     *hdr_len = len_tmp;
 
+    // Same reason above for using magic number
     if (!strncasecmp("close", req_anlzed->connection, MAX_SIZE_S)) {
         memcpy(resp_hds_text + *hdr_len, "Connection: Close\r\n", 19);
         *hdr_len +=  19;
@@ -1292,7 +1190,16 @@ void get_error_content(Request_analyzed *req_anlzed, int status_code,
     dbg_wselet_printf("hdr_len: %ld\nresp_hds_text:\n%s",
                       *hdr_len, resp_hds_text);
 }
-
+/**
+ * Get file descriptor from static request.
+ * @param  request       single request
+ * @param  resp_hds_text pointer that is used to store response headers
+ * @param  hdr_len       response headers' size
+ * @param  body_len      entity's length
+ * @param  contentfd     file descriptor of required file
+ * @return               200 for success, other status code for failure, -1 for
+ *                       fatal failure
+ */
 int get_contentfd(Requests *request, char *resp_hds_text, size_t *hdr_len,
                   size_t *body_len, int *contentfd)
 {
@@ -1305,6 +1212,7 @@ int get_contentfd(Requests *request, char *resp_hds_text, size_t *hdr_len,
     memset(file_type, 0, MAX_SIZE + 1);
     strncpy(file_name, request->http_uri, MAX_SIZE);
 
+    //To decode %XX to char
     status_code = decode_asc(request->http_uri);
 
     if (status_code != 200)
@@ -1312,18 +1220,17 @@ int get_contentfd(Requests *request, char *resp_hds_text, size_t *hdr_len,
         *contentfd = -1;
         return status_code;
     }
-    //dbg_cp2_printf("line 795, http_uri: %s\n", &request->http_uri[1]);
-    // dbg_cp2_printf("line 832, status_code: %d\n", status_code);
+
+    // For absolute path and relative path conversion
     status_code = convert2path(request->http_uri);
-    // dbg_cp2_printf("line 834, status_code: %d\n", status_code);
-    // dbg_cp2_printf("line 797, http_uri: %s\n", request->http_uri);
-    // dbg_cp2_printf("line 798, status_code: %d\n", status_code);
+
     if (status_code != 200)
     {
         *contentfd = -1;
         return status_code;
     }
 
+    // if start with "/", set it to "/index.html" or "/home.html"
     if (!strncmp(request->http_uri, "/", MAX_SIZE) || \
             !strncmp(request->http_uri, "", MAX_SIZE))
     {
@@ -1331,10 +1238,8 @@ int get_contentfd(Requests *request, char *resp_hds_text, size_t *hdr_len,
         char path_index[MAX_SIZE + 1] = {0};
         snprintf(path_home, MAX_SIZE, "%s%s", lisod_param.www,
                  "/home.html");
-        //dbg_cp2_printf("path_home: %s\n", path_home);
         snprintf(path_index, MAX_SIZE, "%s%s", lisod_param.www,
                  "/index.html");
-        //dbg_cp2_printf("path_index: %s\n", path_index);
         if (stat(path_home, &sbuf) == 0)
         {
             strncpy(request->http_uri, path_home, MAX_SIZE);
@@ -1347,19 +1252,16 @@ int get_contentfd(Requests *request, char *resp_hds_text, size_t *hdr_len,
     }
     else
     {
-        //dbg_cp2_printf("line 826, file_name: %s\n", file_name);
         snprintf(file_name, MAX_SIZE, "%s%s", lisod_param.www,
                  request->http_uri);
     }
-    // dbg_cp2_printf("line 831, file_name: %s\n", file_name);
     if (stat(file_name, &sbuf) < 0)
     {
-        // dbg_cp2_printf("line 879\n");
         status_code = 404;
         *contentfd = -1;
         return status_code;
     }
-
+    // If file permission is denied
     if (!(S_ISREG(sbuf.st_mode)) || !(S_IRUSR & sbuf.st_mode))
     {
         status_code = 403;
@@ -1367,8 +1269,8 @@ int get_contentfd(Requests *request, char *resp_hds_text, size_t *hdr_len,
         return status_code;
     }
 
+
     status_code = get_file_type(file_name, file_type);
-    //dbg_cp2_printf("file_type: %s\n", file_type);
     *body_len = sbuf.st_size;
 
     size_t len_tmp;
@@ -1387,7 +1289,7 @@ int get_contentfd(Requests *request, char *resp_hds_text, size_t *hdr_len,
     if (*contentfd == -1)
     {
         fprintf(logfp, "Failed opening file %s.\n", file_name);
-        //fupdate(logfp);
+        fupdate(logfp);
         status_code = 403;
         return status_code;
     }
@@ -1403,156 +1305,25 @@ int get_contentfd(Requests *request, char *resp_hds_text, size_t *hdr_len,
     return status_code;
 }
 
-int inline get_file_type(char *file_name, char *file_type)
-{
-    int i;
-    for (i = 0; i < TYPE_SIZE; i++)
-    {
-        int index = search_last_position(".", file_name);
-        if (strstr(&file_name[index], FILE_SUFFIX[i]) != NULL)
-        {
-            strncpy(file_type, FILE_TYPE[i], strlen(FILE_TYPE[i]));
-            break;
-        }
-    }
-    if (file_type[0] == 0)
-    {
-        strncpy(file_type, "text/plain", strlen("text/plain"));
-    }
-
-    return 200;
-}
-
-ssize_t write_to_socket(int connfd, SSL *client_context, char *resp_hds_text,
-                        char *resp_ct_text, char *resp_ct_ptr, size_t body_len)
-{
-    char *response_content = NULL;
-    size_t write_offset = 0;
-    size_t hdr_len = strlen(resp_hds_text);
-    dbg_cp3_printf("resp_hds_text: %s\n", resp_hds_text);
-    //dbg_cp3_printf("hdr_len: %ld\n", hdr_len);
-    if (resp_ct_ptr != NULL)
-    {
-        response_content = resp_ct_ptr;
-    }
-    else if (resp_ct_text != NULL && resp_ct_text[0] != 0)
-    {
-        response_content = resp_ct_text;
-        body_len = strlen(response_content);
-    }
-    else
-    {
-        response_content = NULL;
-    }
-
-    dbg_cp3_printf("response_content:\n%s\n", response_content);
-    size_t hdr_attempt = 0;
-    while (1)
-    {
-        hdr_attempt++;
-        if (hdr_attempt > 1) {
-            dbg_wselet_printf("hdr_attempt: %ld\n", hdr_attempt);
-        }
-        ssize_t write_ret = 0;
-        if (client_context != NULL) {
-            write_ret = SSL_write(client_context, resp_hds_text + write_offset,
-                                  hdr_len);
-            dbg_cp2_printf("write_ret: %ld\n", write_ret);
-            dbg_cp2_printf("SSL_get_error: %d\n", SSL_get_error(client_context, write_ret));
-        }
-        else {
-            write_ret = write(connfd, resp_hds_text + write_offset,
-                              hdr_len);
-        }
-
-        dbg_wselet_printf("write_ret: %d\n", write_ret);
-        if (write_ret < 0)
-        {
-            dbg_wselet_printf("buffer full\n");
-            if (errno != EAGAIN && errno != EWOULDBLOCK) {
-                fprintf(logfp, "Failed writing content to socket on %d.\n",
-                        connfd);
-                fupdate(logfp);
-                return -1;
-            }
-            else {
-                write_ret = 0;
-            }
-        }
-
-        if (write_ret == hdr_len)
-        {
-            //dbg_cp2_printf("completed!\n");
-            break;
-        }
-
-        hdr_len = hdr_len - write_ret;
-        write_offset = write_offset + write_ret;
-    }
-    if (response_content == NULL)
-    {
-        return 0;
-    }
-    write_offset = 0;
-    size_t rsp_attempt = 0;
-    while (1)
-    {
-        rsp_attempt++;
-        if (rsp_attempt > 1) {
-            dbg_wselet_printf("rsp_attempt: %ld\n", rsp_attempt);
-        }
-        ssize_t write_ret = 0;
-        if (client_context != NULL) {
-            write_ret = SSL_write(client_context, response_content + write_offset,
-                                  body_len);
-            dbg_cp2_printf("write_ret: %ld\n", write_ret);
-            dbg_cp2_printf("SSL_get_error: %d\n", SSL_get_error(client_context, write_ret));
-        }
-        else {
-            write_ret = write(connfd, response_content + write_offset,
-                              body_len);
-        }
-        dbg_wselet_printf("write_ret: %d\n", write_ret);
-        if (write_ret < 0)
-        {
-            dbg_wselet_printf("buffer full\n");
-            if (errno != EAGAIN && errno != EWOULDBLOCK) {
-                fprintf(logfp, "Failed writing content to socket on %d.\n",
-                        connfd);
-                fupdate(logfp);
-                return -1;
-            }
-            else {
-                write_ret = 0;
-            }
-        }
-
-        if (write_ret == body_len)
-        {
-            //dbg_cp2_printf("completed!\n");
-            break;
-        }
-
-        body_len = body_len - write_ret;
-        write_offset = write_offset + write_ret;
-    }
-
-    return 0;
-}
-
-
+/**
+ * Add headers and body into sending list
+ * @param  connfd        client
+ * @param  p             pool
+ * @param  resp_hds_text pointer to headers text
+ * @param  hdr_len       headers length
+ * @param  resp_ct_text  string of body text
+ * @param  resp_ct_ptr   pointer to body text
+ * @param  body_len      body length
+ * @return               0 for success
+ */
 ssize_t add_send_list(int connfd, pools *p, char *resp_hds_text,
                       size_t hdr_len, char *resp_ct_text,
                       char *resp_ct_ptr, size_t body_len) {
-    // dbg_wselet_printf("resp_hds_text:\n[\n%s]\n", resp_hds_text);
-    // dbg_wselet_printf("hdr_len: %ld\n", hdr_len);
-    // dbg_wselet_printf("resp_ct_text:\n[\n%s]\n", resp_ct_text);
-    // dbg_wselet_printf("body_len: %ld\n", body_len);
-    // dbg_wselet_printf("connfd: %ld\n", connfd);
     Response_list *resp =
         (Response_list *)malloc(sizeof(Response_list));
     memset(resp, 0, sizeof(Response_list));
     Response_list *rover = p->resp_list[connfd];
+    // Always add in last position
     while (rover->next != NULL) {
         rover = rover->next;
     }
@@ -1583,151 +1354,238 @@ ssize_t add_send_list(int connfd, pools *p, char *resp_hds_text,
     }
     resp->body_offset = 0;
 
-    // dbg_wselet_printf("p->resp_list[connfd]->next->headers: \n%s\n", p->resp_list[connfd]->next->headers);
-    // dbg_wselet_printf("p->resp_list[connfd]->next->body: \n%s\n", p->resp_list[connfd]->next->body);
-    // dbg_wselet_printf("p->resp_list[connfd]->next->hdr_len: \n%d\n", p->resp_list[connfd]->next->hdr_len);
-    // dbg_wselet_printf("p->resp_list[connfd]->next->body_len: \n%d\n", p->resp_list[connfd]->next->body_len);
-
     return 0;
 }
 
-ssize_t que_error(Request_analyzed *req_anlzed,
-                  int connfd, pools *p, int status_code) {
-    char *resp_hds_text = malloc(MAX_TEXT + 1);
-    char *resp_ct_ptr = malloc(MAX_TEXT + 1);
+/**
+ * Send response according to sending list
+ * @param  connfd fd of client
+ * @param  p      pool
+ * @return        0 for success, -1 for failure
+ */
+ssize_t send_response(int connfd, pools *p) {
+    Response_list *resp_ptr_start = p->resp_list[connfd];
+    Response_list *rover = resp_ptr_start->next;
+    ssize_t write_ret = 0;
     ssize_t ret = 0;
-    size_t hdr_len = 0;
-    size_t body_len = 0;
-    memset(resp_hds_text, 0, MAX_TEXT + 1);
-    memset(resp_ct_ptr, 0, MAX_TEXT + 1);
+    ssize_t hdr_len = rover->hdr_len;
+    ssize_t hdr_offset = rover->hdr_offset;
+    ssize_t body_len = rover->body_len;
+    ssize_t body_offset = rover->body_offset;
+    SSL *client_context = p->SSL_client_ctx[connfd];
 
-    get_error_content(req_anlzed, status_code, resp_hds_text, &hdr_len,
-                      resp_ct_ptr, &body_len);
+    // If sending list is not NULL
+    while (rover != NULL) {
+        if (rover->headers != NULL) {
+            if (client_context != NULL) {
+                write_ret = SSL_write(client_context,
+                                      rover->headers + hdr_offset,
+                                      hdr_len - hdr_offset);
+            }
+            else {
+                write_ret = write(connfd,
+                                  rover->headers + hdr_offset,
+                                  hdr_len - hdr_offset);
+            }
+            if (write_ret < 0) {
+                // Writing buffer is full
+                if (errno == EWOULDBLOCK || errno == EAGAIN) {
+                    break;
+                }
+                else {
+                    fprintf(logfp, "Failed sending response to client %s\n",
+                            p->clientip[connfd]);
+                    dbg_wselet_printf("line 910\n");
+                    Close_conn(connfd, p);
+                    return -1;
+                }
+            }
+            else if (write_ret > 0) {
+                // If sending complete, free the space
+                if (write_ret == hdr_len - hdr_offset) {
+                    free(rover->headers);
+                    rover->headers = NULL;
+                    rover->hdr_len = 0;
+                    rover->hdr_offset = 0;
+                }
+                else {
+                    // Content not send out completely
+                    rover->hdr_offset += write_ret;
+                    break;
+                }
+            }
+            else {
+                dbg_wselet_printf("line 928\n");
+                Close_conn(connfd, p);
+                return 0;
+            }
+        }
 
-    ret = add_send_list(connfd, p, resp_hds_text, hdr_len, NULL, resp_ct_ptr,
-                        body_len);
-    if (ret < 0) {
-        return -1;
+        if (rover->body != NULL) {
+            if (client_context != NULL) {
+                write_ret = SSL_write(client_context,
+                                      rover->body + body_offset,
+                                      body_len - body_offset);
+            }
+            else {
+                write_ret = write(connfd,
+                                  rover->body + body_offset,
+                                  body_len - body_offset);
+            }
+            if (write_ret < 0) {
+                if (errno == EWOULDBLOCK || errno == EAGAIN) {
+                    break;
+                }
+                else {
+                    fprintf(logfp, "Failed sending response to client %s\n",
+                            p->clientip[connfd]);
+                    dbg_wselet_printf("line 953\n");
+                    Close_conn(connfd, p);
+                    return -1;
+                }
+            }
+            else if (write_ret > 0) {
+                if (write_ret == body_len - body_offset) {
+                    if (rover->is_body_map == 1) {
+                        ret = munmap(rover->body, body_len);
+                        dbg_wselet_printf("free body on map\n");
+                        if (ret == -1)
+                        {
+                            fprintf(logfp, "Failed unmapping file.\n");
+                            fupdate(logfp);
+                        }
+                    }
+                    else {
+                        dbg_wselet_printf("free body on malloc\n");
+                        free(rover->body);
+                    }
+                    rover->body = NULL;
+                    rover->body_len = 0;
+                    rover->body_offset = 0;
+                }
+                else {
+                    rover->body_offset += write_ret;
+                    break;
+                }
+            }
+            else {
+                dbg_wselet_printf("line 983\n");
+                Close_conn(connfd, p);
+                return 0;
+            }
+        }
+        // If both header and body are send out, free the list item
+        if (rover->headers == NULL && rover->body == NULL) {
+            dbg_wselet_printf("Response complete!\n");
+            resp_ptr_start->next = rover->next;
+            free(rover);
+            rover = resp_ptr_start->next;
+        }
+        else {
+            break;
+        }
     }
-    FD_SET(connfd, &p->active_wt_set);
+    if (resp_ptr_start->next == NULL) {
+        // For "Connection: close" filed
+        if (p->close_fin[connfd] == 1) {
+            Close_conn(connfd, p);
+        }
+        FD_CLR(connfd, &p->active_wt_set);
+    }
     return 0;
 }
 
-int decode_asc(char *str)
+/**
+ * Parse out connection and user agent information
+ * @param  req_anlzed variable that contains "Connection" and "Usr Agent"
+ * @param  req        request
+ */
+void inline get_request_analyzed(Request_analyzed *req_anlzed,
+                                 Requests *req)
 {
-    char str_decoded[MAX_SIZE + 1];
-    memset(str_decoded, 0, MAX_SIZE + 1);
-    size_t length = strlen(str);
-    if (length < 3) {
-        return 200;
-    }
-    size_t i, j;
-    j = 0;
-    for (i = 0; i < length;)
+    int index = 0;
+    int ret = 0;
+
+    memset(req_anlzed, 0, sizeof(Request_analyzed));
+
+    for (index = 0; index < req->h_count; index++)
     {
-        if (str[i] == '%')
+        ret = strncasecmp("connection", req->headers[index].h_name,
+                          MAX_SIZE);
+        if (!ret)
         {
-            char ch = 0;
-            if (i + 1 >= length || i + 2 >= length) {
-                return 400;
-            }
-            if (str[i + 1] > 64 && str[i + 1] < 71)
-            {
-                ch = (str[i + 1] - 55) * 16;
-            }
-            else if (str[i + 1] > 96 && str[i + 1] < 103)
-            {
-                ch = (str[i + 1] - 87) * 16;
-            }
-            else if (str[i + 1] > 47 && str[i + 1] < 58)
-            {
-                ch = (str[i + 1] - 48) * 16;
-            }
-            else
-            {
-                return 400;
-            }
-
-            if (str[i + 2] > 64 && str[i + 2] < 71)
-            {
-                ch += str[i + 2] - 55;
-            }
-            else if (str[i + 2] > 96 && str[i + 2] < 103)
-            {
-                ch += str[i + 2] - 87;
-            }
-            else if (str[i + 2] > 47 && str[i + 2] < 58)
-            {
-                ch += str[i + 2] - 48;
-            }
-            else
-            {
-                return 400;
-            }
-
-            str_decoded[j] = ch;
-            j++;
-            i += 3;
+            strncpy(req_anlzed->connection,
+                    req->headers[index].h_value, MAX_SIZE_S);
         }
-        else
+
+        ret = strncasecmp("user-agent", req->headers[index].h_name,
+                          MAX_SIZE);
+        if (!ret)
         {
-            str_decoded[j] = str[i];
-            j++;
-            i++;
+            strncpy(req_anlzed->user_agent,
+                    req->headers[index].h_value, MAX_SIZE);
         }
     }
+}
 
-    strncpy(str, str_decoded, MAX_SIZE);
+/**
+ * Validate http method
+ * @param  http_method GET, HEAD, or others
+ * @return             200 for GET, HEAD and POST, 501 for others
+ */
+int inline check_http_method(char *http_method)
+{
+    int status_code;
+    if (!strncmp("GET", http_method, MAX_SIZE_S))
+    {
+        status_code = 200;
+    }
+    else if (!strncmp("HEAD", http_method, MAX_SIZE_S))
+    {
+        status_code = 200;
+    }
+    else if (!strncmp("POST", http_method, MAX_SIZE_S))
+    {
+        status_code = 200;
+    }
+    else
+    {
+        status_code = 501;
+    }
+
+    return status_code;
+}
+
+/**
+ * For Content-Type field
+ * @param  file_name input
+ * @param  file_type output
+ * @return           200 for success
+ */
+int inline get_file_type(char *file_name, char *file_type)
+{
+    int i;
+    for (i = 0; i < TYPE_SIZE; i++)
+    {
+        int index = search_last_position(".", file_name);
+        if (strstr(&file_name[index], FILE_SUFFIX[i]) != NULL)
+        {
+            strncpy(file_type, FILE_TYPE[i], strlen(FILE_TYPE[i]));
+            break;
+        }
+    }
+    if (file_type[0] == 0)
+    {
+        strncpy(file_type, "text/plain", strlen("text/plain"));
+    }
 
     return 200;
 }
 
-int convert2path(char *uri)
-{
-    size_t slash_num = 0;
-    size_t uri_len = strlen(uri);
-    char uri_buf[MAX_SIZE] = {0};
-    size_t i = 0;
-
-    for (i = 0; i < uri_len; i++)
-    {
-        if (uri[i] == '/')
-            slash_num++;
-    }
-    if (strstr(uri, "http://") != uri)
-    {
-        // dbg_cp2_printf("line 1084\n");
-        // dbg_cp2_printf("uri: %s\n", uri);
-        if ((strstr(uri, "/") != uri))
-        {
-            // dbg_cp2_printf("line 1087\n");
-            if (strncmp(uri, "", MAX_SIZE) != 0)
-            {
-                return 400;
-            }
-            else
-            {
-                return 200;
-            }
-        }
-        else
-        {
-            return 200;
-        }
-    }
-    else if (slash_num < 3)
-    {
-        return 400;
-    }
-    else
-    {
-        char *start = strstr(&uri[7], "/");
-        strncpy(uri_buf, start, MAX_SIZE);
-        strncpy(uri, uri_buf, MAX_SIZE);
-        return 200;
-    }
-}
-
+/**
+ * When complete one request, destroy it
+ * @param reqs request
+ */
 void destory_requests(Requests *reqs)
 {
     Requests *req_rover = reqs;
@@ -1742,6 +1600,12 @@ void destory_requests(Requests *reqs)
     }
 }
 
+/**
+ * Close connection or close CGI fd
+ * @param  connfd fd of client
+ * @param  p      pool
+ * @return        0 for success
+ */
 ssize_t Close_conn(int connfd, pools *p) {
     dbg_wselet_printf("entering Close_conn\n");
     if (p->clientfd[connfd] > 1) {
@@ -1776,17 +1640,11 @@ ssize_t Close_conn(int connfd, pools *p) {
     return 0;
 }
 
-ssize_t Close(int fd) {
-    ssize_t ret = close(fd);
-    if (ret < 0) {
-        fprintf(logfp, "Failed closing connection ");
-        fprintf(logfp, "file descriptor %d.\n", fd);
-        fupdate(logfp);
-        return -1;
-    }
-    return 0;
-}
-
+/**
+ * Send error message
+ * @param  connfd fd of client
+ * @return        0 for success, -1 for failure
+ */
 ssize_t send_maxfderr(int connfd)
 {
     ssize_t ret;
@@ -1819,8 +1677,124 @@ ssize_t send_maxfderr(int connfd)
     return 0;
 }
 
-void fupdate(FILE *fp)
+
+/**
+ * Function that is used to block write, never used again in normal situation,
+ * except for max connection error
+ */
+ssize_t write_to_socket(int connfd, SSL *client_context, char *resp_hds_text,
+                        char *resp_ct_text, char *resp_ct_ptr, size_t body_len)
 {
-    fflush(fp);
-    fsync(logfd);
+    char *response_content = NULL;
+    size_t write_offset = 0;
+    size_t hdr_len = strlen(resp_hds_text);
+    dbg_cp3_printf("resp_hds_text: %s\n", resp_hds_text);
+    if (resp_ct_ptr != NULL)
+    {
+        response_content = resp_ct_ptr;
+    }
+    else if (resp_ct_text != NULL && resp_ct_text[0] != 0)
+    {
+        response_content = resp_ct_text;
+        body_len = strlen(response_content);
+    }
+    else
+    {
+        response_content = NULL;
+    }
+
+    dbg_cp3_printf("response_content:\n%s\n", response_content);
+    size_t hdr_attempt = 0;
+    while (1)
+    {
+        hdr_attempt++;
+        if (hdr_attempt > 1) {
+            dbg_wselet_printf("hdr_attempt: %ld\n", hdr_attempt);
+        }
+        ssize_t write_ret = 0;
+        if (client_context != NULL) {
+            write_ret = SSL_write(client_context, resp_hds_text + write_offset,
+                                  hdr_len);
+            dbg_cp2_printf("write_ret: %ld\n", write_ret);
+            dbg_cp2_printf("SSL_get_error: %d\n",
+                           SSL_get_error(client_context, write_ret));
+        }
+        else {
+            write_ret = write(connfd, resp_hds_text + write_offset,
+                              hdr_len);
+        }
+
+        dbg_wselet_printf("write_ret: %d\n", write_ret);
+        if (write_ret < 0)
+        {
+            dbg_wselet_printf("buffer full\n");
+            if (errno != EAGAIN && errno != EWOULDBLOCK) {
+                fprintf(logfp, "Failed writing content to socket on %d.\n",
+                        connfd);
+                fupdate(logfp);
+                return -1;
+            }
+            else {
+                write_ret = 0;
+            }
+        }
+
+        if (write_ret == hdr_len)
+        {
+            break;
+        }
+
+        hdr_len = hdr_len - write_ret;
+        write_offset = write_offset + write_ret;
+    }
+    if (response_content == NULL)
+    {
+        return 0;
+    }
+    write_offset = 0;
+    size_t rsp_attempt = 0;
+    while (1)
+    {
+        rsp_attempt++;
+        if (rsp_attempt > 1) {
+            dbg_wselet_printf("rsp_attempt: %ld\n", rsp_attempt);
+        }
+        ssize_t write_ret = 0;
+        if (client_context != NULL) {
+            write_ret = SSL_write(client_context,
+                                  response_content + write_offset,
+                                  body_len);
+            dbg_cp2_printf("write_ret: %ld\n", write_ret);
+            dbg_cp2_printf("SSL_get_error: %d\n",
+                           SSL_get_error(client_context, write_ret));
+        }
+        else {
+            write_ret = write(connfd, response_content + write_offset,
+                              body_len);
+        }
+        dbg_wselet_printf("write_ret: %d\n", write_ret);
+        if (write_ret < 0)
+        {
+            dbg_wselet_printf("buffer full\n");
+            if (errno != EAGAIN && errno != EWOULDBLOCK) {
+                fprintf(logfp, "Failed writing content to socket on %d.\n",
+                        connfd);
+                fupdate(logfp);
+                return -1;
+            }
+            else {
+                write_ret = 0;
+            }
+        }
+
+        if (write_ret == body_len)
+        {
+            break;
+        }
+
+        body_len = body_len - write_ret;
+        write_offset = write_offset + write_ret;
+    }
+    return 0;
 }
+

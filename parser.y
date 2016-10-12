@@ -1,7 +1,11 @@
 /**
  * @file parser.y
  * @brief Grammar for HTTP
- * @author Rajul Bhatnagar (2016)
+ * @original author Rajul Bhatnagar (2016)
+ * @Modified by Qiaoyu Deng
+ * @Andrew ID: qdeng
+ * This file is mostly copied from TA, which I modified some parts supporting
+ * malloc and (header, value) pair allocating.
  */
 
 %{
@@ -236,13 +240,6 @@ request_header: token ows t_colon ows text ows t_crlf {
     parsing_request->headers = new_headers;
 };
 
-
-/*
- * You need to fill this rule, and you are done! You have all the assembly
- * needed. You may wish to define your own rules. Please read RFC 2616
- * and the annotated excerpted text on the course website. All the best!
- *
- */
 request: 
 request_line request_headers t_crlf{
     YPRINTF("parsing_request: Matched Success.\n");

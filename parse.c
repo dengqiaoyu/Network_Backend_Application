@@ -1,18 +1,29 @@
+/******************************************************************************
+ *                          lisod: HTTPS1.1 SERVER                            *
+ *                          15-641 Computer Network                           *
+ *                                  parse.c                                   *
+ * This file contains the functions that are used supporting parsing requests *
+ * and hand in request text to lex and yacc to get request hearder and entity *
+ * the parse.c has some error handling features that have not been tested due *
+ * to the limit of time, it needs further tests.                              *
+ * Author: Qiaoyu Deng                                                        *
+ * Andrew ID: qdeng                                                           *
+ ******************************************************************************/
+
 #include "lisod.h"
-#include <dbg_func.h>
+#include "hlp_func.h"
 
 #define SUCCESS 0
-#define F_MELONG 1
-#define F_URLONG 2
-#define F_VELONG 3
-#define F_HNLONG 4
-#define F_HVLONG 5
+#define F_MELONG 1 // yacc uses to indicate http method too long error
+#define F_URLONG 2 // ... http URL too long error
+#define F_VELONG 3 // ... http version too long error 
+#define F_HNLONG 4 // ... header name too long error
+#define F_HVLONG 5 // ... header value too long error
 
-/**
-* Given a char buffer returns the parsed req headers
-*/
+// helper function
 void initiate_request(Requests *req);
 ssize_t if_contain_ebody(Requests *req);
+// Used by yacc
 void set_parsing_options(char *buf, size_t siz, Requests *parsing_request);
 int yyparse();
 void yyrestart();
@@ -53,24 +64,16 @@ Requests * parse(char *skt_recv_buf, size_t recv_buf_size, int socketfd,
 
     ssize_t ret = 0;
 
-    //dbg_cp3_printf("skt_recv_buf in parse.c:[\n%s]\n", skt_recv_buf);
-    //dbg_cp2_printf("ign_first: %d\n", ign_first);
-    //dbg_cp2_printf("too_long: %d\n", too_long);
-    //dbg_cp2_printf("cached_buf[0]: %d\n", cached_buf[0]);
-
-    //dbg_cp2_printf("parse.c: line 46\n");
+    // Judge whether has valid \r\n\r\n ending
     if (search_first_position(skt_recv_buf, "\r\n\r\n") != -1) {
-        //dbg_cp2_printf("parse.c: line 49\n");
         if_2crlf = 1;
     }
     else {
-        //dbg_cp2_printf("parse.c: line 54\n");
         if_2crlf = 0;
     }
-    //dbg_cp2_printf("parse.c: line 55\n");
+
+    // Last request have not ended
     if (cached_buf[0] != 0) {
-        //dbg_cp2_printf("enter cache buffer\n");
-        //dbg_cp2_printf("cache buffer: %s\n", cached_buf);
         req_size = strlen(cached_buf);
         read_count = -req_size;
         memset(req_buffer, 0, REQ_BUF_SIZE + 1);
@@ -78,6 +81,8 @@ Requests * parse(char *skt_recv_buf, size_t recv_buf_size, int socketfd,
         req_buf_offset = req_size;
     }
     else if (ign_first == 1) {
+        // if indicated by ign_first, which means the first part of request
+        // should be ignored due to too long error
         read_count = search_first_position(skt_recv_buf, "\r\n\r\n") + 4;
         recv_buf_offset = read_count;
         req = (Requests *) malloc(sizeof(Requests));
@@ -96,12 +101,15 @@ Requests * parse(char *skt_recv_buf, size_t recv_buf_size, int socketfd,
         req_last_ptr = req;
     }
     else if (p->cached_req[socketfd] != NULL) {
+        // request is complete, but it has entity body that have not been read
+        // yet
         size_t remain_size = p->cached_req[socketfd]->entity_len
                              - strlen(p->cached_req[socketfd]->entity_body);
+        // The remaining part of body is all in the buffer
         if (remain_size <= recv_buf_size) {
-            //dbg_cp3_printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
             strncat(p->cached_req[socketfd]->entity_body, skt_recv_buf,
                     remain_size);
+            // Next request will start at thi spoint
             hdr_offset_end2 = remain_size;
             read_count = remain_size;
             recv_buf_offset = read_count;
@@ -116,19 +124,20 @@ Requests * parse(char *skt_recv_buf, size_t recv_buf_size, int socketfd,
             p->cached_req[socketfd] = NULL;
         }
         else {
+            // The remaining part of body is not all in the buffer
             strncat(p->cached_req[socketfd]->entity_body, skt_recv_buf,
                     recv_buf_size);
             if_2crlf = 0;
         }
     }
-    //dbg_cp2_printf("parse.c: line 72\n");
-    // dbg_cp2_printf("if_2crlf: %d\n", if_2crlf);
+
+    // If end with at least one \r\n\r\n
     if (if_2crlf == 1) {
+        // Find the valid request ending
         full_req_size =
             search_last_position("\r\n\r\n", skt_recv_buf) + 4;
-        // dbg_cp3_printf("recv_buf_size: %ld\n", recv_buf_size);
-        // dbg_cp3_printf("full_req_size: %ld\n", full_req_size);
-        // dbg_cp3_printf("remian_part: \n[\n%s]\n\n", &skt_recv_buf[full_req_size]);
+        // State machine will put one request into req_buffer everytime for
+        // lex and yacc
         while (read_count != full_req_size) {
             read_state = STATE_START;
             while (read_state != STATE_CRLFCRLF) {
@@ -167,12 +176,12 @@ Requests * parse(char *skt_recv_buf, size_t recv_buf_size, int socketfd,
             if (cached_buf[0] != 0) {
                 memset(p->cached_buf[socketfd], 0, REQ_BUF_SIZE + 1);
             }
+            // if the length of request is within valid range, eg 8192
             if (req_size <= REQ_BUF_SIZE) {
-                //dbg_cp3_printf("req_buffer: \n[\n%s]\n\n", req_buffer);
                 set_parsing_options(req_buffer, req_size, req);
                 yyrestart();
                 ret = yyparse();
-                //print_request(req);
+                // handle with syntex error
                 if (ret != SUCCESS) {
                     switch (ret) {
                     case F_MELONG:
@@ -197,19 +206,21 @@ Requests * parse(char *skt_recv_buf, size_t recv_buf_size, int socketfd,
                 }
                 else {
                     req->error = 200;
+                    // judage whether it has entitybody
                     req->entity_len = if_contain_ebody(req);
                     if (req->entity_len < 0) {
                         req->error = 400;
                         req->entity_len = 0;
                     }
-                    //dbg_cp3_printf("req->entity_len: %ld\n", req->entity_len);
                     if (req->entity_len) {
+                        //read entity body right after the request
                         if ((read_count + req_size) == full_req_size) {
+                            // There is some text after valid request, which
+                            // should be the entity body
                             if (full_req_size != recv_buf_size) {
                                 size_t end_ebody_len =
                                     recv_buf_size - full_req_size;
-                                //dbg_cp3_printf("req->entity_len: %ld\n", req->entity_len);
-                                // dbg_cp3_printf("end_ebody_len: %ld\n", end_ebody_len);
+                                // remaining part is just all of enitity body
                                 if (req->entity_len == end_ebody_len) {
                                     end_with_ebody = 1;
                                     req->entity_body =
@@ -220,6 +231,9 @@ Requests * parse(char *skt_recv_buf, size_t recv_buf_size, int socketfd,
                                             end_ebody_len);
                                 }
                                 else if (req->entity_len < end_ebody_len) {
+                                    // remaining part is all of enitity body
+                                    // plus next request
+                                    // the position where next request starts
                                     hdr_offset_end = req->entity_len;
                                     req->entity_body =
                                         malloc(req->entity_len + 1);
@@ -230,6 +244,8 @@ Requests * parse(char *skt_recv_buf, size_t recv_buf_size, int socketfd,
                                             req->entity_len);
                                 }
                                 else {
+                                    // remaining part is not all of enitity body
+                                    // which should be saved Temporarily
                                     end_with_ebody = -1;
                                     if_req_cached = 1;
                                     p->cached_req[socketfd] = req;
@@ -241,10 +257,9 @@ Requests * parse(char *skt_recv_buf, size_t recv_buf_size, int socketfd,
                                             &skt_recv_buf[full_req_size],
                                             end_ebody_len);
                                 }
-                                //dbg_cp3_printf("entity body get!\n");
-                                //dbg_cp3_printf("entity body: \n[\n%s]\n\n", req->entity_body);
                             }
                             else {
+                                // The entity body is right after the next read
                                 if_req_cached = 1;
                                 p->cached_req[socketfd] = req;
                                 req->entity_body =
@@ -254,6 +269,8 @@ Requests * parse(char *skt_recv_buf, size_t recv_buf_size, int socketfd,
                             }
                         }
                         else {
+                            // Entity is contained in the requests part, which
+                            // should have two or more requests
                             req->entity_body = malloc(req->entity_len + 1);
                             memset(req->entity_body, 0, req->entity_len + 1);
                             strncpy(req->entity_body,
@@ -269,6 +286,7 @@ Requests * parse(char *skt_recv_buf, size_t recv_buf_size, int socketfd,
                 req->error = 400;
             }
 
+            // If request need not to be saved to get its entity in next read
             if (if_req_cached == 0) {
                 if (req_last_ptr != NULL) {
                     req_last_ptr->next_req = req;
@@ -280,12 +298,14 @@ Requests * parse(char *skt_recv_buf, size_t recv_buf_size, int socketfd,
                 req_last_ptr = req;
             }
 
+            // Moving the buffer reader
             read_count = read_count + req_size;
             memset(req_buffer, 0, REQ_BUF_SIZE);
             req_size = 0;
             req_buf_offset = 0;
         }
-        //dbg_cp2_printf("parse.c: line 163\n");
+
+        // The remaining part ends with incomplete request, put it into buffer
         if (full_req_size != recv_buf_size && end_with_ebody == 0)
         {
             size_t length =
@@ -307,8 +327,14 @@ Requests * parse(char *skt_recv_buf, size_t recv_buf_size, int socketfd,
     }
     else if (p->cached_req[socketfd] == NULL)
     {
+        // if the data in read buffer is not a complete request and it is not an
+        // entity body, save it as request.
+
+        //  If request is not too long, ignore this part of data otherwise
         if (ign_first == 0)
         {
+
+            // If cache has something inside, add new data behind that
             if (cached_buf[0] != 0)
             {
                 size_t new_length = strlen(cached_buf)
@@ -329,7 +355,8 @@ Requests * parse(char *skt_recv_buf, size_t recv_buf_size, int socketfd,
             }
             else
             {
-                //dbg_cp3_printf("after @@@@@@@@@@@@");
+                // cache is NULL, add them all to cache
+
                 size_t length = recv_buf_size;
                 if (length < REQ_BUF_SIZE)
                 {
@@ -353,40 +380,20 @@ Requests * parse(char *skt_recv_buf, size_t recv_buf_size, int socketfd,
     return reqs_ptr;
 }
 
-ssize_t search_last_position(char *str1, char *str2)
-{
-    size_t i;
-    size_t last_position = -1;
-    size_t str1_len = strlen(str1);
-    size_t str2_len = strlen(str2);
-    size_t end = str2_len - str1_len;
-    for (i = 0; i <= end; i++)
-    {
-        if (!strncmp(str1, str2 + i, str1_len))
-            last_position = i;
-    }
-    return last_position;
-}
-
-ssize_t search_first_position(char *str1, char *str2)
-{
-    //dbg_cp2_printf("parse.c: line 246\n");
-    char *first_position = strstr(str1, str2);
-    if (first_position != NULL)
-    {
-        return first_position - str1;
-    }
-    else
-    {
-        return -1;
-    }
-}
-
+/**
+ * Create new headers for request
+ * @param req request
+ */
 void initiate_request(Requests *req) {
     memset(req, 0, sizeof(Requests));
     req->headers = (Request_header *) malloc(sizeof(Request_header) * 1);
 }
 
+/**
+ * Check whether a request has "Content-Length" field
+ * @param  req request
+ * @return     size if contain, or 0
+ */
 ssize_t if_contain_ebody(Requests *req) {
     size_t i = 0;
     for (i = 0; i < req->h_count; i ++) {

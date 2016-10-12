@@ -1,3 +1,14 @@
+/******************************************************************************
+ *                          lisod: HTTPS1.1 SERVER                            *
+ *                          15-641 Computer Network                           *
+ *                                cgi_func.c                                  *
+ * This file contains functions that are used to support CGI service,         *
+ * incluing getting parameters, adding file descriptor and error handling for *
+ * cgi execution                                                              *
+ * Author: Qiaoyu Deng                                                        *
+ * Andrew ID: qdeng                                                           *
+ ******************************************************************************/
+
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -8,6 +19,7 @@
 
 extern FILE *logfp;
 
+// The name of required CGI environment arguements
 static const char* ENVP_key[] = {
     "CONTENT_LENGTH",
     "CONTENT_TYPE",
@@ -35,6 +47,7 @@ static const char* ENVP_key[] = {
     NULL
 };
 
+// The value of required CGI environment arguements
 static const char* header_name_key[] = {
     "Content-Length",
     "Content-Type",
@@ -62,6 +75,14 @@ static const char* header_name_key[] = {
     NULL
 };
 
+/**
+ * Parse environment arguements
+ * @param p      pool
+ * @param connfd fd of client
+ * @param req    request
+ * @param ENVP   environment arguements
+ * @param port   http or https port
+ */
 void get_envp(pools *p, int connfd, Requests *req,
               char *ENVP[ENVP_len], char *port) {
     size_t i = 0;
@@ -202,20 +223,24 @@ void get_envp(pools *p, int connfd, Requests *req,
         }
         break;
         }
-        // dbg_cp3_fprintf(stderr, "i: %ld ", i);
-        // dbg_cp3_fprintf(stderr, "ENVP[i]: %s\n", ENVP[i]);
         i++;
     }
 }
 
+/**
+ * Add fd that is used to read from CGI into select read
+ * @param cgifd  fd pipe that can read from child
+ * @param connfd fd of client
+ * @param p      pool
+ */
 void add_cgi_rspfd(int cgifd, int connfd, pools *p) {
     FD_SET(cgifd, &p->active_rd_set);
-    //dbg_cp3_printf("cgifd: %d\n", cgifd);
     p->clientfd[cgifd] = connfd;
-    //dbg_cp3_printf("p->clientfd[cgifd]: %d\n", p->clientfd[cgifd]);
-    //dbg_cp3_printf("p->clientfd[connfd]: %d\n", p->clientfd[connfd]);
 }
 
+/**
+ * Print error message into log
+ */
 void execve_error_handler()
 {
     switch (errno)

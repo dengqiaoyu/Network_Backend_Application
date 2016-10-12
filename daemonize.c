@@ -1,11 +1,15 @@
 /******************************************************************************
- * Reference: http://www.enderunix.org/docs/eng/daemon.php                    *
- * Modified by: Wolf Richter <wolf@cs.cmu.edu>                                *
- * O_EXCL Bug Fix by: Ming Han <mteh@andrew.cmu.edu                           *
+ *                          lisod: HTTPS1.1 SERVER                            *
+ *                          15-641 Computer Network                           *
+ *                               daemonize.c                                  *
+ * This file contains the functions that are used to supprt backend execution *
+ * some part of code is copied from TA, and some thread-unsafe parts are fixed*
+ * main function can use those functions to runing sliently.                  *
+ * What's more, signal handler and exit method are provided within this file  *
+ * Author: Qiaoyu Deng                                                        *
+ * Andrew ID: qdeng                                                           *
  ******************************************************************************/
 
-
-/* daemonize includes */
 #include <fcntl.h>
 #include <signal.h>
 #include <unistd.h>
@@ -41,8 +45,6 @@ void signal_handler(int sig)
         /* rehash the server */
         break;
     case SIGTERM:
-        /* finalize and shutdown the server */
-        // TODO: liso_shutdown(NULL, EXIT_SUCCESS);
         liso_shutdown();
         break;
     case SIGCHLD: {
@@ -60,7 +62,10 @@ void signal_handler(int sig)
 }
 
 /**
- * internal function daemonizing the process
+ * daemonize the server
+ * @param  lock_file the path of file that is used to limit only one server to
+ *         run
+ * @return           0 for EXIT_SUCCESS
  */
 int daemonize(char* lock_file)
 {
@@ -72,8 +77,6 @@ int daemonize(char* lock_file)
 
     setsid();
 
-    // for (i = getdtablesize(); i >= 0; i--)
-    //     close(i);
     old_stdin = dup(STDIN_FILENO);
     old_stdout = dup(STDOUT_FILENO);
     old_stderr = dup(STDERR_FILENO);
@@ -100,16 +103,16 @@ int daemonize(char* lock_file)
     write(lfp, str, strlen(str)); /* record pid to lockfile */
 
     signal(SIGCHLD, signal_handler); /* child terminate signal */
-    signal(SIGPIPE, signal_handler);
+    signal(SIGPIPE, signal_handler); /* override pipe broken */
     signal(SIGHUP, signal_handler); /* hangup signal */
     signal(SIGTERM, signal_handler); /* software termination signal from kill */
-
-    // TODO: log --> "Successfully daemonized lisod process, pid %d."
-    //fprintf(logfp, "Successfully daemonized lisod process, pid %d.\n", pid);
 
     return EXIT_SUCCESS;
 }
 
+/**
+ * Close server, and restore stdin, stdin, stderr
+ */
 void liso_shutdown()
 {
     SSL_CTX_free(ssl_context);
