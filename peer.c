@@ -141,7 +141,7 @@ void peer_run(bt_config_t *config)
             if (FD_ISSET(STDIN_FILENO, &readfds))
             {
                 request_struct request;
-                bzero(&request, sizeof(request));
+                init_request(&request);
                 process_user_input(STDIN_FILENO, userbuf, &request,
                                    handle_user_input, "Currently unused");
             }

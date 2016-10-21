@@ -38,3 +38,6 @@ typedef struct request_struct
     request_item_struct *whohas_ptr;
     request_item_struct *get_ptr;
 } request_struct;
+
+void init_request(request_struct *request);
+ssize_t init_whohas_request(request_struct *request);
