@@ -15,6 +15,15 @@ extern unsigned int debug;
 #define DEBUG_PERROR(args...)
 #endif
 
+#define DEBUG_CP1
+#ifdef DEBUG_CP1
+#define dbg_cp1_printf(...) printf(__VA_ARGS__)
+#define dbg_cp1_fprintf(...) fprintf(__VA_ARGS__)
+#else
+#define dbg_cp1_printf(...)
+#define dbg_cp1_fprintf(...)
+#endif
+
 /*
  * The format of this should be obvious.  Please add some explanatory
  * text if you add a debugging value.  This text will show up in
@@ -33,7 +42,7 @@ extern unsigned int debug;
 #ifdef __cplusplus
 extern "C" {
 #endif
-  int set_debug(char *arg);  /* Returns 0 on success, -1 on failure */
+int set_debug(char *arg);  /* Returns 0 on success, -1 on failure */
 #ifdef __cplusplus
 }
 #endif

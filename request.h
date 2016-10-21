@@ -3,6 +3,9 @@
 
 #define PACKET_MAXSIZE 1500
 #define PATH_MAXSIZE 1024
+#define HASH_LINE_MAXSIZE 44
+#define HASH_LEN 40
+#define NODE_LINE_MAXSIZE 64
 typedef enum {WHOHAS, IHAVE, GET, DATA, ACK, DENIED} packet_type_code_enum;
 
 typedef struct packet_sturct

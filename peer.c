@@ -22,13 +22,12 @@
 #include "bt_parse.h"
 #include "input_buffer.h"
 
+bt_config_t config;
 
 void peer_run(bt_config_t *config);
 
 int main(int argc, char **argv)
 {
-    bt_config_t config;
-
     bt_init(&config, argc, argv);
 
     DPRINTF(DEBUG_INIT, "peer.c main beginning\n");
@@ -63,17 +62,18 @@ void process_inbound_udp(int sock)
     fromlen = sizeof(from);
     spiffy_recvfrom(sock, buf, BUFLEN, 0, (struct sockaddr *) &from, &fromlen);
 
-    printf("PROCESS_INBOUND_UDP SKELETON -- replace!\n"
-           "Incoming message from %s:%d\n%s\n\n",
-           inet_ntoa(from.sin_addr),
-           ntohs(from.sin_port),
-           buf);
+    dbg_cp1_printf("PROCESS_INBOUND_UDP SKELETON -- replace!\n"
+                   "Incoming message from %s:%d\n%s\n\n",
+                   inet_ntoa(from.sin_addr),
+                   ntohs(from.sin_port),
+                   buf);
 }
 
 void process_get(request_struct *request)
 {
-    printf("PROCESS GET SKELETON CODE CALLED.  Fill me in!  (%s, %s)\n",
-           request->get_chunk_file, request->out_put_file);
+    dbg_cp1_printf("PROCESS GET SKELETON CODE CALLED.  Fill me in!  (%s, %s)\n",
+                   request->get_chunk_file, request->out_put_file);
+    init_whohas_request(request);
 }
 
 void handle_user_input(char *line, void *cbdata, request_struct *request)
