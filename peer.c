@@ -24,7 +24,14 @@
 
 bt_config_t config;
 
+
 void peer_run(bt_config_t *config);
+void printf_requests(request_struct *request);
+void process_user_input(int fd, struct user_iobuf *userbuf,
+                        request_struct *request,
+                        void (*handle_line)(char *, void *, request_struct *, item_to_send_struct *),
+                        item_to_send_struct *sending_list,
+                        void *cbdata);
 
 int main(int argc, char **argv)
 {
@@ -63,20 +70,24 @@ void process_inbound_udp(int sock)
     spiffy_recvfrom(sock, buf, BUFLEN, 0, (struct sockaddr *) &from, &fromlen);
 
     dbg_cp1_printf("PROCESS_INBOUND_UDP SKELETON -- replace!\n"
-                   "Incoming message from %s:%d\n%s\n\n",
+                   "Incoming message from %s:%d\n",
                    inet_ntoa(from.sin_addr),
-                   ntohs(from.sin_port),
-                   buf);
+                   ntohs(from.sin_port));
 }
 
-void process_get(request_struct *request)
+void process_get(request_struct *request, item_to_send_struct *sending_list)
 {
     dbg_cp1_printf("PROCESS GET SKELETON CODE CALLED.  Fill me in!  (%s, %s)\n",
                    request->get_chunk_file, request->out_put_file);
     init_whohas_request(request);
+    add2sending_list(request->whohas_ptr, sending_list);
+#ifdef DEBUG_CP1
+    printf_requests(request);
+#endif
 }
 
-void handle_user_input(char *line, void *cbdata, request_struct *request)
+void handle_user_input(char *line, void *cbdata, request_struct *request,
+                       item_to_send_struct *sending_list)
 {
     ssize_t ret = 0;
     ret = sscanf(line, "GET %1024s %1024s", request->get_chunk_file,
@@ -85,7 +96,7 @@ void handle_user_input(char *line, void *cbdata, request_struct *request)
     {
         if (strlen(request->out_put_file) > 0)
         {
-            process_get(request);
+            process_get(request, sending_list);
         }
     }
 }
@@ -95,8 +106,14 @@ void peer_run(bt_config_t *config)
 {
     int sock;
     struct sockaddr_in myaddr;
-    fd_set readfds;
+    fd_set readfds, writefds;
     struct user_iobuf *userbuf;
+    item_to_send_struct *sending_list;
+    sending_list = malloc(sizeof(item_to_send_struct));
+    bzero(sending_list, sizeof(request_item_struct));
+
+    FD_ZERO(&readfds);
+    FD_ZERO(&writefds);
 
     if ((userbuf = create_userbuf()) == NULL)
     {
@@ -104,7 +121,7 @@ void peer_run(bt_config_t *config)
         exit(-1);
     }
 
-    if ((sock = socket(AF_INET, SOCK_DGRAM, IPPROTO_IP)) == -1)
+    if ((sock = socket(AF_INET, SOCK_DGRAM | SOCK_NONBLOCK, IPPROTO_IP)) == -1)
     {
         perror("peer_run could not create socket");
         exit(-1);
@@ -126,8 +143,10 @@ void peer_run(bt_config_t *config)
     while (1)
     {
         int nfds;
+        ssize_t ret = 0;
         FD_SET(STDIN_FILENO, &readfds);
         FD_SET(sock, &readfds);
+        FD_SET(sock, &writefds);
 
         nfds = select(sock + 1, &readfds, NULL, NULL, NULL);
 
@@ -143,7 +162,18 @@ void peer_run(bt_config_t *config)
                 request_struct request;
                 init_request(&request);
                 process_user_input(STDIN_FILENO, userbuf, &request,
-                                   handle_user_input, "Currently unused");
+                                   handle_user_input, sending_list,
+                                   "Currently unused");
+            }
+
+            if (FD_ISSET(sock, &writefds))
+            {
+                dbg_cp1_printf("Begin sending\n");
+                if (sending_list->next != NULL)
+                {
+                    ret = send_request(sock, sending_list);
+                    dbg_cp1_printf("ret: %ld\n", ret);
+                }
             }
         }
     }

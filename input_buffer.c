@@ -4,10 +4,6 @@
 #include "input_buffer.h"
 #include "request.h"
 
-void process_user_input(int fd, struct user_iobuf *userbuf,
-                        request_struct *request,
-                        void (*handle_line)(char *, void *, request_struct *),
-                        void *cbdata);
 
 struct user_iobuf *create_userbuf() {
     struct user_iobuf *b;
@@ -27,7 +23,8 @@ struct user_iobuf *create_userbuf() {
 
 void process_user_input(int fd, struct user_iobuf *userbuf,
                         request_struct *request,
-                        void (*handle_line)(char *, void *, request_struct *),
+                        void (*handle_line)(char *, void *, request_struct *, item_to_send_struct *),
+                        item_to_send_struct *sending_list,
                         void *cbdata)
 {
     int nread;
@@ -53,7 +50,7 @@ void process_user_input(int fd, struct user_iobuf *userbuf,
 
     while ((ret = strchr(userbuf->buf, '\n')) != NULL) {
         *ret = '\0';
-        handle_line(userbuf->buf, cbdata, request);
+        handle_line(userbuf->buf, cbdata, request, sending_list);
         /* Shift the remaining contents of the buffer forward */
         memmove(userbuf->buf, ret + 1, USERBUF_SIZE - (ret - userbuf->buf));
         userbuf->cur -= (ret - userbuf->buf + 1);

@@ -41,3 +41,6 @@ typedef struct request_struct
 
 void init_request(request_struct *request);
 ssize_t init_whohas_request(request_struct *request);
+inline void add2sending_list(request_item_struct *request_item,
+                             item_to_send_struct *sending_list);
+ssize_t send_request(int sock, item_to_send_struct *sending_list);

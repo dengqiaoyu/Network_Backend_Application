@@ -1,9 +1,12 @@
 #include <stdio.h>
 #include <string.h>
+#include <errno.h>
+#include <arpa/inet.h>
 #include "request.h"
 #include "bt_parse.h"
 #include "debug.h"
 #include "chunk.h"
+
 
 extern bt_config_t config;
 
@@ -16,7 +19,6 @@ inline request_item_struct *find_last_req_ptr(request_item_struct *item_ptr);
 inline void set_ip_port(request_item_struct *request_item, char *peer_addr,
                         unsigned short peer_port);
 inline void init_packet(request_item_struct *request_item);
-void printf_requests(request_struct *request);
 
 ssize_t init_whohas_request(request_struct *request)
 {
@@ -86,12 +88,6 @@ ssize_t init_whohas_request(request_struct *request)
     plist_file = NULL;
     fclose(chunks_file);
     chunks_file = NULL;
-
-#ifdef DEBUG_CP1
-    printf_requests(request);
-#endif
-
-    exit(-1);
     return 0;
 }
 
@@ -178,4 +174,66 @@ inline void init_packet(request_item_struct *request_item)
         (unsigned int)(4294967295);
     *((unsigned int *)request_item->packet_ptr->acknowldgment_number) =
         (unsigned int)(4294967295);
+}
+
+inline void add2sending_list(request_item_struct *request_item,
+                             item_to_send_struct *sending_list)
+{
+    sending_list->next = request_item->next;
+    request_item->next = NULL;
+}
+
+ssize_t send_request(int sock, item_to_send_struct *sending_list)
+{
+    ssize_t writeret = 0;
+    item_to_send_struct *rover_last = sending_list;
+    item_to_send_struct *rover = sending_list->next;
+    while (rover != NULL)
+    {
+        dbg_cp1_printf("sending packets...\n");
+        struct sockaddr_in addr;
+        bzero(&addr, sizeof(addr));
+        inet_pton(AF_INET, rover->peer_addr, &addr);
+        addr.sin_family = AF_INET;
+        addr.sin_port = htons(rover->peer_port);
+        unsigned short packet_len =
+            *((unsigned short *)rover->packet_ptr->total_packet_length);
+        writeret = sendto(sock, rover->packet_ptr, packet_len, 0,
+                          (struct sockaddr *)&addr, sizeof(addr));
+        if (writeret == -1)
+        {
+            int errsv = errno;
+            if (errsv == EAGAIN || errno == EWOULDBLOCK)
+            {
+                break;
+            }
+            else
+            {
+                printf("error: %s\n", strerror(errsv));
+                return -1;
+            }
+        }
+        else
+        {
+            if (writeret != packet_len)
+            {
+                break;
+            }
+            else
+            {
+                rover_last->next = rover->next;
+                free(rover->packet_ptr);
+                free(rover);
+                rover = rover_last->next;
+            }
+        }
+    }
+    if (sending_list->next != NULL)
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
 }

@@ -33,21 +33,21 @@ void bt_init(bt_config_t *config, int argc, char **argv) {
 }
 
 void bt_usage() {
-  fprintf(stderr, 
-	  "usage:  peer [-h] [-d <debug>] -p <peerfile> -c <chunkfile> -m <maxconn>\n"
-	  "            -f <master-chunk-file> -i <identity>\n");
+  fprintf(stderr,
+          "usage:  peer [-h] [-d <debug>] -p <peerfile> -c <chunkfile> -m <maxconn>\n"
+          "            -f <master-chunk-file> -i <identity>\n");
 }
 
 void bt_help() {
   bt_usage();
   fprintf(stderr,
-	  "         -h                help (this message)\n"
-	  "         -p <peerfile>     The list of all peers\n"
-	  "         -c <chunkfile>    The list of chunks\n"
-	  "         -m <maxconn>      Max # of downloads\n"
-	  "	    -f <master-chunk> The master chunk file\n"
-	  "         -i <identity>     Which peer # am I?\n"
-	  );
+          "         -h                help (this message)\n"
+          "         -p <peerfile>     The list of all peers\n"
+          "         -c <chunkfile>    The list of chunks\n"
+          "         -m <maxconn>      Max # of downloads\n"
+          "	    -f <master-chunk> The master chunk file\n"
+          "         -i <identity>     Which peer # am I?\n"
+         );
 }
 
 bt_peer_t *bt_peer_info(const bt_config_t *config, int peer_id)
@@ -62,7 +62,7 @@ bt_peer_t *bt_peer_info(const bt_config_t *config, int peer_id)
   }
   return NULL;
 }
- 
+
 void bt_parse_command_line(bt_config_t *config) {
   int c, old_optind;
   bt_peer_t *p;
@@ -73,18 +73,18 @@ void bt_parse_command_line(bt_config_t *config) {
   DPRINTF(DEBUG_INIT, "bt_parse_command_line starting\n");
   old_optind = optind;
   while ((c = getopt(argc, argv, _bt_optstring)) != -1) {
-    switch(c) {
+    switch (c) {
     case 'h':
       bt_help();
       exit(0);
     case 'd':
       if (set_debug(optarg) == -1) {
-	fprintf(stderr, "%s:  Invalid debug argument.  Use -d list  to see debugging options.\n",
-		argv[0]);
-	exit(-1);
+        fprintf(stderr, "%s:  Invalid debug argument.  Use -d list  to see debugging options.\n",
+                argv[0]);
+        exit(-1);
       }
       break;
-    case 'p': 
+    case 'p':
       strcpy(config->peer_list_file, optarg);
       break;
     case 'c':
@@ -113,7 +113,7 @@ void bt_parse_command_line(bt_config_t *config) {
   }
   if ((p = bt_peer_info(config, config->identity)) == NULL) {
     fprintf(stderr, "bt_parse error:  No peer information for myself (id %d)!\n",
-	    config->identity);
+            config->identity);
     exit(-1);
   }
   config->myport = ntohs(p->addr.sin_port);
@@ -132,10 +132,10 @@ void bt_parse_peer_list(bt_config_t *config) {
   struct hostent *host;
 
   assert(config != NULL);
-  
+
   f = fopen(config->peer_list_file, "r");
   assert(f != NULL);
-  
+
   while (fgets(line, BT_FILENAME_LEN, f) != NULL) {
     if (line[0] == '#') continue;
     assert(sscanf(line, "%d %s %d", &nodeid, hostname, &port) != 0);
@@ -167,7 +167,7 @@ void bt_dump_config(bt_config_t *config) {
   printf("max-conn:       %d\n", config->max_conn);
   printf("peer-identity:  %d\n", config->identity);
   printf("peer-list-file: %s\n", config->peer_list_file);
-  
-  for (p = config->peers; p; p = p->next) 
+
+  for (p = config->peers; p; p = p->next)
     printf("  peer %d: %s:%d\n", p->id, inet_ntoa(p->addr.sin_addr), ntohs(p->addr.sin_port));
 }
