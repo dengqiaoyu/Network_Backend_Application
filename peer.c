@@ -16,17 +16,19 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "jwHash.h"
+#include "hash_obj.h"
 #include "constant.h"
 #include "packet.h"
 #include "request.h"
 #include "response.h"
+#include "send.h"
 #include "debug.h"
 #include "spiffy.h"
 #include "bt_parse.h"
 #include "input_buffer.h"
 
 bt_config_t config;
-
 
 void peer_run(bt_config_t *config);
 void printf_requests(request_struct *request);
@@ -58,7 +60,9 @@ int main(int argc, char **argv)
 }
 
 
-void process_inbound_udp(int sock, response_struct *response_list)
+void process_inbound_udp(int sock, response_struct *response_list,
+                         packet2send_sturct *sending_list,
+                         jwHashTable *haschunk_hash_table)
 {
 #define BUFLEN 1500
     ssize_t ret = 0;
@@ -66,40 +70,48 @@ void process_inbound_udp(int sock, response_struct *response_list)
     struct sockaddr_in from;
     socklen_t fromlen;
     char buf[BUFLEN];
+    char peer_addr[16] = {0};
+    unsigned short peer_port = 0;
 
     fromlen = sizeof(from);
     writeret = recvfrom(sock, buf, BUFLEN, 0, (struct sockaddr *) &from,
                         &fromlen);
     dbg_cp1_printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
-    dbg_cp1_printf("PROCESS_INBOUND_UDP SKELETON -- replace!\n"
-                   "Incoming message from %s:%d\n",
-                   inet_ntoa(from.sin_addr),
-                   ntohs(from.sin_port));
-    dbg_cp1_printf("writeret: %ld\n", writeret);
-    ret = init_responses(response_list, buf, writeret, inet_ntoa(from.sin_addr),
-                         ntohs(from.sin_port));
+    strncpy(peer_addr, inet_ntoa(from.sin_addr), 15);
+    peer_port = ntohs(from.sin_port);
+    // dbg_cp1_printf("PROCESS_INBOUND_UDP SKELETON -- replace!\n"
+    //                "Incoming message from %s:%d\n", peer_addr, peer_port);
+    // dbg_cp1_printf("writeret: %ld\n", writeret);
+    ret = init_responses(response_list, buf, writeret, peer_addr, peer_port);
     if (ret < 0)
     {
-        printf("packet does not complete\n");
+        printf("packet sending does not complete\n");
+    }
+
+    ret = process_request(response_list, sending_list, haschunk_hash_table);
+    if (ret < 0)
+    {
+        printf("process_request fail\n");
     }
     //printf_packet((packet_sturct *)buf);
-    printf_responses(response_list);
+    //printf_responses(response_list);
     dbg_cp1_printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
 }
 
-void process_get(request_struct *request, request_to_send_struct *sending_list)
+void process_get(request_struct *request, packet2send_sturct *sending_list)
 {
     dbg_cp1_printf("PROCESS GET SKELETON CODE CALLED.  Fill me in!  (%s, %s)\n",
                    request->get_chunk_file, request->out_put_file);
     init_whohas_request(request);
-    add2sending_list(request->whohas_ptr, sending_list);
+    get_add2sending_list((packet2send_sturct *)request->whohas_ptr,
+                         sending_list);
 #ifdef DEBUG_CP1
     printf_requests(request);
 #endif
 }
 
 void handle_user_input(char *line, void *cbdata, request_struct *request,
-                       request_to_send_struct *sending_list)
+                       packet2send_sturct *sending_list)
 {
     ssize_t ret = 0;
     ret = sscanf(line, "GET %1024s %1024s", request->get_chunk_file,
@@ -120,12 +132,10 @@ void peer_run(bt_config_t *config)
     struct sockaddr_in myaddr;
     fd_set readfds, writefds;
     struct user_iobuf *userbuf;
-    request_to_send_struct *sending_list;
-    response_struct *response_list;
-    sending_list = malloc(sizeof(request_to_send_struct));
-    bzero(sending_list, sizeof(request_item_struct));
-    response_list = malloc(sizeof(response_struct));
-    bzero(response_list, sizeof(response_struct));
+    packet2send_sturct *sending_list = init_sending_list();
+    response_struct *response_list = init_response_list();
+
+    jwHashTable *haschunk_hash_table = init_haschunk_hash_table();
 
     FD_ZERO(&readfds);
     FD_ZERO(&writefds);
@@ -169,7 +179,8 @@ void peer_run(bt_config_t *config)
         {
             if (FD_ISSET(sock, &readfds))
             {
-                process_inbound_udp(sock, response_list);
+                process_inbound_udp(sock, response_list, sending_list,
+                                    haschunk_hash_table);
             }
 
             if (FD_ISSET(STDIN_FILENO, &readfds))
@@ -186,7 +197,7 @@ void peer_run(bt_config_t *config)
                 dbg_cp1_printf("Begin sending\n");
                 if (sending_list->next != NULL)
                 {
-                    ret = send_request(sock, sending_list);
+                    ret = send_udp(sock, sending_list);
                     dbg_cp1_printf("ret: %ld\n", ret);
                 }
             }

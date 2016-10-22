@@ -19,4 +19,17 @@ typedef struct packet_sturct
     char pay_load[PACKET_MAXSIZE - 16];
 } packet_sturct;
 
+typedef struct packet2send_sturct
+{
+    char peer_addr[16];
+    unsigned short peer_port;
+    char unused[14];
+    packet_sturct *packet_ptr;
+    struct packet2send_sturct *next;
+} packet2send_sturct;
+
+inline packet_sturct *init_packet();
+inline void set_ip_port(packet2send_sturct *packet2send, char *peer_addr,
+                        unsigned short peer_port);
+
 #endif

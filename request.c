@@ -3,6 +3,7 @@
 #include <errno.h>
 #include <arpa/inet.h>
 #include "request.h"
+#include "send.h"
 #include "bt_parse.h"
 #include "debug.h"
 #include "chunk.h"
@@ -16,9 +17,6 @@ ssize_t add_whohas_packet(request_struct *request, char *peer_addr,
 inline void init_request(request_struct *request);
 inline void set_packet(request_item_struct *request_item);
 inline request_item_struct *find_last_req_ptr(request_item_struct *item_ptr);
-inline void set_ip_port(request_item_struct *request_item, char *peer_addr,
-                        unsigned short peer_port);
-inline void init_packet(request_item_struct *request_item);
 
 ssize_t init_whohas_request(request_struct *request)
 {
@@ -102,8 +100,9 @@ ssize_t add_whohas_packet(request_struct *request, char *peer_addr,
         last = find_last_req_ptr(last);
         last->next = malloc(sizeof(request_item_struct));
         memset(last->next, 0, sizeof(request_item_struct));
-        set_ip_port(last->next, peer_addr, peer_port);
-        init_packet(last->next);
+        set_ip_port((packet2send_sturct *)last->next, peer_addr, peer_port);
+        last->next->packet_ptr = init_packet();
+        *(last->next->packet_ptr->packet_type) = 0;
         if (pay_load_len > (PACKET_MAXSIZE - 20))
         {
             unsigned short *total_packet_length =
@@ -151,89 +150,11 @@ inline request_item_struct *find_last_req_ptr(request_item_struct *item_ptr)
     return rover;
 }
 
-inline void set_ip_port(request_item_struct *request_item, char *peer_addr,
-                        unsigned short peer_port)
-{
-    strncpy(request_item->peer_addr, peer_addr, 16);
-    request_item->peer_port = peer_port;
-}
 
-inline void init_packet(request_item_struct *request_item)
+inline void get_add2sending_list(request_item_struct *request_item,
+                                 packet2send_sturct *sending_list)
 {
-    request_item->packet_ptr = malloc(sizeof(packet_sturct));
-    memset(request_item->packet_ptr, 0, sizeof(packet_sturct));
-    *((unsigned short *)request_item->packet_ptr->magic_number) =
-        (unsigned short)15441;
-    *((unsigned short *)request_item->packet_ptr->version_number) =
-        (unsigned short)1;
-    *((unsigned short *)request_item->packet_ptr->header_length) =
-        (unsigned short)16;
-    *((unsigned short *)request_item->packet_ptr->total_packet_length) =
-        (unsigned short)16;
-    *((unsigned int *)request_item->packet_ptr->sequence_number) =
-        (unsigned int)(4294967295);
-    *((unsigned int *)request_item->packet_ptr->acknowldgment_number) =
-        (unsigned int)(4294967295);
-}
-
-inline void add2sending_list(request_item_struct *request_item,
-                             request_to_send_struct *sending_list)
-{
-    sending_list->next = request_item->next;
+    packet2send_sturct *last = find_last_send_ptr(sending_list);
+    last->next = (packet2send_sturct *)request_item->next;
     request_item->next = NULL;
-}
-
-ssize_t send_request(int sock, request_to_send_struct *sending_list)
-{
-    ssize_t writeret = 0;
-    request_to_send_struct *rover_last = sending_list;
-    request_to_send_struct *rover = sending_list->next;
-    while (rover != NULL)
-    {
-        dbg_cp1_printf("sending packets...\n");
-        struct sockaddr_in addr;
-        bzero(&addr, sizeof(addr));
-        inet_pton(AF_INET, rover->peer_addr, &addr);
-        addr.sin_family = AF_INET;
-        addr.sin_port = htons(rover->peer_port);
-        unsigned short packet_len =
-            *((unsigned short *)rover->packet_ptr->total_packet_length);
-        writeret = sendto(sock, rover->packet_ptr, packet_len, 0,
-                          (struct sockaddr *)&addr, sizeof(addr));
-        if (writeret == -1)
-        {
-            int errsv = errno;
-            if (errsv == EAGAIN || errno == EWOULDBLOCK)
-            {
-                break;
-            }
-            else
-            {
-                printf("error: %s\n", strerror(errsv));
-                return -1;
-            }
-        }
-        else
-        {
-            if (writeret != packet_len)
-            {
-                break;
-            }
-            else
-            {
-                rover_last->next = rover->next;
-                free(rover->packet_ptr);
-                free(rover);
-                rover = rover_last->next;
-            }
-        }
-    }
-    if (sending_list->next != NULL)
-    {
-        return 1;
-    }
-    else
-    {
-        return 0;
-    }
 }
