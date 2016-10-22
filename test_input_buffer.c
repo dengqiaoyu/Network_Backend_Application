@@ -7,10 +7,13 @@
 
 void process_user_input(int fd, struct user_iobuf *userbuf,
                         request_struct *request,
-                        void (*handle_line)(char *, void *, request_struct *),
+                        void (*handle_line)(char *, void *, request_struct *, request_to_send_struct *),
+                        request_to_send_struct *sending_list,
                         void *cbdata);
 
-void printline(char *line, void *cbdata, request_struct *unused) {
+void printline(char *line, void *cbdata, request_struct *unused,
+               request_to_send_struct *sending_list)
+{
     printf("LINE:  %s\n", line);
     printf("CBDATA:  %s\n", (char *)cbdata);
 }
@@ -25,7 +28,7 @@ int main() {
     assert(u != NULL);
 
     while (1) {
-        process_user_input(STDIN_FILENO, u, NULL, printline, "Cows moo!");
+        process_user_input(STDIN_FILENO, u, NULL, printline, NULL, "Cows moo!");
     }
 
     return 0;

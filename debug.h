@@ -3,6 +3,9 @@
 
 #include <stdio.h>  /* for perror */
 #include <sys/types.h>
+#include "packet.h"
+#include "request.h"
+#include "response.h"
 
 #ifdef DEBUG
 extern unsigned int debug;
@@ -46,5 +49,9 @@ int set_debug(char *arg);  /* Returns 0 on success, -1 on failure */
 #ifdef __cplusplus
 }
 #endif
+
+void printf_requests(request_struct *request);
+void printf_packet(packet_sturct *packet);
+void printf_responses(response_struct *response);
 
 #endif /* _DEBUG_H_ */

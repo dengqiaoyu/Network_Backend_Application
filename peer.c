@@ -16,7 +16,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "constant.h"
+#include "packet.h"
 #include "request.h"
+#include "response.h"
 #include "debug.h"
 #include "spiffy.h"
 #include "bt_parse.h"
@@ -27,11 +30,7 @@ bt_config_t config;
 
 void peer_run(bt_config_t *config);
 void printf_requests(request_struct *request);
-void process_user_input(int fd, struct user_iobuf *userbuf,
-                        request_struct *request,
-                        void (*handle_line)(char *, void *, request_struct *, item_to_send_struct *),
-                        item_to_send_struct *sending_list,
-                        void *cbdata);
+void printf_packet(packet_sturct *packet);
 
 int main(int argc, char **argv)
 {
@@ -59,23 +58,36 @@ int main(int argc, char **argv)
 }
 
 
-void process_inbound_udp(int sock)
+void process_inbound_udp(int sock, response_struct *response_list)
 {
 #define BUFLEN 1500
+    ssize_t ret = 0;
+    ssize_t writeret = 0;
     struct sockaddr_in from;
     socklen_t fromlen;
     char buf[BUFLEN];
 
     fromlen = sizeof(from);
-    spiffy_recvfrom(sock, buf, BUFLEN, 0, (struct sockaddr *) &from, &fromlen);
-
+    writeret = recvfrom(sock, buf, BUFLEN, 0, (struct sockaddr *) &from,
+                        &fromlen);
+    dbg_cp1_printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
     dbg_cp1_printf("PROCESS_INBOUND_UDP SKELETON -- replace!\n"
                    "Incoming message from %s:%d\n",
                    inet_ntoa(from.sin_addr),
                    ntohs(from.sin_port));
+    dbg_cp1_printf("writeret: %ld\n", writeret);
+    ret = init_responses(response_list, buf, writeret, inet_ntoa(from.sin_addr),
+                         ntohs(from.sin_port));
+    if (ret < 0)
+    {
+        printf("packet does not complete\n");
+    }
+    //printf_packet((packet_sturct *)buf);
+    printf_responses(response_list);
+    dbg_cp1_printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
 }
 
-void process_get(request_struct *request, item_to_send_struct *sending_list)
+void process_get(request_struct *request, request_to_send_struct *sending_list)
 {
     dbg_cp1_printf("PROCESS GET SKELETON CODE CALLED.  Fill me in!  (%s, %s)\n",
                    request->get_chunk_file, request->out_put_file);
@@ -87,7 +99,7 @@ void process_get(request_struct *request, item_to_send_struct *sending_list)
 }
 
 void handle_user_input(char *line, void *cbdata, request_struct *request,
-                       item_to_send_struct *sending_list)
+                       request_to_send_struct *sending_list)
 {
     ssize_t ret = 0;
     ret = sscanf(line, "GET %1024s %1024s", request->get_chunk_file,
@@ -108,9 +120,12 @@ void peer_run(bt_config_t *config)
     struct sockaddr_in myaddr;
     fd_set readfds, writefds;
     struct user_iobuf *userbuf;
-    item_to_send_struct *sending_list;
-    sending_list = malloc(sizeof(item_to_send_struct));
+    request_to_send_struct *sending_list;
+    response_struct *response_list;
+    sending_list = malloc(sizeof(request_to_send_struct));
     bzero(sending_list, sizeof(request_item_struct));
+    response_list = malloc(sizeof(response_struct));
+    bzero(response_list, sizeof(response_struct));
 
     FD_ZERO(&readfds);
     FD_ZERO(&writefds);
@@ -154,7 +169,7 @@ void peer_run(bt_config_t *config)
         {
             if (FD_ISSET(sock, &readfds))
             {
-                process_inbound_udp(sock);
+                process_inbound_udp(sock, response_list);
             }
 
             if (FD_ISSET(STDIN_FILENO, &readfds))

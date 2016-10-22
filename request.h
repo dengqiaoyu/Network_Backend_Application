@@ -1,24 +1,9 @@
+#ifndef REQUEST_H
+#define REQUEST_H
 #include <stdio.h>
 #include <stdlib.h>
-
-#define PACKET_MAXSIZE 1500
-#define PATH_MAXSIZE 1024
-#define HASH_LINE_MAXSIZE 44
-#define HASH_LEN 40
-#define NODE_LINE_MAXSIZE 64
-typedef enum {WHOHAS, IHAVE, GET, DATA, ACK, DENIED} packet_type_code_enum;
-
-typedef struct packet_sturct
-{
-    char magic_number[2];
-    char version_number[1];
-    char packet_type[1];
-    char header_length[2];
-    char total_packet_length[2];
-    char sequence_number[4];
-    char acknowldgment_number[4];
-    char pay_load[PACKET_MAXSIZE - 16];
-} packet_sturct;
+#include "constant.h"
+#include "packet.h"
 
 typedef struct request_item_struct
 {
@@ -29,7 +14,7 @@ typedef struct request_item_struct
     struct request_item_struct *next;
 } request_item_struct;
 
-typedef request_item_struct item_to_send_struct;
+typedef request_item_struct request_to_send_struct;
 
 typedef struct request_struct
 {
@@ -38,9 +23,10 @@ typedef struct request_struct
     request_item_struct *whohas_ptr;
     request_item_struct *get_ptr;
 } request_struct;
+#endif
 
 void init_request(request_struct *request);
 ssize_t init_whohas_request(request_struct *request);
 inline void add2sending_list(request_item_struct *request_item,
-                             item_to_send_struct *sending_list);
-ssize_t send_request(int sock, item_to_send_struct *sending_list);
+                             request_to_send_struct *sending_list);
+ssize_t send_request(int sock, request_to_send_struct *sending_list);

@@ -177,17 +177,17 @@ inline void init_packet(request_item_struct *request_item)
 }
 
 inline void add2sending_list(request_item_struct *request_item,
-                             item_to_send_struct *sending_list)
+                             request_to_send_struct *sending_list)
 {
     sending_list->next = request_item->next;
     request_item->next = NULL;
 }
 
-ssize_t send_request(int sock, item_to_send_struct *sending_list)
+ssize_t send_request(int sock, request_to_send_struct *sending_list)
 {
     ssize_t writeret = 0;
-    item_to_send_struct *rover_last = sending_list;
-    item_to_send_struct *rover = sending_list->next;
+    request_to_send_struct *rover_last = sending_list;
+    request_to_send_struct *rover = sending_list->next;
     while (rover != NULL)
     {
         dbg_cp1_printf("sending packets...\n");

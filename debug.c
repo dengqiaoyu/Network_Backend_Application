@@ -12,7 +12,6 @@
 
 unsigned int debug = 0;
 
-void printf_requests(request_struct *request);
 void binary2hex_dbg(uint8_t *buf, int len, char *hex);
 
 struct debug_def {
@@ -67,6 +66,34 @@ int main() {
 
 /* Packet debugging utilities */
 
+void printf_packet(packet_sturct *packet)
+{
+    printf("magic_number:%hu\n",
+           *(unsigned short*)packet->magic_number);
+    printf("version_number:%d\n",
+           *(char *)packet->version_number);
+    printf("packet_type:%d\n",
+           *(char *)packet->packet_type);
+    printf("header_length:%hu\n",
+           *(unsigned short*)packet->header_length);
+    printf("total_packet_length:%hu\n",
+           *(unsigned short*)packet->total_packet_length);
+    printf("sequence_number:%u\n",
+           *(unsigned int*)packet->sequence_number);
+    printf("acknowldgment_number:%u\n",
+           *(unsigned int*)packet->acknowldgment_number);
+    char chunk_num = *(char *)packet->pay_load;
+    printf("chunk_num:%d\n", chunk_num);
+    int i = 0;
+    for (i = 0; i < chunk_num; i++)
+    {
+        char buf[41] = {0};
+        binary2hex_dbg((uint8_t *)packet->pay_load + 4 + i * 20,
+                       20, buf);
+        printf("chunk hash:%s\n", buf);
+    }
+}
+
 void printf_requests(request_struct *request)
 {
     printf("get_chunk_file:%s\n", request->get_chunk_file);
@@ -107,6 +134,42 @@ void printf_requests(request_struct *request)
     while (rover)
     {
         printf("############################################\n");
+        printf("peer_addr: %s\n", rover->peer_addr);
+        printf("peer_port: %hu\n", rover->peer_port);
+        printf("magic_number:%hu\n",
+               *(unsigned short*)rover->packet_ptr->magic_number);
+        printf("version_number:%d\n",
+               *(char *)rover->packet_ptr->version_number);
+        printf("packet_type:%d\n",
+               *(char *)rover->packet_ptr->packet_type);
+        printf("header_length:%hu\n",
+               *(unsigned short*)rover->packet_ptr->header_length);
+        printf("total_packet_length:%hu\n",
+               *(unsigned short*)rover->packet_ptr->total_packet_length);
+        printf("sequence_number:%u\n",
+               *(unsigned int*)rover->packet_ptr->sequence_number);
+        printf("acknowldgment_number:%u\n",
+               *(unsigned int*)rover->packet_ptr->acknowldgment_number);
+        char chunk_num = *(char *)rover->packet_ptr->pay_load;
+        printf("chunk_num:%d\n", chunk_num);
+        int i = 0;
+        for (i = 0; i < chunk_num; i++)
+        {
+            char buf[41] = {0};
+            binary2hex_dbg((uint8_t *)rover->packet_ptr->pay_load + 4 + i * 20,
+                           20, buf);
+            printf("chunk hash:%s\n", buf);
+        }
+        rover = rover->next;
+    }
+}
+
+void printf_responses(response_struct *response)
+{
+    response_item_struct *rover = response->whohas_ptr->next;
+    while (rover)
+    {
+        printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
         printf("peer_addr: %s\n", rover->peer_addr);
         printf("peer_port: %hu\n", rover->peer_port);
         printf("magic_number:%hu\n",
