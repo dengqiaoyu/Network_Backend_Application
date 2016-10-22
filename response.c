@@ -64,6 +64,7 @@ ssize_t init_responses(response_struct *response_list, char *buf,
                    packet_len);
             break;
         case 1:
+            dbg_cp1_printf("Entering IHAS\n");
             break;
         case 2:
             break;
@@ -91,38 +92,19 @@ ssize_t process_request(response_struct *response_list,
     dbg_cp1_printf("process_request start!!!!!!!!!!!!!!!!\n");
     while (whohas_rover != NULL)
     {
-        char packet_type =
-            get_packet_type((packet_sturct *)whohas_rover->packet_ptr);
-        packet2send_sturct *packet2send = NULL;
-        switch ((int)packet_type)
+        packet2send_sturct *packet2send = get_ihave_response(whohas_rover,
+                                          haschunk_hash_table);
+        if (packet2send != NULL)
         {
-        case 0: // WHOHAS
-            packet2send = get_ihave_response(whohas_rover, haschunk_hash_table);
             packet_add2sending_list(packet2send, sending_list);
-            if (packet2send != NULL)
-            {
-                printf_packet(packet2send->packet_ptr);
-            }
-            break;
-        case 1:
-            break;
-        case 2:
-            break;
-        case 3:
-            break;
-        case 4:
-            break;
-        case 5:
-            break;
-        default:
-            break;
+            printf_packet(packet2send->packet_ptr);
         }
-        whohas_rover_last = whohas_rover->next;
+
+        whohas_rover_last->next = whohas_rover->next;
         free(whohas_rover->packet_ptr);
         free(whohas_rover);
-        whohas_rover = whohas_rover_last;
+        whohas_rover = whohas_rover_last->next;
     }
-
     return 0;
 }
 

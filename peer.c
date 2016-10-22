@@ -194,11 +194,15 @@ void peer_run(bt_config_t *config)
 
             if (FD_ISSET(sock, &writefds))
             {
-                dbg_cp1_printf("Begin sending\n");
                 if (sending_list->next != NULL)
                 {
+                    dbg_cp1_printf("Begin sending\n");
                     ret = send_udp(sock, sending_list);
                     dbg_cp1_printf("ret: %ld\n", ret);
+                }
+                else
+                {
+                    dbg_cp1_printf("No thing to send\n");
                 }
             }
         }

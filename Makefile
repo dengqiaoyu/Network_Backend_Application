@@ -1,6 +1,6 @@
 # Some variables
 CC 		= gcc
-CFLAGS		= -g -Wall -DDEBUG -O0
+CFLAGS		= -g -Wall -Werror -DDEBUG -O0
 LDFLAGS		= -lm
 TESTDEFS	= -DTESTING			# comment this out to disable debugging code
 OBJS		= peer.o bt_parse.o spiffy.o debug.o input_buffer.o chunk.o sha.o packet.o request.o response.o send.o jwHash.o hash_obj.o
