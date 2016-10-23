@@ -5,7 +5,7 @@
 #include "constant.h"
 #include "packet.h"
 #include "request.h"
-#include "jwHash.h"
+#include "hashtable.h"
 
 typedef packet2send_sturct response_item_struct;
 
@@ -22,9 +22,9 @@ ssize_t init_responses(response_struct *response_list, char *buf,
                        char *peer_addr, unsigned short peer_port);
 ssize_t process_request(response_struct *response_list,
                         packet2send_sturct *sending_list,
-                        jwHashTable *haschunk_hash_table);
+                        hashtable_t *haschunk_hash_table);
 packet2send_sturct *get_ihave_response(response_item_struct *response_item,
-                                       jwHashTable *haschunk_hash_table);
+                                       hashtable_t *haschunk_hash_table);
 void packet_add2sending_list(packet2send_sturct *packet2send,
                              packet2send_sturct *sending_list);
 inline response_item_struct *find_last_rep_ptr(response_item_struct *item_ptr);

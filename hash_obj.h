@@ -1,7 +1,7 @@
 #ifndef _HASH_OBJ_H
 #define _HASH_OBJ_H
-#include "jwHash.h"
+#include "hashtable.h"
 
 
-jwHashTable *init_haschunk_hash_table();
+hashtable_t *init_haschunk_hash_table();
 #endif

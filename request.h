@@ -15,8 +15,17 @@ typedef struct request_struct
     request_item_struct *get_ptr;
 } request_struct;
 
+typedef struct peer_list_struct
+{
+    size_t peer_id;
+    char peer_addr[16];
+    unsigned short peer_port;
+    struct peer_list_struct *next;
+} peer_list_struct;
+
 void init_request(request_struct *request);
-ssize_t init_whohas_request(request_struct *request);
+ssize_t init_whohas_request(request_struct *request,
+                            peer_list_struct *peer_list);
 inline void get_add2sending_list(request_item_struct *request_item,
                                  packet2send_sturct *sending_list);
 #endif

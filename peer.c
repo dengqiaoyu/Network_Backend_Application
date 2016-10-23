@@ -16,7 +16,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "jwHash.h"
+#include "hashtable.h"
 #include "hash_obj.h"
 #include "constant.h"
 #include "packet.h"
@@ -33,6 +33,7 @@ bt_config_t config;
 void peer_run(bt_config_t *config);
 void printf_requests(request_struct *request);
 void printf_packet(packet_sturct *packet);
+peer_list_struct *init_peer_list();
 
 int main(int argc, char **argv)
 {
@@ -62,7 +63,7 @@ int main(int argc, char **argv)
 
 void process_inbound_udp(int sock, response_struct *response_list,
                          packet2send_sturct *sending_list,
-                         jwHashTable *haschunk_hash_table)
+                         hashtable_t *haschunk_hash_table)
 {
 #define BUFLEN 1500
     ssize_t ret = 0;
@@ -98,11 +99,12 @@ void process_inbound_udp(int sock, response_struct *response_list,
     dbg_cp1_printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
 }
 
-void process_get(request_struct *request, packet2send_sturct *sending_list)
+void process_get(request_struct *request, packet2send_sturct *sending_list,
+                 peer_list_struct *peer_list)
 {
     dbg_cp1_printf("PROCESS GET SKELETON CODE CALLED.  Fill me in!  (%s, %s)\n",
                    request->get_chunk_file, request->out_put_file);
-    init_whohas_request(request);
+    init_whohas_request(request, peer_list);
     get_add2sending_list((packet2send_sturct *)request->whohas_ptr,
                          sending_list);
 #ifdef DEBUG_CP1
@@ -111,7 +113,8 @@ void process_get(request_struct *request, packet2send_sturct *sending_list)
 }
 
 void handle_user_input(char *line, void *cbdata, request_struct *request,
-                       packet2send_sturct *sending_list)
+                       packet2send_sturct *sending_list,
+                       peer_list_struct *peer_list)
 {
     ssize_t ret = 0;
     ret = sscanf(line, "GET %1024s %1024s", request->get_chunk_file,
@@ -120,7 +123,7 @@ void handle_user_input(char *line, void *cbdata, request_struct *request,
     {
         if (strlen(request->out_put_file) > 0)
         {
-            process_get(request, sending_list);
+            process_get(request, sending_list, peer_list);
         }
     }
 }
@@ -134,8 +137,8 @@ void peer_run(bt_config_t *config)
     struct user_iobuf *userbuf;
     packet2send_sturct *sending_list = init_sending_list();
     response_struct *response_list = init_response_list();
-
-    jwHashTable *haschunk_hash_table = init_haschunk_hash_table();
+    peer_list_struct *peer_list = init_peer_list();
+    hashtable_t *haschunk_hash_table = init_haschunk_hash_table();
 
     FD_ZERO(&readfds);
     FD_ZERO(&writefds);
@@ -189,7 +192,7 @@ void peer_run(bt_config_t *config)
                 init_request(&request);
                 process_user_input(STDIN_FILENO, userbuf, &request,
                                    handle_user_input, sending_list,
-                                   "Currently unused");
+                                   peer_list, "Currently unused");
             }
 
             if (FD_ISSET(sock, &writefds))

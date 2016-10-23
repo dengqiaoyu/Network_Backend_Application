@@ -2,6 +2,7 @@
 #include <string.h>
 #include <errno.h>
 #include <arpa/inet.h>
+#include "hashtable.h"
 #include "request.h"
 #include "send.h"
 #include "bt_parse.h"
@@ -18,21 +19,59 @@ inline void init_request(request_struct *request);
 inline void set_packet(request_item_struct *request_item);
 inline request_item_struct *find_last_req_ptr(request_item_struct *item_ptr);
 
-ssize_t init_whohas_request(request_struct *request)
+peer_list_struct *init_peer_list()
+{
+    ssize_t ret = 0;
+    peer_list_struct *peer_list = malloc(sizeof(peer_list_struct));
+    memset(peer_list, 0, sizeof(peer_list_struct));
+    peer_list_struct *last = peer_list;
+    FILE *plist_fptr = fopen(config.peer_list_file, "r");
+    if (plist_fptr == NULL)
+    {
+        printf("peer-list-file does not exist\n");
+        return NULL;
+    }
+    char plist_line[PEER_LIST_MAXSIZE];
+
+    while (fgets(plist_line, PEER_LIST_MAXSIZE, plist_fptr) != NULL)
+    {
+        last->next = malloc(sizeof(peer_list_struct));
+        memset(last->next, 0, sizeof(peer_list_struct));
+
+        ret = sscanf(plist_line, "%ld %16s %hu\n",
+                     &(last->next->peer_id),
+                     last->next->peer_addr,
+                     &(last->next->peer_port));
+        if (ret == 0)
+        {
+            free(last->next);
+            last->next = NULL;
+            continue;
+        }
+
+        if (last->next->peer_id == config.identity)
+        {
+            free(last->next);
+            last->next = NULL;
+            continue;
+        }
+        last = last->next;
+    }
+
+    last = peer_list;
+    peer_list = last->next;
+    free(last);
+
+    return peer_list;
+}
+
+ssize_t init_whohas_request(request_struct *request,
+                            peer_list_struct *peer_list)
 {
     ssize_t ret = 0;
 
-    FILE *plist_file = NULL;
-    char node_info[NODE_LINE_MAXSIZE + 1] = {0};
-    plist_file = fopen(config.peer_list_file, "r");
-    if (plist_file == NULL)
-    {
-        printf("peer-list-file does not exist\n");
-        return -1;
-    }
-
     FILE *chunks_file = NULL;
-    char target_chunk[HASH_LINE_MAXSIZE + 1] = {0};
+    char target_chunk_line[HASH_LINE_MAXSIZE + 1] = {0};
     chunks_file = fopen(request->get_chunk_file, "r");
     if (chunks_file == NULL)
     {
@@ -40,51 +79,41 @@ ssize_t init_whohas_request(request_struct *request)
         return -1;
     }
 
-    while (fgets(node_info, NODE_LINE_MAXSIZE, plist_file) != NULL)
+    size_t pay_load_len = 0;
+    while (fgets(target_chunk_line, HASH_LINE_MAXSIZE, chunks_file) != NULL)
     {
-        size_t peer_id = 0;
-        char peer_addr[16] = {0};
-        unsigned short peer_port = -1;
-        ret = sscanf(node_info, "%ld %16s %hu\n",
-                     &peer_id, peer_addr, &peer_port);
+        pay_load_len += 20;
+    }
+
+    fseek(chunks_file, 0, SEEK_SET);
+    char *pay_load = malloc(pay_load_len);
+    memset(pay_load, 0, pay_load_len);
+    size_t pay_load_offset = 0;
+    while (fgets(target_chunk_line, HASH_LINE_MAXSIZE, chunks_file) != NULL)
+    {
+        size_t chunk_id = -1;
+        char hash_str[41] = {0};
+        ret = sscanf(target_chunk_line, "%ld %40s\n", &chunk_id, hash_str);
         if (ret == 0)
         {
             continue;
         }
-        dbg_cp1_printf("After parse: %ld %s %hu\n",
-                       peer_id, peer_addr, peer_port);
-
-        size_t pay_load_len = 0;
-        while (fgets(target_chunk, HASH_LINE_MAXSIZE, chunks_file) != NULL)
-        {
-            pay_load_len += 20;
-        }
-        fseek(chunks_file, 0, SEEK_SET);
-        char *pay_load = malloc(pay_load_len + 1);
-        memset(pay_load, 0, pay_load_len + 1);
-        size_t pay_load_offset = 0;
-        while (fgets(target_chunk, HASH_LINE_MAXSIZE, chunks_file) != NULL)
-        {
-            size_t chunk_id = 0;
-            char hash_str[HASH_LEN + 1] = {0};
-            ret = sscanf(target_chunk, "%ld %40s\n", &chunk_id, hash_str);
-            if (ret == 0)
-            {
-                continue;
-            }
-            dbg_cp1_printf("Want: %ld %s\n", chunk_id, hash_str);
-            hex2binary(hash_str, 40, (uint8_t*)pay_load + pay_load_offset);
-            pay_load_offset += 20;
-        }
-        add_whohas_packet(request, peer_addr, peer_port,
-                          pay_load, pay_load_len);
-        free(pay_load);
-        fseek(chunks_file, 0, SEEK_SET);
+        dbg_cp1_printf("Want: %ld %s\n", chunk_id, hash_str);
+        hex2binary(hash_str, 40, (uint8_t*)pay_load + pay_load_offset);
+        pay_load_offset += 20;
     }
-
-    fclose(plist_file);
-    plist_file = NULL;
     fclose(chunks_file);
+
+    peer_list_struct *rover = peer_list;
+    while (rover != NULL)
+    {
+        dbg_cp1_printf("prepare plan for %s: %d\n", rover->peer_addr,
+                       rover->peer_port);
+        add_whohas_packet(request, rover->peer_addr, rover->peer_port,
+                          pay_load, pay_load_len);
+        rover = rover->next;
+    }
+    free(pay_load);
     chunks_file = NULL;
     return 0;
 }

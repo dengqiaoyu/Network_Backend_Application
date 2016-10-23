@@ -8,7 +8,7 @@
 #include "response.h"
 #include "send.h"
 #include "chunk.h"
-#include "jwHash.h"
+#include "hashtable.h"
 #include "debug.h"
 
 extern bt_config_t config;
@@ -85,7 +85,7 @@ ssize_t init_responses(response_struct *response_list, char *buf,
 
 ssize_t process_request(response_struct *response_list,
                         packet2send_sturct *sending_list,
-                        jwHashTable *haschunk_hash_table)
+                        hashtable_t *haschunk_hash_table)
 {
     response_item_struct *whohas_rover_last = response_list->whohas_ptr;
     response_item_struct *whohas_rover = whohas_rover_last->next;
@@ -109,7 +109,7 @@ ssize_t process_request(response_struct *response_list,
 }
 
 packet2send_sturct *get_ihave_response(response_item_struct *response_item,
-                                       jwHashTable *haschunk_hash_table)
+                                       hashtable_t *haschunk_hash_table)
 {
     packet2send_sturct *ihave = NULL;
     unsigned short *total_packet_length = NULL;
@@ -125,10 +125,8 @@ packet2send_sturct *get_ihave_response(response_item_struct *response_item,
         binary2hex((uint8_t *)response_pay_load + 4 + i * 20, 20,
                    chunk_hash_hex);
         //printf("chunk hash hex:%s\n", chunk_hash_hex);
-        int chunk_id = 0;
-        HASHRESULT hash_result = get_int_by_str(haschunk_hash_table,
-                                                chunk_hash_hex, &chunk_id);
-        if (hash_result == HASHOK)
+        int ret = ht_exists(haschunk_hash_table, chunk_hash_hex, 40);
+        if (ret == 1)
         {
             if (ihave == NULL)
             {

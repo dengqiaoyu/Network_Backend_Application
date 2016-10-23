@@ -5,14 +5,8 @@
 #include "input_buffer.h"
 #include "request.h"
 
-void process_user_input(int fd, struct user_iobuf *userbuf,
-                        request_struct *request,
-                        void (*handle_line)(char *, void *, request_struct *, packet2send_sturct *),
-                        packet2send_sturct *sending_list,
-                        void *cbdata);
-
 void printline(char *line, void *cbdata, request_struct *unused,
-               packet2send_sturct *sending_list)
+               packet2send_sturct *sending_list, peer_list_struct *peer_list)
 {
     printf("LINE:  %s\n", line);
     printf("CBDATA:  %s\n", (char *)cbdata);
@@ -28,7 +22,8 @@ int main() {
     assert(u != NULL);
 
     while (1) {
-        process_user_input(STDIN_FILENO, u, NULL, printline, NULL, "Cows moo!");
+        process_user_input(STDIN_FILENO, u, NULL, printline, NULL, NULL,
+                           "Cows moo!");
     }
 
     return 0;

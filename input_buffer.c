@@ -23,8 +23,9 @@ struct user_iobuf *create_userbuf() {
 
 void process_user_input(int fd, struct user_iobuf *userbuf,
                         request_struct *request,
-                        void (*handle_line)(char *, void *, request_struct *, packet2send_sturct *),
+                        void (*handle_line)(char *, void *, request_struct *, packet2send_sturct *, peer_list_struct *),
                         packet2send_sturct *sending_list,
+                        peer_list_struct *peer_list,
                         void *cbdata)
 {
     int nread;
@@ -50,7 +51,7 @@ void process_user_input(int fd, struct user_iobuf *userbuf,
 
     while ((ret = strchr(userbuf->buf, '\n')) != NULL) {
         *ret = '\0';
-        handle_line(userbuf->buf, cbdata, request, sending_list);
+        handle_line(userbuf->buf, cbdata, request, sending_list, peer_list);
         /* Shift the remaining contents of the buffer forward */
         memmove(userbuf->buf, ret + 1, USERBUF_SIZE - (ret - userbuf->buf));
         userbuf->cur -= (ret - userbuf->buf + 1);
