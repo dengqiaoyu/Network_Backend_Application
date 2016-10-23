@@ -33,6 +33,10 @@ ssize_t send_udp(int sock, packet2send_sturct *sending_list)
             *((unsigned short *)rover->packet_ptr->total_packet_length);
         writeret = sendto(sock, rover->packet_ptr, packet_len, 0,
                           (struct sockaddr *)&addr, sizeof(addr));
+        // dbg_cp1_printf("__________________________\n");
+        // printf_packet(rover->packet_ptr);
+        // dbg_cp1_printf("__________________________\n");
+
         if (writeret == -1)
         {
             int errsv = errno;

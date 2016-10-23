@@ -79,7 +79,7 @@ ssize_t init_whohas_request(request_struct *request,
         return -1;
     }
 
-    size_t pay_load_len = 0;
+    size_t pay_load_len = 4;
     while (fgets(target_chunk_line, HASH_LINE_MAXSIZE, chunks_file) != NULL)
     {
         pay_load_len += 20;
@@ -87,10 +87,13 @@ ssize_t init_whohas_request(request_struct *request,
 
     fseek(chunks_file, 0, SEEK_SET);
     char *pay_load = malloc(pay_load_len);
+    char *chunk_num = pay_load;
     memset(pay_load, 0, pay_load_len);
-    size_t pay_load_offset = 0;
+    *chunk_num = 0;
+    size_t pay_load_offset = 4;
     while (fgets(target_chunk_line, HASH_LINE_MAXSIZE, chunks_file) != NULL)
     {
+        *chunk_num += 1;
         size_t chunk_id = -1;
         char hash_str[41] = {0};
         ret = sscanf(target_chunk_line, "%ld %40s\n", &chunk_id, hash_str);
@@ -99,10 +102,14 @@ ssize_t init_whohas_request(request_struct *request,
             continue;
         }
         dbg_cp1_printf("Want: %ld %s\n", chunk_id, hash_str);
-        hex2binary(hash_str, 40, (uint8_t*)pay_load + pay_load_offset);
+        hex2binary(hash_str, 40, (uint8_t*)(pay_load + pay_load_offset));
         pay_load_offset += 20;
     }
     fclose(chunks_file);
+
+    // dbg_cp1_printf("================================\n");
+    // printf_pay_load(pay_load);
+    // dbg_cp1_printf("================================\n");
 
     peer_list_struct *rover = peer_list;
     while (rover != NULL)
@@ -122,41 +129,38 @@ ssize_t add_whohas_packet(request_struct *request, char *peer_addr,
                           unsigned short peer_port, char *pay_load,
                           unsigned short pay_load_len)
 {
-    request_item_struct *last = request->whohas_ptr;
+    request_item_struct *last = find_last_req_ptr(request->whohas_ptr);
     unsigned short pay_load_offset = 0;
     do
     {
-        last = find_last_req_ptr(last);
         last->next = malloc(sizeof(request_item_struct));
-        memset(last->next, 0, sizeof(request_item_struct));
-        set_ip_port((packet2send_sturct *)last->next, peer_addr, peer_port);
-        last->next->packet_ptr = init_packet();
-        *(last->next->packet_ptr->packet_type) = 0;
-        if (pay_load_len > (PACKET_MAXSIZE - 20))
+        last = last->next;
+        memset(last, 0, sizeof(request_item_struct));
+        set_ip_port((packet2send_sturct *)last, peer_addr, peer_port);
+        last->packet_ptr = init_packet();
+        *(last->packet_ptr->packet_type) = 0;
+        if (pay_load_len > (PACKET_MAXSIZE - 16))
         {
             unsigned short *total_packet_length =
-                (unsigned short *)last->next->packet_ptr->total_packet_length;
+                (unsigned short *)last->packet_ptr->total_packet_length;
             *total_packet_length = PACKET_MAXSIZE;
-            char *chunk_num = (char *)last->next->packet_ptr + 16;
-            *chunk_num = (PACKET_MAXSIZE - 20) / 20;
-            strncpy(last->next->packet_ptr->pay_load + 4,
-                    pay_load + pay_load_offset, (PACKET_MAXSIZE - 20));
-            pay_load_offset += (PACKET_MAXSIZE - 20);
-            pay_load_len -= (PACKET_MAXSIZE - 20);
+            memcpy(last->packet_ptr->pay_load,
+                   pay_load + pay_load_offset, (PACKET_MAXSIZE - 16));
+            pay_load_offset += (PACKET_MAXSIZE - 16);
+            pay_load_len -= (PACKET_MAXSIZE - 16);
         }
         else
         {
             unsigned short *total_packet_length =
-                (unsigned short *)last->next->packet_ptr->total_packet_length;
-            *total_packet_length = pay_load_len + 20;
-            char *chunk_num = (char *)last->next->packet_ptr + 16;
-            *chunk_num = pay_load_len / 20;
-            strncpy(last->next->packet_ptr->pay_load + 4,
-                    pay_load + pay_load_offset, pay_load_len);
+                (unsigned short *)last->packet_ptr->total_packet_length;
+            *total_packet_length = pay_load_len + 16;
+            memcpy(last->packet_ptr->pay_load,
+                   pay_load + pay_load_offset, pay_load_len);
             pay_load_offset = pay_load_len;
             pay_load_len = 0;
         }
-    } while (pay_load_len > (PACKET_MAXSIZE - 20));
+    } while (pay_load_len > (PACKET_MAXSIZE - 16));
+
     return 0;
 }
 

@@ -200,6 +200,18 @@ void printf_responses(response_struct *response)
     }
 }
 
+void printf_pay_load(char *pay_load)
+{
+    char *chunk_num = pay_load;
+    unsigned short i = 0;
+    for (i = 0; i < *chunk_num; i++)
+    {
+        char buf[41] = {0};
+        binary2hex_dbg((uint8_t *)pay_load + 4 + i * 20, 20, buf);
+        printf("chunk hash:%s\n", buf);
+    }
+}
+
 void binary2hex_dbg(uint8_t *buf, int len, char *hex)
 {
     int i = 0;

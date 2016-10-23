@@ -53,5 +53,6 @@ int set_debug(char *arg);  /* Returns 0 on success, -1 on failure */
 void printf_requests(request_struct *request);
 void printf_packet(packet_sturct *packet);
 void printf_responses(response_struct *response);
+void printf_pay_load(char *pay_load);
 
 #endif /* _DEBUG_H_ */

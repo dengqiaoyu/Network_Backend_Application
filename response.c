@@ -118,14 +118,16 @@ packet2send_sturct *get_ihave_response(response_item_struct *response_item,
     char *ihave_pay_load = NULL;
     char *response_pay_load = response_item->packet_ptr->pay_load;
     char response_chunk_num = *response_pay_load;
+    // dbg_cp1_printf("##response_chunk_num##: %d\n", response_chunk_num);
     char i;
     for (i = 0; i < response_chunk_num; i++)
     {
         char chunk_hash_hex[41] = {0};
         binary2hex((uint8_t *)response_pay_load + 4 + i * 20, 20,
                    chunk_hash_hex);
-        //printf("chunk hash hex:%s\n", chunk_hash_hex);
+        // dbg_cp1_printf("chunk hash hex:%s\n", chunk_hash_hex);
         int ret = ht_exists(haschunk_hash_table, chunk_hash_hex, 40);
+        // dbg_cp1_printf("ret: %d\n", ret);
         if (ret == 1)
         {
             if (ihave == NULL)

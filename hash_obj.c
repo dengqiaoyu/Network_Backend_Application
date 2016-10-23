@@ -30,6 +30,7 @@ hashtable_t *init_haschunk_hash_table()
         {
             continue;
         }
+        // dbg_cp1_printf("chunk_hash: %s\n", chunk_hash);
         ret = ht_set_if_not_exists(haschunk_hash_table, chunk_hash, 40,
                                    &chunk_id, 8);
         if (ret == -1)
@@ -43,6 +44,8 @@ hashtable_t *init_haschunk_hash_table()
         {
             printf("key already exists\n");
         }
+        // ret = ht_exists(haschunk_hash_table, chunk_hash, 40);
+        // dbg_cp1_printf("ret: %ld\n", ret);
     }
     fclose(haschunk_file);
 
