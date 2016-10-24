@@ -40,7 +40,7 @@ ssize_t init_responses(response_struct *response_list, char *buf,
         find_last_rep_ptr(response_list->whohas_ptr);
     while (bufoffset < buflen)
     {
-        //packet2host((packet_sturct *)(buf + bufoffset));
+        packet2host((packet_sturct *)(buf + bufoffset));
         char packet_type = get_packet_type((packet_sturct *)(buf + bufoffset));
         unsigned short packet_len =
             get_packet_len((packet_sturct *)(buf + bufoffset));

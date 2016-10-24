@@ -18,7 +18,7 @@ extern unsigned int debug;
 #define DEBUG_PERROR(args...)
 #endif
 
-#define DEBUG_CP1
+//#define DEBUG_CP1
 #ifdef DEBUG_CP1
 #define dbg_cp1_printf(...) printf(__VA_ARGS__)
 #define dbg_cp1_fprintf(...) fprintf(__VA_ARGS__)

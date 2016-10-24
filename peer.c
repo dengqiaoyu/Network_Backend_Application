@@ -77,7 +77,6 @@ void process_inbound_udp(int sock, response_struct *response_list,
     //                     &fromlen);
     writeret = spiffy_recvfrom(sock, buf, BUFLEN, 0, (struct sockaddr *) &from,
                                &fromlen);
-    packet2host(buf);
     dbg_cp1_printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
     strncpy(peer_addr, inet_ntoa(from.sin_addr), 15);
     peer_port = ntohs(from.sin_port);

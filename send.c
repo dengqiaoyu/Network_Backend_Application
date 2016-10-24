@@ -40,9 +40,11 @@ ssize_t send_udp(int sock, packet2send_sturct *sending_list)
         //                   (struct sockaddr *)&addr, sizeof(addr));
         writeret = spiffy_sendto(sock, &packet2convert, packet_len, 0,
                                  (struct sockaddr *)&addr, sizeof(addr));
+#ifdef DEBUG_CP1
         dbg_cp1_printf("__________________________\n");
         printf_packet(rover->packet_ptr);
         dbg_cp1_printf("__________________________\n");
+#endif
         // writeret = spiffy_sendto(sock, rover->packet_ptr, packet_len, 0,
         //                          (struct sockaddr *)&addr, sizeof(addr));
 
