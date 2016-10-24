@@ -23,9 +23,14 @@ typedef struct peer_list_struct
     struct peer_list_struct *next;
 } peer_list_struct;
 
+peer_list_struct *init_peer_list();
 void init_request(request_struct *request);
 ssize_t init_whohas_request(request_struct *request,
                             peer_list_struct *peer_list);
+ssize_t add_whohas_packet(request_struct *request, char *peer_addr,
+                          unsigned short peer_port, char *pay_load,
+                          unsigned short pay_load_len);
 inline void get_add2sending_list(request_item_struct *request_item,
                                  packet2send_sturct *sending_list);
+inline request_item_struct *find_last_req_ptr(request_item_struct *item_ptr);
 #endif

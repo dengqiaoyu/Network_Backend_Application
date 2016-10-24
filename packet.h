@@ -3,7 +3,9 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <arpa/inet.h>
 #include "constant.h"
+
 
 typedef enum {WHOHAS, IHAVE, GET, DATA, ACK, DENIED} packet_type_code_enum;
 
@@ -31,5 +33,7 @@ typedef struct packet2send_sturct
 inline packet_sturct *init_packet();
 inline void set_ip_port(packet2send_sturct *packet2send, char *peer_addr,
                         unsigned short peer_port);
+void packet2net(packet_sturct *packet);
+void packet2host(packet_sturct *packet);
 
 #endif

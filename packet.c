@@ -30,3 +30,31 @@ inline void set_ip_port(packet2send_sturct *packet2send, char *peer_addr,
     strncpy(packet2send->peer_addr, peer_addr, 16);
     packet2send->peer_port = peer_port;
 }
+
+void packet2net(packet_sturct *packet)
+{
+    *((uint16_t *)packet->magic_number) =
+        htons(*((uint16_t *)packet->magic_number));
+    *((uint16_t *)packet->header_length) =
+        htons(*((uint16_t *)packet->header_length));
+    *((uint16_t *)packet->total_packet_length) =
+        htons(*((uint16_t *)packet->total_packet_length));
+    *((uint32_t *)packet->sequence_number) =
+        htonl(*((uint32_t *)packet->sequence_number));
+    *((uint32_t *)packet->acknowldgment_number) =
+        htonl(*((uint32_t *)packet->acknowldgment_number));
+}
+
+void packet2host(packet_sturct *packet)
+{
+    *((uint16_t *)packet->magic_number) =
+        ntohs(*((uint16_t *)packet->magic_number));
+    *((uint16_t *)packet->header_length) =
+        ntohs(*((uint16_t *)packet->header_length));
+    *((uint16_t *)packet->total_packet_length) =
+        ntohs(*((uint16_t *)packet->total_packet_length));
+    *((uint32_t *)packet->sequence_number) =
+        ntohl(*((uint32_t *)packet->sequence_number));
+    *((uint32_t *)packet->acknowldgment_number) =
+        ntohl(*((uint32_t *)packet->acknowldgment_number));
+}

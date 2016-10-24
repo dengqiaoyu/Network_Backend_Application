@@ -31,9 +31,6 @@
 bt_config_t config;
 
 void peer_run(bt_config_t *config);
-void printf_requests(request_struct *request);
-void printf_packet(packet_sturct *packet);
-peer_list_struct *init_peer_list();
 
 int main(int argc, char **argv)
 {
@@ -75,8 +72,12 @@ void process_inbound_udp(int sock, response_struct *response_list,
     unsigned short peer_port = 0;
 
     fromlen = sizeof(from);
-    writeret = recvfrom(sock, buf, BUFLEN, 0, (struct sockaddr *) &from,
-                        &fromlen);
+
+    // writeret = recvfrom(sock, buf, BUFLEN, 0, (struct sockaddr *) &from,
+    //                     &fromlen);
+    writeret = spiffy_recvfrom(sock, buf, BUFLEN, 0, (struct sockaddr *) &from,
+                               &fromlen);
+    packet2host(buf);
     dbg_cp1_printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
     strncpy(peer_addr, inet_ntoa(from.sin_addr), 15);
     peer_port = ntohs(from.sin_port);
@@ -105,11 +106,12 @@ void process_get(request_struct *request, packet2send_sturct *sending_list,
     dbg_cp1_printf("PROCESS GET SKELETON CODE CALLED.  Fill me in!  (%s, %s)\n",
                    request->get_chunk_file, request->out_put_file);
     init_whohas_request(request, peer_list);
-    get_add2sending_list((packet2send_sturct *)request->whohas_ptr,
-                         sending_list);
 #ifdef DEBUG_CP1
     printf_requests(request);
 #endif
+    get_add2sending_list((packet2send_sturct *)request->whohas_ptr,
+                         sending_list);
+
 }
 
 void handle_user_input(char *line, void *cbdata, request_struct *request,
@@ -201,7 +203,10 @@ void peer_run(bt_config_t *config)
                 {
                     dbg_cp1_printf("Begin sending\n");
                     ret = send_udp(sock, sending_list);
-                    dbg_cp1_printf("ret: %ld\n", ret);
+                    if (ret < 0)
+                    {
+                        dbg_cp1_printf("ret: %ld\n", ret);
+                    }
                 }
                 else
                 {

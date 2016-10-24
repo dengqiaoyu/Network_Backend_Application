@@ -40,6 +40,7 @@ ssize_t init_responses(response_struct *response_list, char *buf,
         find_last_rep_ptr(response_list->whohas_ptr);
     while (bufoffset < buflen)
     {
+        //packet2host((packet_sturct *)(buf + bufoffset));
         char packet_type = get_packet_type((packet_sturct *)(buf + bufoffset));
         unsigned short packet_len =
             get_packet_len((packet_sturct *)(buf + bufoffset));
@@ -97,7 +98,9 @@ ssize_t process_request(response_struct *response_list,
         if (packet2send != NULL)
         {
             packet_add2sending_list(packet2send, sending_list);
+#ifdef DEBUG_CP1
             printf_packet(packet2send->packet_ptr);
+#endif
         }
 
         whohas_rover_last->next = whohas_rover->next;

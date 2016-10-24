@@ -7,6 +7,7 @@
 #include "request.h"
 #include "response.h"
 #include "send.h"
+#include "spiffy.h"
 #include "debug.h"
 
 packet2send_sturct *init_sending_list()
@@ -26,16 +27,25 @@ ssize_t send_udp(int sock, packet2send_sturct *sending_list)
         dbg_cp1_printf("sending packets...\n");
         struct sockaddr_in addr;
         bzero(&addr, sizeof(addr));
-        inet_pton(AF_INET, rover->peer_addr, &addr);
+        inet_pton(AF_INET, rover->peer_addr, &(addr.sin_addr));
         addr.sin_family = AF_INET;
         addr.sin_port = htons(rover->peer_port);
         unsigned short packet_len =
             *((unsigned short *)rover->packet_ptr->total_packet_length);
-        writeret = sendto(sock, rover->packet_ptr, packet_len, 0,
-                          (struct sockaddr *)&addr, sizeof(addr));
-        // dbg_cp1_printf("__________________________\n");
-        // printf_packet(rover->packet_ptr);
-        // dbg_cp1_printf("__________________________\n");
+        packet_sturct packet2convert;
+        memset(&packet2convert, 0, sizeof(packet_sturct));
+        memcpy(&packet2convert, rover->packet_ptr, packet_len);
+        packet2net(&packet2convert);
+        // writeret = sendto(sock, &packet2convert, packet_len, 0,
+        //                   (struct sockaddr *)&addr, sizeof(addr));
+        writeret = spiffy_sendto(sock, &packet2convert, packet_len, 0,
+                                 (struct sockaddr *)&addr, sizeof(addr));
+        dbg_cp1_printf("__________________________\n");
+        printf_packet(rover->packet_ptr);
+        dbg_cp1_printf("__________________________\n");
+        // writeret = spiffy_sendto(sock, rover->packet_ptr, packet_len, 0,
+        //                          (struct sockaddr *)&addr, sizeof(addr));
+
 
         if (writeret == -1)
         {

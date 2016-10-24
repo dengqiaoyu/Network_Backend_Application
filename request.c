@@ -9,15 +9,7 @@
 #include "debug.h"
 #include "chunk.h"
 
-
 extern bt_config_t config;
-
-ssize_t add_whohas_packet(request_struct *request, char *peer_addr,
-                          unsigned short peer_port, char *pay_load,
-                          unsigned short pay_load_len);
-inline void init_request(request_struct *request);
-inline void set_packet(request_item_struct *request_item);
-inline request_item_struct *find_last_req_ptr(request_item_struct *item_ptr);
 
 peer_list_struct *init_peer_list()
 {
@@ -63,6 +55,15 @@ peer_list_struct *init_peer_list()
     free(last);
 
     return peer_list;
+}
+
+void init_request(request_struct *request)
+{
+    bzero(request, sizeof(*request));
+    request->whohas_ptr = malloc(sizeof(request_item_struct));
+    request->get_ptr = malloc(sizeof(request_item_struct));
+    memset(request->whohas_ptr, 0, sizeof(request_item_struct));
+    memset(request->get_ptr, 0, sizeof(request_item_struct));
 }
 
 ssize_t init_whohas_request(request_struct *request,
@@ -164,14 +165,14 @@ ssize_t add_whohas_packet(request_struct *request, char *peer_addr,
     return 0;
 }
 
-void init_request(request_struct *request)
+inline void get_add2sending_list(request_item_struct *request_item,
+                                 packet2send_sturct *sending_list)
 {
-    bzero(request, sizeof(*request));
-    request->whohas_ptr = malloc(sizeof(request_item_struct));
-    request->get_ptr = malloc(sizeof(request_item_struct));
-    memset(request->whohas_ptr, 0, sizeof(request_item_struct));
-    memset(request->get_ptr, 0, sizeof(request_item_struct));
+    packet2send_sturct *last = find_last_send_ptr(sending_list);
+    last->next = (packet2send_sturct *)request_item->next;
+    request_item->next = NULL;
 }
+
 
 inline request_item_struct *find_last_req_ptr(request_item_struct *item_ptr)
 {
@@ -181,13 +182,4 @@ inline request_item_struct *find_last_req_ptr(request_item_struct *item_ptr)
         rover = rover->next;
     }
     return rover;
-}
-
-
-inline void get_add2sending_list(request_item_struct *request_item,
-                                 packet2send_sturct *sending_list)
-{
-    packet2send_sturct *last = find_last_send_ptr(sending_list);
-    last->next = (packet2send_sturct *)request_item->next;
-    request_item->next = NULL;
 }
