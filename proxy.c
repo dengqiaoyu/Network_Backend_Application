@@ -4,13 +4,7 @@
 #include "hlp_func.h"
 #include "constants.h"
 #include "comm_with_server.h"
-
-/*File type that is used to indicate Content-Type field*/
-static const char *FILE_SUFFIX[TYPE_SIZE] =
-{ ".html", ".css", ".gif", ".png", ".jpg"};
-
-static const char *FILE_TYPE[TYPE_SIZE] =
-{ "text/html", "text/css", "image/gif", "image/png", "image/jpeg"};
+#include "server_to_client.h"
 
 FILE *logfp = NULL;
 int logfd = -1;
@@ -69,7 +63,7 @@ int main(int argc, char **argv)
         pool.ready_rd_set = pool.active_rd_set;
         pool.ready_wt_set = pool.active_wt_set;
         pool.num_ready = select(FD_SETSIZE, &pool.ready_rd_set,
-                                &pool.ready_wt_set, NULL, &tv_selt);
+                                &pool.ready_wt_set, NULL, NULL);
         // htttp port accept connection
         if (FD_ISSET(listenfd, &pool.ready_rd_set))
         {
@@ -116,6 +110,7 @@ int main(int argc, char **argv)
                 }
                 // Add client to the read-write pools_t
                 ret = add_client(connfd, &pool, c_host);
+                dbg_cp3_p3_printf("c_host: %s, c_port: %s\n", c_host, c_port);
                 if (ret < 0)
                 {
                     Close(connfd);
@@ -124,7 +119,6 @@ int main(int argc, char **argv)
                 }
             }
         }
-
         // Serve all of client within the pools_t
         ret = serve_clients(&pool);
         if (ret < 0)
@@ -229,8 +223,9 @@ ssize_t serve_clients(pools_t *p)
     ssize_t read_ret, ret;
     char skt_read_buf[SKT_READ_BUF_SIZE + 1] = {0};
 
+    // dbg_cp3_p3_printf("num_ready: %d\n", p->num_ready);
     // Magic number 7 indicates avaliable file descriptor starts from 7.
-    for (i = 7; (i < FD_SETSIZE) && (p->num_ready > 0); i++)
+    for (i = 6; (i < FD_SETSIZE) && (p->num_ready > 0); i++)
     {
         dbg_wselet_printf("connfd: %ld, status: %d\n", i, p->clientfd[i]);
         // Client ready for read
@@ -277,34 +272,23 @@ ssize_t serve_clients(pools_t *p)
             {
                 continue;
             }
-
-            dbg_cp3_printf("skt_read_buf in lisod.c:\n%s\n",
-                           skt_read_buf);
+            // dbg_cp3_p3_printf("\nline 274\n%s", skt_read_buf);
             // Uses parse to get request's inofrmation
             Requests *reqs = parse(skt_read_buf, read_offset, clientfd, p);
             Requests *req_rover = reqs;
+            // print_req(req_rover);
             // For pipeline request, server them one by one
             char hostname[1024] = {0};
             char port[1024] = {0};
 
             get_host_and_port(req_rover, hostname, port);
-
             if (p->fd_c2s[clientfd] == -1)
             {
+                // dbg_cp3_p3_printf("hostname: %s, port: %s\n", hostname, port);
                 set_conn(p, clientfd, proxy_param.fake_ip, proxy_param.www_ip,
                          hostname, port);
-            }
-            else
-            {
-                int serverfd = p->fd_c2s[clientfd];
-                if (!FD_ISSET(serverfd, &p->active_wt_set))
-                {
-                    FD_SET(serverfd, &p->active_wt_set);
-                }
-                if (!FD_ISSET(serverfd, &p->active_rd_set))
-                {
-                    FD_SET(serverfd, &p->active_rd_set);
-                }
+                // dbg_cp3_p3_printf("serverfd: %d\n", p->fd_c2s[clientfd]);
+                // exit(1);
             }
             while (req_rover != NULL)
             {
@@ -313,37 +297,56 @@ ssize_t serve_clients(pools_t *p)
                 {
                     Close_conn(clientfd, p);
                 }
+                // print_request2s(request2s);
                 send2s_req_t *last_send2s_req =
                     find_last_send2s_req(p->send2s_list[clientfd]);
                 last_send2s_req->next = request2s;
+                req_rover = req_rover->next_req;
             }
             destory_requests(reqs);
             reqs = NULL;
-
             req_send2s(clientfd, p);
         }
         else if ((p->clientfd[i] == 1) && (FD_ISSET(i, &p->ready_wt_set)))
         {
             // In this case, client is ready to be send data
+            p->num_ready--;
             int clientfd = i;
             if (p->s2c_list[clientfd]->next == NULL)
             {
                 continue;
             }
+            // dbg_cp3_p3_printf("line 331\n");
+            // dbg_cp3_p3_printf("line 332\n");
+            // dbg_cp3_p3_printf("line 333\n");
             ret = s2c_list_write_client(p, clientfd);
+
         }
         else if ((p->serverfd[i] == 1) && (FD_ISSET(i, &p->ready_rd_set)))
         {
+            dbg_cp3_p3_printf("server returns data\n");
+            p->num_ready--;
             int serverfd = i;
             ret = s2c_list_read_server(p, serverfd);
+
             if (ret < -1)
             {
                 fprintf(logfp, "Error, close connection with server\n");
+            }
+            else
+            {
+                int clientfd = p->fd_s2c[serverfd];
+                FD_SET(clientfd, &p->active_wt_set);
+                // dbg_cp3_p3_printf("line 352\n");
+                // dbg_cp3_p3_printf("line 352\n");
+                // dbg_cp3_p3_printf("line 354\n");
+                s2c_list_write_client(p, clientfd);
             }
         }
         else if ((p->serverfd[i] == 1) && (FD_ISSET(i, &p->ready_wt_set)))
         {
             // server is ready to write
+            p->num_ready--;
             int serverfd = i;
             if (p->send2s_list[serverfd]->next != NULL)
             {

@@ -27,6 +27,7 @@ void init_pool(int listenfd, pools_t *p) {
         // The first item of list is never used but used as a start point
         memset(p->clientip[i], 0, 16);
         memset(p->serverip[i], 0, 16);
+        p->fd_c2s[i] = -1;
         p->fd_s2c[i] = -1;
         p->send2s_list[i] = malloc(sizeof(send2s_req_t));
         memset(p->send2s_list[i], 0 , sizeof(send2s_req_t));
