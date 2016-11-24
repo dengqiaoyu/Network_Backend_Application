@@ -64,7 +64,15 @@ int main(int argc, char **argv)
         pool.ready_wt_set = pool.active_wt_set;
         pool.num_ready = select(FD_SETSIZE, &pool.ready_rd_set,
                                 &pool.ready_wt_set, NULL, NULL);
+
+        int errsv = errno;
+        dbg_cp3_p3_printf("num_ready: %d, errno: %d\n", pool.num_ready, errsv);
         // htttp port accept connection
+        if (pool.num_ready < 0)
+        {
+            dbg_cp3_p3_printf("%s\n", strerror(errsv));
+        }
+
         if (FD_ISSET(listenfd, &pool.ready_rd_set))
         {
             client_len = sizeof(struct sockaddr_storage);
@@ -120,6 +128,7 @@ int main(int argc, char **argv)
             }
         }
         // Serve all of client within the pools_t
+        dbg_cp3_p3_printf("before line 124\n");
         ret = serve_clients(&pool);
         if (ret < 0)
         {
@@ -272,7 +281,7 @@ ssize_t serve_clients(pools_t *p)
             {
                 continue;
             }
-            // dbg_cp3_p3_printf("\nline 274\n%s", skt_read_buf);
+            dbg_cp3_p3_printf("\nline 274\n%s", skt_read_buf);
             // Uses parse to get request's inofrmation
             Requests *reqs = parse(skt_read_buf, read_offset, clientfd, p);
             Requests *req_rover = reqs;
@@ -383,13 +392,13 @@ void destory_requests(Requests *reqs)
  * @return        0 for success
  */
 ssize_t Close_conn(int connfd, pools_t *p) {
+    dbg_cp3_p3_printf("Closing fd %d\n", connfd);
     Close(connfd);
     FD_CLR(connfd, &p->active_rd_set);
     FD_CLR(connfd, &p->active_wt_set);
     if (p->clientfd[connfd] == 1)
     {
         p->fd_c2s[connfd] = -1;
-        p->clientfd[connfd] = -1;
         p->clientfd[connfd] = -1;
         p->ign_first[connfd] = 0;
         p->too_long[connfd] = 0;

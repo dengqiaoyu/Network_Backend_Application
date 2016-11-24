@@ -72,7 +72,6 @@ int8_t set_conn(pools_t *p, int connfd, char *fake_ip, char *www_ip,
     }
     fcntl(sockfd, F_SETFL, O_NONBLOCK);
     FD_SET(sockfd, &p->active_wt_set);
-    FD_SET(sockfd, &p->active_rd_set);
     p->serverfd[sockfd] = 1;
     p->fd_c2s[connfd] = sockfd;
     p->fd_s2c[sockfd] = connfd;
