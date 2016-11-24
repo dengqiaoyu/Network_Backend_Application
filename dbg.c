@@ -50,3 +50,17 @@ void print_request2s(send2s_req_t *request2s)
     }
     printf("--------------request2s-----------\n");
 }
+
+void print_s2c_list(s2c_data_list_t *s2c_list)
+{
+    s2c_data_list_t *rover = s2c_list->next;
+    printf("$$$$$$$$$print_s2c_list-start!!!!$$$$$$$$$\n");
+    while (rover != NULL)
+    {
+        printf("len: %ld\n", rover->len);
+        printf("offset: %ld\n", rover->offset);
+        printf("-------\n");
+        rover = rover->next;
+    }
+    printf("$$$$$$$$$print_s2c_list-end!!!!!$$$$$$$$$\n");
+}

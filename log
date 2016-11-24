@@ -14387,3 +14387,2078 @@ Accept connection from client 128.237.223.114:49656.
 Accept connection from client 128.237.223.114:49682.
 Accept connection from client 128.237.223.114:49706.
 Accept connection from client 128.237.223.114:49735.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Thu Nov 24 11:20:01 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.200.180:56073.
+Accept connection from client 128.237.200.180:56074.
+Accept connection from client 128.237.200.180:56077.
+Accept connection from client 128.237.200.180:56078.
+Accept connection from client 128.237.200.180:56080.
+Accept connection from client 128.237.200.180:56082.
+Accept connection from client 128.237.200.180:56083.
+Accept connection from client 128.237.200.180:56100.
+Accept connection from client 128.237.200.180:56101.
+Accept connection from client 128.237.200.180:56110.
+Accept connection from client 128.237.200.180:56121.
+Accept connection from client 128.237.200.180:56126.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor 9.
+Accept connection from client 128.237.200.180:56224.
+Accept connection from client 128.237.200.180:56225.
+Accept connection from client 128.237.200.180:56227.
+Accept connection from client 128.237.200.180:56228.
+Accept connection from client 128.237.200.180:56229.
+Accept connection from client 128.237.200.180:56231.
+Accept connection from client 128.237.200.180:56233.
+Accept connection from client 128.237.200.180:56234.
+Accept connection from client 128.237.200.180:56241.
+Accept connection from client 128.237.200.180:56242.
+Accept connection from client 128.237.200.180:56245.
+Accept connection from client 128.237.200.180:56248.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Thu Nov 24 11:22:29 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.200.180:56251.
+Accept connection from client 128.237.200.180:56252.
+Accept connection from client 128.237.200.180:56253.
+Accept connection from client 128.237.200.180:56250.
+Accept connection from client 128.237.200.180:56255.
+Accept connection from client 128.237.200.180:56256.
+Accept connection from client 128.237.200.180:56257.
+Accept connection from client 128.237.200.180:56258.
+Accept connection from client 128.237.200.180:56259.
+Accept connection from client 128.237.200.180:56260.
+Accept connection from client 128.237.200.180:56261.
+Accept connection from client 128.237.200.180:56268.
+Accept connection from client 128.237.200.180:56271.
+Accept connection from client 128.237.200.180:56273.
+Accept connection from client 128.237.200.180:56275.
+Accept connection from client 128.237.200.180:56277.
+Accept connection from client 128.237.200.180:56279.
+Accept connection from client 128.237.200.180:56283.
+Accept connection from client 128.237.200.180:56284.
+Accept connection from client 128.237.200.180:56296.
+Accept connection from client 128.237.200.180:56300.
+Accept connection from client 128.237.200.180:56303.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Thu Nov 24 11:23:36 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.200.180:56316.
+Accept connection from client 128.237.200.180:56317.
+Accept connection from client 128.237.200.180:56318.
+Accept connection from client 128.237.200.180:56319.
+Accept connection from client 128.237.200.180:56320.
+Accept connection from client 128.237.200.180:56321.
+Accept connection from client 128.237.200.180:56322.
+Accept connection from client 128.237.200.180:56323.
+Accept connection from client 128.237.200.180:56324.
+Accept connection from client 128.237.200.180:56325.
+Accept connection from client 128.237.200.180:56334.
+Accept connection from client 128.237.200.180:56335.
+Accept connection from client 128.237.200.180:56336.
+Accept connection from client 128.237.200.180:56339.
+Accept connection from client 128.237.200.180:56342.
+Accept connection from client 128.237.200.180:56343.
+Accept connection from client 128.237.200.180:56344.
+Accept connection from client 128.237.200.180:56345.
+Accept connection from client 128.237.200.180:56346.
+Accept connection from client 128.237.200.180:56347.
+Accept connection from client 128.237.200.180:56366.
+Accept connection from client 128.237.200.180:56385.
+Accept connection from client 128.237.200.180:56386.
+Accept connection from client 128.237.200.180:56387.
+Accept connection from client 128.237.200.180:56388.
+Accept connection from client 128.237.200.180:56389.
+Accept connection from client 128.237.200.180:56391.
+Accept connection from client 128.237.200.180:56390.
+Accept connection from client 128.237.200.180:56396.
+Accept connection from client 128.237.200.180:56397.
+Accept connection from client 128.237.200.180:56399.
+Accept connection from client 128.237.200.180:56410.
+Accept connection from client 128.237.200.180:56471.
+Accept connection from client 128.237.200.180:56472.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Thu Nov 24 11:32:26 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.200.180:56607.
+Accept connection from client 128.237.200.180:56609.
+Accept connection from client 128.237.200.180:56610.
+Accept connection from client 128.237.200.180:56611.
+Accept connection from client 128.237.200.180:56612.
+Accept connection from client 128.237.200.180:56613.
+Accept connection from client 128.237.200.180:56616.
+Accept connection from client 128.237.200.180:56615.
+Accept connection from client 128.237.200.180:56614.
+Accept connection from client 128.237.200.180:56617.
+Accept connection from client 128.237.200.180:56618.
+Accept connection from client 128.237.200.180:56619.
+Accept connection from client 128.237.200.180:56620.
+Accept connection from client 128.237.200.180:56621.
+Accept connection from client 128.237.200.180:56622.
+Accept connection from client 128.237.200.180:56623.
+Accept connection from client 128.237.200.180:56624.
+Accept connection from client 128.237.200.180:56625.
+Accept connection from client 128.237.200.180:56626.
+Accept connection from client 128.237.200.180:56627.
+Accept connection from client 128.237.200.180:56628.
+Accept connection from client 128.237.200.180:56629.
+Accept connection from client 128.237.200.180:56631.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor 38.
+Accept connection from client 128.237.200.180:56637.
+Accept connection from client 128.237.200.180:56638.
+Accept connection from client 128.237.200.180:56639.
+Accept connection from client 128.237.200.180:56640.
+Accept connection from client 128.237.200.180:56642.
+Accept connection from client 128.237.200.180:56643.
+Accept connection from client 128.237.200.180:56641.
+Accept connection from client 128.237.200.180:56644.
+Accept connection from client 128.237.200.180:56645.
+Accept connection from client 128.237.200.180:56646.
+Accept connection from client 128.237.200.180:56647.
+Accept connection from client 128.237.200.180:56648.
+Accept connection from client 128.237.200.180:56649.
+Accept connection from client 128.237.200.180:56650.
+Accept connection from client 128.237.200.180:56651.
+Accept connection from client 128.237.200.180:56652.
+Accept connection from client 128.237.200.180:56653.
+Accept connection from client 128.237.200.180:56654.
+Accept connection from client 128.237.200.180:56655.
+Accept connection from client 128.237.200.180:56656.
+Accept connection from client 128.237.200.180:56657.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor 38.
+Accept connection from client 128.237.200.180:56661.
+Accept connection from client 128.237.200.180:56662.
+Accept connection from client 128.237.200.180:56663.
+Accept connection from client 128.237.200.180:56664.
+Accept connection from client 128.237.200.180:56665.
+Accept connection from client 128.237.200.180:56666.
+Accept connection from client 128.237.200.180:56667.
+Accept connection from client 128.237.200.180:56668.
+Accept connection from client 128.237.200.180:56669.
+Accept connection from client 128.237.200.180:56670.
+Accept connection from client 128.237.200.180:56671.
+Accept connection from client 128.237.200.180:56672.
+Accept connection from client 128.237.200.180:56674.
+Accept connection from client 128.237.200.180:56675.
+Accept connection from client 128.237.200.180:56676.
+Accept connection from client 128.237.200.180:56673.
+Accept connection from client 128.237.200.180:56677.
+Accept connection from client 128.237.200.180:56678.
+Accept connection from client 128.237.200.180:56679.
+Accept connection from client 128.237.200.180:56680.
+Accept connection from client 128.237.200.180:56681.
+Accept connection from client 128.237.200.180:56686.
+Accept connection from client 128.237.200.180:56687.
+Accept connection from client 128.237.200.180:56688.
+Accept connection from client 128.237.200.180:56689.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor 39.
+Accept connection from client 128.237.200.180:56693.
+Accept connection from client 128.237.200.180:56694.
+Accept connection from client 128.237.200.180:56695.
+Accept connection from client 128.237.200.180:56696.
+Accept connection from client 128.237.200.180:56698.
+Accept connection from client 128.237.200.180:56699.
+Accept connection from client 128.237.200.180:56700.
+Accept connection from client 128.237.200.180:56701.
+Accept connection from client 128.237.200.180:56703.
+Accept connection from client 128.237.200.180:56704.
+Accept connection from client 128.237.200.180:56705.
+Accept connection from client 128.237.200.180:56706.
+Accept connection from client 128.237.200.180:56707.
+Accept connection from client 128.237.200.180:56709.
+Accept connection from client 128.237.200.180:56710.
+Accept connection from client 128.237.200.180:56711.
+Accept connection from client 128.237.200.180:56719.
+Accept connection from client 128.237.200.180:56720.
+Accept connection from client 128.237.200.180:56722.
+Accept connection from client 128.237.200.180:56728.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor 24.
+Accept connection from client 128.237.200.180:56744.
+Accept connection from client 128.237.200.180:56752.
+Accept connection from client 128.237.200.180:56755.
+Accept connection from client 128.237.200.180:56762.
+Failed sending response to client from server, disconnected
+Failed closing connection file descriptor 43.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:56776.
+Accept connection from client 128.237.200.180:56786.
+Accept connection from client 128.237.200.180:56787.
+Accept connection from client 128.237.200.180:56789.
+Accept connection from client 128.237.200.180:56796.
+Accept connection from client 128.237.200.180:56801.
+Accept connection from client 128.237.200.180:56806.
+Accept connection from client 128.237.200.180:56808.
+Failed sending response to client from server, disconnected
+Failed closing connection file descriptor 45.
+Failed closing connection file descriptor -1.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Thu Nov 24 11:37:39 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.200.180:56898.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:56900.
+Accept connection from client 128.237.200.180:56903.
+Accept connection from client 128.237.200.180:56901.
+Accept connection from client 128.237.200.180:56902.
+Accept connection from client 128.237.200.180:56904.
+Accept connection from client 128.237.200.180:56905.
+Accept connection from client 128.237.200.180:56906.
+Accept connection from client 128.237.200.180:56907.
+Accept connection from client 128.237.200.180:56908.
+Accept connection from client 128.237.200.180:56909.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:56910.
+Accept connection from client 128.237.200.180:56911.
+Accept connection from client 128.237.200.180:56912.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:56914.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:56913.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:56915.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:56916.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:56917.
+Accept connection from client 128.237.200.180:56918.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:56920.
+Accept connection from client 128.237.200.180:56921.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:56922.
+Accept connection from client 128.237.200.180:56923.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor 8.
+Accept connection from client 128.237.200.180:56928.
+Accept connection from client 128.237.200.180:56929.
+Accept connection from client 128.237.200.180:56930.
+Accept connection from client 128.237.200.180:56931.
+Accept connection from client 128.237.200.180:56933.
+Accept connection from client 128.237.200.180:56932.
+Accept connection from client 128.237.200.180:56934.
+Accept connection from client 128.237.200.180:56935.
+Accept connection from client 128.237.200.180:56936.
+Accept connection from client 128.237.200.180:56937.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:56938.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:56939.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:56940.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:56941.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Thu Nov 24 11:38:52 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.200.180:56986.
+Accept connection from client 128.237.200.180:56987.
+Accept connection from client 128.237.200.180:56988.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:56989.
+Accept connection from client 128.237.200.180:56990.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:56991.
+Accept connection from client 128.237.200.180:56992.
+Accept connection from client 128.237.200.180:56993.
+Accept connection from client 128.237.200.180:56994.
+Accept connection from client 128.237.200.180:56995.
+Accept connection from client 128.237.200.180:56996.
+Accept connection from client 128.237.200.180:56997.
+Accept connection from client 128.237.200.180:56998.
+Accept connection from client 128.237.200.180:56999.
+Accept connection from client 128.237.200.180:57001.
+Accept connection from client 128.237.200.180:57000.
+Accept connection from client 128.237.200.180:57002.
+Accept connection from client 128.237.200.180:57003.
+Accept connection from client 128.237.200.180:57004.
+Accept connection from client 128.237.200.180:57005.
+Accept connection from client 128.237.200.180:57007.
+Accept connection from client 128.237.200.180:57008.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:57011.
+Accept connection from client 128.237.200.180:57013.
+Accept connection from client 128.237.200.180:57012.
+Accept connection from client 128.237.200.180:57014.
+Accept connection from client 128.237.200.180:57015.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:57016.
+Accept connection from client 128.237.200.180:57017.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:57033.
+Accept connection from client 128.237.200.180:57035.
+Accept connection from client 128.237.200.180:57036.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:57038.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:57037.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:57046.
+Accept connection from client 128.237.200.180:57049.
+Accept connection from client 128.237.200.180:57050.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:57051.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:57053.
+Accept connection from client 128.237.200.180:57054.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:57055.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:57057.
+Accept connection from client 128.237.200.180:57056.
+Accept connection from client 128.237.200.180:57058.
+Accept connection from client 128.237.200.180:57059.
+Accept connection from client 128.237.200.180:57060.
+Accept connection from client 128.237.200.180:57061.
+Accept connection from client 128.237.200.180:57062.
+Accept connection from client 128.237.200.180:57063.
+Accept connection from client 128.237.200.180:57064.
+Accept connection from client 128.237.200.180:57065.
+Accept connection from client 128.237.200.180:57067.
+Accept connection from client 128.237.200.180:57066.
+Accept connection from client 128.237.200.180:57068.
+Accept connection from client 128.237.200.180:57069.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:57070.
+Accept connection from client 128.237.200.180:57071.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:57075.
+Accept connection from client 128.237.200.180:57076.
+Accept connection from client 128.237.200.180:57077.
+Accept connection from client 128.237.200.180:57078.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:57080.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor 22.
+Accept connection from client 128.237.200.180:57081.
+Accept connection from client 128.237.200.180:57082.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:57084.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:57085.
+Accept connection from client 128.237.200.180:57086.
+Accept connection from client 128.237.200.180:57087.
+Accept connection from client 128.237.200.180:57088.
+Accept connection from client 128.237.200.180:57089.
+Accept connection from client 128.237.200.180:57090.
+Accept connection from client 128.237.200.180:57091.
+Accept connection from client 128.237.200.180:57092.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:57093.
+Accept connection from client 128.237.200.180:57094.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:57095.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:57096.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor 57.
+Accept connection from client 128.237.200.180:57097.
+Accept connection from client 128.237.200.180:57098.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:57099.
+Accept connection from client 128.237.200.180:57100.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:57101.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor 60.
+Accept connection from client 128.237.200.180:57102.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor 50.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor 49.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor 55.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor 52.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor 54.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor 44.
+Accept connection from client 128.237.200.180:57104.
+Accept connection from client 128.237.200.180:57105.
+Accept connection from client 128.237.200.180:57107.
+Accept connection from client 128.237.200.180:57106.
+Accept connection from client 128.237.200.180:57108.
+Accept connection from client 128.237.200.180:57109.
+Accept connection from client 128.237.200.180:57110.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:57111.
+Accept connection from client 128.237.200.180:57112.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:57113.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:57120.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Thu Nov 24 11:45:28 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.200.180:57158.
+Accept connection from client 128.237.200.180:57159.
+Accept connection from client 128.237.200.180:57162.
+Accept connection from client 128.237.200.180:57160.
+Accept connection from client 128.237.200.180:57163.
+Accept connection from client 128.237.200.180:57161.
+Accept connection from client 128.237.200.180:57164.
+Accept connection from client 128.237.200.180:57167.
+Accept connection from client 128.237.200.180:57165.
+Accept connection from client 128.237.200.180:57168.
+Accept connection from client 128.237.200.180:57166.
+Accept connection from client 128.237.200.180:57169.
+Accept connection from client 128.237.200.180:57171.
+Accept connection from client 128.237.200.180:57170.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:57174.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:57172.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:57173.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:57175.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:57176.
+Accept connection from client 128.237.200.180:57177.
+Accept connection from client 128.237.200.180:57178.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:57179.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor 24.
+Accept connection from client 128.237.200.180:57180.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:57181.
+Accept connection from client 128.237.200.180:57182.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:57183.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor 28.
+Accept connection from client 128.237.200.180:57184.
+Accept connection from client 128.237.200.180:57188.
+Accept connection from client 128.237.200.180:57190.
+Accept connection from client 128.237.200.180:57191.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:57192.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:57194.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:57195.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:57196.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:57197.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:57198.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:57199.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:57202.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:57204.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:57205.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:57206.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:57207.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:57208.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:57209.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:57210.
+Accept connection from client 128.237.200.180:57211.
+Accept connection from client 128.237.200.180:57212.
+Accept connection from client 128.237.200.180:57213.
+Accept connection from client 128.237.200.180:57214.
+Accept connection from client 128.237.200.180:57216.
+Accept connection from client 128.237.200.180:57215.
+Accept connection from client 128.237.200.180:57217.
+Accept connection from client 128.237.200.180:57218.
+Accept connection from client 128.237.200.180:57219.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:57220.
+Accept connection from client 128.237.200.180:57222.
+Accept connection from client 128.237.200.180:57221.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:57223.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:57224.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:57225.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:57226.
+Accept connection from client 128.237.200.180:57227.
+Accept connection from client 128.237.200.180:57228.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:57229.
+Accept connection from client 128.237.200.180:57230.
+Accept connection from client 128.237.200.180:57231.
+Accept connection from client 128.237.200.180:57232.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:57234.
+Accept connection from client 128.237.200.180:57235.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:57236.
+Accept connection from client 128.237.200.180:57237.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:57242.
+Accept connection from client 128.237.200.180:57243.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:57244.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:57245.
+Accept connection from client 128.237.200.180:57246.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:57247.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:57250.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Thu Nov 24 11:47:23 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.200.180:57261.
+Accept connection from client 128.237.200.180:57262.
+Accept connection from client 128.237.200.180:57263.
+Accept connection from client 128.237.200.180:57264.
+Accept connection from client 128.237.200.180:57265.
+Accept connection from client 128.237.200.180:57266.
+Accept connection from client 128.237.200.180:57267.
+Accept connection from client 128.237.200.180:57268.
+Accept connection from client 128.237.200.180:57269.
+Accept connection from client 128.237.200.180:57270.
+Accept connection from client 128.237.200.180:57271.
+Accept connection from client 128.237.200.180:57272.
+Accept connection from client 128.237.200.180:57274.
+Accept connection from client 128.237.200.180:57273.
+Accept connection from client 128.237.200.180:57275.
+Accept connection from client 128.237.200.180:57276.
+Accept connection from client 128.237.200.180:57279.
+Accept connection from client 128.237.200.180:57277.
+Accept connection from client 128.237.200.180:57278.
+Accept connection from client 128.237.200.180:57281.
+Accept connection from client 128.237.200.180:57280.
+Accept connection from client 128.237.200.180:57282.
+Accept connection from client 128.237.200.180:57283.
+Accept connection from client 128.237.200.180:57284.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Thu Nov 24 11:49:11 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.200.180:57310.
+Accept connection from client 128.237.200.180:57311.
+Accept connection from client 128.237.200.180:57312.
+Accept connection from client 128.237.200.180:57313.
+Accept connection from client 128.237.200.180:57314.
+Accept connection from client 128.237.200.180:57315.
+Accept connection from client 128.237.200.180:57316.
+Accept connection from client 128.237.200.180:57318.
+Accept connection from client 128.237.200.180:57319.
+Accept connection from client 128.237.200.180:57317.
+Accept connection from client 128.237.200.180:57320.
+Accept connection from client 128.237.200.180:57321.
+Accept connection from client 128.237.200.180:57323.
+Accept connection from client 128.237.200.180:57322.
+Accept connection from client 128.237.200.180:57324.
+Accept connection from client 128.237.200.180:57325.
+Accept connection from client 128.237.200.180:57326.
+Accept connection from client 128.237.200.180:57329.
+Accept connection from client 128.237.200.180:57328.
+Accept connection from client 128.237.200.180:57327.
+Accept connection from client 128.237.200.180:57330.
+Accept connection from client 128.237.200.180:57331.
+Accept connection from client 128.237.200.180:57332.
+Accept connection from client 128.237.200.180:57333.
+Accept connection from client 128.237.200.180:57334.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Thu Nov 24 11:51:45 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.200.180:57378.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:57379.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:57380.
+Accept connection from client 128.237.200.180:57381.
+Accept connection from client 128.237.200.180:57382.
+Accept connection from client 128.237.200.180:57383.
+Accept connection from client 128.237.200.180:57384.
+Accept connection from client 128.237.200.180:57386.
+Accept connection from client 128.237.200.180:57385.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:57387.
+Accept connection from client 128.237.200.180:57389.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:57388.
+Accept connection from client 128.237.200.180:57390.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:57391.
+Accept connection from client 128.237.200.180:57393.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:57392.
+Accept connection from client 128.237.200.180:57394.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:57395.
+Accept connection from client 128.237.200.180:57396.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Thu Nov 24 12:55:36 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.200.180:58181.
+Accept connection from client 128.237.200.180:58182.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Thu Nov 24 12:56:06 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.200.180:58184.
+Accept connection from client 128.237.200.180:58185.
+Accept connection from client 128.237.200.180:58186.
+Accept connection from client 128.237.200.180:58187.
+Accept connection from client 128.237.200.180:58188.
+Accept connection from client 128.237.200.180:58189.
+Accept connection from client 128.237.200.180:58190.
+Accept connection from client 128.237.200.180:58191.
+Accept connection from client 128.237.200.180:58192.
+Accept connection from client 128.237.200.180:58193.
+Accept connection from client 128.237.200.180:58195.
+Accept connection from client 128.237.200.180:58194.
+Accept connection from client 128.237.200.180:58196.
+Accept connection from client 128.237.200.180:58200.
+Accept connection from client 128.237.200.180:58201.
+Accept connection from client 128.237.200.180:58199.
+Accept connection from client 128.237.200.180:58197.
+Accept connection from client 128.237.200.180:58198.
+Accept connection from client 128.237.200.180:58202.
+Accept connection from client 128.237.200.180:58203.
+Accept connection from client 128.237.200.180:58204.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:58206.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:58207.
+Accept connection from client 128.237.200.180:58208.
+Accept connection from client 128.237.200.180:58209.
+Accept connection from client 128.237.200.180:58211.
+Accept connection from client 128.237.200.180:58210.
+Accept connection from client 128.237.200.180:58212.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:58213.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:58214.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:58215.
+Error, close connection with server
+Accept connection from client 128.237.200.180:58216.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Thu Nov 24 12:57:40 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.200.180:58237.
+Accept connection from client 128.237.200.180:58238.
+Accept connection from client 128.237.200.180:58241.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:58239.
+Accept connection from client 128.237.200.180:58240.
+Accept connection from client 128.237.200.180:58242.
+Accept connection from client 128.237.200.180:58243.
+Accept connection from client 128.237.200.180:58244.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Thu Nov 24 12:59:31 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.200.180:58264.
+Accept connection from client 128.237.200.180:58265.
+Accept connection from client 128.237.200.180:58266.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:58267.
+Accept connection from client 128.237.200.180:58269.
+Accept connection from client 128.237.200.180:58268.
+Accept connection from client 128.237.200.180:58270.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Thu Nov 24 13:00:19 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.200.180:58282.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Thu Nov 24 13:00:30 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.200.180:58283.
+Accept connection from client 128.237.200.180:58284.
+Accept connection from client 128.237.200.180:58285.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:58287.
+Accept connection from client 128.237.200.180:58288.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:58286.
+Accept connection from client 128.237.200.180:58289.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:58290.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Thu Nov 24 13:00:55 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.200.180:58293.
+Accept connection from client 128.237.200.180:58294.
+Accept connection from client 128.237.200.180:58296.
+Accept connection from client 128.237.200.180:58297.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:58299.
+Accept connection from client 128.237.200.180:58298.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Thu Nov 24 13:01:25 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.200.180:58310.
+Accept connection from client 128.237.200.180:58312.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Thu Nov 24 13:01:50 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.200.180:58317.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Thu Nov 24 13:03:11 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.200.180:58333.
+Accept connection from client 128.237.200.180:58334.
+Accept connection from client 128.237.200.180:58335.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:58337.
+Accept connection from client 128.237.200.180:58339.
+Accept connection from client 128.237.200.180:58341.
+Accept connection from client 128.237.200.180:58338.
+Accept connection from client 128.237.200.180:58340.
+Accept connection from client 128.237.200.180:58342.
+Accept connection from client 128.237.200.180:58343.
+Accept connection from client 128.237.200.180:58344.
+Accept connection from client 128.237.200.180:58347.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Thu Nov 24 13:04:38 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.200.180:58360.
+Accept connection from client 128.237.200.180:58361.
+Accept connection from client 128.237.200.180:58362.
+Accept connection from client 128.237.200.180:58363.
+Accept connection from client 128.237.200.180:58364.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:58365.
+Accept connection from client 128.237.200.180:58366.
+Accept connection from client 128.237.200.180:58367.
+Accept connection from client 128.237.200.180:58368.
+Accept connection from client 128.237.200.180:58371.
+Accept connection from client 128.237.200.180:58369.
+Accept connection from client 128.237.200.180:58370.
+Accept connection from client 128.237.200.180:58372.
+Accept connection from client 128.237.200.180:58373.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Thu Nov 24 13:05:25 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.200.180:58387.
+Accept connection from client 128.237.200.180:58388.
+Accept connection from client 128.237.200.180:58389.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:58390.
+Accept connection from client 128.237.200.180:58391.
+Accept connection from client 128.237.200.180:58392.
+Accept connection from client 128.237.200.180:58393.
+Accept connection from client 128.237.200.180:58394.
+Accept connection from client 128.237.200.180:58395.
+Accept connection from client 128.237.200.180:58396.
+Accept connection from client 128.237.200.180:58397.
+Accept connection from client 128.237.200.180:58398.
+Accept connection from client 128.237.200.180:58399.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Thu Nov 24 13:06:58 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.200.180:58425.
+Accept connection from client 128.237.200.180:58426.
+Accept connection from client 128.237.200.180:58427.
+Accept connection from client 128.237.200.180:58428.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:58429.
+Accept connection from client 128.237.200.180:58430.
+Accept connection from client 128.237.200.180:58431.
+Accept connection from client 128.237.200.180:58432.
+Accept connection from client 128.237.200.180:58433.
+Accept connection from client 128.237.200.180:58434.
+Accept connection from client 128.237.200.180:58435.
+Accept connection from client 128.237.200.180:58436.
+Accept connection from client 128.237.200.180:58437.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Thu Nov 24 13:09:00 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.200.180:58463.
+Accept connection from client 128.237.200.180:58464.
+Accept connection from client 128.237.200.180:58465.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:58466.
+Accept connection from client 128.237.200.180:58467.
+Accept connection from client 128.237.200.180:58468.
+Accept connection from client 128.237.200.180:58469.
+Accept connection from client 128.237.200.180:58471.
+Accept connection from client 128.237.200.180:58470.
+Accept connection from client 128.237.200.180:58472.
+Accept connection from client 128.237.200.180:58473.
+Accept connection from client 128.237.200.180:58474.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Thu Nov 24 13:11:55 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.200.180:58507.
+Accept connection from client 128.237.200.180:58508.
+Accept connection from client 128.237.200.180:58509.
+Accept connection from client 128.237.200.180:58511.
+Accept connection from client 128.237.200.180:58510.
+Accept connection from client 128.237.200.180:58512.
+Accept connection from client 128.237.200.180:58513.
+Accept connection from client 128.237.200.180:58514.
+Accept connection from client 128.237.200.180:58515.
+Accept connection from client 128.237.200.180:58516.
+Accept connection from client 128.237.200.180:58517.
+Accept connection from client 128.237.200.180:58518.
+Accept connection from client 128.237.200.180:58519.
+Accept connection from client 128.237.200.180:58520.
+Accept connection from client 128.237.200.180:58523.
+Accept connection from client 128.237.200.180:58521.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Thu Nov 24 13:20:52 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.200.180:58686.
+Accept connection from client 128.237.200.180:58687.
+Accept connection from client 128.237.200.180:58688.
+Accept connection from client 128.237.200.180:58689.
+Accept connection from client 128.237.200.180:58690.
+Accept connection from client 128.237.200.180:58691.
+Accept connection from client 128.237.200.180:58693.
+Accept connection from client 128.237.200.180:58696.
+Accept connection from client 128.237.200.180:58692.
+Accept connection from client 128.237.200.180:58695.
+Accept connection from client 128.237.200.180:58694.
+Accept connection from client 128.237.200.180:58697.
+Accept connection from client 128.237.200.180:58698.
+Accept connection from client 128.237.200.180:58699.
+Accept connection from client 128.237.200.180:58700.
+Accept connection from client 128.237.200.180:58704.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Thu Nov 24 13:22:53 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.200.180:58731.
+Accept connection from client 128.237.200.180:58732.
+Accept connection from client 128.237.200.180:58733.
+Accept connection from client 128.237.200.180:58734.
+Accept connection from client 128.237.200.180:58735.
+Accept connection from client 128.237.200.180:58736.
+Accept connection from client 128.237.200.180:58738.
+Accept connection from client 128.237.200.180:58737.
+Accept connection from client 128.237.200.180:58739.
+Accept connection from client 128.237.200.180:58740.
+Accept connection from client 128.237.200.180:58741.
+Accept connection from client 128.237.200.180:58742.
+Accept connection from client 128.237.200.180:58743.
+Accept connection from client 128.237.200.180:58744.
+Accept connection from client 128.237.200.180:58745.
+Accept connection from client 128.237.200.180:58746.
+Accept connection from client 128.237.200.180:58747.
+Error, close connection with server
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Thu Nov 24 13:45:33 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.200.180:59283.
+Accept connection from client 128.237.200.180:59285.
+Accept connection from client 128.237.200.180:59284.
+Accept connection from client 128.237.200.180:59288.
+Accept connection from client 128.237.200.180:59286.
+Accept connection from client 128.237.200.180:59287.
+Accept connection from client 128.237.200.180:59289.
+Accept connection from client 128.237.200.180:59290.
+Accept connection from client 128.237.200.180:59292.
+Accept connection from client 128.237.200.180:59291.
+Accept connection from client 128.237.200.180:59293.
+Accept connection from client 128.237.200.180:59294.
+Accept connection from client 128.237.200.180:59295.
+Accept connection from client 128.237.200.180:59296.
+Accept connection from client 128.237.200.180:59297.
+Accept connection from client 128.237.200.180:59300.
+Accept connection from client 128.237.200.180:59298.
+Accept connection from client 128.237.200.180:59299.
+Accept connection from client 128.237.200.180:59301.
+Accept connection from client 128.237.200.180:59302.
+Accept connection from client 128.237.200.180:59303.
+Accept connection from client 128.237.200.180:59304.
+Accept connection from client 128.237.200.180:59305.
+Accept connection from client 128.237.200.180:59306.
+Accept connection from client 128.237.200.180:59307.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Thu Nov 24 13:46:53 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.200.180:59346.
+Accept connection from client 128.237.200.180:59347.
+Accept connection from client 128.237.200.180:59348.
+Accept connection from client 128.237.200.180:59349.
+Accept connection from client 128.237.200.180:59350.
+Accept connection from client 128.237.200.180:59352.
+Accept connection from client 128.237.200.180:59353.
+Accept connection from client 128.237.200.180:59351.
+Accept connection from client 128.237.200.180:59354.
+Accept connection from client 128.237.200.180:59355.
+Accept connection from client 128.237.200.180:59356.
+Accept connection from client 128.237.200.180:59357.
+Accept connection from client 128.237.200.180:59358.
+Accept connection from client 128.237.200.180:59359.
+Accept connection from client 128.237.200.180:59360.
+Accept connection from client 128.237.200.180:59361.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Thu Nov 24 13:50:52 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.200.180:59414.
+Accept connection from client 128.237.200.180:59415.
+Accept connection from client 128.237.200.180:59416.
+Accept connection from client 128.237.200.180:59417.
+Accept connection from client 128.237.200.180:59418.
+Accept connection from client 128.237.200.180:59419.
+Accept connection from client 128.237.200.180:59420.
+Accept connection from client 128.237.200.180:59421.
+Accept connection from client 128.237.200.180:59422.
+Accept connection from client 128.237.200.180:59423.
+Accept connection from client 128.237.200.180:59424.
+Accept connection from client 128.237.200.180:59425.
+Accept connection from client 128.237.200.180:59426.
+Accept connection from client 128.237.200.180:59427.
+Accept connection from client 128.237.200.180:59428.
+Accept connection from client 128.237.200.180:59436.
+Accept connection from client 128.237.200.180:59443.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Thu Nov 24 13:57:41 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.200.180:59514.
+Accept connection from client 128.237.200.180:59516.
+Accept connection from client 128.237.200.180:59517.
+Accept connection from client 128.237.200.180:59520.
+Accept connection from client 128.237.200.180:59522.
+Accept connection from client 128.237.200.180:59523.
+Accept connection from client 128.237.200.180:59524.
+Accept connection from client 128.237.200.180:59526.
+Accept connection from client 128.237.200.180:59527.
+Accept connection from client 128.237.200.180:59525.
+Accept connection from client 128.237.200.180:59528.
+Accept connection from client 128.237.200.180:59529.
+Accept connection from client 128.237.200.180:59530.
+Accept connection from client 128.237.200.180:59531.
+Accept connection from client 128.237.200.180:59532.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Thu Nov 24 14:00:43 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.200.180:59567.
+Accept connection from client 128.237.200.180:59569.
+Accept connection from client 128.237.200.180:59568.
+Accept connection from client 128.237.200.180:59570.
+Accept connection from client 128.237.200.180:59571.
+Accept connection from client 128.237.200.180:59572.
+Accept connection from client 128.237.200.180:59573.
+Accept connection from client 128.237.200.180:59576.
+Accept connection from client 128.237.200.180:59575.
+Accept connection from client 128.237.200.180:59574.
+Accept connection from client 128.237.200.180:59577.
+Accept connection from client 128.237.200.180:59578.
+Accept connection from client 128.237.200.180:59579.
+Accept connection from client 128.237.200.180:59580.
+Accept connection from client 128.237.200.180:59581.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Thu Nov 24 14:03:20 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.200.180:59616.
+Accept connection from client 128.237.200.180:59617.
+Accept connection from client 128.237.200.180:59618.
+Accept connection from client 128.237.200.180:59620.
+Accept connection from client 128.237.200.180:59621.
+Accept connection from client 128.237.200.180:59622.
+Accept connection from client 128.237.200.180:59623.
+Accept connection from client 128.237.200.180:59624.
+Accept connection from client 128.237.200.180:59625.
+Accept connection from client 128.237.200.180:59626.
+Accept connection from client 128.237.200.180:59627.
+Accept connection from client 128.237.200.180:59628.
+Accept connection from client 128.237.200.180:59629.
+Accept connection from client 128.237.200.180:59631.
+Accept connection from client 128.237.200.180:59632.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Thu Nov 24 14:14:40 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.200.180:59768.
+Accept connection from client 128.237.200.180:59769.
+Accept connection from client 128.237.200.180:59770.
+Accept connection from client 128.237.200.180:59771.
+Accept connection from client 128.237.200.180:59772.
+Accept connection from client 128.237.200.180:59773.
+Accept connection from client 128.237.200.180:59774.
+Accept connection from client 128.237.200.180:59777.
+Accept connection from client 128.237.200.180:59776.
+Accept connection from client 128.237.200.180:59775.
+Accept connection from client 128.237.200.180:59778.
+Accept connection from client 128.237.200.180:59779.
+Accept connection from client 128.237.200.180:59780.
+Accept connection from client 128.237.200.180:59781.
+Accept connection from client 128.237.200.180:59782.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Thu Nov 24 14:16:48 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.200.180:59821.
+Accept connection from client 128.237.200.180:59822.
+Accept connection from client 128.237.200.180:59823.
+Accept connection from client 128.237.200.180:59824.
+Accept connection from client 128.237.200.180:59825.
+Accept connection from client 128.237.200.180:59826.
+Accept connection from client 128.237.200.180:59827.
+Accept connection from client 128.237.200.180:59828.
+Accept connection from client 128.237.200.180:59829.
+Accept connection from client 128.237.200.180:59830.
+Accept connection from client 128.237.200.180:59831.
+Accept connection from client 128.237.200.180:59832.
+Accept connection from client 128.237.200.180:59833.
+Accept connection from client 128.237.200.180:59834.
+Accept connection from client 128.237.200.180:59836.
+Accept connection from client 128.237.200.180:59837.
+Accept connection from client 128.237.200.180:59835.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Thu Nov 24 14:22:03 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.200.180:59923.
+Accept connection from client 128.237.200.180:59924.
+Accept connection from client 128.237.200.180:59925.
+Accept connection from client 128.237.200.180:59926.
+Accept connection from client 128.237.200.180:59927.
+Accept connection from client 128.237.200.180:59928.
+Accept connection from client 128.237.200.180:59930.
+Accept connection from client 128.237.200.180:59929.
+Accept connection from client 128.237.200.180:59931.
+Accept connection from client 128.237.200.180:59932.
+Accept connection from client 128.237.200.180:59933.
+Accept connection from client 128.237.200.180:59935.
+Accept connection from client 128.237.200.180:59934.
+Accept connection from client 128.237.200.180:59938.
+Accept connection from client 128.237.200.180:59940.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Thu Nov 24 14:24:10 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.200.180:59963.
+Accept connection from client 128.237.200.180:59964.
+Accept connection from client 128.237.200.180:59965.
+Accept connection from client 128.237.200.180:59966.
+Accept connection from client 128.237.200.180:59967.
+Accept connection from client 128.237.200.180:59968.
+Accept connection from client 128.237.200.180:59969.
+Accept connection from client 128.237.200.180:59970.
+Accept connection from client 128.237.200.180:59972.
+Accept connection from client 128.237.200.180:59971.
+Accept connection from client 128.237.200.180:59973.
+Accept connection from client 128.237.200.180:59974.
+Accept connection from client 128.237.200.180:59975.
+Accept connection from client 128.237.200.180:59976.
+Accept connection from client 128.237.200.180:59977.
+Accept connection from client 128.237.200.180:59978.
+Accept connection from client 128.237.200.180:59979.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Thu Nov 24 14:25:15 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.200.180:59998.
+Accept connection from client 128.237.200.180:59999.
+Accept connection from client 128.237.200.180:60000.
+Accept connection from client 128.237.200.180:60001.
+Accept connection from client 128.237.200.180:60002.
+Accept connection from client 128.237.200.180:60003.
+Accept connection from client 128.237.200.180:60004.
+Accept connection from client 128.237.200.180:60007.
+Accept connection from client 128.237.200.180:60005.
+Accept connection from client 128.237.200.180:60006.
+Accept connection from client 128.237.200.180:60008.
+Accept connection from client 128.237.200.180:60009.
+Accept connection from client 128.237.200.180:60010.
+Accept connection from client 128.237.200.180:60011.
+Accept connection from client 128.237.200.180:60012.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Thu Nov 24 14:35:53 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.200.180:60177.
+Accept connection from client 128.237.200.180:60179.
+Accept connection from client 128.237.200.180:60180.
+Accept connection from client 128.237.200.180:60181.
+Accept connection from client 128.237.200.180:60182.
+Accept connection from client 128.237.200.180:60183.
+Accept connection from client 128.237.200.180:60184.
+Accept connection from client 128.237.200.180:60186.
+Accept connection from client 128.237.200.180:60187.
+Accept connection from client 128.237.200.180:60185.
+Accept connection from client 128.237.200.180:60189.
+Accept connection from client 128.237.200.180:60188.
+Accept connection from client 128.237.200.180:60193.
+Accept connection from client 128.237.200.180:60191.
+Accept connection from client 128.237.200.180:60192.
+Accept connection from client 128.237.200.180:60190.
+Accept connection from client 128.237.200.180:60197.
+Error, close connection with server
+Accept connection from client 128.237.200.180:60199.
+Error, close connection with server
+Accept connection from client 128.237.200.180:60200.
+Accept connection from client 128.237.200.180:60202.
+Error, close connection with server
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Thu Nov 24 14:37:26 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.200.180:60247.
+Accept connection from client 128.237.200.180:60249.
+Accept connection from client 128.237.200.180:60250.
+Accept connection from client 128.237.200.180:60248.
+Accept connection from client 128.237.200.180:60251.
+Accept connection from client 128.237.200.180:60252.
+Accept connection from client 128.237.200.180:60253.
+Accept connection from client 128.237.200.180:60254.
+Accept connection from client 128.237.200.180:60255.
+Accept connection from client 128.237.200.180:60261.
+Accept connection from client 128.237.200.180:60262.
+Accept connection from client 128.237.200.180:60263.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Thu Nov 24 14:44:12 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.200.180:60362.
+Accept connection from client 128.237.200.180:60363.
+Accept connection from client 128.237.200.180:60364.
+Accept connection from client 128.237.200.180:60365.
+Accept connection from client 128.237.200.180:60366.
+Accept connection from client 128.237.200.180:60367.
+Accept connection from client 128.237.200.180:60368.
+Accept connection from client 128.237.200.180:60369.
+Accept connection from client 128.237.200.180:60370.
+Accept connection from client 128.237.200.180:60373.
+Accept connection from client 128.237.200.180:60374.
+Accept connection from client 128.237.200.180:60375.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor 18.
+Accept connection from client 128.237.200.180:60376.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Thu Nov 24 14:48:59 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.200.180:60510.
+Accept connection from client 128.237.200.180:60514.
+Accept connection from client 128.237.200.180:60517.
+Accept connection from client 128.237.200.180:60519.
+Failed sending response to client from server, disconnected
+Failed closing connection file descriptor 6.
+Failed closing connection file descriptor -1.
+Failed sending response to client from server, disconnected
+Failed closing connection file descriptor 6.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:60520.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Thu Nov 24 14:49:47 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.200.180:60655.
+Accept connection from client 128.237.200.180:60643.
+Accept connection from client 128.237.200.180:60641.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Thu Nov 24 14:50:44 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.200.180:60785.
+Accept connection from client 128.237.200.180:60790.
+Accept connection from client 128.237.200.180:60787.
+Accept connection from client 128.237.200.180:60788.
+Accept connection from client 128.237.200.180:60789.
+Accept connection from client 128.237.200.180:60791.
+Accept connection from client 128.237.200.180:60792.
+Accept connection from client 128.237.200.180:60795.
+Accept connection from client 128.237.200.180:60793.
+Accept connection from client 128.237.200.180:60794.
+Accept connection from client 128.237.200.180:60796.
+Accept connection from client 128.237.200.180:60797.
+Accept connection from client 128.237.200.180:60798.
+Accept connection from client 128.237.200.180:60799.
+Accept connection from client 128.237.200.180:60800.
+Accept connection from client 128.237.200.180:60804.
+Accept connection from client 128.237.200.180:60810.
+Accept connection from client 128.237.200.180:60815.
+Accept connection from client 128.237.200.180:60816.
+Accept connection from client 128.237.200.180:60817.
+Accept connection from client 128.237.200.180:60819.
+Accept connection from client 128.237.200.180:60820.
+Accept connection from client 128.237.200.180:60825.
+Accept connection from client 128.237.200.180:60828.
+Accept connection from client 128.237.200.180:60829.
+Accept connection from client 128.237.200.180:60830.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Thu Nov 24 14:52:55 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.200.180:60899.
+Accept connection from client 128.237.200.180:60897.
+Accept connection from client 128.237.200.180:60898.
+Accept connection from client 128.237.200.180:60901.
+Accept connection from client 128.237.200.180:60902.
+Accept connection from client 128.237.200.180:60904.
+Accept connection from client 128.237.200.180:60906.
+Accept connection from client 128.237.200.180:60912.
+Accept connection from client 128.237.200.180:60913.
+Accept connection from client 128.237.200.180:60916.
+Accept connection from client 128.237.200.180:60917.
+Accept connection from client 128.237.200.180:60918.
+Accept connection from client 128.237.200.180:60919.
+Accept connection from client 128.237.200.180:60922.
+Accept connection from client 128.237.200.180:60920.
+Accept connection from client 128.237.200.180:60928.
+Accept connection from client 128.237.200.180:60923.
+Accept connection from client 128.237.200.180:60921.
+Accept connection from client 128.237.200.180:60925.
+Accept connection from client 128.237.200.180:60927.
+Accept connection from client 128.237.200.180:60924.
+Accept connection from client 128.237.200.180:60926.
+Accept connection from client 128.237.200.180:60929.
+Accept connection from client 128.237.200.180:60931.
+Accept connection from client 128.237.200.180:60930.
+Accept connection from client 128.237.200.180:60932.
+Accept connection from client 128.237.200.180:60933.
+Accept connection from client 128.237.200.180:60935.
+Accept connection from client 128.237.200.180:60938.
+Accept connection from client 128.237.200.180:60939.
+Accept connection from client 128.237.200.180:60942.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor 10.
+Accept connection from client 128.237.200.180:60947.
+Accept connection from client 128.237.200.180:60948.
+Accept connection from client 128.237.200.180:60949.
+Accept connection from client 128.237.200.180:60950.
+Accept connection from client 128.237.200.180:60951.
+Accept connection from client 128.237.200.180:60952.
+Accept connection from client 128.237.200.180:60953.
+Accept connection from client 128.237.200.180:60955.
+Accept connection from client 128.237.200.180:60956.
+Accept connection from client 128.237.200.180:60957.
+Accept connection from client 128.237.200.180:60961.
+Accept connection from client 128.237.200.180:60966.
+Accept connection from client 128.237.200.180:60968.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Thu Nov 24 14:55:02 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.200.180:60977.
+Accept connection from client 128.237.200.180:60976.
+Accept connection from client 128.237.200.180:60979.
+Accept connection from client 128.237.200.180:60980.
+Accept connection from client 128.237.200.180:60981.
+Accept connection from client 128.237.200.180:60982.
+Accept connection from client 128.237.200.180:60983.
+Accept connection from client 128.237.200.180:60985.
+Accept connection from client 128.237.200.180:60986.
+Accept connection from client 128.237.200.180:60987.
+Accept connection from client 128.237.200.180:60988.
+Accept connection from client 128.237.200.180:60992.
+Accept connection from client 128.237.200.180:60989.
+Accept connection from client 128.237.200.180:60990.
+Accept connection from client 128.237.200.180:60991.
+Accept connection from client 128.237.200.180:60993.
+Accept connection from client 128.237.200.180:60994.
+Accept connection from client 128.237.200.180:60995.
+Accept connection from client 128.237.200.180:60998.
+Accept connection from client 128.237.200.180:60996.
+Accept connection from client 128.237.200.180:61000.
+Accept connection from client 128.237.200.180:60997.
+Accept connection from client 128.237.200.180:61001.
+Accept connection from client 128.237.200.180:61004.
+Accept connection from client 128.237.200.180:61005.
+Accept connection from client 128.237.200.180:61006.
+Accept connection from client 128.237.200.180:61007.
+Accept connection from client 128.237.200.180:61009.
+Accept connection from client 128.237.200.180:61008.
+Accept connection from client 128.237.200.180:61010.
+Accept connection from client 128.237.200.180:61011.
+Accept connection from client 128.237.200.180:61012.
+Accept connection from client 128.237.200.180:61014.
+Accept connection from client 128.237.200.180:61015.
+Accept connection from client 128.237.200.180:61013.
+Accept connection from client 128.237.200.180:61016.
+Accept connection from client 128.237.200.180:61017.
+Accept connection from client 128.237.200.180:61018.
+Accept connection from client 128.237.200.180:61019.
+Accept connection from client 128.237.200.180:61020.
+Accept connection from client 128.237.200.180:61002.
+Accept connection from client 128.237.200.180:61003.
+Accept connection from client 128.237.200.180:60999.
+Accept connection from client 128.237.200.180:61021.
+Accept connection from client 128.237.200.180:61023.
+Accept connection from client 128.237.200.180:61024.
+Accept connection from client 128.237.200.180:61025.
+Accept connection from client 128.237.200.180:61026.
+Accept connection from client 128.237.200.180:61029.
+Accept connection from client 128.237.200.180:61027.
+Accept connection from client 128.237.200.180:61028.
+Accept connection from client 128.237.200.180:61030.
+Accept connection from client 128.237.200.180:61033.
+Accept connection from client 128.237.200.180:61031.
+Accept connection from client 128.237.200.180:61032.
+Accept connection from client 128.237.200.180:61034.
+Accept connection from client 128.237.200.180:61035.
+Accept connection from client 128.237.200.180:61022.
+Accept connection from client 128.237.200.180:61036.
+Accept connection from client 128.237.200.180:61037.
+Accept connection from client 128.237.200.180:61038.
+Accept connection from client 128.237.200.180:61039.
+Accept connection from client 128.237.200.180:61040.
+Accept connection from client 128.237.200.180:61041.
+Accept connection from client 128.237.200.180:61048.
+Accept connection from client 128.237.200.180:61049.
+Accept connection from client 128.237.200.180:61050.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Thu Nov 24 14:56:40 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.200.180:61154.
+Accept connection from client 128.237.200.180:61159.
+Accept connection from client 128.237.200.180:61161.
+Accept connection from client 128.237.200.180:61169.
+Accept connection from client 128.237.200.180:61171.
+Accept connection from client 128.237.200.180:61174.
+Accept connection from client 128.237.200.180:61176.
+Accept connection from client 128.237.200.180:61177.
+Accept connection from client 128.237.200.180:61178.
+Accept connection from client 128.237.200.180:61182.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Thu Nov 24 15:35:23 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.200.180:50040.
+Accept connection from client 128.237.200.180:50042.
+Accept connection from client 128.237.200.180:50041.
+Accept connection from client 128.237.200.180:50044.
+Accept connection from client 128.237.200.180:50045.
+Accept connection from client 128.237.200.180:50046.
+Accept connection from client 128.237.200.180:50047.
+Accept connection from client 128.237.200.180:50048.
+Accept connection from client 128.237.200.180:50049.
+Accept connection from client 128.237.200.180:50050.
+Accept connection from client 128.237.200.180:50051.
+Accept connection from client 128.237.200.180:50052.
+Accept connection from client 128.237.200.180:50053.
+Accept connection from client 128.237.200.180:50054.
+Accept connection from client 128.237.200.180:50055.
+Accept connection from client 128.237.200.180:50057.
+Accept connection from client 128.237.200.180:50058.
+Accept connection from client 128.237.200.180:50061.
+Accept connection from client 128.237.200.180:50062.
+Accept connection from client 128.237.200.180:50063.
+Accept connection from client 128.237.200.180:50065.
+Accept connection from client 128.237.200.180:50066.
+Accept connection from client 128.237.200.180:50067.
+Accept connection from client 128.237.200.180:50068.
+Accept connection from client 128.237.200.180:50069.
+Accept connection from client 128.237.200.180:50070.
+Accept connection from client 128.237.200.180:50071.
+Accept connection from client 128.237.200.180:50073.
+Accept connection from client 128.237.200.180:50072.
+Accept connection from client 128.237.200.180:50074.
+Accept connection from client 128.237.200.180:50075.
+Accept connection from client 128.237.200.180:50077.
+Accept connection from client 128.237.200.180:50076.
+Accept connection from client 128.237.200.180:50081.
+Accept connection from client 128.237.200.180:50079.
+Accept connection from client 128.237.200.180:50080.
+Accept connection from client 128.237.200.180:50078.
+Accept connection from client 128.237.200.180:50082.
+Accept connection from client 128.237.200.180:50083.
+Accept connection from client 128.237.200.180:50084.
+Accept connection from client 128.237.200.180:50085.
+Accept connection from client 128.237.200.180:50086.
+Accept connection from client 128.237.200.180:50087.
+Accept connection from client 128.237.200.180:50088.
+Accept connection from client 128.237.200.180:50089.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:50090.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Thu Nov 24 15:37:05 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.200.180:50174.
+Accept connection from client 128.237.200.180:50166.
+Accept connection from client 128.237.200.180:50169.
+Accept connection from client 128.237.200.180:50186.
+Accept connection from client 128.237.200.180:50187.
+Accept connection from client 128.237.200.180:50179.
+Accept connection from client 128.237.200.180:50172.
+Accept connection from client 128.237.200.180:50185.
+Accept connection from client 128.237.200.180:50175.
+Accept connection from client 128.237.200.180:50184.
+Accept connection from client 128.237.200.180:50176.
+Accept connection from client 128.237.200.180:50167.
+Accept connection from client 128.237.200.180:50181.
+Accept connection from client 128.237.200.180:50182.
+Accept connection from client 128.237.200.180:50170.
+Accept connection from client 128.237.200.180:50168.
+Accept connection from client 128.237.200.180:50183.
+Accept connection from client 128.237.200.180:50171.
+Accept connection from client 128.237.200.180:50177.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:50173.
+Accept connection from client 128.237.200.180:50180.
+Accept connection from client 128.237.200.180:50178.
+Accept connection from client 128.237.200.180:50190.
+Accept connection from client 128.237.200.180:50191.
+Accept connection from client 128.237.200.180:50194.
+Accept connection from client 128.237.200.180:50192.
+Accept connection from client 128.237.200.180:50189.
+Accept connection from client 128.237.200.180:50195.
+Accept connection from client 128.237.200.180:50188.
+Accept connection from client 128.237.200.180:50196.
+Accept connection from client 128.237.200.180:50198.
+Accept connection from client 128.237.200.180:50193.
+Accept connection from client 128.237.200.180:50197.
+Accept connection from client 128.237.200.180:50200.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Thu Nov 24 15:37:32 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.200.180:50331.
+Accept connection from client 128.237.200.180:50327.
+Accept connection from client 128.237.200.180:50330.
+Accept connection from client 128.237.200.180:50326.
+Accept connection from client 128.237.200.180:50328.
+Accept connection from client 128.237.200.180:50329.
+Accept connection from client 128.237.200.180:50333.
+Accept connection from client 128.237.200.180:50334.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Thu Nov 24 15:37:40 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.200.180:50339.
+Accept connection from client 128.237.200.180:50340.
+Error, close connection with server
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Thu Nov 24 15:38:30 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3792 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Thu Nov 24 15:39:18 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3792 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.200.180:50426.
+Accept connection from client 128.237.200.180:50429.
+Accept connection from client 128.237.200.180:50430.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:50431.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:50432.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Thu Nov 24 15:39:58 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3792 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.200.180:50471.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.200.180:50474.
+Accept connection from client 128.237.200.180:50476.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Thu Nov 24 15:41:02 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3792 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Thu Nov 24 15:46:26 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3792 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.2.13.144:55542.
+Accept connection from client 128.2.13.144:55546.
+Accept connection from client 128.2.13.144:55548.
+Accept connection from client 128.2.13.144:55550.

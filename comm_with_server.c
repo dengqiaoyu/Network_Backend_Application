@@ -68,7 +68,10 @@ int8_t set_conn(pools_t *p, int connfd, char *fake_ip, char *www_ip,
         /* Clean up */
         freeaddrinfo(listp);
         if (!p) /* All connects failed */
+        {
+            printf("All connects failed\n");
             return -1;
+        }
     }
     fcntl(sockfd, F_SETFL, O_NONBLOCK);
     FD_SET(sockfd, &p->active_wt_set);

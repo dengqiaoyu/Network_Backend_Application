@@ -66,7 +66,7 @@ int main(int argc, char **argv)
                                 &pool.ready_wt_set, NULL, NULL);
 
         int errsv = errno;
-        dbg_cp3_p3_printf("\n\n\n\n\n\n\nnum_ready: %d, errno: %d\n", pool.num_ready, errsv);
+        // dbg_cp3_p3_printf("\n\n\n\n\n\n\nnum_ready: %d, errno: %d\n", pool.num_ready, errsv);
         // htttp port accept connection
         if (pool.num_ready < 0)
         {
@@ -128,7 +128,7 @@ int main(int argc, char **argv)
             }
         }
         // Serve all of client within the pools_t
-        dbg_cp3_p3_printf("before line 124\n");
+        dbg_cp3_p3_printf("\n\nbefore line 124\n");
         ret = serve_clients(&pool);
         if (ret < 0)
         {
@@ -287,6 +287,7 @@ ssize_t serve_clients(pools_t *p)
             }
             dbg_cp3_p3_printf("\nline 274 read_ret %ld: \n%s", read_ret,
                               skt_read_buf);
+            fflush(stdout);
             // Uses parse to get request's inofrmation
             Requests *reqs = parse(skt_read_buf, read_offset, clientfd, p);
             Requests *req_rover = reqs;
@@ -620,16 +621,43 @@ void get_host_and_port(Requests *req_rover, char *hostname, char *port)
     {
         strncpy(hostname, req_rover->http_uri, 1023);
     }
-
     char *pos = strstr(hostname , ":");
+
+    if (pos == NULL)
+    {
+        char *start = strstr(req_rover->http_uri , "http:");
+        dbg_cp3_p3_printf("start: %p\n", start);
+        if (start == NULL)
+        {
+            pos = strstr(req_rover->http_uri , ":");
+        }
+        else
+        {
+            // dbg_cp3_p3_printf("start: %s\n", start + 5);
+            char *slash_pos = strstr(start + 5 , "/");
+            pos = strstr(start + 5 , ":");
+            if (slash_pos != NULL && pos > slash_pos)
+            {
+                pos = NULL;
+            }
+        }
+    }
+    else
+    {
+        *pos = 0;
+    }
+
     if (pos == NULL)
     {
         strncpy(port, "80\0", 3);
     }
     else
     {
-        strncpy(port, pos, 1023);
+        strncpy(port, pos + 1, 1023);
         *pos = 0;
     }
+    dbg_cp3_p3_printf("!!!!!!req_rover->http_uri: %s\n", req_rover->http_uri);
+    dbg_cp3_p3_printf("!!!!!!host: %s\n", hostname);
+    dbg_cp3_p3_printf("!!!!!!port: %s\n", port);
 }
 
