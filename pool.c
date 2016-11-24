@@ -49,6 +49,8 @@ ssize_t add_client(int connfd, pools_t *p, char *c_host)
     fcntl(connfd, F_SETFL, O_NONBLOCK);
     p->clientfd[connfd] = 1;
     FD_SET(connfd, &p->active_rd_set);
+    FD_SET(connfd, &p->ready_rd_set);
+    dbg_cp3_p3_printf("add client: %d\n", connfd);
     strncpy(p->clientip[connfd], c_host, MAX_SIZE_S);
     return 0;
 }

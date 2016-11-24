@@ -12385,3 +12385,2005 @@ Accept connection from client 128.237.223.114:55567.
 Accept connection from client 128.237.223.114:55568.
 Accept connection from client 128.237.223.114:55569.
 Accept connection from client 128.237.223.114:55572.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Wed Nov 23 20:47:34 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.223.114:57315.
+Accept connection from client 128.237.223.114:57317.
+Accept connection from client 128.237.223.114:57318.
+Accept connection from client 128.237.223.114:57319.
+Accept connection from client 128.237.223.114:57320.
+Accept connection from client 128.237.223.114:57321.
+Accept connection from client 128.237.223.114:57322.
+Accept connection from client 128.237.223.114:57323.
+Accept connection from client 128.237.223.114:57324.
+Accept connection from client 128.237.223.114:57326.
+Accept connection from client 128.237.223.114:57325.
+Accept connection from client 128.237.223.114:57327.
+Accept connection from client 128.237.223.114:57328.
+Accept connection from client 128.237.223.114:57329.
+Accept connection from client 128.237.223.114:57330.
+Accept connection from client 128.237.223.114:57333.
+Accept connection from client 128.237.223.114:57334.
+Accept connection from client 128.237.223.114:57335.
+Accept connection from client 128.237.223.114:57336.
+Accept connection from client 128.237.223.114:57339.
+Accept connection from client 128.237.223.114:57340.
+Accept connection from client 128.237.223.114:57341.
+Accept connection from client 128.237.223.114:57342.
+Accept connection from client 128.237.223.114:57343.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Wed Nov 23 20:52:43 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.223.114:57547.
+Accept connection from client 128.237.223.114:57548.
+Accept connection from client 128.237.223.114:57549.
+Accept connection from client 128.237.223.114:57550.
+Accept connection from client 128.237.223.114:57551.
+Accept connection from client 128.237.223.114:57552.
+Accept connection from client 128.237.223.114:57553.
+Accept connection from client 128.237.223.114:57555.
+Accept connection from client 128.237.223.114:57554.
+Accept connection from client 128.237.223.114:57556.
+Accept connection from client 128.237.223.114:57557.
+Accept connection from client 128.237.223.114:57558.
+Accept connection from client 128.237.223.114:57559.
+Accept connection from client 128.237.223.114:57560.
+Accept connection from client 128.237.223.114:57561.
+Accept connection from client 128.237.223.114:57564.
+Accept connection from client 128.237.223.114:57565.
+Accept connection from client 128.237.223.114:57566.
+Accept connection from client 128.237.223.114:57567.
+Accept connection from client 128.237.223.114:57570.
+Accept connection from client 128.237.223.114:57571.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Wed Nov 23 21:00:01 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.223.114:57764.
+Accept connection from client 128.237.223.114:57765.
+Accept connection from client 128.237.223.114:57766.
+Accept connection from client 128.237.223.114:57767.
+Accept connection from client 128.237.223.114:57768.
+Accept connection from client 128.237.223.114:57769.
+Accept connection from client 128.237.223.114:57770.
+Accept connection from client 128.237.223.114:57771.
+Accept connection from client 128.237.223.114:57772.
+Accept connection from client 128.237.223.114:57773.
+Accept connection from client 128.237.223.114:57774.
+Accept connection from client 128.237.223.114:57775.
+Accept connection from client 128.237.223.114:57776.
+Accept connection from client 128.237.223.114:57777.
+Accept connection from client 128.237.223.114:57778.
+Accept connection from client 128.237.223.114:57782.
+Accept connection from client 128.237.223.114:57783.
+Accept connection from client 128.237.223.114:57784.
+Accept connection from client 128.237.223.114:57785.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Wed Nov 23 21:23:11 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.223.114:58585.
+Accept connection from client 128.237.223.114:58587.
+Accept connection from client 128.237.223.114:58588.
+Accept connection from client 128.237.223.114:58589.
+Accept connection from client 128.237.223.114:58590.
+Accept connection from client 128.237.223.114:58591.
+Accept connection from client 128.237.223.114:58592.
+Accept connection from client 128.237.223.114:58594.
+Accept connection from client 128.237.223.114:58593.
+Accept connection from client 128.237.223.114:58595.
+Accept connection from client 128.237.223.114:58596.
+Accept connection from client 128.237.223.114:58597.
+Accept connection from client 128.237.223.114:58598.
+Accept connection from client 128.237.223.114:58599.
+Accept connection from client 128.237.223.114:58600.
+Accept connection from client 128.237.223.114:58601.
+Accept connection from client 128.237.223.114:58606.
+Accept connection from client 128.237.223.114:58607.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Wed Nov 23 21:24:44 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.223.114:58733.
+Accept connection from client 128.237.223.114:58734.
+Accept connection from client 128.237.223.114:58735.
+Accept connection from client 128.237.223.114:58736.
+Accept connection from client 128.237.223.114:58737.
+Accept connection from client 128.237.223.114:58738.
+Accept connection from client 128.237.223.114:58739.
+Accept connection from client 128.237.223.114:58740.
+Accept connection from client 128.237.223.114:58741.
+Accept connection from client 128.237.223.114:58742.
+Accept connection from client 128.237.223.114:58743.
+Accept connection from client 128.237.223.114:58744.
+Accept connection from client 128.237.223.114:58745.
+Accept connection from client 128.237.223.114:58746.
+Accept connection from client 128.237.223.114:58749.
+Accept connection from client 128.237.223.114:58750.
+Accept connection from client 128.237.223.114:58751.
+Accept connection from client 128.237.223.114:58752.
+Accept connection from client 128.237.223.114:58753.
+Accept connection from client 128.237.223.114:58754.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Wed Nov 23 21:29:27 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.223.114:58896.
+Accept connection from client 128.237.223.114:58897.
+Accept connection from client 128.237.223.114:58898.
+Accept connection from client 128.237.223.114:58899.
+Accept connection from client 128.237.223.114:58900.
+Accept connection from client 128.237.223.114:58901.
+Accept connection from client 128.237.223.114:58902.
+Accept connection from client 128.237.223.114:58903.
+Accept connection from client 128.237.223.114:58904.
+Accept connection from client 128.237.223.114:58905.
+Accept connection from client 128.237.223.114:58907.
+Accept connection from client 128.237.223.114:58908.
+Accept connection from client 128.237.223.114:58909.
+Accept connection from client 128.237.223.114:58906.
+Accept connection from client 128.237.223.114:58910.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Wed Nov 23 21:31:27 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.223.114:59034.
+Accept connection from client 128.237.223.114:59035.
+Accept connection from client 128.237.223.114:59036.
+Accept connection from client 128.237.223.114:59037.
+Accept connection from client 128.237.223.114:59038.
+Accept connection from client 128.237.223.114:59039.
+Accept connection from client 128.237.223.114:59040.
+Accept connection from client 128.237.223.114:59041.
+Accept connection from client 128.237.223.114:59042.
+Accept connection from client 128.237.223.114:59043.
+Accept connection from client 128.237.223.114:59044.
+Accept connection from client 128.237.223.114:59045.
+Accept connection from client 128.237.223.114:59046.
+Accept connection from client 128.237.223.114:59047.
+Accept connection from client 128.237.223.114:59048.
+Accept connection from client 128.237.223.114:59049.
+Accept connection from client 128.237.223.114:59050.
+Accept connection from client 128.237.223.114:59051.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Wed Nov 23 21:33:43 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.223.114:59168.
+Accept connection from client 128.237.223.114:59169.
+Accept connection from client 128.237.223.114:59170.
+Accept connection from client 128.237.223.114:59171.
+Accept connection from client 128.237.223.114:59172.
+Accept connection from client 128.237.223.114:59173.
+Accept connection from client 128.237.223.114:59174.
+Accept connection from client 128.237.223.114:59175.
+Accept connection from client 128.237.223.114:59176.
+Accept connection from client 128.237.223.114:59177.
+Accept connection from client 128.237.223.114:59178.
+Accept connection from client 128.237.223.114:59179.
+Accept connection from client 128.237.223.114:59180.
+Accept connection from client 128.237.223.114:59181.
+Accept connection from client 128.237.223.114:59182.
+Accept connection from client 128.237.223.114:59185.
+Accept connection from client 128.237.223.114:59188.
+Accept connection from client 128.237.223.114:59192.
+Accept connection from client 128.237.223.114:59193.
+Accept connection from client 128.237.223.114:59198.
+Accept connection from client 128.237.223.114:59201.
+Accept connection from client 128.237.223.114:59205.
+Accept connection from client 128.237.223.114:59206.
+Accept connection from client 128.237.223.114:59203.
+Accept connection from client 128.237.223.114:59202.
+Accept connection from client 128.237.223.114:59204.
+Accept connection from client 128.237.223.114:59209.
+Accept connection from client 128.237.223.114:59212.
+Accept connection from client 128.237.223.114:59213.
+Accept connection from client 128.237.223.114:59216.
+Accept connection from client 128.237.223.114:59219.
+Accept connection from client 128.237.223.114:59223.
+Accept connection from client 128.237.223.114:59222.
+Accept connection from client 128.237.223.114:59226.
+Accept connection from client 128.237.223.114:59231.
+Accept connection from client 128.237.223.114:59234.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Wed Nov 23 21:34:25 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.223.114:59238.
+Accept connection from client 128.237.223.114:59239.
+Accept connection from client 128.237.223.114:59240.
+Accept connection from client 128.237.223.114:59241.
+Accept connection from client 128.237.223.114:59242.
+Accept connection from client 128.237.223.114:59243.
+Accept connection from client 128.237.223.114:59244.
+Accept connection from client 128.237.223.114:59245.
+Accept connection from client 128.237.223.114:59246.
+Accept connection from client 128.237.223.114:59247.
+Accept connection from client 128.237.223.114:59248.
+Accept connection from client 128.237.223.114:59249.
+Accept connection from client 128.237.223.114:59250.
+Accept connection from client 128.237.223.114:59251.
+Accept connection from client 128.237.223.114:59252.
+Accept connection from client 128.237.223.114:59253.
+Accept connection from client 128.237.223.114:59254.
+Accept connection from client 128.237.223.114:59255.
+Accept connection from client 128.237.223.114:59256.
+Accept connection from client 128.237.223.114:59257.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Wed Nov 23 21:35:26 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.223.114:59333.
+Accept connection from client 128.237.223.114:59334.
+Accept connection from client 128.237.223.114:59336.
+Accept connection from client 128.237.223.114:59337.
+Accept connection from client 128.237.223.114:59335.
+Accept connection from client 128.237.223.114:59339.
+Accept connection from client 128.237.223.114:59340.
+Accept connection from client 128.237.223.114:59338.
+Accept connection from client 128.237.223.114:59341.
+Accept connection from client 128.237.223.114:59342.
+Accept connection from client 128.237.223.114:59343.
+Accept connection from client 128.237.223.114:59344.
+Accept connection from client 128.237.223.114:59345.
+Accept connection from client 128.237.223.114:59346.
+Accept connection from client 128.237.223.114:59347.
+Accept connection from client 128.237.223.114:59350.
+Accept connection from client 128.237.223.114:59354.
+Accept connection from client 128.237.223.114:59358.
+Accept connection from client 128.237.223.114:59363.
+Accept connection from client 128.237.223.114:59367.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Wed Nov 23 21:35:44 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.223.114:59371.
+Accept connection from client 128.237.223.114:59370.
+Accept connection from client 128.237.223.114:59372.
+Accept connection from client 128.237.223.114:59373.
+Accept connection from client 128.237.223.114:59375.
+Accept connection from client 128.237.223.114:59374.
+Accept connection from client 128.237.223.114:59376.
+Accept connection from client 128.237.223.114:59377.
+Accept connection from client 128.237.223.114:59378.
+Accept connection from client 128.237.223.114:59379.
+Accept connection from client 128.237.223.114:59380.
+Accept connection from client 128.237.223.114:59381.
+Accept connection from client 128.237.223.114:59383.
+Accept connection from client 128.237.223.114:59382.
+Accept connection from client 128.237.223.114:59384.
+Accept connection from client 128.237.223.114:59385.
+Accept connection from client 128.237.223.114:59386.
+Accept connection from client 128.237.223.114:59387.
+Accept connection from client 128.237.223.114:59388.
+Accept connection from client 128.237.223.114:59389.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Wed Nov 23 21:39:14 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.223.114:59842.
+Accept connection from client 128.237.223.114:59844.
+Accept connection from client 128.237.223.114:59845.
+Accept connection from client 128.237.223.114:59846.
+Accept connection from client 128.237.223.114:59847.
+Accept connection from client 128.237.223.114:59848.
+Accept connection from client 128.237.223.114:59849.
+Accept connection from client 128.237.223.114:59850.
+Accept connection from client 128.237.223.114:59851.
+Accept connection from client 128.237.223.114:59852.
+Accept connection from client 128.237.223.114:59854.
+Accept connection from client 128.237.223.114:59853.
+Accept connection from client 128.237.223.114:59855.
+Accept connection from client 128.237.223.114:59856.
+Accept connection from client 128.237.223.114:59857.
+Accept connection from client 128.237.223.114:59860.
+Accept connection from client 128.237.223.114:59861.
+Accept connection from client 128.237.223.114:59862.
+Accept connection from client 128.237.223.114:59863.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Wed Nov 23 21:42:38 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.223.114:60040.
+Accept connection from client 128.237.223.114:60041.
+Accept connection from client 128.237.223.114:60042.
+Accept connection from client 128.237.223.114:60043.
+Accept connection from client 128.237.223.114:60044.
+Accept connection from client 128.237.223.114:60045.
+Accept connection from client 128.237.223.114:60047.
+Accept connection from client 128.237.223.114:60048.
+Accept connection from client 128.237.223.114:60046.
+Accept connection from client 128.237.223.114:60049.
+Accept connection from client 128.237.223.114:60050.
+Accept connection from client 128.237.223.114:60051.
+Accept connection from client 128.237.223.114:60052.
+Accept connection from client 128.237.223.114:60053.
+Accept connection from client 128.237.223.114:60054.
+Accept connection from client 128.237.223.114:60058.
+Accept connection from client 128.237.223.114:60061.
+Accept connection from client 128.237.223.114:60064.
+Accept connection from client 128.237.223.114:60067.
+Accept connection from client 128.237.223.114:60070.
+Accept connection from client 128.237.223.114:60071.
+Accept connection from client 128.237.223.114:60074.
+Accept connection from client 128.237.223.114:60077.
+Accept connection from client 128.237.223.114:60080.
+Accept connection from client 128.237.223.114:60085.
+Accept connection from client 128.237.223.114:60088.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Wed Nov 23 21:43:08 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.223.114:60112.
+Accept connection from client 128.237.223.114:60162.
+Accept connection from client 128.237.223.114:60187.
+Accept connection from client 128.237.223.114:60220.
+Accept connection from client 128.237.223.114:60242.
+Accept connection from client 128.237.223.114:60255.
+Accept connection from client 128.237.223.114:60268.
+Accept connection from client 128.237.223.114:60295.
+Accept connection from client 128.237.223.114:60309.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor 9.
+Accept connection from client 128.237.223.114:60329.
+Accept connection from client 128.237.223.114:60330.
+Accept connection from client 128.237.223.114:60331.
+Accept connection from client 128.237.223.114:60332.
+Accept connection from client 128.237.223.114:60333.
+Accept connection from client 128.237.223.114:60334.
+Accept connection from client 128.237.223.114:60335.
+Accept connection from client 128.237.223.114:60336.
+Accept connection from client 128.237.223.114:60337.
+Accept connection from client 128.237.223.114:60338.
+Accept connection from client 128.237.223.114:60339.
+Accept connection from client 128.237.223.114:60351.
+Accept connection from client 128.237.223.114:60352.
+Accept connection from client 128.237.223.114:60353.
+Accept connection from client 128.237.223.114:60354.
+Accept connection from client 128.237.223.114:60355.
+Accept connection from client 128.237.223.114:60356.
+Accept connection from client 128.237.223.114:60357.
+Accept connection from client 128.237.223.114:60358.
+Accept connection from client 128.237.223.114:60359.
+Accept connection from client 128.237.223.114:60368.
+Accept connection from client 128.237.223.114:60371.
+Accept connection from client 128.237.223.114:60391.
+Accept connection from client 128.237.223.114:60393.
+Accept connection from client 128.237.223.114:60392.
+Accept connection from client 128.237.223.114:60394.
+Accept connection from client 128.237.223.114:60395.
+Accept connection from client 128.237.223.114:60396.
+Accept connection from client 128.237.223.114:60397.
+Accept connection from client 128.237.223.114:60398.
+Accept connection from client 128.237.223.114:60399.
+Accept connection from client 128.237.223.114:60400.
+Accept connection from client 128.237.223.114:60401.
+Accept connection from client 128.237.223.114:60414.
+Accept connection from client 128.237.223.114:60422.
+Accept connection from client 128.237.223.114:60425.
+Accept connection from client 128.237.223.114:60428.
+Accept connection from client 128.237.223.114:60429.
+Accept connection from client 128.237.223.114:60430.
+Accept connection from client 128.237.223.114:60431.
+Accept connection from client 128.237.223.114:60432.
+Accept connection from client 128.237.223.114:60435.
+Accept connection from client 128.237.223.114:60433.
+Accept connection from client 128.237.223.114:60437.
+Accept connection from client 128.237.223.114:60434.
+Accept connection from client 128.237.223.114:60438.
+Accept connection from client 128.237.223.114:60436.
+Accept connection from client 128.237.223.114:60439.
+Accept connection from client 128.237.223.114:60440.
+Accept connection from client 128.237.223.114:60441.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Wed Nov 23 21:45:51 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.223.114:60469.
+Accept connection from client 128.237.223.114:60470.
+Accept connection from client 128.237.223.114:60475.
+Accept connection from client 128.237.223.114:60476.
+Accept connection from client 128.237.223.114:60477.
+Accept connection from client 128.237.223.114:60479.
+Accept connection from client 128.237.223.114:60478.
+Accept connection from client 128.237.223.114:60480.
+Accept connection from client 128.237.223.114:60481.
+Accept connection from client 128.237.223.114:60482.
+Accept connection from client 128.237.223.114:60483.
+Accept connection from client 128.237.223.114:60487.
+Accept connection from client 128.237.223.114:60500.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Wed Nov 23 21:48:10 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.223.114:60563.
+Accept connection from client 128.237.223.114:60565.
+Accept connection from client 128.237.223.114:60566.
+Accept connection from client 128.237.223.114:60567.
+Accept connection from client 128.237.223.114:60568.
+Accept connection from client 128.237.223.114:60569.
+Accept connection from client 128.237.223.114:60570.
+Accept connection from client 128.237.223.114:60571.
+Accept connection from client 128.237.223.114:60572.
+Accept connection from client 128.237.223.114:60573.
+Accept connection from client 128.237.223.114:60574.
+Accept connection from client 128.237.223.114:60575.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Wed Nov 23 21:51:03 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.223.114:60710.
+Accept connection from client 128.237.223.114:60711.
+Accept connection from client 128.237.223.114:60712.
+Accept connection from client 128.237.223.114:60713.
+Accept connection from client 128.237.223.114:60714.
+Accept connection from client 128.237.223.114:60715.
+Accept connection from client 128.237.223.114:60716.
+Accept connection from client 128.237.223.114:60717.
+Accept connection from client 128.237.223.114:60718.
+Accept connection from client 128.237.223.114:60719.
+Accept connection from client 128.237.223.114:60720.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Wed Nov 23 21:52:08 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.223.114:60783.
+Accept connection from client 128.237.223.114:60784.
+Accept connection from client 128.237.223.114:60785.
+Accept connection from client 128.237.223.114:60786.
+Accept connection from client 128.237.223.114:60787.
+Accept connection from client 128.237.223.114:60788.
+Accept connection from client 128.237.223.114:60789.
+Accept connection from client 128.237.223.114:60790.
+Accept connection from client 128.237.223.114:60791.
+Accept connection from client 128.237.223.114:60792.
+Accept connection from client 128.237.223.114:60793.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Wed Nov 23 21:58:39 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.223.114:61044.
+Accept connection from client 128.237.223.114:61045.
+Accept connection from client 128.237.223.114:61046.
+Accept connection from client 128.237.223.114:61049.
+Accept connection from client 128.237.223.114:61050.
+Accept connection from client 128.237.223.114:61051.
+Accept connection from client 128.237.223.114:61052.
+Accept connection from client 128.237.223.114:61053.
+Accept connection from client 128.237.223.114:61054.
+Accept connection from client 128.237.223.114:61055.
+Accept connection from client 128.237.223.114:61056.
+Accept connection from client 128.237.223.114:61057.
+Accept connection from client 128.237.223.114:61058.
+Accept connection from client 128.237.223.114:61059.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Wed Nov 23 22:00:06 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.223.114:61135.
+Accept connection from client 128.237.223.114:61137.
+Accept connection from client 128.237.223.114:61138.
+Accept connection from client 128.237.223.114:61139.
+Accept connection from client 128.237.223.114:61140.
+Accept connection from client 128.237.223.114:61141.
+Accept connection from client 128.237.223.114:61142.
+Accept connection from client 128.237.223.114:61143.
+Accept connection from client 128.237.223.114:61144.
+Accept connection from client 128.237.223.114:61145.
+Accept connection from client 128.237.223.114:61146.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Wed Nov 23 22:15:16 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.223.114:61647.
+Accept connection from client 128.237.223.114:61653.
+Accept connection from client 128.237.223.114:61654.
+Accept connection from client 128.237.223.114:61655.
+Accept connection from client 128.237.223.114:61656.
+Accept connection from client 128.237.223.114:61657.
+Accept connection from client 128.237.223.114:61658.
+Accept connection from client 128.237.223.114:61659.
+Accept connection from client 128.237.223.114:61660.
+Accept connection from client 128.237.223.114:61661.
+Accept connection from client 128.237.223.114:61662.
+Accept connection from client 128.237.223.114:61672.
+Accept connection from client 128.237.223.114:61673.
+Accept connection from client 128.237.223.114:61675.
+Accept connection from client 128.237.223.114:61678.
+Accept connection from client 128.237.223.114:61676.
+Accept connection from client 128.237.223.114:61681.
+Accept connection from client 128.237.223.114:61682.
+Accept connection from client 128.237.223.114:61683.
+Accept connection from client 128.237.223.114:61684.
+Accept connection from client 128.237.223.114:61685.
+Accept connection from client 128.237.223.114:61686.
+Accept connection from client 128.237.223.114:61687.
+Accept connection from client 128.237.223.114:61688.
+Accept connection from client 128.237.223.114:61689.
+Accept connection from client 128.237.223.114:61691.
+Accept connection from client 128.237.223.114:61692.
+Accept connection from client 128.237.223.114:61693.
+Accept connection from client 128.237.223.114:61694.
+Accept connection from client 128.237.223.114:61695.
+Accept connection from client 128.237.223.114:61696.
+Accept connection from client 128.237.223.114:61697.
+Accept connection from client 128.237.223.114:61698.
+Accept connection from client 128.237.223.114:61704.
+Accept connection from client 128.237.223.114:61712.
+Failed sending response to client from server, disconnected
+Failed closing connection file descriptor 8.
+Failed closing connection file descriptor -1.
+Failed sending response to client from server, disconnected
+Failed closing connection file descriptor 32.
+Failed closing connection file descriptor -1.
+Failed sending response to client from server, disconnected
+Failed closing connection file descriptor 11.
+Failed closing connection file descriptor -1.
+Failed sending response to client from server, disconnected
+Failed closing connection file descriptor 36.
+Failed closing connection file descriptor -1.
+Failed sending response to client from server, disconnected
+Failed closing connection file descriptor 23.
+Failed closing connection file descriptor -1.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor 41.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor 24.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor 16.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor 43.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor 29.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor 18.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor 25.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor 22.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor 31.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor 33.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor 12.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor 61.
+Accept connection from client 128.237.223.114:61745.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor 47.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor 51.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor 37.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor 67.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor 65.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor 45.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor 49.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor 69.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor 57.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor 53.
+Accept connection from client 128.237.223.114:61785.
+Accept connection from client 128.237.223.114:61801.
+Accept connection from client 128.237.223.114:61802.
+Accept connection from client 128.237.223.114:61803.
+Accept connection from client 128.237.223.114:61804.
+Accept connection from client 128.237.223.114:61805.
+Accept connection from client 128.237.223.114:61807.
+Accept connection from client 128.237.223.114:61806.
+Accept connection from client 128.237.223.114:61808.
+Accept connection from client 128.237.223.114:61811.
+Accept connection from client 128.237.223.114:61815.
+Accept connection from client 128.237.223.114:61817.
+Accept connection from client 128.237.223.114:61820.
+Accept connection from client 128.237.223.114:61821.
+Accept connection from client 128.237.223.114:61822.
+Accept connection from client 128.237.223.114:61823.
+Accept connection from client 128.237.223.114:61824.
+Accept connection from client 128.237.223.114:61826.
+Accept connection from client 128.237.223.114:61827.
+Accept connection from client 128.237.223.114:61828.
+Accept connection from client 128.237.223.114:61829.
+Accept connection from client 128.237.223.114:61830.
+Accept connection from client 128.237.223.114:61831.
+Accept connection from client 128.237.223.114:61832.
+Accept connection from client 128.237.223.114:61833.
+Accept connection from client 128.237.223.114:61834.
+Accept connection from client 128.237.223.114:61835.
+Accept connection from client 128.237.223.114:61836.
+Accept connection from client 128.237.223.114:61837.
+Accept connection from client 128.237.223.114:61838.
+Accept connection from client 128.237.223.114:61839.
+Accept connection from client 128.237.223.114:61840.
+Accept connection from client 128.237.223.114:61841.
+Accept connection from client 128.237.223.114:61842.
+Accept connection from client 128.237.223.114:61843.
+Accept connection from client 128.237.223.114:61844.
+Accept connection from client 128.237.223.114:61845.
+Accept connection from client 128.237.223.114:61846.
+Accept connection from client 128.237.223.114:61847.
+Accept connection from client 128.237.223.114:61848.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Wed Nov 23 22:19:16 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.223.114:61899.
+Accept connection from client 128.237.223.114:61900.
+Accept connection from client 128.237.223.114:61901.
+Accept connection from client 128.237.223.114:61902.
+Accept connection from client 128.237.223.114:61903.
+Accept connection from client 128.237.223.114:61904.
+Accept connection from client 128.237.223.114:61905.
+Accept connection from client 128.237.223.114:61906.
+Accept connection from client 128.237.223.114:61907.
+Accept connection from client 128.237.223.114:61908.
+Accept connection from client 128.237.223.114:61909.
+Accept connection from client 128.237.223.114:61911.
+Accept connection from client 128.237.223.114:61912.
+Accept connection from client 128.237.223.114:61913.
+Accept connection from client 128.237.223.114:61915.
+Accept connection from client 128.237.223.114:61914.
+Accept connection from client 128.237.223.114:61917.
+Accept connection from client 128.237.223.114:61916.
+Accept connection from client 128.237.223.114:61918.
+Accept connection from client 128.237.223.114:61919.
+Accept connection from client 128.237.223.114:61921.
+Accept connection from client 128.237.223.114:61920.
+Accept connection from client 128.237.223.114:61922.
+Accept connection from client 128.237.223.114:61923.
+Accept connection from client 128.237.223.114:61924.
+Accept connection from client 128.237.223.114:61925.
+Accept connection from client 128.237.223.114:61927.
+Accept connection from client 128.237.223.114:61926.
+Accept connection from client 128.237.223.114:61928.
+Accept connection from client 128.237.223.114:61929.
+Accept connection from client 128.237.223.114:61930.
+Accept connection from client 128.237.223.114:61931.
+Accept connection from client 128.237.223.114:61932.
+Accept connection from client 128.237.223.114:61934.
+Accept connection from client 128.237.223.114:61937.
+Accept connection from client 128.237.223.114:61942.
+Accept connection from client 128.237.223.114:61946.
+Accept connection from client 128.237.223.114:61988.
+Accept connection from client 128.237.223.114:61996.
+Accept connection from client 128.237.223.114:62009.
+Accept connection from client 128.237.223.114:62022.
+Accept connection from client 128.237.223.114:62030.
+Accept connection from client 128.237.223.114:62037.
+Accept connection from client 128.237.223.114:62046.
+Accept connection from client 128.237.223.114:62059.
+Accept connection from client 128.237.223.114:62070.
+Accept connection from client 128.237.223.114:62081.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor 14.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor 16.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor 18.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor 29.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor 23.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor 33.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor 35.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor 47.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor 49.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor 57.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor 43.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor 45.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor 63.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor 65.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor 67.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor 69.
+Accept connection from client 128.237.223.114:62084.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor 51.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor 53.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor 55.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor 59.
+Accept connection from client 128.237.223.114:62085.
+Accept connection from client 128.237.223.114:62086.
+Accept connection from client 128.237.223.114:62087.
+Accept connection from client 128.237.223.114:62088.
+Accept connection from client 128.237.223.114:62089.
+Accept connection from client 128.237.223.114:62090.
+Accept connection from client 128.237.223.114:62091.
+Accept connection from client 128.237.223.114:62092.
+Accept connection from client 128.237.223.114:62093.
+Accept connection from client 128.237.223.114:62114.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Wed Nov 23 22:23:06 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.223.114:62215.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Wed Nov 23 22:24:10 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.223.114:62249.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Wed Nov 23 22:25:11 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.223.114:62308.
+Accept connection from client 128.237.223.114:62313.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Wed Nov 23 22:26:34 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.223.114:62402.
+Accept connection from client 128.237.223.114:62412.
+Accept connection from client 128.237.223.114:62436.
+Accept connection from client 128.237.223.114:62581.
+Accept connection from client 128.237.223.114:62633.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Wed Nov 23 22:30:19 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.223.114:62642.
+Accept connection from client 128.237.223.114:62641.
+Accept connection from client 128.237.223.114:62644.
+Accept connection from client 128.237.223.114:62643.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Wed Nov 23 22:30:23 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.223.114:62649.
+Accept connection from client 128.237.223.114:62650.
+Accept connection from client 128.237.223.114:62651.
+Accept connection from client 128.237.223.114:62652.
+Accept connection from client 128.237.223.114:62665.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Wed Nov 23 22:36:19 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.223.114:62829.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Wed Nov 23 22:38:02 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.223.114:62903.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Wed Nov 23 22:38:39 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.223.114:62957.
+Accept connection from client 128.237.223.114:62961.
+Accept connection from client 128.237.223.114:62983.
+Accept connection from client 128.237.223.114:62987.
+Accept connection from client 128.237.223.114:63003.
+Accept connection from client 128.237.223.114:63028.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Wed Nov 23 22:40:21 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.223.114:63092.
+Accept connection from client 128.237.223.114:63093.
+Accept connection from client 128.237.223.114:63094.
+Accept connection from client 128.237.223.114:63095.
+Accept connection from client 128.237.223.114:63096.
+Accept connection from client 128.237.223.114:63097.
+Accept connection from client 128.237.223.114:63098.
+Accept connection from client 128.237.223.114:63099.
+Accept connection from client 128.237.223.114:63100.
+Accept connection from client 128.237.223.114:63101.
+Accept connection from client 128.237.223.114:63102.
+Accept connection from client 128.237.223.114:63103.
+Accept connection from client 128.237.223.114:63104.
+Accept connection from client 128.237.223.114:63106.
+Accept connection from client 128.237.223.114:63105.
+Accept connection from client 128.237.223.114:63107.
+Accept connection from client 128.237.223.114:63110.
+Accept connection from client 128.237.223.114:63116.
+Accept connection from client 128.237.223.114:63127.
+Accept connection from client 128.237.223.114:63128.
+Accept connection from client 128.237.223.114:63129.
+Accept connection from client 128.237.223.114:63130.
+Accept connection from client 128.237.223.114:63131.
+Accept connection from client 128.237.223.114:63132.
+Accept connection from client 128.237.223.114:63133.
+Accept connection from client 128.237.223.114:63134.
+Accept connection from client 128.237.223.114:63135.
+Accept connection from client 128.237.223.114:63136.
+Accept connection from client 128.237.223.114:63137.
+Accept connection from client 128.237.223.114:63138.
+Accept connection from client 128.237.223.114:63139.
+Accept connection from client 128.237.223.114:63140.
+Accept connection from client 128.237.223.114:63141.
+Accept connection from client 128.237.223.114:63142.
+Accept connection from client 128.237.223.114:63143.
+Accept connection from client 128.237.223.114:63144.
+Accept connection from client 128.237.223.114:63145.
+Accept connection from client 128.237.223.114:63146.
+Accept connection from client 128.237.223.114:63147.
+Accept connection from client 128.237.223.114:63150.
+Accept connection from client 128.237.223.114:63156.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor 38.
+Accept connection from client 128.237.223.114:63163.
+Accept connection from client 128.237.223.114:63164.
+Accept connection from client 128.237.223.114:63165.
+Accept connection from client 128.237.223.114:63166.
+Accept connection from client 128.237.223.114:63167.
+Accept connection from client 128.237.223.114:63168.
+Accept connection from client 128.237.223.114:63169.
+Accept connection from client 128.237.223.114:63170.
+Accept connection from client 128.237.223.114:63173.
+Accept connection from client 128.237.223.114:63175.
+Accept connection from client 128.237.223.114:63176.
+Accept connection from client 128.237.223.114:63177.
+Accept connection from client 128.237.223.114:63178.
+Accept connection from client 128.237.223.114:63179.
+Accept connection from client 128.237.223.114:63184.
+Accept connection from client 128.237.223.114:63199.
+Accept connection from client 128.237.223.114:63200.
+Accept connection from client 128.237.223.114:63201.
+Accept connection from client 128.237.223.114:63203.
+Accept connection from client 128.237.223.114:63209.
+Accept connection from client 128.237.223.114:63213.
+Accept connection from client 128.237.223.114:63217.
+Accept connection from client 128.237.223.114:63220.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Wed Nov 23 22:45:06 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.223.114:63367.
+Accept connection from client 128.237.223.114:63380.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Wed Nov 23 22:47:12 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.223.114:63460.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Wed Nov 23 22:48:37 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.223.114:63499.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Wed Nov 23 22:50:01 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.223.114:63550.
+Accept connection from client 128.237.223.114:63551.
+Accept connection from client 128.237.223.114:63552.
+Accept connection from client 128.237.223.114:63553.
+Accept connection from client 128.237.223.114:63554.
+Accept connection from client 128.237.223.114:63555.
+Accept connection from client 128.237.223.114:63556.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Wed Nov 23 22:51:06 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.223.114:63652.
+Accept connection from client 128.237.223.114:63653.
+Accept connection from client 128.237.223.114:63654.
+Accept connection from client 128.237.223.114:63655.
+Accept connection from client 128.237.223.114:63656.
+Accept connection from client 128.237.223.114:63657.
+Accept connection from client 128.237.223.114:63658.
+Accept connection from client 128.237.223.114:63659.
+Accept connection from client 128.237.223.114:63660.
+Accept connection from client 128.237.223.114:63661.
+Accept connection from client 128.237.223.114:63663.
+Accept connection from client 128.237.223.114:63662.
+Accept connection from client 128.237.223.114:63665.
+Accept connection from client 128.237.223.114:63664.
+Accept connection from client 128.237.223.114:63666.
+Accept connection from client 128.237.223.114:63667.
+Accept connection from client 128.237.223.114:63668.
+Accept connection from client 128.237.223.114:63669.
+Accept connection from client 128.237.223.114:63670.
+Accept connection from client 128.237.223.114:63671.
+Accept connection from client 128.237.223.114:63672.
+Accept connection from client 128.237.223.114:63673.
+Accept connection from client 128.237.223.114:63678.
+Accept connection from client 128.237.223.114:63679.
+Accept connection from client 128.237.223.114:63682.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Wed Nov 23 22:55:58 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.223.114:63851.
+Accept connection from client 128.237.223.114:63852.
+Accept connection from client 128.237.223.114:63853.
+Accept connection from client 128.237.223.114:63854.
+Accept connection from client 128.237.223.114:63856.
+Accept connection from client 128.237.223.114:63857.
+Accept connection from client 128.237.223.114:63855.
+Accept connection from client 128.237.223.114:63858.
+Accept connection from client 128.237.223.114:63859.
+Accept connection from client 128.237.223.114:63860.
+Accept connection from client 128.237.223.114:63861.
+Accept connection from client 128.237.223.114:63862.
+Accept connection from client 128.237.223.114:63863.
+Accept connection from client 128.237.223.114:63864.
+Accept connection from client 128.237.223.114:63866.
+Accept connection from client 128.237.223.114:63865.
+Accept connection from client 128.237.223.114:63867.
+Accept connection from client 128.237.223.114:63868.
+Accept connection from client 128.237.223.114:63869.
+Accept connection from client 128.237.223.114:63870.
+Accept connection from client 128.237.223.114:63871.
+Accept connection from client 128.237.223.114:63874.
+Accept connection from client 128.237.223.114:63879.
+Accept connection from client 128.237.223.114:63880.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Wed Nov 23 23:00:54 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+No address worked in open_listenfd.
+Port listening failed, proxy terminated
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Wed Nov 23 23:00:57 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+No address worked in open_listenfd.
+Port listening failed, proxy terminated
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Wed Nov 23 23:00:59 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+No address worked in open_listenfd.
+Port listening failed, proxy terminated
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Wed Nov 23 23:01:16 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.223.114:63971.
+Accept connection from client 128.237.223.114:63972.
+Accept connection from client 128.237.223.114:63975.
+Accept connection from client 128.237.223.114:63976.
+Accept connection from client 128.237.223.114:63977.
+Accept connection from client 128.237.223.114:63978.
+Accept connection from client 128.237.223.114:63979.
+Accept connection from client 128.237.223.114:63980.
+Accept connection from client 128.237.223.114:63981.
+Accept connection from client 128.237.223.114:63982.
+Accept connection from client 128.237.223.114:63983.
+Accept connection from client 128.237.223.114:63984.
+Accept connection from client 128.237.223.114:63985.
+Accept connection from client 128.237.223.114:63987.
+Accept connection from client 128.237.223.114:63988.
+Accept connection from client 128.237.223.114:63986.
+Accept connection from client 128.237.223.114:63989.
+Accept connection from client 128.237.223.114:63990.
+Accept connection from client 128.237.223.114:63991.
+Accept connection from client 128.237.223.114:63992.
+Accept connection from client 128.237.223.114:63995.
+Accept connection from client 128.237.223.114:63998.
+Accept connection from client 128.237.223.114:63999.
+Accept connection from client 128.237.223.114:64002.
+Accept connection from client 128.237.223.114:64003.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor 37.
+Accept connection from client 128.237.223.114:64004.
+Accept connection from client 128.237.223.114:64005.
+Accept connection from client 128.237.223.114:64006.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Wed Nov 23 23:03:06 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Wed Nov 23 23:03:44 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.223.114:64076.
+Accept connection from client 128.237.223.114:64077.
+Accept connection from client 128.237.223.114:64078.
+Accept connection from client 128.237.223.114:64079.
+Accept connection from client 128.237.223.114:64080.
+Accept connection from client 128.237.223.114:64082.
+Accept connection from client 128.237.223.114:64081.
+Accept connection from client 128.237.223.114:64083.
+Accept connection from client 128.237.223.114:64084.
+Accept connection from client 128.237.223.114:64086.
+Accept connection from client 128.237.223.114:64085.
+Accept connection from client 128.237.223.114:64087.
+Accept connection from client 128.237.223.114:64088.
+Accept connection from client 128.237.223.114:64089.
+Accept connection from client 128.237.223.114:64090.
+Accept connection from client 128.237.223.114:64091.
+Accept connection from client 128.237.223.114:64092.
+Accept connection from client 128.237.223.114:64093.
+Accept connection from client 128.237.223.114:64094.
+Accept connection from client 128.237.223.114:64095.
+Accept connection from client 128.237.223.114:64103.
+Accept connection from client 128.237.223.114:64106.
+Accept connection from client 128.237.223.114:64107.
+Accept connection from client 128.237.223.114:64113.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor 36.
+Accept connection from client 128.237.223.114:64120.
+Accept connection from client 128.237.223.114:64121.
+Accept connection from client 128.237.223.114:64122.
+Accept connection from client 128.237.223.114:64126.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Wed Nov 23 23:07:17 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.223.114:64369.
+Accept connection from client 128.237.223.114:64370.
+Accept connection from client 128.237.223.114:64371.
+Accept connection from client 128.237.223.114:64372.
+Accept connection from client 128.237.223.114:64373.
+Accept connection from client 128.237.223.114:64374.
+Accept connection from client 128.237.223.114:64375.
+Accept connection from client 128.237.223.114:64376.
+Accept connection from client 128.237.223.114:64377.
+Accept connection from client 128.237.223.114:64378.
+Accept connection from client 128.237.223.114:64379.
+Accept connection from client 128.237.223.114:64380.
+Accept connection from client 128.237.223.114:64382.
+Accept connection from client 128.237.223.114:64381.
+Accept connection from client 128.237.223.114:64383.
+Accept connection from client 128.237.223.114:64384.
+Accept connection from client 128.237.223.114:64387.
+Accept connection from client 128.237.223.114:64394.
+Accept connection from client 128.237.223.114:64395.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor 36.
+Accept connection from client 128.237.223.114:64397.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor 40.
+Accept connection from client 128.237.223.114:64403.
+Accept connection from client 128.237.223.114:64404.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor 14.
+Accept connection from client 128.237.223.114:64410.
+Accept connection from client 128.237.223.114:64411.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor 35.
+Accept connection from client 128.237.223.114:64416.
+Accept connection from client 128.237.223.114:64417.
+Accept connection from client 128.237.223.114:64429.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor 14.
+Accept connection from client 128.237.223.114:64437.
+Accept connection from client 128.237.223.114:64439.
+Accept connection from client 128.237.223.114:64438.
+Accept connection from client 128.237.223.114:64440.
+Accept connection from client 128.237.223.114:64441.
+Accept connection from client 128.237.223.114:64443.
+Accept connection from client 128.237.223.114:64442.
+Accept connection from client 128.237.223.114:64444.
+Accept connection from client 128.237.223.114:64445.
+Accept connection from client 128.237.223.114:64447.
+Accept connection from client 128.237.223.114:64446.
+Accept connection from client 128.237.223.114:64448.
+Accept connection from client 128.237.223.114:64449.
+Accept connection from client 128.237.223.114:64450.
+Accept connection from client 128.237.223.114:64451.
+Accept connection from client 128.237.223.114:64453.
+Accept connection from client 128.237.223.114:64452.
+Accept connection from client 128.237.223.114:64454.
+Accept connection from client 128.237.223.114:64455.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor 26.
+Accept connection from client 128.237.223.114:64468.
+Accept connection from client 128.237.223.114:64472.
+Accept connection from client 128.237.223.114:64475.
+Accept connection from client 128.237.223.114:64476.
+Accept connection from client 128.237.223.114:64480.
+Accept connection from client 128.237.223.114:64477.
+Accept connection from client 128.237.223.114:64481.
+Accept connection from client 128.237.223.114:64479.
+Accept connection from client 128.237.223.114:64482.
+Accept connection from client 128.237.223.114:64478.
+Accept connection from client 128.237.223.114:64484.
+Accept connection from client 128.237.223.114:64483.
+Accept connection from client 128.237.223.114:64485.
+Accept connection from client 128.237.223.114:64486.
+Accept connection from client 128.237.223.114:64487.
+Accept connection from client 128.237.223.114:64488.
+Accept connection from client 128.237.223.114:64489.
+Accept connection from client 128.237.223.114:64490.
+Accept connection from client 128.237.223.114:64491.
+Accept connection from client 128.237.223.114:64492.
+Accept connection from client 128.237.223.114:64493.
+Accept connection from client 128.237.223.114:64494.
+Accept connection from client 128.237.223.114:64497.
+Failed sending response to client from server, disconnected
+Failed closing connection file descriptor 31.
+Failed closing connection file descriptor -1.
+Accept connection from client 128.237.223.114:64504.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor 37.
+Accept connection from client 128.237.223.114:64509.
+Accept connection from client 128.237.223.114:64510.
+Accept connection from client 128.237.223.114:64511.
+Accept connection from client 128.237.223.114:64512.
+Accept connection from client 128.237.223.114:64513.
+Accept connection from client 128.237.223.114:64518.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor 37.
+Accept connection from client 128.237.223.114:64523.
+Accept connection from client 128.237.223.114:64524.
+Accept connection from client 128.237.223.114:64525.
+Accept connection from client 128.237.223.114:64526.
+Accept connection from client 128.237.223.114:64527.
+Accept connection from client 128.237.223.114:64528.
+Accept connection from client 128.237.223.114:64529.
+Accept connection from client 128.237.223.114:64530.
+Accept connection from client 128.237.223.114:64531.
+Accept connection from client 128.237.223.114:64532.
+Accept connection from client 128.237.223.114:64534.
+Accept connection from client 128.237.223.114:64533.
+Accept connection from client 128.237.223.114:64535.
+Accept connection from client 128.237.223.114:64536.
+Accept connection from client 128.237.223.114:64537.
+Accept connection from client 128.237.223.114:64538.
+Accept connection from client 128.237.223.114:64539.
+Accept connection from client 128.237.223.114:64540.
+Accept connection from client 128.237.223.114:64541.
+Accept connection from client 128.237.223.114:64543.
+Accept connection from client 128.237.223.114:64542.
+Accept connection from client 128.237.223.114:64547.
+Failed sending response to client from server, disconnected
+Failed closing connection file descriptor 29.
+Failed closing connection file descriptor -1.
+Failed sending response to client from server, disconnected
+Failed closing connection file descriptor 29.
+Failed closing connection file descriptor -1.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Wed Nov 23 23:10:41 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.223.114:64606.
+Accept connection from client 128.237.223.114:64607.
+Accept connection from client 128.237.223.114:64608.
+Accept connection from client 128.237.223.114:64609.
+Accept connection from client 128.237.223.114:64610.
+Accept connection from client 128.237.223.114:64611.
+Accept connection from client 128.237.223.114:64613.
+Accept connection from client 128.237.223.114:64612.
+Accept connection from client 128.237.223.114:64614.
+Accept connection from client 128.237.223.114:64615.
+Accept connection from client 128.237.223.114:64617.
+Accept connection from client 128.237.223.114:64616.
+Accept connection from client 128.237.223.114:64618.
+Accept connection from client 128.237.223.114:64619.
+Accept connection from client 128.237.223.114:64620.
+Accept connection from client 128.237.223.114:64622.
+Accept connection from client 128.237.223.114:64621.
+Accept connection from client 128.237.223.114:64624.
+Accept connection from client 128.237.223.114:64623.
+Accept connection from client 128.237.223.114:64625.
+Accept connection from client 128.237.223.114:64626.
+Accept connection from client 128.237.223.114:64631.
+Accept connection from client 128.237.223.114:64632.
+Accept connection from client 128.237.223.114:64633.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor 34.
+Accept connection from client 128.237.223.114:64656.
+Accept connection from client 128.237.223.114:64657.
+Accept connection from client 128.237.223.114:64659.
+Accept connection from client 128.237.223.114:64658.
+Accept connection from client 128.237.223.114:64661.
+Accept connection from client 128.237.223.114:64660.
+Accept connection from client 128.237.223.114:64662.
+Accept connection from client 128.237.223.114:64663.
+Accept connection from client 128.237.223.114:64666.
+Accept connection from client 128.237.223.114:64664.
+Accept connection from client 128.237.223.114:64665.
+Accept connection from client 128.237.223.114:64667.
+Accept connection from client 128.237.223.114:64668.
+Accept connection from client 128.237.223.114:64669.
+Accept connection from client 128.237.223.114:64670.
+Accept connection from client 128.237.223.114:64672.
+Accept connection from client 128.237.223.114:64671.
+Accept connection from client 128.237.223.114:64673.
+Accept connection from client 128.237.223.114:64675.
+Accept connection from client 128.237.223.114:64674.
+Accept connection from client 128.237.223.114:64676.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor 44.
+Accept connection from client 128.237.223.114:64681.
+Accept connection from client 128.237.223.114:64682.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor 37.
+Accept connection from client 128.237.223.114:64689.
+Accept connection from client 128.237.223.114:64696.
+Accept connection from client 128.237.223.114:64697.
+Accept connection from client 128.237.223.114:64698.
+Accept connection from client 128.237.223.114:64699.
+Accept connection from client 128.237.223.114:64700.
+Accept connection from client 128.237.223.114:64703.
+Accept connection from client 128.237.223.114:64701.
+Accept connection from client 128.237.223.114:64702.
+Accept connection from client 128.237.223.114:64704.
+Accept connection from client 128.237.223.114:64705.
+Accept connection from client 128.237.223.114:64706.
+Accept connection from client 128.237.223.114:64707.
+Accept connection from client 128.237.223.114:64708.
+Accept connection from client 128.237.223.114:64709.
+Accept connection from client 128.237.223.114:64710.
+Accept connection from client 128.237.223.114:64711.
+Accept connection from client 128.237.223.114:64712.
+Accept connection from client 128.237.223.114:64713.
+Accept connection from client 128.237.223.114:64714.
+Accept connection from client 128.237.223.114:64715.
+Accept connection from client 128.237.223.114:64716.
+Accept connection from client 128.237.223.114:64719.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Wed Nov 23 23:19:41 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.223.114:64910.
+Accept connection from client 128.237.223.114:64911.
+Accept connection from client 128.237.223.114:64912.
+Accept connection from client 128.237.223.114:64913.
+Accept connection from client 128.237.223.114:64917.
+Accept connection from client 128.237.223.114:64914.
+Accept connection from client 128.237.223.114:64916.
+Accept connection from client 128.237.223.114:64915.
+Accept connection from client 128.237.223.114:64918.
+Accept connection from client 128.237.223.114:64919.
+Accept connection from client 128.237.223.114:64920.
+Accept connection from client 128.237.223.114:64928.
+Accept connection from client 128.237.223.114:64921.
+Accept connection from client 128.237.223.114:64929.
+Accept connection from client 128.237.223.114:64922.
+Accept connection from client 128.237.223.114:64923.
+Accept connection from client 128.237.223.114:64931.
+Accept connection from client 128.237.223.114:64930.
+Accept connection from client 128.237.223.114:64925.
+Accept connection from client 128.237.223.114:64926.
+Accept connection from client 128.237.223.114:64924.
+Accept connection from client 128.237.223.114:64927.
+Accept connection from client 128.237.223.114:64934.
+Accept connection from client 128.237.223.114:64939.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor 42.
+Accept connection from client 128.237.223.114:64945.
+Accept connection from client 128.237.223.114:64947.
+Accept connection from client 128.237.223.114:64948.
+Accept connection from client 128.237.223.114:64950.
+Accept connection from client 128.237.223.114:64951.
+Accept connection from client 128.237.223.114:64952.
+Accept connection from client 128.237.223.114:64957.
+Accept connection from client 128.237.223.114:64958.
+Accept connection from client 128.237.223.114:64959.
+Accept connection from client 128.237.223.114:64960.
+Accept connection from client 128.237.223.114:64961.
+Accept connection from client 128.237.223.114:64962.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Wed Nov 23 23:21:29 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.223.114:65000.
+Accept connection from client 128.237.223.114:65001.
+Accept connection from client 128.237.223.114:65002.
+Accept connection from client 128.237.223.114:65003.
+Accept connection from client 128.237.223.114:65004.
+Accept connection from client 128.237.223.114:65005.
+Accept connection from client 128.237.223.114:65006.
+Accept connection from client 128.237.223.114:65007.
+Accept connection from client 128.237.223.114:65008.
+Accept connection from client 128.237.223.114:65009.
+Accept connection from client 128.237.223.114:65011.
+Accept connection from client 128.237.223.114:65010.
+Accept connection from client 128.237.223.114:65012.
+Accept connection from client 128.237.223.114:65014.
+Accept connection from client 128.237.223.114:65024.
+Accept connection from client 128.237.223.114:65028.
+Accept connection from client 128.237.223.114:65031.
+Accept connection from client 128.237.223.114:65037.
+Accept connection from client 128.237.223.114:65040.
+Accept connection from client 128.237.223.114:65041.
+Accept connection from client 128.237.223.114:65042.
+Accept connection from client 128.237.223.114:65043.
+Accept connection from client 128.237.223.114:65044.
+Accept connection from client 128.237.223.114:65045.
+Accept connection from client 128.237.223.114:65046.
+Accept connection from client 128.237.223.114:65048.
+Accept connection from client 128.237.223.114:65047.
+Accept connection from client 128.237.223.114:65049.
+Accept connection from client 128.237.223.114:65050.
+Accept connection from client 128.237.223.114:65051.
+Accept connection from client 128.237.223.114:65052.
+Accept connection from client 128.237.223.114:65053.
+Accept connection from client 128.237.223.114:65054.
+Accept connection from client 128.237.223.114:65055.
+Accept connection from client 128.237.223.114:65056.
+Accept connection from client 128.237.223.114:65057.
+Accept connection from client 128.237.223.114:65058.
+Accept connection from client 128.237.223.114:65061.
+Accept connection from client 128.237.223.114:65066.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor 36.
+Accept connection from client 128.237.223.114:65069.
+Accept connection from client 128.237.223.114:65074.
+Accept connection from client 128.237.223.114:65082.
+Accept connection from client 128.237.223.114:65083.
+Accept connection from client 128.237.223.114:65084.
+Accept connection from client 128.237.223.114:65085.
+Accept connection from client 128.237.223.114:65086.
+Accept connection from client 128.237.223.114:65087.
+Accept connection from client 128.237.223.114:65088.
+Accept connection from client 128.237.223.114:65090.
+Accept connection from client 128.237.223.114:65092.
+Accept connection from client 128.237.223.114:65091.
+Accept connection from client 128.237.223.114:65094.
+Accept connection from client 128.237.223.114:65093.
+Accept connection from client 128.237.223.114:65095.
+Accept connection from client 128.237.223.114:65096.
+Accept connection from client 128.237.223.114:65097.
+Accept connection from client 128.237.223.114:65098.
+Accept connection from client 128.237.223.114:65089.
+Accept connection from client 128.237.223.114:65103.
+Accept connection from client 128.237.223.114:65110.
+Accept connection from client 128.237.223.114:65116.
+Accept connection from client 128.237.223.114:65117.
+Accept connection from client 128.237.223.114:65119.
+Accept connection from client 128.237.223.114:65122.
+Accept connection from client 128.237.223.114:65125.
+Accept connection from client 128.237.223.114:65126.
+Accept connection from client 128.237.223.114:65127.
+Accept connection from client 128.237.223.114:65128.
+Accept connection from client 128.237.223.114:65129.
+Accept connection from client 128.237.223.114:65133.
+Accept connection from client 128.237.223.114:65135.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Wed Nov 23 23:23:12 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.223.114:65137.
+Accept connection from client 128.237.223.114:65138.
+Accept connection from client 128.237.223.114:65136.
+Accept connection from client 128.237.223.114:65140.
+Accept connection from client 128.237.223.114:65141.
+Accept connection from client 128.237.223.114:65142.
+Accept connection from client 128.237.223.114:65143.
+Accept connection from client 128.237.223.114:65144.
+Accept connection from client 128.237.223.114:65145.
+Accept connection from client 128.237.223.114:65147.
+Accept connection from client 128.237.223.114:65146.
+Accept connection from client 128.237.223.114:65148.
+Accept connection from client 128.237.223.114:65149.
+Accept connection from client 128.237.223.114:65152.
+Accept connection from client 128.237.223.114:65151.
+Accept connection from client 128.237.223.114:65150.
+Accept connection from client 128.237.223.114:65153.
+Accept connection from client 128.237.223.114:65154.
+Accept connection from client 128.237.223.114:65157.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Wed Nov 23 23:27:56 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.223.114:65400.
+Accept connection from client 128.237.223.114:65401.
+Accept connection from client 128.237.223.114:65403.
+Accept connection from client 128.237.223.114:65402.
+Accept connection from client 128.237.223.114:65404.
+Accept connection from client 128.237.223.114:65406.
+Accept connection from client 128.237.223.114:65405.
+Accept connection from client 128.237.223.114:65407.
+Accept connection from client 128.237.223.114:65408.
+Accept connection from client 128.237.223.114:65409.
+Accept connection from client 128.237.223.114:65410.
+Accept connection from client 128.237.223.114:65411.
+Accept connection from client 128.237.223.114:65412.
+Accept connection from client 128.237.223.114:65413.
+Accept connection from client 128.237.223.114:65415.
+Accept connection from client 128.237.223.114:65421.
+Accept connection from client 128.237.223.114:65427.
+Accept connection from client 128.237.223.114:65431.
+Accept connection from client 128.237.223.114:65443.
+Accept connection from client 128.237.223.114:65452.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Wed Nov 23 23:28:57 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.223.114:65457.
+Accept connection from client 128.237.223.114:65456.
+Accept connection from client 128.237.223.114:65461.
+Accept connection from client 128.237.223.114:65463.
+Accept connection from client 128.237.223.114:65464.
+Accept connection from client 128.237.223.114:65465.
+Accept connection from client 128.237.223.114:65466.
+Accept connection from client 128.237.223.114:65467.
+Accept connection from client 128.237.223.114:65468.
+Accept connection from client 128.237.223.114:65469.
+Accept connection from client 128.237.223.114:65471.
+Accept connection from client 128.237.223.114:65472.
+Accept connection from client 128.237.223.114:65470.
+Accept connection from client 128.237.223.114:65474.
+Accept connection from client 128.237.223.114:65473.
+Accept connection from client 128.237.223.114:65475.
+Accept connection from client 128.237.223.114:65476.
+Accept connection from client 128.237.223.114:65477.
+Accept connection from client 128.237.223.114:65478.
+Accept connection from client 128.237.223.114:65479.
+Accept connection from client 128.237.223.114:65480.
+Accept connection from client 128.237.223.114:65481.
+Accept connection from client 128.237.223.114:65482.
+Accept connection from client 128.237.223.114:65485.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor 38.
+Accept connection from client 128.237.223.114:65494.
+Accept connection from client 128.237.223.114:65495.
+Accept connection from client 128.237.223.114:65496.
+Accept connection from client 128.237.223.114:65497.
+Accept connection from client 128.237.223.114:65502.
+Accept connection from client 128.237.223.114:65503.
+Accept connection from client 128.237.223.114:65504.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor 25.
+Accept connection from client 128.237.223.114:65507.
+Accept connection from client 128.237.223.114:65508.
+Accept connection from client 128.237.223.114:65509.
+Accept connection from client 128.237.223.114:65510.
+Accept connection from client 128.237.223.114:65511.
+Accept connection from client 128.237.223.114:65512.
+Accept connection from client 128.237.223.114:65513.
+Accept connection from client 128.237.223.114:65515.
+Accept connection from client 128.237.223.114:65514.
+Accept connection from client 128.237.223.114:65516.
+Accept connection from client 128.237.223.114:65517.
+Accept connection from client 128.237.223.114:65518.
+Accept connection from client 128.237.223.114:65519.
+Accept connection from client 128.237.223.114:65520.
+Accept connection from client 128.237.223.114:65521.
+Accept connection from client 128.237.223.114:65523.
+Accept connection from client 128.237.223.114:65522.
+Accept connection from client 128.237.223.114:65524.
+Accept connection from client 128.237.223.114:65526.
+Accept connection from client 128.237.223.114:65525.
+Accept connection from client 128.237.223.114:65527.
+Accept connection from client 128.237.223.114:65532.
+Accept connection from client 128.237.223.114:49162.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor 35.
+Accept connection from client 128.237.223.114:49167.
+Accept connection from client 128.237.223.114:49168.
+Accept connection from client 128.237.223.114:49169.
+Accept connection from client 128.237.223.114:49170.
+Accept connection from client 128.237.223.114:49171.
+Accept connection from client 128.237.223.114:49172.
+Accept connection from client 128.237.223.114:49173.
+Accept connection from client 128.237.223.114:49174.
+Accept connection from client 128.237.223.114:49175.
+Accept connection from client 128.237.223.114:49177.
+Accept connection from client 128.237.223.114:49176.
+Accept connection from client 128.237.223.114:49178.
+Accept connection from client 128.237.223.114:49179.
+Accept connection from client 128.237.223.114:49180.
+Accept connection from client 128.237.223.114:49181.
+Accept connection from client 128.237.223.114:49182.
+Accept connection from client 128.237.223.114:49183.
+Accept connection from client 128.237.223.114:49184.
+Accept connection from client 128.237.223.114:49185.
+Accept connection from client 128.237.223.114:49195.
+Accept connection from client 128.237.223.114:49200.
+Accept connection from client 128.237.223.114:49208.
+Accept connection from client 128.237.223.114:49209.
+Accept connection from client 128.237.223.114:49210.
+Accept connection from client 128.237.223.114:49213.
+Accept connection from client 128.237.223.114:49214.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor 35.
+Accept connection from client 128.237.223.114:49219.
+Accept connection from client 128.237.223.114:49220.
+Accept connection from client 128.237.223.114:49221.
+Accept connection from client 128.237.223.114:49222.
+Accept connection from client 128.237.223.114:49223.
+Accept connection from client 128.237.223.114:49224.
+Accept connection from client 128.237.223.114:49225.
+Accept connection from client 128.237.223.114:49226.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Wed Nov 23 23:30:29 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.223.114:49243.
+Accept connection from client 128.237.223.114:49244.
+Accept connection from client 128.237.223.114:49245.
+Accept connection from client 128.237.223.114:49246.
+Accept connection from client 128.237.223.114:49248.
+Accept connection from client 128.237.223.114:49247.
+Accept connection from client 128.237.223.114:49249.
+Accept connection from client 128.237.223.114:49250.
+Accept connection from client 128.237.223.114:49251.
+Accept connection from client 128.237.223.114:49252.
+Accept connection from client 128.237.223.114:49253.
+Accept connection from client 128.237.223.114:49254.
+Accept connection from client 128.237.223.114:49255.
+Accept connection from client 128.237.223.114:49257.
+Accept connection from client 128.237.223.114:49258.
+Accept connection from client 128.237.223.114:49256.
+Accept connection from client 128.237.223.114:49259.
+Accept connection from client 128.237.223.114:49263.
+Accept connection from client 128.237.223.114:49270.
+Accept connection from client 128.237.223.114:49276.
+Accept connection from client 128.237.223.114:49306.
+Accept connection from client 128.237.223.114:49310.
+Accept connection from client 128.237.223.114:49313.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Wed Nov 23 23:32:03 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.223.114:49343.
+Accept connection from client 128.237.223.114:49344.
+Accept connection from client 128.237.223.114:49345.
+Accept connection from client 128.237.223.114:49346.
+Accept connection from client 128.237.223.114:49347.
+Accept connection from client 128.237.223.114:49348.
+Accept connection from client 128.237.223.114:49349.
+Accept connection from client 128.237.223.114:49350.
+Accept connection from client 128.237.223.114:49351.
+Accept connection from client 128.237.223.114:49352.
+Accept connection from client 128.237.223.114:49353.
+Accept connection from client 128.237.223.114:49355.
+Accept connection from client 128.237.223.114:49362.
+Accept connection from client 128.237.223.114:49365.
+Accept connection from client 128.237.223.114:49366.
+Accept connection from client 128.237.223.114:49369.
+Accept connection from client 128.237.223.114:49370.
+Accept connection from client 128.237.223.114:49397.
+Accept connection from client 128.237.223.114:49398.
+Accept connection from client 128.237.223.114:49399.
+Accept connection from client 128.237.223.114:49400.
+Accept connection from client 128.237.223.114:49401.
+Accept connection from client 128.237.223.114:49402.
+Accept connection from client 128.237.223.114:49405.
+Accept connection from client 128.237.223.114:49404.
+Accept connection from client 128.237.223.114:49403.
+Accept connection from client 128.237.223.114:49407.
+Accept connection from client 128.237.223.114:49406.
+Accept connection from client 128.237.223.114:49408.
+Accept connection from client 128.237.223.114:49409.
+Accept connection from client 128.237.223.114:49410.
+Accept connection from client 128.237.223.114:49411.
+Accept connection from client 128.237.223.114:49423.
+Accept connection from client 128.237.223.114:49424.
+Accept connection from client 128.237.223.114:49425.
+Accept connection from client 128.237.223.114:49426.
+Accept connection from client 128.237.223.114:49427.
+Accept connection from client 128.237.223.114:49428.
+Accept connection from client 128.237.223.114:49433.
+Accept connection from client 128.237.223.114:49434.
+Accept connection from client 128.237.223.114:49435.
+Accept connection from client 128.237.223.114:49436.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Wed Nov 23 23:34:03 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3791 255.255.255.255 1.0.0.1 8080 www.baidu.com 
+*-----------------------------------------------------*
+Accept connection from client 128.237.223.114:49453.
+Accept connection from client 128.237.223.114:49454.
+Accept connection from client 128.237.223.114:49455.
+Accept connection from client 128.237.223.114:49456.
+Accept connection from client 128.237.223.114:49457.
+Accept connection from client 128.237.223.114:49458.
+Accept connection from client 128.237.223.114:49460.
+Accept connection from client 128.237.223.114:49459.
+Accept connection from client 128.237.223.114:49461.
+Accept connection from client 128.237.223.114:49462.
+Accept connection from client 128.237.223.114:49463.
+Accept connection from client 128.237.223.114:49464.
+Accept connection from client 128.237.223.114:49465.
+Accept connection from client 128.237.223.114:49466.
+Accept connection from client 128.237.223.114:49467.
+Accept connection from client 128.237.223.114:49468.
+Accept connection from client 128.237.223.114:49469.
+Accept connection from client 128.237.223.114:49470.
+Accept connection from client 128.237.223.114:49471.
+Accept connection from client 128.237.223.114:49480.
+Accept connection from client 128.237.223.114:49483.
+Accept connection from client 128.237.223.114:49486.
+Accept connection from client 128.237.223.114:49489.
+Accept connection from client 128.237.223.114:49490.
+Accept connection from client 128.237.223.114:49493.
+Accept connection from client 128.237.223.114:49496.
+Accept connection from client 128.237.223.114:49516.
+Accept connection from client 128.237.223.114:49543.
+Failed sending request to server, disconnected.
+Failed closing connection file descriptor 7.
+Accept connection from client 128.237.223.114:49600.
+Accept connection from client 128.237.223.114:49624.
+Accept connection from client 128.237.223.114:49641.
+Accept connection from client 128.237.223.114:49642.
+Accept connection from client 128.237.223.114:49656.
+Accept connection from client 128.237.223.114:49682.
+Accept connection from client 128.237.223.114:49706.
+Accept connection from client 128.237.223.114:49735.

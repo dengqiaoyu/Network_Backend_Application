@@ -66,7 +66,7 @@ int main(int argc, char **argv)
                                 &pool.ready_wt_set, NULL, NULL);
 
         int errsv = errno;
-        dbg_cp3_p3_printf("num_ready: %d, errno: %d\n", pool.num_ready, errsv);
+        dbg_cp3_p3_printf("\n\n\n\n\n\n\nnum_ready: %d, errno: %d\n", pool.num_ready, errsv);
         // htttp port accept connection
         if (pool.num_ready < 0)
         {
@@ -259,7 +259,7 @@ ssize_t serve_clients(pools_t *p)
                 }
                 read_ret = read(clientfd, &skt_read_buf[read_offset],
                                 SKT_READ_BUF_SIZE - read_offset);
-
+                dbg_cp3_p3_printf("read_ret for skt_read_buf: %ld\n", read_ret);
                 // Client closes connection
                 if (read_ret == 0)
                 {
@@ -269,6 +269,10 @@ ssize_t serve_clients(pools_t *p)
                 }
                 else if (read_ret < 0)
                 {
+                    if (read_offset == 0)
+                    {
+                        if_conn_close = 1;
+                    }
                     // EWOULDBLOCK indicates no more data to be read
                     if (errno != EAGAIN && errno != EWOULDBLOCK) {
                         Close_conn(clientfd, p);
@@ -281,11 +285,11 @@ ssize_t serve_clients(pools_t *p)
             {
                 continue;
             }
-            dbg_cp3_p3_printf("\nline 274\n%s", skt_read_buf);
+            dbg_cp3_p3_printf("\nline 274 read_ret %ld: \n%s", read_ret,
+                              skt_read_buf);
             // Uses parse to get request's inofrmation
             Requests *reqs = parse(skt_read_buf, read_offset, clientfd, p);
             Requests *req_rover = reqs;
-            // print_req(req_rover);
             // For pipeline request, server them one by one
             char hostname[1024] = {0};
             char port[1024] = {0};
@@ -302,8 +306,11 @@ ssize_t serve_clients(pools_t *p)
             while (req_rover != NULL)
             {
                 send2s_req_t *request2s = form_request2s(req_rover);
+                dbg_cp3_p3_printf("addr: %p\n", request2s);
                 if (request2s == NULL)
                 {
+                    print_req(req_rover);
+                    dbg_cp3_p3_printf("line 307\n");
                     Close_conn(clientfd, p);
                 }
                 // print_request2s(request2s);
@@ -333,18 +340,18 @@ ssize_t serve_clients(pools_t *p)
         }
         else if ((p->serverfd[i] == 1) && (FD_ISSET(i, &p->ready_rd_set)))
         {
+            int serverfd = i;
+            int clientfd = p->fd_s2c[serverfd];
             dbg_cp3_p3_printf("server returns data\n");
             p->num_ready--;
-            int serverfd = i;
             ret = s2c_list_read_server(p, serverfd);
-
+            dbg_cp3_p3_printf("line 342 ret: %ld\n", ret);
             if (ret < -1)
             {
                 fprintf(logfp, "Error, close connection with server\n");
             }
             else
             {
-                int clientfd = p->fd_s2c[serverfd];
                 FD_SET(clientfd, &p->active_wt_set);
                 // dbg_cp3_p3_printf("line 352\n");
                 // dbg_cp3_p3_printf("line 352\n");
@@ -392,12 +399,12 @@ void destory_requests(Requests *reqs)
  * @return        0 for success
  */
 ssize_t Close_conn(int connfd, pools_t *p) {
-    dbg_cp3_p3_printf("Closing fd %d\n", connfd);
     Close(connfd);
     FD_CLR(connfd, &p->active_rd_set);
     FD_CLR(connfd, &p->active_wt_set);
     if (p->clientfd[connfd] == 1)
     {
+        dbg_cp3_p3_printf("Closing client fd %d\n", connfd);
         p->fd_c2s[connfd] = -1;
         p->clientfd[connfd] = -1;
         p->ign_first[connfd] = 0;
@@ -431,6 +438,7 @@ ssize_t Close_conn(int connfd, pools_t *p) {
     }
     else if (p->serverfd[connfd] == 1)
     {
+        dbg_cp3_p3_printf("Closing server fd %d\n", connfd);
         p->fd_s2c[connfd] = -1;
         p->serverfd[connfd] = -1;
     }

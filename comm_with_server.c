@@ -7,7 +7,7 @@
 #include "comm_with_server.h"
 #include "dbg.h"
 
-#define REQ_LINE 1024
+#define REQ_LINE 8192
 
 extern FILE *logfp;
 
@@ -89,6 +89,7 @@ send2s_req_t *form_request2s(Requests *req_rover)
     ret = assemble_req(send2s_req, req_rover);
     if (ret < 0)
     {
+        dbg_cp3_p3_printf("line 96\n");
         return NULL;
     }
     if (req_type == 1)
@@ -137,6 +138,10 @@ int8_t assemble_req(send2s_req_t *send2s_req, Requests *req_rover)
     {
         if (req_capacility < req_rover->entity_len)
         {
+            dbg_cp3_p3_printf("req_capacility: %d\n",
+                              req_capacility);
+            dbg_cp3_p3_printf("req_rover->entity_len: %d\n",
+                              req_rover->entity_len);
             return -1;
         }
         memcpy(request + send2s_req->len, req_rover->entity_body,
@@ -145,6 +150,8 @@ int8_t assemble_req(send2s_req_t *send2s_req, Requests *req_rover)
     send2s_req->next = NULL;
     send2s_req->len += req_rover->entity_len;
     send2s_req->offset = 0;
+
+    return 0;
 }
 
 int8_t req_send2s(int connfd, pools_t *p)
