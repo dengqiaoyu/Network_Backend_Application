@@ -15,64 +15,66 @@ int8_t set_conn(pools_t *p, int connfd, char *fake_ip, char *www_ip,
                 char *hostname, char *port)
 {
     int8_t ret = 0;
-    // int sockfd = socket(AF_INET, SOCK_STREAM, 0);
-    // struct sockaddr_in localaddr;
-    // localaddr.sin_family = AF_INET;
-    // localaddr.sin_addr.s_addr = inet_addr(fake_ip);
-    // localaddr.sin_port = 0;
-    // ret = bind(sockfd, (struct sockaddr *)&localaddr, sizeof(localaddr));
-    // if (ret == -1)
-    // {
-    //     int errsv = errno;
-    //     fprintf(logfp, "%s", strerror(errsv));
-    //     return -1;
-    // }
-
-    // struct sockaddr_in remoteaddr;
-    // remoteaddr.sin_family = AF_INET;
-    // remoteaddr.sin_addr.s_addr = inet_addr(www_ip);
-    // remoteaddr.sin_port = htons(8080);
-    // ret = connect(sockfd, (struct sockaddr *)&remoteaddr, sizeof(remoteaddr));
-    // if (ret == -1)
-    // {
-    //     int errsv = errno;
-    //     fprintf(logfp, "%s", strerror(errsv));
-    //     return -1;
-    // }
-    //
-    int sockfd;
+    int sockfd = socket(AF_INET, SOCK_STREAM, 0);
+    struct sockaddr_in localaddr;
+    localaddr.sin_family = AF_INET;
+    localaddr.sin_addr.s_addr = inet_addr(fake_ip);
+    localaddr.sin_port = 0;
+    ret = bind(sockfd, (struct sockaddr *)&localaddr, sizeof(localaddr));
+    if (ret == -1)
     {
-        struct addrinfo hints, *listp, *p;
-
-        /* Get a list of potential server addresses */
-        memset(&hints, 0, sizeof(struct addrinfo));
-        hints.ai_socktype = SOCK_STREAM;  /* Open a connection */
-        hints.ai_flags = AI_NUMERICSERV;  /* ... using a numeric port arg. */
-        hints.ai_flags |= AI_ADDRCONFIG;  /* Recommended for connections */
-        int re = getaddrinfo(hostname, port, &hints, &listp);
-        if (re != 0)
-            return -1;
-
-        /* Walk the list for one that we can successfully connect to */
-        for (p = listp; p; p = p->ai_next) {
-            /* Create a socket descriptor */
-            if ((sockfd = socket(p->ai_family, p->ai_socktype, p->ai_protocol)) < 0)
-                continue; /* Socket failed, try the next */
-
-            /* Connect to the server */
-            if (connect(sockfd, p->ai_addr, p->ai_addrlen) != -1)
-                break; /* Success */
-            Close(sockfd); /* Connect failed, try another */  //line:netp:openclientfd:closefd
-        }
-
-        /* Clean up */
-        freeaddrinfo(listp);
-        if (!p) /* All connects failed */
-        {
-            printf("All connects failed\n");
-            return -1;
-        }
+        int errsv = errno;
+        printf("line 27 %s\n", strerror(errsv));
+        fprintf(logfp, "%s", strerror(errsv));
+        return -1;
     }
+
+    struct sockaddr_in remoteaddr;
+    remoteaddr.sin_family = AF_INET;
+    remoteaddr.sin_addr.s_addr = inet_addr(www_ip);
+    remoteaddr.sin_port = htons(8080);
+    ret = connect(sockfd, (struct sockaddr *)&remoteaddr, sizeof(remoteaddr));
+    if (ret == -1)
+    {
+        int errsv = errno;
+        printf("line 40 %s\n", strerror(errsv));
+        fprintf(logfp, "%s\n", strerror(errsv));
+        return -1;
+    }
+
+    // int sockfd;
+    // {
+    //     struct addrinfo hints, *listp, *p;
+
+    //     /* Get a list of potential server addresses */
+    //     memset(&hints, 0, sizeof(struct addrinfo));
+    //     hints.ai_socktype = SOCK_STREAM;  /* Open a connection */
+    //     hints.ai_flags = AI_NUMERICSERV;  /* ... using a numeric port arg. */
+    //     hints.ai_flags |= AI_ADDRCONFIG;  /* Recommended for connections */
+    //     int re = getaddrinfo(hostname, port, &hints, &listp);
+    //     if (re != 0)
+    //         return -1;
+
+    //     /* Walk the list for one that we can successfully connect to */
+    //     for (p = listp; p; p = p->ai_next) {
+    //         /* Create a socket descriptor */
+    //         if ((sockfd = socket(p->ai_family, p->ai_socktype, p->ai_protocol)) < 0)
+    //             continue; /* Socket failed, try the next */
+
+    //         /* Connect to the server */
+    //         if (connect(sockfd, p->ai_addr, p->ai_addrlen) != -1)
+    //             break; /* Success */
+    //         Close(sockfd); /* Connect failed, try another */  //line:netp:openclientfd:closefd
+    //     }
+
+    //     /* Clean up */
+    //     freeaddrinfo(listp);
+    //     if (!p) /* All connects failed */
+    //     {
+    //         printf("All connects failed\n");
+    //         return -1;
+    //     }
+    // }
     fcntl(sockfd, F_SETFL, O_NONBLOCK);
     FD_SET(sockfd, &p->active_wt_set);
     p->serverfd[sockfd] = 1;
@@ -88,7 +90,8 @@ send2s_req_t *form_request2s(Requests *req_rover)
     int8_t ret = 0;
     send2s_req_t *send2s_req = malloc(sizeof(send2s_req_t));
     memset(send2s_req, 0, sizeof(send2s_req_t));
-    uint8_t req_type = check_req_type(req_rover->http_uri);
+    // uint8_t req_type = check_req_type(req_rover->http_uri);
+    uint8_t req_type = 0;
     ret = assemble_req(send2s_req, req_rover);
     if (ret < 0)
     {

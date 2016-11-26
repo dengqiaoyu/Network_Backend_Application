@@ -16462,3 +16462,14 @@ Accept connection from client 128.2.13.144:55542.
 Accept connection from client 128.2.13.144:55546.
 Accept connection from client 128.2.13.144:55548.
 Accept connection from client 128.2.13.144:55550.
+
+
+
+
+*******************************************************
+*                    Proxy Start                      *
+*          Start Time: Sat Nov 26 11:16:35 2016       *
+*-----------------------------------------------------*
+Command Line:
+./proxy ./log 0.1 3792 7.0.0.1 5.0.0.1 2333 4.0.0.1 
+*-----------------------------------------------------*

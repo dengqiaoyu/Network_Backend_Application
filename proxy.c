@@ -298,6 +298,8 @@ ssize_t serve_clients(pools_t *p)
             get_host_and_port(req_rover, hostname, port);
             if (p->fd_c2s[clientfd] == -1)
             {
+                dbg_cp3_p3_printf("www_ip: %s\n", proxy_param.www_ip);
+                dbg_cp3_p3_printf("fake_ip: %s\n", proxy_param.fake_ip);
                 // dbg_cp3_p3_printf("hostname: %s, port: %s\n", hostname, port);
                 set_conn(p, clientfd, proxy_param.fake_ip, proxy_param.www_ip,
                          hostname, port);
