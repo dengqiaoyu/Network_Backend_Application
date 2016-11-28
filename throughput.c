@@ -23,7 +23,8 @@ int get_new_bitrate(pools_t *p, int clientfd)
 	if(bit_p == NULL)
 	{
 		dbg_cp3_d2_printf("!!! manifest record of clientfd: %d does not Exist!\n", clientfd);
-		bitrate_t * bit_p = ht_get(p->ip2mani_ht,ip_str, 15, NULL);
+		bit_p = ht_get(p->ip2mani_ht,ip_str, 15, NULL);
+		dbg_cp3_d2_printf("!!! -----line 27, bit_p: %p --- !!!!\n", bit_p);
 		if(bit_p == NULL)
 		{
 			printf(" !!! Does not find manifest by ip! \n");
@@ -34,11 +35,17 @@ int get_new_bitrate(pools_t *p, int clientfd)
 			dbg_cp3_d2_printf(" !!! Find manifest by ip! \n");
 		}
 		//return 1000;
-
+		dbg_cp3_d2_printf("!!! ----- after else --- !!!!\n");
 	}
+
+	dbg_cp3_d2_printf("!!! ----- line 40  --- !!!!\n");
+	dbg_cp3_d2_printf("!!! ----- bit_p: %p --- !!!!\n", bit_p);
 	int bitrate_n = bit_p->bitrate_num;
+	dbg_cp3_d2_printf("!!! ----- line 43--- !!!!\n");
 	dbg_cp3_d2_printf("====== bitrate_n: %d =====\n",bitrate_n);
-	int *bitrate_list = p->mani_info->bitrate_rec[clientfd]->bitrate;
+	int *bitrate_list = bit_p->bitrate;
+    dbg_cp3_d2_printf("!!! -----bitrate_list: %p --- !!!!\n",\
+     bitrate_list);
 	if(bitrate_list == NULL)
 	{
 		dbg_cp3_d2_printf("====== bitrate_list is NULL  =====\n");
@@ -49,13 +56,18 @@ int get_new_bitrate(pools_t *p, int clientfd)
 	// {
 	// 	thr_cur = bitrate_list[0];
 	// }
+    dbg_cp3_d2_printf("!!! ----- line 59 --- !!!!\n");
 	for(i = bitrate_n-1; i>=0; i--)
 	{
 		if(thr_cur>bitrate_list[i]*1.5)
 		{
+			dbg_cp3_d2_printf("!!! -- line 61, return bit_rate: %d --- !!! \n",\
+                bitrate_list[i]);
 			return bitrate_list[i];
 		}
 	}
+	dbg_cp3_d2_printf("!!! -----line 66, return bit_rate: %d --- !!!!\n",\
+	 bitrate_list[0]);
 	return bitrate_list[0];
 }
 
@@ -105,6 +117,44 @@ int get_frag_size(pools_t *p, int clientfd)
     	}
     }
     return frag_len;
+}
+
+int get_package_size(pools_t *p, int clientfd,int frag_len)
+{
+    s2c_data_list_t *send2s_req_start = p->s2c_list[clientfd];
+    s2c_data_list_t *rover = send2s_req_start->next;
+    char * p1 = NULL;
+    int package_len = 0;
+    if(rover != NULL)
+    {
+        p1 = strstr(rover->data, "\r\n\r\n");
+        if(p1 != NULL)
+        {
+            package_len = p1 - rover->data + frag_len+4;
+            dbg_cp3_d2_printf("\n!!!! package_len: %d\n\n", package_len);
+            return package_len;
+            
+        }
+        else
+        {
+            dbg_cp3_d2_printf("No CRLF in first buffer\n");
+            exit(0);
+        }
+    }
+
+}
+
+int update_pack_recv_len(pools_t *p, int clientfd, int package_len)
+{
+    s2c_data_list_t *send2s_req_start = p->s2c_list[clientfd];
+    s2c_data_list_t *rover = send2s_req_start->next;
+    int result_len = package_len;
+    while(rover!= NULL)
+    {
+        result_len -= rover->len;
+        rover = rover->next;
+    }
+    return result_len;
 }
 
 void update_thr_cur(int frag_len, struct timeval tf,float alpha, \
@@ -158,10 +208,11 @@ void print_to_log(log_record_t * log_rec)
 {
 	fprintf(log_pFile, "%d ", (int)(log_rec->cur_time));
 	fprintf(log_pFile, "%.6f ", log_rec->duration);
-	fprintf(log_pFile, "%.6f ", log_rec->tput);
-	fprintf(log_pFile, "%.6f ", log_rec->avg_tput);
+	fprintf(log_pFile, "%.2f ", log_rec->tput);
+	fprintf(log_pFile, "%.2f ", log_rec->avg_tput);
 	fprintf(log_pFile, "%d ", log_rec->req_bitrate);
 	fprintf(log_pFile, "%s ", log_rec->server_ip);
 	fprintf(log_pFile, "%s\n", log_rec->chunk_name);
+    fflush(log_pFile);
 
 }

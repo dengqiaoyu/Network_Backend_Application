@@ -77,7 +77,7 @@ int get_argv(int argc, char **argv, param *proxy_param)
         strncpy(proxy_param->dns_ip, argv[5], 15);
     }
 
-    if (atoi(argv[6]) < 1024 || atoi(argv[6]) > 65535)
+    if (atoi(argv[6]) > 65535)
     {
         fprintf(stderr, "Usage: DNS port should be between 1024 and 65535.\n");
         fupdate(stderr);

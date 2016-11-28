@@ -73,6 +73,7 @@ int8_t s2c_list_read_server(pools_t *p, int serverfd)
     {
         FD_SET(clientfd, &p->active_wt_set);
     }
+    dbg_cp3_d2_printf("line 76, clientfd :%d", clientfd);
     return 0;
 }
 
@@ -89,22 +90,22 @@ int8_t s2c_list_write_client(pools_t *p, int clientfd)
     // dbg_cp3_p3_printf("line 72\n");
     while (rover != NULL && iter_cnt <= MAX_WRIT_ITER_COUNT)
     {
-        dbg_cp3_p3_printf("-----------write to clientfd %d\n", clientfd);
-        dbg_cp3_p3_printf("@@@before len: %ld\n", rover->len);
+        dbg_cp3_d2_printf("-----------write to clientfd %d\n", clientfd);
+        dbg_cp3_d2_printf("@@@before len: %ld\n", rover->len);
         write_ret = write(clientfd, rover->data + rover->offset,
                           rover->len - rover->offset);
-        dbg_cp3_p3_printf("@@@before write_ret in s2c_list_write_client line 77: %ld\n",
+        dbg_cp3_d2_printf("@@@before write_ret in s2c_list_write_client line 77: %ld\n",
                           write_ret);
         if (write_ret > 0)
         {
-#ifdef DEBUG_CP1_P3
-            dbg_cp3_p3_printf("\n----writing to client----\n");
+
+            dbg_cp3_d2_printf("\n----writing to client----\n");
             // printf("%s", rover->data + rover->offset);
             printf("len: %ld\n", rover->len);
             printf("offset: %ld\n", rover->offset);
             printf("write_ret: %ld\n", write_ret);
-            dbg_cp3_p3_printf("\n----writing to client----\n");
-#endif
+            dbg_cp3_d2_printf("\n----writing to client----\n");
+
             if (write_ret == rover->len - rover->offset)
             {
                 send2s_req_start->next = rover->next;
@@ -137,6 +138,7 @@ int8_t s2c_list_write_client(pools_t *p, int clientfd)
         }
         else if (write == 0)
         {
+            dbg_cp3_d2_printf("line 141, before Close_conn\n");
             Close_conn(clientfd, p);
             Close_conn(serverfd, p);
             return 0;

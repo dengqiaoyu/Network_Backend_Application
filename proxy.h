@@ -191,7 +191,8 @@ typedef struct pools_t_s
     send2s_req_t *send2s_list[FD_SETSIZE];
     s2c_data_list_t *s2c_list[FD_SETSIZE];
     log_record_t *log_rec_list[FD_SETSIZE];
-
+    int pack_len[FD_SETSIZE];
+    int frag_len[FD_SETSIZE];
     manifest_t *mani_info;
     throughput_t *thr_info;
     hashtable_t * ip2mani_ht;

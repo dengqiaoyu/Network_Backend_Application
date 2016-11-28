@@ -35,6 +35,8 @@ void init_pool(int listenfd, pools_t *p) {
         memset(p->s2c_list[i], 0 , sizeof(s2c_data_list_t));
         p->log_rec_list[i] = malloc(sizeof(log_record_t));
         memset(p->log_rec_list[i], 0, sizeof(log_record_t));
+        p->pack_len[i] = 0;
+        p->frag_len[i] = 0;
 
         
     }

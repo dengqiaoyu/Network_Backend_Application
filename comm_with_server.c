@@ -12,6 +12,7 @@
 #define REQ_LINE 8192
 
 extern FILE *logfp;
+extern param proxy_param;
 
 int8_t set_conn(pools_t *p, int connfd, char *fake_ip, char *www_ip,
                 char *hostname, char *port)
@@ -59,6 +60,7 @@ send2s_req_t *form_request2s(Requests *req_rover, pools_t *pool, \
     send2s_req_t *send2s_req = malloc(sizeof(send2s_req_t));
     memset(send2s_req, 0, sizeof(send2s_req_t));
     uint8_t req_type = check_req_type(req_rover->http_uri);
+    dbg_cp3_d2_printf("!!!! origin uir: %s\n", req_rover->http_uri);
     if(req_type == 2)
     {
         dbg_cp3_p3_printf("chunk download request from client\n");
@@ -72,7 +74,7 @@ send2s_req_t *form_request2s(Requests *req_rover, pools_t *pool, \
         pool->log_rec_list[clientfd]->req_bitrate = new_bitrate;
 
         int serverfd = pool->fd_s2c[clientfd];
-        strncpy(pool->log_rec_list[clientfd]->server_ip, pool->serverip[serverfd],15);
+        strncpy(pool->log_rec_list[clientfd]->server_ip, proxy_param.www_ip,15);
         dbg_cp3_d2_printf("### new_bitrate: %d\n###",new_bitrate);
         char bitrate_str[20] = {0};
         sprintf(bitrate_str,"%d",new_bitrate);
@@ -101,10 +103,11 @@ send2s_req_t *form_request2s(Requests *req_rover, pools_t *pool, \
         strncat(new_http_uri, bitrate_str, strlen(bitrate_str));
         strncat(new_http_uri,p1,strlen(p1));
 
-        strncpy(pool->log_rec_list[clientfd]->chunk_name, p1, strlen(p1));
+        
         //need to add '\0' to end??
         strncpy(req_rover->http_uri, new_http_uri, MAX_SIZE);
         dbg_cp3_d2_printf("new chunk uri: %s\n", req_rover->http_uri);
+        strncpy(pool->log_rec_list[clientfd]->chunk_name, req_rover->http_uri, strlen(req_rover->http_uri));
         /*********** record timestamp ts  *************/
         struct  timeval start;
         gettimeofday(&start,NULL);
@@ -228,7 +231,7 @@ int8_t req_send2s(int connfd, pools_t *p)
                     {
                         dbg_cp3_d2_printf("f4m_req is sent!\n");
                         p->mani_info->flag_send_f4m[connfd] = 2;
-                        dbg_cp3_d2_printf("## clientfd ##: %d\n");
+                        dbg_cp3_d2_printf("## clientfd ##: %d\n",connfd);
                         //f4m request is send
                         p->mani_info->f4m_req[connfd] == NULL;
                         free(rover);
