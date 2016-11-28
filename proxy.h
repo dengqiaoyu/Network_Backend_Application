@@ -30,8 +30,6 @@
 #include <errno.h>
 #include <netdb.h>
 #include <time.h>
-#include <openssl/ssl.h>
-#include <openssl/err.h>
 
 #include "param_init.h"
 #include "constants.h"
@@ -170,6 +168,6 @@ ssize_t Close_conn(int connfd, pools_t *p);
  * Functions that are used to handle max connection, but have not yet debugged
  */
 ssize_t send_maxfderr(int connfd);
-ssize_t write_to_socket(int connfd, SSL *client_context, char *resp_hds_text,
-                        char *resp_ct_text, char *resp_ct_ptr, size_t ct_size);
+ssize_t write_to_socket(int connfd, char *resp_hds_text, char *resp_ct_text,
+                        char *resp_ct_ptr, size_t body_len);
 #endif

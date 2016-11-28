@@ -475,7 +475,7 @@ ssize_t send_maxfderr(int connfd)
     strncat(resp_htext, text_tmp, MAX_TEXT - text_len);
     text_len +=  strlen(text_tmp);
 
-    ret = write_to_socket(connfd, NULL, resp_htext, NULL, NULL, 0);
+    ret = write_to_socket(connfd, resp_htext, NULL, NULL, 0);
     if (ret < 0) {
         fprintf(logfp, "Failed sending reponse to fd%d\n", connfd);
         fupdate(logfp);
@@ -490,8 +490,8 @@ ssize_t send_maxfderr(int connfd)
  * Function that is used to block write, never used again in normal situation,
  * except for max connection error
  */
-ssize_t write_to_socket(int connfd, SSL *client_context, char *resp_hds_text,
-                        char *resp_ct_text, char *resp_ct_ptr, size_t body_len)
+ssize_t write_to_socket(int connfd, char *resp_hds_text, char *resp_ct_text,
+                        char *resp_ct_ptr, size_t body_len)
 {
     char *response_content = NULL;
     size_t write_offset = 0;
@@ -520,17 +520,8 @@ ssize_t write_to_socket(int connfd, SSL *client_context, char *resp_hds_text,
             dbg_wselet_printf("hdr_attempt: %ld\n", hdr_attempt);
         }
         ssize_t write_ret = 0;
-        if (client_context != NULL) {
-            write_ret = SSL_write(client_context, resp_hds_text + write_offset,
-                                  hdr_len);
-            dbg_cp2_printf("write_ret: %ld\n", write_ret);
-            dbg_cp2_printf("SSL_get_error: %d\n",
-                           SSL_get_error(client_context, write_ret));
-        }
-        else {
-            write_ret = write(connfd, resp_hds_text + write_offset,
-                              hdr_len);
-        }
+        write_ret = write(connfd, resp_hds_text + write_offset,
+                          hdr_len);
 
         dbg_wselet_printf("write_ret: %d\n", write_ret);
         if (write_ret < 0)
@@ -568,18 +559,8 @@ ssize_t write_to_socket(int connfd, SSL *client_context, char *resp_hds_text,
             dbg_wselet_printf("rsp_attempt: %ld\n", rsp_attempt);
         }
         ssize_t write_ret = 0;
-        if (client_context != NULL) {
-            write_ret = SSL_write(client_context,
-                                  response_content + write_offset,
-                                  body_len);
-            dbg_cp2_printf("write_ret: %ld\n", write_ret);
-            dbg_cp2_printf("SSL_get_error: %d\n",
-                           SSL_get_error(client_context, write_ret));
-        }
-        else {
-            write_ret = write(connfd, response_content + write_offset,
-                              body_len);
-        }
+        write_ret = write(connfd, response_content + write_offset,
+                          body_len);
         dbg_wselet_printf("write_ret: %d\n", write_ret);
         if (write_ret < 0)
         {
