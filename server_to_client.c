@@ -4,13 +4,17 @@
 #include "server_to_client.h"
 #include "constants.h"
 #include "proxy.h"
+#include "throughput.h"
+#include "parse_manifest.h"
 
 extern FILE *logfp;
 
 int8_t s2c_list_read_server(pools_t *p, int serverfd)
 {
     int clientfd = p->fd_s2c[serverfd];
+#ifdef DEBUG_CP1_P3
     print_s2c_list(p->s2c_list[clientfd]);
+#endif
     s2c_data_list_t *s2c_data_list_start = p->s2c_list[clientfd];
     if (s2c_data_list_start->next == NULL)
     {
@@ -62,8 +66,9 @@ int8_t s2c_list_read_server(pools_t *p, int serverfd)
             }
         }
     } while (iter_count < MAX_READ_ITER_COUNT);
-
+#ifdef DEBUG_CP1_P3
     print_s2c_list(p->s2c_list[clientfd]);
+#endif
     if (!FD_ISSET(clientfd, &p->active_wt_set))
     {
         FD_SET(clientfd, &p->active_wt_set);
@@ -92,18 +97,22 @@ int8_t s2c_list_write_client(pools_t *p, int clientfd)
                           write_ret);
         if (write_ret > 0)
         {
+#ifdef DEBUG_CP1_P3
             dbg_cp3_p3_printf("\n----writing to client----\n");
             // printf("%s", rover->data + rover->offset);
             printf("len: %ld\n", rover->len);
             printf("offset: %ld\n", rover->offset);
             printf("write_ret: %ld\n", write_ret);
             dbg_cp3_p3_printf("\n----writing to client----\n");
+#endif
             if (write_ret == rover->len - rover->offset)
             {
                 send2s_req_start->next = rover->next;
                 free(rover);
                 rover = send2s_req_start->next;
+#ifdef DEBUG_CP1_P3
                 print_s2c_list(p->s2c_list[clientfd]);
+#endif
             }
             else
             {
@@ -136,6 +145,7 @@ int8_t s2c_list_write_client(pools_t *p, int clientfd)
 
     if (rover == NULL)
     {
+        //dbg_cp3_d2_printf(" ### rover is NULL!###\n");
         FD_CLR(clientfd, &p->active_wt_set);
     }
     // dbg_cp3_p3_printf("exiting s2c_list_write_client\n");

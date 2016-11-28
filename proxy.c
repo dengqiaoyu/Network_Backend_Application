@@ -5,11 +5,15 @@
 #include "constants.h"
 #include "comm_with_server.h"
 #include "server_to_client.h"
+#include "throughput.h"
+#include "parse_manifest.h"
 
 FILE *logfp = NULL;
+FILE *log_pFile = NULL;
 int logfd = -1;
 int errfd = -1; // reserve for one fd
 param proxy_param;
+time_t proxy_start_time;
 
 void get_host_and_port(Requests *req_rover, char *hostname, char *port);
 
@@ -20,6 +24,7 @@ void get_host_and_port(Requests *req_rover, char *hostname, char *port);
  */
 int main(int argc, char **argv)
 {
+    proxy_start_time = time(NULL);
     int listenfd, connfd;
     ssize_t ret;
     socklen_t client_len;
@@ -38,15 +43,17 @@ int main(int argc, char **argv)
     }
     // print_argv(&proxy_param);
 
-    logfd = init_log(proxy_param.log, argc, argv);
+    // logfd = init_log(proxy_param.log, argc, argv);
     // To handle max connection, need reserve one more fd to send error message
     errfd = open("./fd_reserved", O_WRONLY | O_CREAT, m_error);
-    if (logfd < 0)
-    {
-        fprintf(stderr, "Log file initialnizing failed, proxy terminated.\n");
-        return -1;
-    }
-    logfp = fdopen(logfd, "a");
+    // if (logfd < 0)
+    // {
+    //     fprintf(stderr, "Log file initialnizing failed, proxy terminated.\n");
+    //     return -1;
+    // }
+    //logfp = fdopen(logfd, "a");
+    log_pFile = fopen(proxy_param.log, "a");
+    logfp = fopen("proxy_check.log","a");
 
     listenfd = open_listenfd(proxy_param.lisn_port);
     if (listenfd < 0)
@@ -57,6 +64,7 @@ int main(int argc, char **argv)
     }
 
     init_pool(listenfd, &pool);
+    dbg_cp3_d2_printf("!!! check thr_info: %.6f, %.6f\n", pool.thr_info->thr_cur[6],pool.thr_info->thr_cur[7]);
 
     while (1)
     {
@@ -78,6 +86,7 @@ int main(int argc, char **argv)
             client_len = sizeof(struct sockaddr_storage);
             connfd = accept(listenfd, (struct sockaddr *)&client_addr,
                             &client_len);
+            dbg_cp3_d2_printf("\n!!!!! accept new clientfd: %d\n",connfd);
             if (connfd < 0)
             {
                 // handle max connection and send error message back
@@ -128,7 +137,7 @@ int main(int argc, char **argv)
             }
         }
         // Serve all of client within the pools_t
-        dbg_cp3_p3_printf("\n\nbefore line 124\n");
+       	dbg_cp3_p3_printf("\n\nbefore line 124\n");
         ret = serve_clients(&pool);
         if (ret < 0)
         {
@@ -232,7 +241,7 @@ ssize_t serve_clients(pools_t *p)
     ssize_t read_ret, ret;
     char skt_read_buf[SKT_READ_BUF_SIZE + 1] = {0};
 
-    // dbg_cp3_p3_printf("num_ready: %d\n", p->num_ready);
+    dbg_cp3_p3_printf("num_ready: %d\n", p->num_ready);
     // Magic number 7 indicates avaliable file descriptor starts from 7.
     for (i = 6; (i < FD_SETSIZE) && (p->num_ready > 0); i++)
     {
@@ -259,7 +268,8 @@ ssize_t serve_clients(pools_t *p)
                 }
                 read_ret = read(clientfd, &skt_read_buf[read_offset],
                                 SKT_READ_BUF_SIZE - read_offset);
-                dbg_cp3_p3_printf("read_ret for skt_read_buf: %ld\n", read_ret);
+                //dbg_cp3_p3_printf("read_ret for skt_read_buf: %ld\n", read_ret);
+                dbg_cp3_d2_printf("line 265,read_ret for skt_read_buf: %ld\n", read_ret);
                 // Client closes connection
                 if (read_ret == 0)
                 {
@@ -285,28 +295,46 @@ ssize_t serve_clients(pools_t *p)
             {
                 continue;
             }
-            dbg_cp3_p3_printf("\nline 274 read_ret %ld: \n%s", read_ret,
-                              skt_read_buf);
+            //dbg_cp3_p3_printf("\nline 274 read_ret %ld: \n%s", read_ret,
+                              //skt_read_buf);
+            dbg_cp3_p3_printf("\nline 294 read_ret %ld: \n", read_ret);
+            dbg_cp3_p3_printf("line 294: skt_read_buf start: %c%c%c%c\n", skt_read_buf[0],skt_read_buf[1],skt_read_buf[2],skt_read_buf[3]);
             fflush(stdout);
+            // if(skt_read_buf[0] == 'P' && skt_read_buf[1] == 'O' && skt_read_buf[2] == 'S' && skt_read_buf[3] == 'T')
+            // {
+            //     memset(skt_read_buf,0,SKT_READ_BUF_SIZE + 1);
+            //     continue;
+            // }
+            
             // Uses parse to get request's inofrmation
             Requests *reqs = parse(skt_read_buf, read_offset, clientfd, p);
+            dbg_cp3_d2_printf("!!!parse success\n");
             Requests *req_rover = reqs;
             // For pipeline request, server them one by one
             char hostname[1024] = {0};
             char port[1024] = {0};
 
-            get_host_and_port(req_rover, hostname, port);
+            //get_host_and_port(req_rover, hostname, port);
+            dbg_cp3_d2_printf("line 312 after get_host_and_port\n");
             if (p->fd_c2s[clientfd] == -1)
             {
-                // dbg_cp3_p3_printf("hostname: %s, port: %s\n", hostname, port);
+                //dbg_cp3_p3_printf("hostname: %s, port: %s\n", hostname, port);
                 set_conn(p, clientfd, proxy_param.fake_ip, proxy_param.www_ip,
                          hostname, port);
-                // dbg_cp3_p3_printf("serverfd: %d\n", p->fd_c2s[clientfd]);
+                dbg_cp3_p3_printf("serverfd: %d\n", p->fd_c2s[clientfd]);
                 // exit(1);
             }
             while (req_rover != NULL)
             {
-                send2s_req_t *request2s = form_request2s(req_rover);
+                dbg_cp3_d2_printf("line 323 into while\n");
+                if(strcmp(req_rover->http_method, "GET") != 0)
+                {
+                    dbg_cp3_d2_printf("!!! Not GET request !!!\n");
+                    dbg_cp3_d2_printf("Method: %s\n",req_rover->http_method);
+                    dbg_cp3_d2_printf("Uri: %s\n", req_rover->http_uri);
+                    continue;
+                }
+                send2s_req_t *request2s = form_request2s(req_rover, p, p->mani_info,p->thr_info, clientfd);
                 dbg_cp3_p3_printf("addr: %p\n", request2s);
                 if (request2s == NULL)
                 {
@@ -320,9 +348,12 @@ ssize_t serve_clients(pools_t *p)
                 last_send2s_req->next = request2s;
                 req_rover = req_rover->next_req;
             }
+            // dbg_cp3_d2_printf("line 338 before destroy\n");
             destory_requests(reqs);
+            // dbg_cp3_d2_printf("line 340 after destroy\n");
             reqs = NULL;
             req_send2s(clientfd, p);
+            // dbg_cp3_d2_printf("line 343 after req_send2s\n");
         }
         else if ((p->clientfd[i] == 1) && (FD_ISSET(i, &p->ready_wt_set)))
         {
@@ -341,11 +372,89 @@ ssize_t serve_clients(pools_t *p)
         }
         else if ((p->serverfd[i] == 1) && (FD_ISSET(i, &p->ready_rd_set)))
         {
+            //dbg_cp3_d2_printf("line348,server is ready to read\n");
             int serverfd = i;
             int clientfd = p->fd_s2c[serverfd];
             dbg_cp3_p3_printf("server returns data\n");
             p->num_ready--;
             ret = s2c_list_read_server(p, serverfd);
+            /*********  Add New Code      **********/
+            //dbg_cp3_d2_printf("--##--clientfd:%d, flag_f4m:%d--##--\n",clientfd,p->mani_info->flag_send_f4m[i]);
+            if(p->mani_info->flag_send_f4m[clientfd] == 2)//receive .f4m file
+            {
+                req_send2s(clientfd,p);
+                dbg_cp3_p3_printf("receive .f4m file from server\n");
+                char *mani_file = get_f4m_content(p, clientfd);
+                if(mani_file == NULL)
+                {
+                    printf("error,mani_file is NULL!\n");
+                }
+                else
+                {
+                    //assume parse result is right, wait to add error process later
+                    p->mani_info->bitrate_rec[clientfd] = parse_manifest(mani_file);
+                    p->mani_info->flag_send_f4m[clientfd] = 0;
+                    p->thr_info->thr_cur[clientfd] = p->mani_info->bitrate_rec[clientfd]->bitrate[0];
+                    dbg_cp3_d2_printf("-!!!!--- T current %d init by mani: %.6f -!!!---\n", clientfd, p->thr_info->thr_cur[clientfd]);
+
+                    if(p->ip2mani_ht == NULL)
+                    {
+                        p->ip2mani_ht = ht_create(HASHTABLE_MINSIZE,\
+                                       HASHTABLE_MAXSIZE, NULL);
+                    }
+                    char ip_str[16] = {0};
+                    strncpy(ip_str,&(p->clientip[clientfd][0]),15);
+                    bitrate_t *mani_p =  p->mani_info->bitrate_rec[clientfd];
+                    ret = ht_set_copy(p->ip2mani_ht, ip_str, 15, mani_p, \
+                        sizeof(int)*101, NULL, NULL);
+                    if(ret == -1)
+                    {
+                        printf("line 406, set ip2mani_ht error!\n");
+                    }
+
+                    if(p->ip2thr_ht == NULL)
+                    {
+                        p->ip2thr_ht = ht_create(HASHTABLE_MINSIZE,\
+                                       HASHTABLE_MAXSIZE, NULL);
+                    }
+                    double init_thr = p->mani_info->bitrate_rec[clientfd]->bitrate[0];
+                    ret = ht_set_copy(p->ip2thr_ht, ip_str, 15, &init_thr, \
+                        sizeof(double), NULL, NULL);
+                    if(ret == -1)
+                    {
+                        printf("line 419, set ip2thr_ht error!\n");
+                    }
+
+                    continue;
+                }
+                
+            }
+            else if(p->thr_info->send_fra_req[clientfd] == 1)//receive video frag
+            {
+                dbg_cp3_d2_printf("\n-----####### receive video frag ######---\n");
+                p->log_rec_list[clientfd]->cur_time = time(NULL);
+                struct timeval tf;
+                gettimeofday(&tf,NULL);
+                int frag_len = get_frag_size(p,clientfd);
+                dbg_cp3_d2_printf("---- frag_size :%d ----\n",frag_len);
+                if(frag_len == 0)
+                {
+                    dbg_cp3_d2_printf("frag_len is 0, error!\n");
+                }
+                else
+                {
+                    update_thr_cur(frag_len, tf, proxy_param.alpha, \
+                        p->thr_info, clientfd, p);
+                    // dbg_cp3_d2_printf("--!!!-- T current :%.6f ---!!!-\n", p->thr_info->thr_cur[clientfd]);
+                    p->thr_info->send_fra_req[clientfd] = 0;
+                    print_to_log(p->log_rec_list[clientfd]);
+                    memset(p->log_rec_list[clientfd], 0, sizeof(log_record_t));
+
+                }
+                dbg_cp3_d2_printf("--####### END of receive video frag ######---\n");
+               
+            }
+            /********   End ************/
             dbg_cp3_p3_printf("line 342 ret: %ld\n", ret);
             if (ret < -1)
             {
@@ -363,6 +472,7 @@ ssize_t serve_clients(pools_t *p)
         else if ((p->serverfd[i] == 1) && (FD_ISSET(i, &p->ready_wt_set)))
         {
             // server is ready to write
+            dbg_cp3_d2_printf("server is ready to write\n");
             p->num_ready--;
             int serverfd = i;
             if (p->send2s_list[serverfd]->next != NULL)
@@ -473,7 +583,7 @@ ssize_t send_maxfderr(int connfd)
     strncat(resp_htext, text_tmp, MAX_TEXT - text_len);
     text_len +=  strlen(text_tmp);
 
-    ret = write_to_socket(connfd, NULL, resp_htext, NULL, NULL, 0);
+    ret = write_to_socket(connfd, resp_htext, NULL, NULL, 0);
     if (ret < 0) {
         fprintf(logfp, "Failed sending reponse to fd%d\n", connfd);
         fupdate(logfp);
@@ -488,8 +598,8 @@ ssize_t send_maxfderr(int connfd)
  * Function that is used to block write, never used again in normal situation,
  * except for max connection error
  */
-ssize_t write_to_socket(int connfd, SSL *client_context, char *resp_hds_text,
-                        char *resp_ct_text, char *resp_ct_ptr, size_t body_len)
+ssize_t write_to_socket(int connfd, char *resp_hds_text, char *resp_ct_text,
+                        char *resp_ct_ptr, size_t body_len)
 {
     char *response_content = NULL;
     size_t write_offset = 0;
@@ -518,17 +628,8 @@ ssize_t write_to_socket(int connfd, SSL *client_context, char *resp_hds_text,
             dbg_wselet_printf("hdr_attempt: %ld\n", hdr_attempt);
         }
         ssize_t write_ret = 0;
-        if (client_context != NULL) {
-            write_ret = SSL_write(client_context, resp_hds_text + write_offset,
-                                  hdr_len);
-            dbg_cp2_printf("write_ret: %ld\n", write_ret);
-            dbg_cp2_printf("SSL_get_error: %d\n",
-                           SSL_get_error(client_context, write_ret));
-        }
-        else {
-            write_ret = write(connfd, resp_hds_text + write_offset,
-                              hdr_len);
-        }
+        write_ret = write(connfd, resp_hds_text + write_offset,
+                          hdr_len);
 
         dbg_wselet_printf("write_ret: %d\n", write_ret);
         if (write_ret < 0)
@@ -566,18 +667,8 @@ ssize_t write_to_socket(int connfd, SSL *client_context, char *resp_hds_text,
             dbg_wselet_printf("rsp_attempt: %ld\n", rsp_attempt);
         }
         ssize_t write_ret = 0;
-        if (client_context != NULL) {
-            write_ret = SSL_write(client_context,
-                                  response_content + write_offset,
-                                  body_len);
-            dbg_cp2_printf("write_ret: %ld\n", write_ret);
-            dbg_cp2_printf("SSL_get_error: %d\n",
-                           SSL_get_error(client_context, write_ret));
-        }
-        else {
-            write_ret = write(connfd, response_content + write_offset,
-                              body_len);
-        }
+        write_ret = write(connfd, response_content + write_offset,
+                          body_len);
         dbg_wselet_printf("write_ret: %d\n", write_ret);
         if (write_ret < 0)
         {
