@@ -1,0 +1,8026 @@
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 2
+
+!!!!! accept new clientfd: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 265,read_ret for skt_read_buf: 193
+line 265,read_ret for skt_read_buf: -1
+!!!parse success
+line 312 after get_host_and_port
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 323 into while
+new uri: /vod/big_buck_bunny_nolist.f4m
+f4m_req is sent!
+## clientfd ##: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 2, errno: 9
+---------- .f4m result ---------
+bitrate[0]: 10
+bitrate[1]: 100
+bitrate[2]: 500
+bitrate[3]: 1000
+-----------   end   ---------
+-!!!!--- T current 9 init by mani: 10.000000 -!!!---
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 2, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+!!!!! accept new clientfd: 11
+line 361
+
+
+
+
+
+
+
+num_ready: 2, errno: 9
+line 361
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 265,read_ret for skt_read_buf: 189
+line 265,read_ret for skt_read_buf: -1
+!!!parse success
+line 312 after get_host_and_port
+line 323 into while
+#### before get new_bitrate ####
+thr_cur check: 0.000000
+====== thr_cur: 10.000000 =====
+!!! manifest record of clientfd: 11 does not Exist!
+!!! -----line 27, bit_p: 0x67b2820 --- !!!!
+ !!! Find manifest by ip! 
+!!! ----- after else --- !!!!
+!!! ----- line 40  --- !!!!
+!!! ----- bit_p: 0x67b2820 --- !!!!
+!!! ----- line 43--- !!!!
+====== bitrate_n: 4 =====
+!!! -----bitrate_list: 0x67b2824 --- !!!!
+!!! ----- line 59 --- !!!!
+!!! -----line 66, return bit_rate: 10 --- !!!!
+### new_bitrate: 10
+###### new_bitrate_str: 10
+###new chunk uri: /vod/10Seg2-Frag7
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+-----####### receive video frag ######---
+---- frag_size :29222 ----
+
+!!! frag len: 233776 bit !!!
+
+!!! time interval: 0.001056  sec !!!
+--!!!-- update T current of :2.0.0.1 ---!!!-
+--!!!-- T current :221378.787879 ---!!!-
+--####### END of receive video frag ######---
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 265,read_ret for skt_read_buf: 0
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+!!!!! accept new clientfd: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 265,read_ret for skt_read_buf: 189
+line 265,read_ret for skt_read_buf: -1
+!!!parse success
+line 312 after get_host_and_port
+line 323 into while
+#### before get new_bitrate ####
+thr_cur check: 10.000000
+====== thr_cur: 221378.787879 =====
+!!! ----- line 40  --- !!!!
+!!! ----- bit_p: 0x67b0580 --- !!!!
+!!! ----- line 43--- !!!!
+====== bitrate_n: 4 =====
+!!! -----bitrate_list: 0x67b0584 --- !!!!
+!!! ----- line 59 --- !!!!
+!!! -- line 61, return bit_rate: 1000 --- !!! 
+### new_bitrate: 1000
+###### new_bitrate_str: 1000
+###new chunk uri: /vod/1000Seg2-Frag7
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+-----####### receive video frag ######---
+---- frag_size :176860 ----
+
+!!! frag len: 1414880 bit !!!
+
+!!! time interval: 0.001087  sec !!!
+--!!!-- update T current of :2.0.0.1 ---!!!-
+--!!!-- T current :1301637.534499 ---!!!-
+--####### END of receive video frag ######---
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 265,read_ret for skt_read_buf: 0
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+!!!!! accept new clientfd: 11
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 265,read_ret for skt_read_buf: 189
+line 265,read_ret for skt_read_buf: -1
+!!!parse success
+line 312 after get_host_and_port
+line 323 into while
+#### before get new_bitrate ####
+thr_cur check: 0.000000
+====== thr_cur: 1301637.534499 =====
+!!! manifest record of clientfd: 11 does not Exist!
+!!! -----line 27, bit_p: 0x67b2820 --- !!!!
+ !!! Find manifest by ip! 
+!!! ----- after else --- !!!!
+!!! ----- line 40  --- !!!!
+!!! ----- bit_p: 0x67b2820 --- !!!!
+!!! ----- line 43--- !!!!
+====== bitrate_n: 4 =====
+!!! -----bitrate_list: 0x67b2824 --- !!!!
+!!! ----- line 59 --- !!!!
+!!! -- line 61, return bit_rate: 1000 --- !!! 
+### new_bitrate: 1000
+###### new_bitrate_str: 1000
+###new chunk uri: /vod/1000Seg2-Frag7
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+-----####### receive video frag ######---
+---- frag_size :176860 ----
+
+!!! frag len: 1414880 bit !!!
+
+!!! time interval: 0.009425  sec !!!
+--!!!-- update T current of :2.0.0.1 ---!!!-
+--!!!-- T current :150119.893899 ---!!!-
+--####### END of receive video frag ######---
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+!!!!! accept new clientfd: 11
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 265,read_ret for skt_read_buf: 189
+line 265,read_ret for skt_read_buf: -1
+!!!parse success
+line 312 after get_host_and_port
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 323 into while
+#### before get new_bitrate ####
+thr_cur check: 0.000000
+====== thr_cur: 10.000000 =====
+!!! manifest record of clientfd: 11 does not Exist!
+!!! -----line 27, bit_p: 0x6841820 --- !!!!
+ !!! Find manifest by ip! 
+!!! ----- after else --- !!!!
+!!! ----- line 40  --- !!!!
+!!! ----- bit_p: 0x6841820 --- !!!!
+!!! ----- line 43--- !!!!
+====== bitrate_n: 4 =====
+!!! -----bitrate_list: 0x6841824 --- !!!!
+!!! ----- line 59 --- !!!!
+!!! -----line 66, return bit_rate: 10 --- !!!!
+### new_bitrate: 10
+###### new_bitrate_str: 10
+###new chunk uri: /vod/10Seg2-Frag7
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 265,read_ret for skt_read_buf: 0
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+!!!!! accept new clientfd: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 265,read_ret for skt_read_buf: 189
+line 265,read_ret for skt_read_buf: -1
+!!!parse success
+line 312 after get_host_and_port
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+-----####### receive video frag ######---
+---- frag_size :29222 ----
+
+!!! frag len: 233776 bit !!!
+
+!!! time interval: 0.196040  sec !!!
+--!!!-- update T current of :1.0.0.1 ---!!!-
+--!!!-- T current :1192.491328 ---!!!-
+--####### END of receive video frag ######---
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 2, errno: 9
+
+!!!!! accept new clientfd: 13
+line 265,read_ret for skt_read_buf: 0
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 265,read_ret for skt_read_buf: 189
+line 265,read_ret for skt_read_buf: -1
+!!!parse success
+line 312 after get_host_and_port
+line 323 into while
+#### before get new_bitrate ####
+thr_cur check: 10.000000
+====== thr_cur: 150119.893899 =====
+!!! ----- line 40  --- !!!!
+!!! ----- bit_p: 0x67b0580 --- !!!!
+!!! ----- line 43--- !!!!
+====== bitrate_n: 4 =====
+!!! -----bitrate_list: 0x67b0584 --- !!!!
+!!! ----- line 59 --- !!!!
+!!! -- line 61, return bit_rate: 1000 --- !!! 
+### new_bitrate: 1000
+###### new_bitrate_str: 1000
+###new chunk uri: /vod/1000Seg2-Frag7
+line 323 into while
+#### before get new_bitrate ####
+thr_cur check: 0.000000
+====== thr_cur: 1192.491328 =====
+!!! manifest record of clientfd: 13 does not Exist!
+!!! -----line 27, bit_p: 0x6841820 --- !!!!
+ !!! Find manifest by ip! 
+!!! ----- after else --- !!!!
+!!! ----- line 40  --- !!!!
+!!! ----- bit_p: 0x6841820 --- !!!!
+!!! ----- line 43--- !!!!
+====== bitrate_n: 4 =====
+!!! -----bitrate_list: 0x6841824 --- !!!!
+!!! ----- line 59 --- !!!!
+!!! -- line 61, return bit_rate: 500 --- !!! 
+### new_bitrate: 500
+###### new_bitrate_str: 500
+###new chunk uri: /vod/500Seg2-Frag7
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+-----####### receive video frag ######---
+---- frag_size :176860 ----
+
+!!! frag len: 1414880 bit !!!
+
+!!! time interval: 0.002417  sec !!!
+--!!!-- update T current of :2.0.0.1 ---!!!-
+--!!!-- T current :585386.843194 ---!!!-
+--####### END of receive video frag ######---
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+-----####### receive video frag ######---
+---- frag_size :106358 ----
+
+!!! frag len: 850864 bit !!!
+
+!!! time interval: 0.187350  sec !!!
+--!!!-- update T current of :1.0.0.1 ---!!!-
+--!!!-- T current :4541.574593 ---!!!-
+--####### END of receive video frag ######---
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 265,read_ret for skt_read_buf: 0
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+!!!!! accept new clientfd: 11
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 265,read_ret for skt_read_buf: 189
+line 265,read_ret for skt_read_buf: -1
+!!!parse success
+line 312 after get_host_and_port
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 265,read_ret for skt_read_buf: 0
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+!!!!! accept new clientfd: 11
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 265,read_ret for skt_read_buf: 189
+line 265,read_ret for skt_read_buf: -1
+!!!parse success
+line 312 after get_host_and_port
+line 323 into while
+#### before get new_bitrate ####
+thr_cur check: 0.000000
+====== thr_cur: 4541.574593 =====
+!!! manifest record of clientfd: 11 does not Exist!
+!!! -----line 27, bit_p: 0x6841820 --- !!!!
+ !!! Find manifest by ip! 
+!!! ----- after else --- !!!!
+!!! ----- line 40  --- !!!!
+!!! ----- bit_p: 0x6841820 --- !!!!
+!!! ----- line 43--- !!!!
+====== bitrate_n: 4 =====
+!!! -----bitrate_list: 0x6841824 --- !!!!
+!!! ----- line 59 --- !!!!
+!!! -- line 61, return bit_rate: 1000 --- !!! 
+### new_bitrate: 1000
+###### new_bitrate_str: 1000
+###new chunk uri: /vod/1000Seg2-Frag7
+line 323 into while
+#### before get new_bitrate ####
+thr_cur check: 0.000000
+====== thr_cur: 585386.843194 =====
+!!! manifest record of clientfd: 11 does not Exist!
+!!! -----line 27, bit_p: 0x67b2820 --- !!!!
+ !!! Find manifest by ip! 
+!!! ----- after else --- !!!!
+!!! ----- line 40  --- !!!!
+!!! ----- bit_p: 0x67b2820 --- !!!!
+!!! ----- line 43--- !!!!
+====== bitrate_n: 4 =====
+!!! -----bitrate_list: 0x67b2824 --- !!!!
+!!! ----- line 59 --- !!!!
+!!! -- line 61, return bit_rate: 1000 --- !!! 
+### new_bitrate: 1000
+###### new_bitrate_str: 1000
+###new chunk uri: /vod/1000Seg2-Frag7
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+-----####### receive video frag ######---
+---- frag_size :176860 ----
+
+!!! frag len: 1414880 bit !!!
+
+!!! time interval: 0.003142  sec !!!
+--!!!-- update T current of :1.0.0.1 ---!!!-
+--!!!-- T current :450311.903246 ---!!!-
+--####### END of receive video frag ######---
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+-----####### receive video frag ######---
+---- frag_size :176860 ----
+
+!!! frag len: 1414880 bit !!!
+
+!!! time interval: 0.185914  sec !!!
+--!!!-- update T current of :2.0.0.1 ---!!!-
+--!!!-- T current :7610.400508 ---!!!-
+--####### END of receive video frag ######---
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 265,read_ret for skt_read_buf: 0
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+!!!!! accept new clientfd: 13
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 265,read_ret for skt_read_buf: 189
+line 265,read_ret for skt_read_buf: -1
+!!!parse success
+line 312 after get_host_and_port
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 323 into while
+#### before get new_bitrate ####
+thr_cur check: 0.000000
+====== thr_cur: 450311.903246 =====
+!!! manifest record of clientfd: 13 does not Exist!
+!!! -----line 27, bit_p: 0x6841820 --- !!!!
+ !!! Find manifest by ip! 
+!!! ----- after else --- !!!!
+!!! ----- line 40  --- !!!!
+!!! ----- bit_p: 0x6841820 --- !!!!
+!!! ----- line 43--- !!!!
+====== bitrate_n: 4 =====
+!!! -----bitrate_list: 0x6841824 --- !!!!
+!!! ----- line 59 --- !!!!
+!!! -- line 61, return bit_rate: 1000 --- !!! 
+### new_bitrate: 1000
+###### new_bitrate_str: 1000
+###new chunk uri: /vod/1000Seg2-Frag7
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+-----####### receive video frag ######---
+---- frag_size :176860 ----
+
+!!! frag len: 1414880 bit !!!
+
+!!! time interval: 0.002181  sec !!!
+--!!!-- update T current of :1.0.0.1 ---!!!-
+--!!!-- T current :648729.940394 ---!!!-
+--####### END of receive video frag ######---
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 265,read_ret for skt_read_buf: 0
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+!!!!! accept new clientfd: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 265,read_ret for skt_read_buf: 189
+line 265,read_ret for skt_read_buf: -1
+!!!parse success
+line 312 after get_host_and_port
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 323 into while
+#### before get new_bitrate ####
+thr_cur check: 10.000000
+====== thr_cur: 7610.400508 =====
+!!! ----- line 40  --- !!!!
+!!! ----- bit_p: 0x67b0580 --- !!!!
+!!! ----- line 43--- !!!!
+====== bitrate_n: 4 =====
+!!! -----bitrate_list: 0x67b0584 --- !!!!
+!!! ----- line 59 --- !!!!
+!!! -- line 61, return bit_rate: 1000 --- !!! 
+### new_bitrate: 1000
+###### new_bitrate_str: 1000
+###new chunk uri: /vod/1000Seg2-Frag7
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+-----####### receive video frag ######---
+---- frag_size :0 ----
+frag_len is 0, error!
+--####### END of receive video frag ######---
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 265,read_ret for skt_read_buf: 0
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+!!!!! accept new clientfd: 10
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 265,read_ret for skt_read_buf: 189
+line 265,read_ret for skt_read_buf: -1
+!!!parse success
+line 312 after get_host_and_port
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+-----####### receive video frag ######---
+---- frag_size :176860 ----
+
+!!! frag len: 1414880 bit !!!
+
+!!! time interval: 0.197611  sec !!!
+--!!!-- update T current of :2.0.0.1 ---!!!-
+--!!!-- T current :7159.925308 ---!!!-
+--####### END of receive video frag ######---
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 323 into while
+#### before get new_bitrate ####
+thr_cur check: 0.000000
+====== thr_cur: 648729.940394 =====
+!!! manifest record of clientfd: 10 does not Exist!
+!!! -----line 27, bit_p: 0x6841820 --- !!!!
+ !!! Find manifest by ip! 
+!!! ----- after else --- !!!!
+!!! ----- line 40  --- !!!!
+!!! ----- bit_p: 0x6841820 --- !!!!
+!!! ----- line 43--- !!!!
+====== bitrate_n: 4 =====
+!!! -----bitrate_list: 0x6841824 --- !!!!
+!!! ----- line 59 --- !!!!
+!!! -- line 61, return bit_rate: 1000 --- !!! 
+### new_bitrate: 1000
+###### new_bitrate_str: 1000
+###new chunk uri: /vod/1000Seg2-Frag7
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 2, errno: 9
+
+!!!!! accept new clientfd: 10
+line 265,read_ret for skt_read_buf: -1
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 265,read_ret for skt_read_buf: 0
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 265,read_ret for skt_read_buf: 189
+line 265,read_ret for skt_read_buf: -1
+!!!parse success
+line 312 after get_host_and_port
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+-----####### receive video frag ######---
+---- frag_size :176860 ----
+
+!!! frag len: 1414880 bit !!!
+
+!!! time interval: 0.567040  sec !!!
+--!!!-- update T current of :1.0.0.1 ---!!!-
+--!!!-- T current :2495.203160 ---!!!-
+--####### END of receive video frag ######---
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 323 into while
+#### before get new_bitrate ####
+thr_cur check: 0.000000
+====== thr_cur: 7159.925308 =====
+!!! manifest record of clientfd: 10 does not Exist!
+!!! -----line 27, bit_p: 0x67b2820 --- !!!!
+ !!! Find manifest by ip! 
+!!! ----- after else --- !!!!
+!!! ----- line 40  --- !!!!
+!!! ----- bit_p: 0x67b2820 --- !!!!
+!!! ----- line 43--- !!!!
+====== bitrate_n: 4 =====
+!!! -----bitrate_list: 0x67b2824 --- !!!!
+!!! ----- line 59 --- !!!!
+!!! -- line 61, return bit_rate: 1000 --- !!! 
+### new_bitrate: 1000
+###### new_bitrate_str: 1000
+###new chunk uri: /vod/1000Seg2-Frag7
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 265,read_ret for skt_read_buf: 0
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+!!!!! accept new clientfd: 12
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 265,read_ret for skt_read_buf: 189
+line 265,read_ret for skt_read_buf: -1
+!!!parse success
+line 312 after get_host_and_port
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+-----####### receive video frag ######---
+---- frag_size :176860 ----
+
+!!! frag len: 1414880 bit !!!
+
+!!! time interval: 0.564125  sec !!!
+--!!!-- update T current of :2.0.0.1 ---!!!-
+--!!!-- T current :2508.096610 ---!!!-
+--####### END of receive video frag ######---
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 323 into while
+#### before get new_bitrate ####
+thr_cur check: 0.000000
+====== thr_cur: 2495.203160 =====
+!!! manifest record of clientfd: 12 does not Exist!
+!!! -----line 27, bit_p: 0x6841820 --- !!!!
+ !!! Find manifest by ip! 
+!!! ----- after else --- !!!!
+!!! ----- line 40  --- !!!!
+!!! ----- bit_p: 0x6841820 --- !!!!
+!!! ----- line 43--- !!!!
+====== bitrate_n: 4 =====
+!!! -----bitrate_list: 0x6841824 --- !!!!
+!!! ----- line 59 --- !!!!
+!!! -- line 61, return bit_rate: 1000 --- !!! 
+### new_bitrate: 1000
+###### new_bitrate_str: 1000
+###new chunk uri: /vod/1000Seg2-Frag7
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 2, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 265,read_ret for skt_read_buf: 0
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+!!!!! accept new clientfd: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 265,read_ret for skt_read_buf: 189
+line 265,read_ret for skt_read_buf: -1
+!!!parse success
+line 312 after get_host_and_port
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+-----####### receive video frag ######---
+---- frag_size :176860 ----
+
+!!! frag len: 1414880 bit !!!
+
+!!! time interval: 0.569513  sec !!!
+--!!!-- update T current of :1.0.0.1 ---!!!-
+--!!!-- T current :2484.368223 ---!!!-
+--####### END of receive video frag ######---
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 323 into while
+#### before get new_bitrate ####
+thr_cur check: 10.000000
+====== thr_cur: 2508.096610 =====
+!!! ----- line 40  --- !!!!
+!!! ----- bit_p: 0x67b0580 --- !!!!
+!!! ----- line 43--- !!!!
+====== bitrate_n: 4 =====
+!!! -----bitrate_list: 0x67b0584 --- !!!!
+!!! ----- line 59 --- !!!!
+!!! -- line 61, return bit_rate: 1000 --- !!! 
+### new_bitrate: 1000
+###### new_bitrate_str: 1000
+###new chunk uri: /vod/1000Seg2-Frag7
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+-----####### receive video frag ######---
+---- frag_size :176860 ----
+
+!!! frag len: 1414880 bit !!!
+
+!!! time interval: 0.467202  sec !!!
+--!!!-- update T current of :2.0.0.1 ---!!!-
+--!!!-- T current :3028.411693 ---!!!-
+--####### END of receive video frag ######---
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 265,read_ret for skt_read_buf: 0
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+!!!!! accept new clientfd: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 265,read_ret for skt_read_buf: 189
+line 265,read_ret for skt_read_buf: -1
+!!!parse success
+line 312 after get_host_and_port
+
+
+
+
+
+
+
+num_ready: 2, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 323 into while
+#### before get new_bitrate ####
+thr_cur check: 10.000000
+====== thr_cur: 2484.368223 =====
+!!! ----- line 40  --- !!!!
+!!! ----- bit_p: 0x683f580 --- !!!!
+!!! ----- line 43--- !!!!
+====== bitrate_n: 4 =====
+!!! -----bitrate_list: 0x683f584 --- !!!!
+!!! ----- line 59 --- !!!!
+!!! -- line 61, return bit_rate: 1000 --- !!! 
+### new_bitrate: 1000
+###### new_bitrate_str: 1000
+###new chunk uri: /vod/1000Seg2-Frag7
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 2, errno: 9
+
+!!!!! accept new clientfd: 13
+line 265,read_ret for skt_read_buf: 0
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 265,read_ret for skt_read_buf: 189
+line 265,read_ret for skt_read_buf: -1
+!!!parse success
+line 312 after get_host_and_port
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+-----####### receive video frag ######---
+---- frag_size :176860 ----
+
+!!! frag len: 1414880 bit !!!
+
+!!! time interval: 0.104957  sec !!!
+--!!!-- update T current of :1.0.0.1 ---!!!-
+--!!!-- T current :13480.568233 ---!!!-
+--####### END of receive video frag ######---
+line 323 into while
+#### before get new_bitrate ####
+thr_cur check: 0.000000
+====== thr_cur: 3028.411693 =====
+!!! manifest record of clientfd: 13 does not Exist!
+!!! -----line 27, bit_p: 0x67b2820 --- !!!!
+ !!! Find manifest by ip! 
+!!! ----- after else --- !!!!
+!!! ----- line 40  --- !!!!
+!!! ----- bit_p: 0x67b2820 --- !!!!
+!!! ----- line 43--- !!!!
+====== bitrate_n: 4 =====
+!!! -----bitrate_list: 0x67b2824 --- !!!!
+!!! ----- line 59 --- !!!!
+!!! -- line 61, return bit_rate: 1000 --- !!! 
+### new_bitrate: 1000
+###### new_bitrate_str: 1000
+###new chunk uri: /vod/1000Seg2-Frag7
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+-----####### receive video frag ######---
+---- frag_size :176860 ----
+
+!!! frag len: 1414880 bit !!!
+
+!!! time interval: 0.557077  sec !!!
+--!!!-- update T current of :2.0.0.1 ---!!!-
+--!!!-- T current :2539.828426 ---!!!-
+--####### END of receive video frag ######---
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 2, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 265,read_ret for skt_read_buf: 0
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+!!!!! accept new clientfd: 12
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 265,read_ret for skt_read_buf: 189
+line 265,read_ret for skt_read_buf: -1
+!!!parse success
+line 312 after get_host_and_port
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 265,read_ret for skt_read_buf: 0
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+!!!!! accept new clientfd: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 265,read_ret for skt_read_buf: 189
+line 265,read_ret for skt_read_buf: -1
+!!!parse success
+line 312 after get_host_and_port
+line 323 into while
+#### before get new_bitrate ####
+thr_cur check: 0.000000
+====== thr_cur: 13480.568233 =====
+!!! manifest record of clientfd: 12 does not Exist!
+!!! -----line 27, bit_p: 0x6841820 --- !!!!
+ !!! Find manifest by ip! 
+!!! ----- after else --- !!!!
+!!! ----- line 40  --- !!!!
+!!! ----- bit_p: 0x6841820 --- !!!!
+!!! ----- line 43--- !!!!
+====== bitrate_n: 4 =====
+!!! -----bitrate_list: 0x6841824 --- !!!!
+!!! ----- line 59 --- !!!!
+!!! -- line 61, return bit_rate: 1000 --- !!! 
+### new_bitrate: 1000
+###### new_bitrate_str: 1000
+###new chunk uri: /vod/1000Seg2-Frag7
+line 323 into while
+#### before get new_bitrate ####
+thr_cur check: 10.000000
+====== thr_cur: 2539.828426 =====
+!!! ----- line 40  --- !!!!
+!!! ----- bit_p: 0x67b0580 --- !!!!
+!!! ----- line 43--- !!!!
+====== bitrate_n: 4 =====
+!!! -----bitrate_list: 0x67b0584 --- !!!!
+!!! ----- line 59 --- !!!!
+!!! -- line 61, return bit_rate: 1000 --- !!! 
+### new_bitrate: 1000
+###### new_bitrate_str: 1000
+###new chunk uri: /vod/1000Seg2-Frag7
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+-----####### receive video frag ######---
+---- frag_size :176860 ----
+
+!!! frag len: 1414880 bit !!!
+
+!!! time interval: 0.002465  sec !!!
+--!!!-- update T current of :1.0.0.1 ---!!!-
+--!!!-- T current :573987.829615 ---!!!-
+--####### END of receive video frag ######---
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+-----####### receive video frag ######---
+---- frag_size :176860 ----
+
+!!! frag len: 1414880 bit !!!
+
+!!! time interval: 0.191791  sec !!!
+--!!!-- update T current of :2.0.0.1 ---!!!-
+--!!!-- T current :7377.197053 ---!!!-
+--####### END of receive video frag ######---
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 2, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 265,read_ret for skt_read_buf: 0
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+!!!!! accept new clientfd: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 265,read_ret for skt_read_buf: 189
+line 265,read_ret for skt_read_buf: -1
+!!!parse success
+line 312 after get_host_and_port
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 265,read_ret for skt_read_buf: 0
+87944.3861131 87944.3861131 1000.0
+STATS: tput=87944.4, tput_avg=87944.4, bitrate=1000, expect_br=500, link_bw=950
+line 323 into while
+#### before get new_bitrate ####
+thr_cur check: 10.000000
+====== thr_cur: 573987.829615 =====
+!!! ----- line 40  --- !!!!
+!!! ----- bit_p: 0x683f580 --- !!!!
+!!! ----- line 43--- !!!!
+====== bitrate_n: 4 =====
+!!! -----bitrate_list: 0x683f584 --- !!!!
+!!! ----- line 59 --- !!!!
+!!! -- line 61, return bit_rate: 1000 --- !!! 
+### new_bitrate: 1000
+###### new_bitrate_str: 1000
+###new chunk uri: /vod/1000Seg2-Frag7
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+-----####### receive video frag ######---
+---- frag_size :176860 ----
+
+!!! frag len: 1414880 bit !!!
+
+!!! time interval: 0.000664  sec !!!
+--!!!-- update T current of :1.0.0.1 ---!!!-
+--!!!-- T current :2130843.373494 ---!!!-
+--####### END of receive video frag ######---
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 2, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 265,read_ret for skt_read_buf: 0
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+!!!!! accept new clientfd: 12
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 265,read_ret for skt_read_buf: 189
+line 265,read_ret for skt_read_buf: -1
+!!!parse success
+line 312 after get_host_and_port
+line 323 into while
+#### before get new_bitrate ####
+thr_cur check: 0.000000
+====== thr_cur: 2130843.373494 =====
+!!! manifest record of clientfd: 12 does not Exist!
+!!! -----line 27, bit_p: 0x6841820 --- !!!!
+ !!! Find manifest by ip! 
+!!! ----- after else --- !!!!
+!!! ----- line 40  --- !!!!
+!!! ----- bit_p: 0x6841820 --- !!!!
+!!! ----- line 43--- !!!!
+====== bitrate_n: 4 =====
+!!! -----bitrate_list: 0x6841824 --- !!!!
+!!! ----- line 59 --- !!!!
+!!! -- line 61, return bit_rate: 1000 --- !!! 
+### new_bitrate: 1000
+###### new_bitrate_str: 1000
+###new chunk uri: /vod/1000Seg2-Frag7
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+-----####### receive video frag ######---
+---- frag_size :176860 ----
+
+!!! frag len: 1414880 bit !!!
+
+!!! time interval: 0.000733  sec !!!
+--!!!-- update T current of :1.0.0.1 ---!!!-
+--!!!-- T current :1930259.208731 ---!!!-
+--####### END of receive video frag ######---
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 265,read_ret for skt_read_buf: 0
+757468.641693 757468.641693 1000.0
+STATS: tput=757469, tput_avg=757469, bitrate=1000, expect_br=500, link_bw=950
+
+
+
+
+
+
+
+num_ready: 1, errno: 9
+line 265,read_ret for skt_read_buf: 0
+
+
+#################### proxy1.log ####################
+1480361941 0.196040 1192.491328 1192.491328 10  Seg2-Frag7
+1480361942 0.187350 4541.574593 4541.574593 500  Seg2-Frag7
+1480361943 0.003142 450311.903246 450311.903246 1000  Seg2-Frag7
+1480361944 0.002181 648729.940394 648729.940394 1000  Seg2-Frag7
+1480361946 0.567040 2495.203160 2495.203160 1000  Seg2-Frag7
+1480361947 0.569513 2484.368223 2484.368223 1000  Seg2-Frag7
+1480361949 0.104957 13480.568233 13480.568233 1000  Seg2-Frag7
+1480361950 0.002465 573987.829615 573987.829615 1000  Seg2-Frag7
+1480361952 0.000664 2130843.373494 2130843.373494 1000  Seg2-Frag7
+1480361953 0.000733 1930259.208731 1930259.208731 1000  Seg2-Frag7
+
+
+
+
+#################### proxy2.log ####################
+1480361940 0.001056 221378.787879 221378.787879 10  Seg2-Frag7
+1480361940 0.001087 1301637.534499 1301637.534499 1000  Seg2-Frag7
+1480361941 0.009425 150119.893899 150119.893899 1000  Seg2-Frag7
+1480361942 0.002417 585386.843194 585386.843194 1000  Seg2-Frag7
+1480361943 0.185914 7610.400508 7610.400508 1000  Seg2-Frag7
+1480361945 0.197611 7159.925308 7159.925308 1000  Seg2-Frag7
+1480361947 0.564125 2508.096610 2508.096610 1000  Seg2-Frag7
+1480361948 0.467202 3028.411693 3028.411693 1000  Seg2-Frag7
+1480361949 0.557077 2539.828426 2539.828426 1000  Seg2-Frag7
+1480361951 0.191791 7377.197053 7377.197053 1000  Seg2-Frag7
+
+
+FAIL
+INFO       2016-11-28 14:39:14,164 netsim:192     Stopping simulated network...
+INFO       2016-11-28 14:39:14,164 netsim:195     Stopping apache...
+INFO       2016-11-28 14:39:14,294 netsim:203     Disabling traffic shaping...
+INFO       2016-11-28 14:39:14,639 netsim:210     Destroying network interfaces...
+INFO       2016-11-28 14:39:14,878 netsim:216     Network stopped.
+
+======================================================================
+FAIL: test_proxy_simple (__main__.Project3Checkpoint1Test)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/proj3/P3_chp1_test/bitrate-project/grader/grader_super.py", line 188, in test_proxy_simple
+    self.check_errors()
+  File "/home/proj3/P3_chp1_test/bitrate-project/grader/grader_super.py", line 146, in check_gets
+    self.assertTrue(abs(tput - link_bw) < tput_margin*link_bw)
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_proxy_adaptation (__main__.Project3Checkpoint1Test)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/proj3/P3_chp1_test/bitrate-project/grader/grader_super.py", line 199, in test_proxy_adaptation
+    self.check_errors()
+  File "/home/proj3/P3_chp1_test/bitrate-project/grader/grader_super.py", line 146, in check_gets
+    self.assertTrue(abs(tput - link_bw) < tput_margin*link_bw)
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_proxy_multiple_clients (__main__.Project3Checkpoint1Test)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/proj3/P3_chp1_test/bitrate-project/grader/grader_super.py", line 218, in test_proxy_multiple_clients
+    self.check_errors()
+  File "/home/proj3/P3_chp1_test/bitrate-project/grader/grader_super.py", line 146, in check_gets
+    self.assertTrue(abs(tput - link_bw) < tput_margin*link_bw)
+AssertionError: False is not true
+
+----------------------------------------------------------------------
+Ran 3 tests in 66.748s
+
+FAILED (failures=3)
+{'test_proxy_adaptation': 0, 'test_proxy_multiple_clients': 0, 'test_proxy_simple': 0}
+{"scores": {"proxy": 0}}
+

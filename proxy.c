@@ -74,7 +74,7 @@ int main(int argc, char **argv)
                                 &pool.ready_wt_set, NULL, NULL);
 
         int errsv = errno;
-        // dbg_cp3_p3_printf("\n\n\n\n\n\n\nnum_ready: %d, errno: %d\n", pool.num_ready, errsv);
+        //dbg_cp3_d2_printf("\n\n\n\n\n\n\nnum_ready: %d, errno: %d\n", pool.num_ready, errsv);
         // htttp port accept connection
         if (pool.num_ready < 0)
         {
@@ -358,6 +358,8 @@ ssize_t serve_clients(pools_t *p)
         else if ((p->clientfd[i] == 1) && (FD_ISSET(i, &p->ready_wt_set)))
         {
             // In this case, client is ready to be send data
+            
+            dbg_cp3_d2_printf("line 361 client: %d\n", i);
             p->num_ready--;
             int clientfd = i;
             if (p->s2c_list[clientfd]->next == NULL)
@@ -366,7 +368,7 @@ ssize_t serve_clients(pools_t *p)
             }
             // dbg_cp3_p3_printf("line 331\n");
             // dbg_cp3_p3_printf("line 332\n");
-            // dbg_cp3_p3_printf("line 333\n");
+            dbg_cp3_d2_printf("line 370\n");
             ret = s2c_list_write_client(p, clientfd);
 
         }
@@ -391,6 +393,7 @@ ssize_t serve_clients(pools_t *p)
                 }
                 else
                 {
+                    FD_CLR(clientfd, &p->active_wt_set);
                     //assume parse result is right, wait to add error process later
                     p->mani_info->bitrate_rec[clientfd] = parse_manifest(mani_file);
                     p->mani_info->flag_send_f4m[clientfd] = 0;
@@ -432,29 +435,48 @@ ssize_t serve_clients(pools_t *p)
             else if(p->thr_info->send_fra_req[clientfd] == 1)//receive video frag
             {
                 dbg_cp3_d2_printf("\n-----####### receive video frag ######---\n");
-                p->log_rec_list[clientfd]->cur_time = time(NULL);
-                struct timeval tf;
-                gettimeofday(&tf,NULL);
+                
+                
                 int frag_len = get_frag_size(p,clientfd);
-                dbg_cp3_d2_printf("---- frag_size :%d ----\n",frag_len);
+                int packet_len = get_package_size(p,clientfd, frag_len);
+                p->frag_len[clientfd] = frag_len;
+                p->pack_len[clientfd] = packet_len;
+                dbg_cp3_d2_printf("---- frag_size :%d ----\n",p->frag_len[clientfd]);
                 if(frag_len == 0)
                 {
                     dbg_cp3_d2_printf("frag_len is 0, error!\n");
                 }
                 else
                 {
-                    update_thr_cur(frag_len, tf, proxy_param.alpha, \
-                        p->thr_info, clientfd, p);
-                    // dbg_cp3_d2_printf("--!!!-- T current :%.6f ---!!!-\n", p->thr_info->thr_cur[clientfd]);
                     p->thr_info->send_fra_req[clientfd] = 0;
-                    print_to_log(p->log_rec_list[clientfd]);
-                    memset(p->log_rec_list[clientfd], 0, sizeof(log_record_t));
 
                 }
                 dbg_cp3_d2_printf("--####### END of receive video frag ######---\n");
-               
+                dbg_cp3_d2_printf("line 456, clientfd: %d\n", clientfd);
+                if (!FD_ISSET(clientfd, &p->active_wt_set))
+                {
+                    printf("line 459\n");
+                    //FD_SET(clientfd, &p->active_wt_set);
+                }
             }
             /********   End ************/
+            if(p->pack_len[clientfd] != 0)
+            {
+                p->pack_len[clientfd] = update_pack_recv_len(p, clientfd, p->pack_len[clientfd]);
+                if(p->pack_len[clientfd] == 0)
+                {
+                    dbg_cp3_d2_printf("\n!!!!line 473, recv complete package!!!!\n");
+                    p->log_rec_list[clientfd]->cur_time = time(NULL);
+                    struct timeval tf;
+                    gettimeofday(&tf,NULL);
+
+                    update_thr_cur(p->frag_len[clientfd], tf, proxy_param.alpha, \
+                        p->thr_info, clientfd, p);
+                    // dbg_cp3_d2_printf("--!!!-- T current :%.6f ---!!!-\n", p->thr_info->thr_cur[clientfd]);
+                    print_to_log(p->log_rec_list[clientfd]);
+                    memset(p->log_rec_list[clientfd], 0, sizeof(log_record_t));
+                }
+            }
             dbg_cp3_p3_printf("line 342 ret: %ld\n", ret);
             if (ret < -1)
             {
@@ -465,14 +487,14 @@ ssize_t serve_clients(pools_t *p)
                 FD_SET(clientfd, &p->active_wt_set);
                 // dbg_cp3_p3_printf("line 352\n");
                 // dbg_cp3_p3_printf("line 352\n");
-                // dbg_cp3_p3_printf("line 354\n");
+                dbg_cp3_d2_printf("line 476\n");
                 s2c_list_write_client(p, clientfd);
             }
         }
         else if ((p->serverfd[i] == 1) && (FD_ISSET(i, &p->ready_wt_set)))
         {
             // server is ready to write
-            dbg_cp3_d2_printf("server is ready to write\n");
+            // dbg_cp3_d2_printf("server is ready to write\n");
             p->num_ready--;
             int serverfd = i;
             if (p->send2s_list[serverfd]->next != NULL)
