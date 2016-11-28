@@ -1,0 +1,11 @@
+POST http://127.0.0.1/cgi/ HTTP/1.1
+Host: img.t.sinajs.cn
+Connection: keep-alive
+Pragma: no-cache
+Cache-Control: no-cache
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.143 Safari/537.36
+Accept: image/webp,image/*,*/*;q=0.8
+Referer: http://img.t.sinajs.cn/t4/appstyle/widget/css/weiboShow/weiboShow.css?ver=97c39cbad00c6d31
+Content-Length: 10
+
+aaaaaddddd

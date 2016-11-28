@@ -30,6 +30,9 @@
 #include <errno.h>
 #include <netdb.h>
 #include <time.h>
+#include <sys/time.h>
+#include <unistd.h>
+#include "hashtable.h"
 
 #include "param_init.h"
 #include "constants.h"
@@ -69,13 +72,22 @@
 #define dbg_wselet_fprintf(...)
 #endif
 
-#define DEBUG_CP1_P3
+// #define DEBUG_CP1_P3
 #ifdef DEBUG_CP1_P3
 #define dbg_cp3_p3_printf(...) printf(__VA_ARGS__)
 #define dbg_cp3_p3_fprintf(...) fprintf(__VA_ARGS__)
 #else
 #define dbg_cp3_p3_printf(...)
 #define dbg_cp3_p3_fprintf(...)
+#endif
+
+#define DEBUG_CP1_D2
+#ifdef DEBUG_CP1_D2
+#define dbg_cp3_d2_printf(...) printf(__VA_ARGS__)
+#define dbg_cp3_d2_fprintf(...) fprintf(__VA_ARGS__)
+#else
+#define dbg_cp3_d2_printf(...)
+#define dbg_cp3_d2_fprintf(...)
 #endif
 
 /**
@@ -119,6 +131,41 @@ typedef struct s2c_data_list_s
     struct s2c_data_list_s *next;
 } s2c_data_list_t;
 
+typedef struct bitrate_s
+{
+    int bitrate_num;
+    int bitrate[100];
+} bitrate_t;
+
+typedef struct manifest_s
+{
+    int flag_send_f4m[FD_SETSIZE];
+    send2s_req_t *f4m_req[FD_SETSIZE];
+    //record the pointer fo request of download .f4m of each client
+    bitrate_t *bitrate_rec[FD_SETSIZE];
+    //available bitrate of each client's video file
+
+}manifest_t;
+
+typedef struct throughput_s
+{
+    int send_fra_req[FD_SETSIZE];
+    struct timeval ts_rec[FD_SETSIZE];
+    double thr_cur[FD_SETSIZE];//throughput current
+}throughput_t;
+
+typedef struct log_record_s
+{
+    time_t cur_time;
+    double duration;
+    double tput;
+    double avg_tput;
+    int req_bitrate;
+    char server_ip[16];
+    char chunk_name[20];
+
+}log_record_t;
+
 typedef struct pools_t_s
 {
     fd_set active_rd_set;
@@ -143,7 +190,18 @@ typedef struct pools_t_s
     int16_t fd_s2c[FD_SETSIZE];
     send2s_req_t *send2s_list[FD_SETSIZE];
     s2c_data_list_t *s2c_list[FD_SETSIZE];
+    log_record_t *log_rec_list[FD_SETSIZE];
+
+    manifest_t *mani_info;
+    throughput_t *thr_info;
+    hashtable_t * ip2mani_ht;
+    hashtable_t * ip2thr_ht;
+
+    
 } pools_t;
+
+
+
 
 /*
  * Functions that are used to construct basic execution steps
@@ -152,6 +210,8 @@ int open_listenfd(char *port);
 void init_pool(int listenfd, pools_t *p);
 ssize_t add_client(int connfd, pools_t *p, char *c_host);
 ssize_t serve_clients(pools_t *p);
+manifest_t * init_manifest();
+throughput_t * init_throughput();
 /*
  * Functions that are used to acomplish crucial features
  */

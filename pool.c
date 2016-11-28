@@ -33,7 +33,48 @@ void init_pool(int listenfd, pools_t *p) {
         memset(p->send2s_list[i], 0 , sizeof(send2s_req_t));
         p->s2c_list[i] = malloc(sizeof(s2c_data_list_t));
         memset(p->s2c_list[i], 0 , sizeof(s2c_data_list_t));
+        p->log_rec_list[i] = malloc(sizeof(log_record_t));
+        memset(p->log_rec_list[i], 0, sizeof(log_record_t));
+
+        
     }
+    p->mani_info = init_manifest();
+    p->thr_info = init_throughput();
+    p->ip2mani_ht = NULL;
+    p->ip2thr_ht = NULL;
+
+    
+}
+
+manifest_t * init_manifest()
+{
+    manifest_t *mani = malloc(sizeof(manifest_t));
+    memset(mani,0,sizeof(manifest_t));
+    size_t i;
+    for (i = 0; i < FD_SETSIZE; i++) {
+        mani->flag_send_f4m[i] = 0;
+        mani->f4m_req[i] = NULL;
+        mani->bitrate_rec[i] = NULL;
+        
+    }
+    return mani;
+}
+
+throughput_t * init_throughput()
+{
+    throughput_t * thr_info = malloc(sizeof(throughput_t));
+    memset(thr_info,0,sizeof(throughput_t));
+    size_t i;
+    struct timeval now;
+    gettimeofday(&now,NULL);
+    for (i = 0; i < FD_SETSIZE; i++) {
+
+        thr_info->ts_rec[i] = now;
+        //thr_info->thr_cur[i] = 1000;
+        thr_info->thr_cur[i] = 0;
+        thr_info->send_fra_req[i] = 0;
+    }
+    return thr_info;
 }
 
 /**
