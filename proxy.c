@@ -127,7 +127,7 @@ int main(int argc, char **argv)
                 }
                 // Add client to the read-write pools_t
                 ret = add_client(connfd, &pool, c_host);
-                dbg_cp3_p3_printf("c_host: %s, c_port: %s\n", c_host, c_port);
+                dbg_cp3_d2_printf("c_host: %s, c_port: %s\n", c_host, c_port);
                 if (ret < 0)
                 {
                     Close(connfd);
@@ -270,10 +270,13 @@ ssize_t serve_clients(pools_t *p)
                                 SKT_READ_BUF_SIZE - read_offset);
                 //dbg_cp3_p3_printf("read_ret for skt_read_buf: %ld\n", read_ret);
                 dbg_cp3_d2_printf("line 265,read_ret for skt_read_buf: %ld\n", read_ret);
+                dbg_cp3_d2_printf("line 273 clientfd: %d\n", clientfd);
                 // Client closes connection
                 if (read_ret == 0)
                 {
+                    int serverfd = p->fd_c2s[clientfd];
                     Close_conn(clientfd, p);
+                    Close_conn(serverfd, p);
                     if_conn_close = 1;
                     break;
                 }
@@ -375,11 +378,30 @@ ssize_t serve_clients(pools_t *p)
         else if ((p->serverfd[i] == 1) && (FD_ISSET(i, &p->ready_rd_set)))
         {
             //dbg_cp3_d2_printf("line348,server is ready to read\n");
+            dbg_cp3_d2_printf("line 379, i : %d\n", i);
             int serverfd = i;
             int clientfd = p->fd_s2c[serverfd];
-            dbg_cp3_p3_printf("server returns data\n");
+            dbg_cp3_d2_printf("server returns data\n");
             p->num_ready--;
             ret = s2c_list_read_server(p, serverfd);
+            if(ret == -1)
+            {
+                dbg_cp3_d2_printf("server %d close connection\n", serverfd);
+                continue;
+            }
+            else if (ret < -1)
+            {
+                fprintf(logfp, "Error, close connection with server\n");
+                continue;
+            }
+            else
+            {
+                FD_SET(clientfd, &p->active_wt_set);
+                // dbg_cp3_p3_printf("line 352\n");
+                // dbg_cp3_p3_printf("line 352\n");
+                dbg_cp3_d2_printf("line 476\n");
+                
+            }
             /*********  Add New Code      **********/
             //dbg_cp3_d2_printf("--##--clientfd:%d, flag_f4m:%d--##--\n",clientfd,p->mani_info->flag_send_f4m[i]);
             if(p->mani_info->flag_send_f4m[clientfd] == 2)//receive .f4m file
@@ -408,9 +430,9 @@ ssize_t serve_clients(pools_t *p)
                     char ip_str[16] = {0};
                     strncpy(ip_str,&(p->clientip[clientfd][0]),15);
                     bitrate_t *mani_p =  p->mani_info->bitrate_rec[clientfd];
-                    ret = ht_set_copy(p->ip2mani_ht, ip_str, 15, mani_p, \
+                    int hret = ht_set_copy(p->ip2mani_ht, ip_str, 15, mani_p, \
                         sizeof(int)*101, NULL, NULL);
-                    if(ret == -1)
+                    if(hret == -1)
                     {
                         printf("line 406, set ip2mani_ht error!\n");
                     }
@@ -421,9 +443,9 @@ ssize_t serve_clients(pools_t *p)
                                        HASHTABLE_MAXSIZE, NULL);
                     }
                     double init_thr = p->mani_info->bitrate_rec[clientfd]->bitrate[0];
-                    ret = ht_set_copy(p->ip2thr_ht, ip_str, 15, &init_thr, \
+                    hret = ht_set_copy(p->ip2thr_ht, ip_str, 15, &init_thr, \
                         sizeof(double), NULL, NULL);
-                    if(ret == -1)
+                    if(hret == -1)
                     {
                         printf("line 419, set ip2thr_ht error!\n");
                     }
@@ -436,7 +458,7 @@ ssize_t serve_clients(pools_t *p)
             {
                 dbg_cp3_d2_printf("\n-----####### receive video frag ######---\n");
                 
-                
+                // int serverfd = p->fd_c2s[clientfd];
                 int frag_len = get_frag_size(p,clientfd);
                 int packet_len = get_package_size(p,clientfd, frag_len);
                 p->frag_len[clientfd] = frag_len;
@@ -452,7 +474,9 @@ ssize_t serve_clients(pools_t *p)
 
                 }
                 dbg_cp3_d2_printf("--####### END of receive video frag ######---\n");
-                dbg_cp3_d2_printf("line 456, clientfd: %d\n", clientfd);
+                dbg_cp3_d2_printf("line 474, clientfd: %d\n", clientfd);
+                dbg_cp3_d2_printf("line 475, serverfd: %d\n", serverfd);
+                dbg_cp3_d2_printf("line 476, i : %d\n", i);
                 if (!FD_ISSET(clientfd, &p->active_wt_set))
                 {
                     printf("line 459\n");
@@ -478,18 +502,8 @@ ssize_t serve_clients(pools_t *p)
                 }
             }
             dbg_cp3_p3_printf("line 342 ret: %ld\n", ret);
-            if (ret < -1)
-            {
-                fprintf(logfp, "Error, close connection with server\n");
-            }
-            else
-            {
-                FD_SET(clientfd, &p->active_wt_set);
-                // dbg_cp3_p3_printf("line 352\n");
-                // dbg_cp3_p3_printf("line 352\n");
-                dbg_cp3_d2_printf("line 476\n");
-                s2c_list_write_client(p, clientfd);
-            }
+            
+            s2c_list_write_client(p, clientfd);
         }
         else if ((p->serverfd[i] == 1) && (FD_ISSET(i, &p->ready_wt_set)))
         {
@@ -537,7 +551,7 @@ ssize_t Close_conn(int connfd, pools_t *p) {
     FD_CLR(connfd, &p->active_wt_set);
     if (p->clientfd[connfd] == 1)
     {
-        dbg_cp3_p3_printf("Closing client fd %d\n", connfd);
+        dbg_cp3_d2_printf("Closing client fd %d\n", connfd);
         p->fd_c2s[connfd] = -1;
         p->clientfd[connfd] = -1;
         p->ign_first[connfd] = 0;
@@ -568,10 +582,13 @@ ssize_t Close_conn(int connfd, pools_t *p) {
                 rover = rover_last->next;
             }
         }
+
+        
+        p->fd_c2s[connfd] = -1;
     }
     else if (p->serverfd[connfd] == 1)
     {
-        dbg_cp3_p3_printf("Closing server fd %d\n", connfd);
+        dbg_cp3_d2_printf("Closing server fd %d\n", connfd);
         p->fd_s2c[connfd] = -1;
         p->serverfd[connfd] = -1;
     }

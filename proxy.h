@@ -162,7 +162,7 @@ typedef struct log_record_s
     double avg_tput;
     int req_bitrate;
     char server_ip[16];
-    char chunk_name[20];
+    char chunk_name[40];
 
 }log_record_t;
 

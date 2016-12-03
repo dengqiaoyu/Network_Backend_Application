@@ -107,7 +107,8 @@ send2s_req_t *form_request2s(Requests *req_rover, pools_t *pool, \
         //need to add '\0' to end??
         strncpy(req_rover->http_uri, new_http_uri, MAX_SIZE);
         dbg_cp3_d2_printf("new chunk uri: %s\n", req_rover->http_uri);
-        strncpy(pool->log_rec_list[clientfd]->chunk_name, req_rover->http_uri, strlen(req_rover->http_uri));
+        strncpy(pool->log_rec_list[clientfd]->chunk_name, req_rover->http_uri,39);
+        dbg_cp3_d2_printf("line 111, new chunk uri: %s\n", pool->log_rec_list[clientfd]->chunk_name);
         /*********** record timestamp ts  *************/
         struct  timeval start;
         gettimeofday(&start,NULL);
@@ -202,11 +203,10 @@ int8_t req_send2s(int connfd, pools_t *p)
     ssize_t write_ret = 0;
     int8_t ret = 0;
     size_t iter_cnt = 0;
-#ifdef DEBUG_CP1_P3
-    dbg_cp3_p3_printf("------sending list in req_send2s-------\n");
+    dbg_cp3_d2_printf("serverfd: %d\n", serverfd);
+    dbg_cp3_d2_printf("------sending list in req_send2s-------\n");
     print_request2s(rover);
-    dbg_cp3_p3_printf("------sending list in req_send2s-------\n");
-#endif
+    dbg_cp3_d2_printf("------sending list in req_send2s-------\n");
     // exit(1);
     while (rover != NULL && iter_cnt <= MAX_WRIT_ITER_COUNT)
     {
@@ -258,8 +258,10 @@ int8_t req_send2s(int connfd, pools_t *p)
             {
                 fprintf(logfp,
                         "Failed sending request to server, disconnected.\n");
+                printf("line 261, Failed sending request to server, disconnected.\n");
                 Close_conn(connfd, p);
                 Close_conn(serverfd, p);
+                printf("line 264, end of print\n");
                 return -1;
             }
         }
