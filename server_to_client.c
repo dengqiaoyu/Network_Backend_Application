@@ -33,8 +33,8 @@ int8_t s2c_list_read_server(pools_t *p, int serverfd)
         size_t avail_data_space = BUF_SIZE - s2c_data_rover->len;
         // dbg_cp3_p3_printf("avail_data_space: %ld\n", avail_data_space);
         read_ret = read(serverfd, data_start_ptr, avail_data_space);
-        dbg_cp3_p3_printf("read_ret in s2c_list_read_server: %ld\n", read_ret);
-        dbg_cp3_p3_printf("len: %ld\n", s2c_data_rover->len);
+        dbg_cp3_d2_printf("read_ret in s2c_list_read_server: %ld\n", read_ret);
+        dbg_cp3_d2_printf("len: %ld\n", s2c_data_rover->len);
         if (read_ret == 0)
         {
             if (avail_data_space == BUF_SIZE)
@@ -43,6 +43,7 @@ int8_t s2c_list_read_server(pools_t *p, int serverfd)
                 s2c_data_list_start->next = NULL;
             }
             Close_conn(serverfd, p);
+            Close_conn(clientfd, p);
             return -1;
         }
         else if (read_ret < 0)
@@ -51,6 +52,7 @@ int8_t s2c_list_read_server(pools_t *p, int serverfd)
             if (errsv != EAGAIN && errsv != EWOULDBLOCK)
             {
                 Close_conn(serverfd, p);
+                Close_conn(clientfd, p);
                 return -2;
             }
             break;

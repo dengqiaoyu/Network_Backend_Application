@@ -82,37 +82,29 @@ int get_frag_size(pools_t *p, int clientfd)
     	p1 = strstr(rover->data, "Content-Length");
     	char len_str[20] = {0};
     	int i = 0;
+        dbg_cp3_d2_printf("line 85, p1: %p\n", p1);
     	if(p1 != NULL)
     	{
-		// printf("#### find Content-Length! ####\n");
-		// printf("p1 str: %s\n", p1);
-		int m = 0;
-/*
-    		while(p1[0] != '"')
-    		{
-    			p1++;
-			m++;
-			printf("p1+%d,:%c\n",m,p1[0]);
-    		}
-    		p1++;
-    		
-*/
-		p1 += (strlen("Content-Length ")+1);
-		// printf("p1 str-2: %s\n", p1);
-		while(p1[0]>='0' && p1[0]<='9')
+    		// printf("#### find Content-Length! ####\n");
+    		// printf("p1 str: %s\n", p1);
+    		int m = 0;
+    		p1 += (strlen("Content-Length ")+1);
+    		// printf("p1 str-2: %s\n", p1);
+    		while(p1[0]>='0' && p1[0]<='9')
     		{
 			// printf("p1+%d:%c\n",i,p1[0]);
     			len_str[i] = p1[0];
     			i++;
     			p1++;
     		}
-		// printf("len_str:%s\n",len_str);
+    		// printf("len_str:%s\n",len_str);
     		frag_len = atoi(len_str);
-		// printf("frag_len: %d\n",frag_len);
+    		// printf("frag_len: %d\n",frag_len);
     		break;
     	}
     	else
     	{
+            dbg_cp3_d2_printf("line 106,rover-data: %s\n", rover->data);
     		rover = rover->next;
     	}
     }
@@ -177,6 +169,7 @@ void update_thr_cur(int frag_len, struct timeval tf,float alpha, \
 	{
 		printf("thr_cur in hashtalbe of %s is NULL\n", ip_str);
 		dbg_cp3_d2_printf("--!!!-- update T current of :%s ---!!!-\n", ip_str);
+        //dbg_cp3_d2_printf("--!!!-- update T current of :%s ---!!!-\n", ip_str);
 		dbg_cp3_d2_printf("--!!!-- update T current of clientfd :%d ---!!!-\n", clientfd);
 		exit(-1);
 	}
