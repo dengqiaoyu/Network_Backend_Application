@@ -37,6 +37,7 @@ void init_pool(int listenfd, pools_t *p) {
         memset(p->log_rec_list[i], 0, sizeof(log_record_t));
         p->pack_len[i] = 0;
         p->frag_len[i] = 0;
+        p->client_reqs[i] = NULL;
 
         
     }
@@ -44,6 +45,7 @@ void init_pool(int listenfd, pools_t *p) {
     p->thr_info = init_throughput();
     p->ip2mani_ht = NULL;
     p->ip2thr_ht = NULL;
+    p->dns_info = init_dns_t();
 
     
 }
@@ -79,6 +81,22 @@ throughput_t * init_throughput()
     return thr_info;
 }
 
+dns_t * init_dns_t()
+{
+    size_t i;
+    dns_t * dns_info = malloc(sizeof(dns_t));
+    memset(dns_info,0,sizeof(dns_t));
+    dns_info->cur_id = 0;
+    dns_info->dns_sock = 0;
+    for (i = 0; i < FD_SETSIZE; i++) {
+        dns_info->client_stat[i] = -1;
+        dns_info->dnsid_client[i] = -1;
+    }
+    dns_info->dns_msg_list = malloc(sizeof(dns_msg_list_t));
+    memset(dns_info->dns_msg_list, 0, sizeof(dns_msg_list_t));
+    return dns_info;
+}
+
 /**
  * Add client to the read&write pool
  * @param  connfd the fd of client
@@ -93,6 +111,7 @@ ssize_t add_client(int connfd, pools_t *p, char *c_host)
     p->clientfd[connfd] = 1;
     FD_SET(connfd, &p->active_rd_set);
     FD_SET(connfd, &p->ready_rd_set);
+    p->dns_info->client_stat[connfd] = 0;
     dbg_cp3_p3_printf("add client: %d\n", connfd);
     strncpy(p->clientip[connfd], c_host, MAX_SIZE_S);
     return 0;

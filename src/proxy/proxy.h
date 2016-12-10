@@ -36,6 +36,7 @@
 
 #include "param_init.h"
 #include "constants.h"
+#include "dns.h"
 
 /**
  * Debug function that is used to print
@@ -197,6 +198,8 @@ typedef struct pools_t_s
     throughput_t *thr_info;
     hashtable_t * ip2mani_ht;
     hashtable_t * ip2thr_ht;
+    dns_t * dns_info;
+    Requests *client_reqs[FD_SETSIZE];
 
     
 } pools_t;
@@ -213,6 +216,7 @@ ssize_t add_client(int connfd, pools_t *p, char *c_host);
 ssize_t serve_clients(pools_t *p);
 manifest_t * init_manifest();
 throughput_t * init_throughput();
+dns_t *init_dns_t();
 /*
  * Functions that are used to acomplish crucial features
  */

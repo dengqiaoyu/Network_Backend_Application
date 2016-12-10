@@ -8,7 +8,7 @@ char *get_local_date();
 int get_argv(int argc, char **argv, param *proxy_param)
 {
     memset(proxy_param, 0, sizeof(param));
-    if (argc < 8)
+    if (argc < 7)
     {
         fprintf(stderr, "Usage: %s ", argv[0]);
         fprintf(stderr, "<log> ");
@@ -21,6 +21,7 @@ int get_argv(int argc, char **argv, param *proxy_param)
         fupdate(stderr);
         return -1;
     }
+
 
     if (strlen(argv[1]) > PARAM_MAXLEN)
     {
@@ -88,7 +89,12 @@ int get_argv(int argc, char **argv, param *proxy_param)
         strncpy(proxy_param->dns_port, argv[6], 5);
     }
 
-    if (strlen(argv[7]) > 15)
+    if (argc == 7)
+    {
+        return 2;
+    }
+
+    else if (strlen(argv[7]) > 15)
     {
         fprintf(stderr, "Server ip too long.\n");
         fupdate(stderr);

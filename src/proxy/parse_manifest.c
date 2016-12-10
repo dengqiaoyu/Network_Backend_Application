@@ -1,5 +1,18 @@
+/******************************************************************************
+ *                                 Video CDN                                  *
+ *                          15-641 Computer Network                           *
+ *                              parse_manifest.c                              *
+ * This file contains the implementation of functions used in parsing manifest* 
+ * file                                                                       *
+ * Author: Qiaoyu Deng; Yangmei Lin                                           *
+ * Andrew ID: qdeng; yangmeil                                                 *
+ ******************************************************************************/
 #include "parse_manifest.h"
 
+/**
+ * get the f4m file content from response of server
+ * @return the pointer to f4m content sting
+ */
 char * get_f4m_content(pools_t *p, int clientfd)
 {
 	char *f4m_content = NULL;
@@ -35,7 +48,6 @@ char * get_f4m_content(pools_t *p, int clientfd)
     	rover = rover->next;
     }
 
-    //send2s_req_start = p->s2c_list[clientfd];
     rover = send2s_req_start->next;
     int j = 0;
     while(rover!=NULL)
@@ -44,12 +56,15 @@ char * get_f4m_content(pools_t *p, int clientfd)
         free(rover);
         rover = send2s_req_start->next;
 	j++;
-	//printf("j:%d\n",j);
     }
-    //printf("free succeed\n");
     return f4m_content;
 	
 }
+
+/**
+ * parse the f4m content and store bitrate info in bitrate_t struct
+ * @return the bitrate_t struct
+ */
 bitrate_t * parse_manifest(char *mani_file)
 {
 	int i = 0;
@@ -71,7 +86,6 @@ bitrate_t * parse_manifest(char *mani_file)
 				bitrate[i-1] = p[i];
 			}
 			result_manifest->bitrate[n] = (int)(atoi(bitrate));
-			// printf("bitrate: %d\n", result_manifest->bitrate[n]);
 			n++;
 			mani_temp = p+i;
 			
@@ -80,41 +94,7 @@ bitrate_t * parse_manifest(char *mani_file)
 		else
 		{
 			result_manifest->bitrate_num = n;
-			dbg_cp3_d2_printf("---------- .f4m result ---------\n");
-			for(i = 0; i< result_manifest->bitrate_num; i++)
-		    {
-		    	dbg_cp3_d2_printf("bitrate[%d]: %d\n",i, \
-		    		result_manifest->bitrate[i]);
-		    }
-		    dbg_cp3_d2_printf("-----------   end   ---------\n");
 			return result_manifest;
 		}
 	}
 }
-
-// int main()
-// {
-// 	FILE* file = fopen("big_buck_bunny.f4m","r");
-//     if(file == NULL)
-//     {
-//         return -1;
-//     }
-
-//     fseek(file, 0, SEEK_END);
-//     long int size = ftell(file);
-//     rewind(file);
-
-//     char* content = calloc(size + 1, 1);
-//     fread(content,1,size,file);
-//     // printf("%s\n",content);
-//     bitrate_t * mani_p = parse_manifest(content);
-//     int i = 0;
-//     printf("bitrate_num:%d\n", mani_p->bitrate_num);
-//     for(i = 0; i< mani_p->bitrate_num; i++)
-//     {
-//     	printf("bitrate[%d]: %d\n",i,mani_p->bitrate[i]);
-//     }
-
-
-//     return 0;
-// }

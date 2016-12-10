@@ -7,6 +7,8 @@
 #include "server_to_client.h"
 #include "throughput.h"
 #include "parse_manifest.h"
+#include "mydns.h"
+
 
 FILE *logfp = NULL;
 FILE *log_pFile = NULL;
@@ -14,7 +16,7 @@ int logfd = -1;
 int errfd = -1; // reserve for one fd
 param proxy_param;
 time_t proxy_start_time;
-
+int dns_flag;
 void get_host_and_port(Requests *req_rover, char *hostname, char *port);
 
 /**
@@ -36,6 +38,12 @@ int main(int argc, char **argv)
     dbg_cp2_printf("----- Proxy -----\n");
 
     ret = get_argv(argc, argv, &proxy_param);
+    dns_flag = 0;
+    if(ret == 2)
+    {
+        dns_flag = 1;
+        dbg_cp3_d2_printf("------ DNS Query Requested--------\n");
+    }
     if (ret < 0)
     {
         fprintf(stderr, "Argumens is not valid, proxy terminated.\n");
@@ -66,19 +74,26 @@ int main(int argc, char **argv)
     init_pool(listenfd, &pool);
     dbg_cp3_d2_printf("!!! check thr_info: %.6f, %.6f\n", pool.thr_info->thr_cur[6],pool.thr_info->thr_cur[7]);
 
+    if(dns_flag == 1)
+    {
+        conn_dns_server(0, pool.dns_info, &pool);
+    }
+
     while (1)
     {
         pool.ready_rd_set = pool.active_rd_set;
         pool.ready_wt_set = pool.active_wt_set;
+        dbg_cp3_d2_printf("\n ======== into Big While ========\n");
+
         pool.num_ready = select(FD_SETSIZE, &pool.ready_rd_set,
                                 &pool.ready_wt_set, NULL, NULL);
 
         int errsv = errno;
-        //dbg_cp3_d2_printf("\n\n\n\n\n\n\nnum_ready: %d, errno: %d\n", pool.num_ready, errsv);
+        // dbg_cp3_d2_printf("\n\n\nnum_ready: %d, errno: %d\n", pool.num_ready, errsv);
         // htttp port accept connection
         if (pool.num_ready < 0)
         {
-            dbg_cp3_p3_printf("%s\n", strerror(errsv));
+            dbg_cp3_d2_printf("%s\n", strerror(errsv));
         }
 
         if (FD_ISSET(listenfd, &pool.ready_rd_set))
@@ -127,6 +142,7 @@ int main(int argc, char **argv)
                 }
                 // Add client to the read-write pools_t
                 ret = add_client(connfd, &pool, c_host);
+
                 dbg_cp3_d2_printf("c_host: %s, c_port: %s\n", c_host, c_port);
                 if (ret < 0)
                 {
@@ -137,14 +153,31 @@ int main(int argc, char **argv)
             }
         }
         // Serve all of client within the pools_t
-       	dbg_cp3_p3_printf("\n\nbefore line 124\n");
+       	dbg_cp3_d2_printf("\n\nbefore line 124\n");
         ret = serve_clients(&pool);
+        // dbg_cp3_d2_printf("----afer serve_clients-----\n");
         if (ret < 0)
         {
             fprintf(logfp, "serve_clients Failed.\n");
             fupdate(logfp);
         }
         fupdate(logfp);
+
+        if(dns_flag == 1)
+        {
+            // dbg_cp3_d2_printf("\n----before dns_process-----\n");
+            ret = dns_process(pool.dns_info, &pool);
+            // dbg_cp3_d2_printf("----afer dns_process-----\n");
+            if(ret< 0)
+            {
+                printf("Something wrong with dns_process\n");
+            }
+            // dbg_cp3_d2_printf("----dns_process success-----\n");
+        }
+        
+        
+        dbg_cp3_d2_printf("\n ======== END Big While ========\n\n");
+        
     }
 
     ret = fclose(logfp);
@@ -317,9 +350,60 @@ ssize_t serve_clients(pools_t *p)
             char hostname[1024] = {0};
             char port[1024] = {0};
 
+            if(dns_flag == 1 && p->dns_info->client_stat[clientfd] == 0 && reqs!= NULL)//not resove yet
+            {
+                p->client_reqs[clientfd] = reqs;
+                dbg_cp3_d2_printf("=== line 343, sp->client_reqs[%d]: %p === \n", 
+                    clientfd, p->client_reqs[clientfd]);
+                char hostname[256] = "video.cs.cmu.edu\0";
+                char *qname = NULL;
+                // get_hostname(reqs,hostname);
+                qname = form_qname(hostname);
+                printf("line 339 qname: %s\n", qname);
+                dns_msg_list_t * dns_request_l = form_dns_query(qname,p->dns_info,clientfd);
+                dns_msg_list_t * last_dns_req = \
+                    find_last_dns_req(p->dns_info->dns_msg_list);
+                last_dns_req->next = dns_request_l;
+                p->dns_info->client_stat[clientfd] = 1;
+
+                /****** for test temporarily*******/
+                // dns_msg_t msg2convert;
+                // memset(&msg2convert,0,sizeof(dns_msg_t));
+                // memcpy(&msg2convert,dns_request_l->dns_msg, DNS_REQ_LEN);
+                // packet2net(&msg2convert);
+                // char msg_str[DNS_SEND_BUFLEN] = {0};
+                // int msg_len = form_dns_req_str(msg_str, &msg2convert);
+                // dbg_cp3_d2_printf("line 352 msg_len: %d\n", msg_len);
+
+                /************* end ************/
+                continue;
+            }
+            else if(dns_flag == 1 && p->dns_info->client_stat[clientfd] == 0)
+            {
+                dbg_cp3_d2_printf("=== line 370, stat is 0 but req is NULL\n");
+            }
             //get_host_and_port(req_rover, hostname, port);
             dbg_cp3_d2_printf("line 312 after get_host_and_port\n");
-            if (p->fd_c2s[clientfd] == -1)
+            // if (p->fd_c2s[clientfd] == -1 && p->dns_info->client_stat[clientfd] = 3)
+            // {
+            //     //dbg_cp3_p3_printf("hostname: %s, port: %s\n", hostname, port);
+            //     set_conn(p, clientfd, proxy_param.fake_ip, proxy_param.www_ip,
+            //              hostname, port);
+            //     dbg_cp3_p3_printf("serverfd: %d\n", p->fd_c2s[clientfd]);
+            //     // exit(1);
+            // }
+            if(dns_flag == 1 && p->dns_info->client_stat[clientfd] != 3)
+            {
+                dbg_cp3_d2_printf("==== line 380, dns stat error, p->dns_info->client_stat[%d]: %d =====\n", 
+                    clientfd, p->dns_info->client_stat[clientfd]);
+                if(reqs == NULL)
+                {
+                    dbg_cp3_d2_printf(" reqs is NULL\n");
+                }
+                exit(-1);
+                continue;
+            }
+            if (dns_flag == 0 && p->fd_c2s[clientfd] == -1)
             {
                 //dbg_cp3_p3_printf("hostname: %s, port: %s\n", hostname, port);
                 set_conn(p, clientfd, proxy_param.fake_ip, proxy_param.www_ip,
@@ -327,6 +411,7 @@ ssize_t serve_clients(pools_t *p)
                 dbg_cp3_p3_printf("serverfd: %d\n", p->fd_c2s[clientfd]);
                 // exit(1);
             }
+
             while (req_rover != NULL)
             {
                 dbg_cp3_d2_printf("line 323 into while\n");
@@ -351,9 +436,9 @@ ssize_t serve_clients(pools_t *p)
                 last_send2s_req->next = request2s;
                 req_rover = req_rover->next_req;
             }
-            // dbg_cp3_d2_printf("line 338 before destroy\n");
+            dbg_cp3_d2_printf("line 338 before destroy\n");
             destory_requests(reqs);
-            // dbg_cp3_d2_printf("line 340 after destroy\n");
+            dbg_cp3_d2_printf("line 340 after destroy\n");
             reqs = NULL;
             req_send2s(clientfd, p);
             // dbg_cp3_d2_printf("line 343 after req_send2s\n");
@@ -585,6 +670,7 @@ ssize_t Close_conn(int connfd, pools_t *p) {
 
         
         p->fd_c2s[connfd] = -1;
+        p->dns_info->client_stat[connfd] = -1;
     }
     else if (p->serverfd[connfd] == 1)
     {
