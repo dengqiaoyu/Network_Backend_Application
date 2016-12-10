@@ -1,3 +1,14 @@
+/******************************************************************************
+ *                                 Video CDN                                  *
+ *                          15-641 Computer Network                           *
+ *                                 proxy.c                                    *
+ * This file contains the main function for the proxy, this proxy can handle  *
+ * normale http request, and act as a video bitrate adapter can change bitrate*
+ * according to the network bandwidth.                                        *
+ * Author: Qiaoyu Deng; Yangmei Lin                                           *
+ * Andrew ID: qdeng; yangmeil                                                 *
+ ******************************************************************************/
+
 #include "proxy.h"
 #include "param_init.h"
 #include "log.h"
@@ -39,7 +50,7 @@ int main(int argc, char **argv)
 
     ret = get_argv(argc, argv, &proxy_param);
     dns_flag = 0;
-    if(ret == 2)
+    if (ret == 2)
     {
         dns_flag = 1;
         dbg_cp3_d2_printf("------ DNS Query Requested--------\n");
@@ -49,19 +60,10 @@ int main(int argc, char **argv)
         fprintf(stderr, "Argumens is not valid, proxy terminated.\n");
         return -1;
     }
-    // print_argv(&proxy_param);
-
-    // logfd = init_log(proxy_param.log, argc, argv);
     // To handle max connection, need reserve one more fd to send error message
     errfd = open("./fd_reserved", O_WRONLY | O_CREAT, m_error);
-    // if (logfd < 0)
-    // {
-    //     fprintf(stderr, "Log file initialnizing failed, proxy terminated.\n");
-    //     return -1;
-    // }
-    //logfp = fdopen(logfd, "a");
     log_pFile = fopen(proxy_param.log, "a");
-    logfp = fopen("proxy_check.log","a");
+    logfp = fopen("proxy_check.log", "a");
 
     listenfd = open_listenfd(proxy_param.lisn_port);
     if (listenfd < 0)
@@ -72,9 +74,8 @@ int main(int argc, char **argv)
     }
 
     init_pool(listenfd, &pool);
-    dbg_cp3_d2_printf("!!! check thr_info: %.6f, %.6f\n", pool.thr_info->thr_cur[6],pool.thr_info->thr_cur[7]);
 
-    if(dns_flag == 1)
+    if (dns_flag == 1)
     {
         conn_dns_server(0, pool.dns_info, &pool);
     }
@@ -83,13 +84,10 @@ int main(int argc, char **argv)
     {
         pool.ready_rd_set = pool.active_rd_set;
         pool.ready_wt_set = pool.active_wt_set;
-        dbg_cp3_d2_printf("\n ======== into Big While ========\n");
 
         pool.num_ready = select(FD_SETSIZE, &pool.ready_rd_set,
                                 &pool.ready_wt_set, NULL, NULL);
-
         int errsv = errno;
-        // dbg_cp3_d2_printf("\n\n\nnum_ready: %d, errno: %d\n", pool.num_ready, errsv);
         // htttp port accept connection
         if (pool.num_ready < 0)
         {
@@ -101,7 +99,7 @@ int main(int argc, char **argv)
             client_len = sizeof(struct sockaddr_storage);
             connfd = accept(listenfd, (struct sockaddr *)&client_addr,
                             &client_len);
-            dbg_cp3_d2_printf("\n!!!!! accept new clientfd: %d\n",connfd);
+            dbg_cp3_d2_printf("\n!!!!! accept new clientfd: %d\n", connfd);
             if (connfd < 0)
             {
                 // handle max connection and send error message back
@@ -153,9 +151,7 @@ int main(int argc, char **argv)
             }
         }
         // Serve all of client within the pools_t
-       	dbg_cp3_d2_printf("\n\nbefore line 124\n");
         ret = serve_clients(&pool);
-        // dbg_cp3_d2_printf("----afer serve_clients-----\n");
         if (ret < 0)
         {
             fprintf(logfp, "serve_clients Failed.\n");
@@ -163,21 +159,14 @@ int main(int argc, char **argv)
         }
         fupdate(logfp);
 
-        if(dns_flag == 1)
+        if (dns_flag == 1)
         {
-            // dbg_cp3_d2_printf("\n----before dns_process-----\n");
             ret = dns_process(pool.dns_info, &pool);
-            // dbg_cp3_d2_printf("----afer dns_process-----\n");
-            if(ret< 0)
+            if (ret < 0)
             {
                 printf("Something wrong with dns_process\n");
             }
-            // dbg_cp3_d2_printf("----dns_process success-----\n");
         }
-        
-        
-        dbg_cp3_d2_printf("\n ======== END Big While ========\n\n");
-        
     }
 
     ret = fclose(logfp);
@@ -274,11 +263,9 @@ ssize_t serve_clients(pools_t *p)
     ssize_t read_ret, ret;
     char skt_read_buf[SKT_READ_BUF_SIZE + 1] = {0};
 
-    dbg_cp3_p3_printf("num_ready: %d\n", p->num_ready);
-    // Magic number 7 indicates avaliable file descriptor starts from 7.
+    // Magic number 6 indicates avaliable file descriptor starts from 6.
     for (i = 6; (i < FD_SETSIZE) && (p->num_ready > 0); i++)
     {
-        dbg_wselet_printf("connfd: %ld, status: %d\n", i, p->clientfd[i]);
         // Client ready for read
         if ((p->clientfd[i] == 1) && (FD_ISSET(i, &p->ready_rd_set)))
         {
@@ -301,9 +288,6 @@ ssize_t serve_clients(pools_t *p)
                 }
                 read_ret = read(clientfd, &skt_read_buf[read_offset],
                                 SKT_READ_BUF_SIZE - read_offset);
-                //dbg_cp3_p3_printf("read_ret for skt_read_buf: %ld\n", read_ret);
-                dbg_cp3_d2_printf("line 265,read_ret for skt_read_buf: %ld\n", read_ret);
-                dbg_cp3_d2_printf("line 273 clientfd: %d\n", clientfd);
                 // Client closes connection
                 if (read_ret == 0)
                 {
@@ -331,147 +315,77 @@ ssize_t serve_clients(pools_t *p)
             {
                 continue;
             }
-            //dbg_cp3_p3_printf("\nline 274 read_ret %ld: \n%s", read_ret,
-                              //skt_read_buf);
-            dbg_cp3_p3_printf("\nline 294 read_ret %ld: \n", read_ret);
-            dbg_cp3_p3_printf("line 294: skt_read_buf start: %c%c%c%c\n", skt_read_buf[0],skt_read_buf[1],skt_read_buf[2],skt_read_buf[3]);
-            fflush(stdout);
-            // if(skt_read_buf[0] == 'P' && skt_read_buf[1] == 'O' && skt_read_buf[2] == 'S' && skt_read_buf[3] == 'T')
-            // {
-            //     memset(skt_read_buf,0,SKT_READ_BUF_SIZE + 1);
-            //     continue;
-            // }
-            
+
             // Uses parse to get request's inofrmation
             Requests *reqs = parse(skt_read_buf, read_offset, clientfd, p);
-            dbg_cp3_d2_printf("!!!parse success\n");
             Requests *req_rover = reqs;
             // For pipeline request, server them one by one
             char hostname[1024] = {0};
             char port[1024] = {0};
 
-            if(dns_flag == 1 && p->dns_info->client_stat[clientfd] == 0 && reqs!= NULL)//not resove yet
+            if (dns_flag == 1 && p->dns_info->client_stat[clientfd] == 0 && reqs != NULL) //not resove yet
             {
                 p->client_reqs[clientfd] = reqs;
-                dbg_cp3_d2_printf("=== line 343, sp->client_reqs[%d]: %p === \n", 
-                    clientfd, p->client_reqs[clientfd]);
                 char hostname[256] = "video.cs.cmu.edu\0";
                 char *qname = NULL;
-                // get_hostname(reqs,hostname);
                 qname = form_qname(hostname);
-                printf("line 339 qname: %s\n", qname);
-                dns_msg_list_t * dns_request_l = form_dns_query(qname,p->dns_info,clientfd);
+                dns_msg_list_t * dns_request_l =
+                    form_dns_query(qname, p->dns_info, clientfd);
                 dns_msg_list_t * last_dns_req = \
-                    find_last_dns_req(p->dns_info->dns_msg_list);
+                                                find_last_dns_req(p->dns_info->dns_msg_list);
                 last_dns_req->next = dns_request_l;
                 p->dns_info->client_stat[clientfd] = 1;
 
-                /****** for test temporarily*******/
-                // dns_msg_t msg2convert;
-                // memset(&msg2convert,0,sizeof(dns_msg_t));
-                // memcpy(&msg2convert,dns_request_l->dns_msg, DNS_REQ_LEN);
-                // packet2net(&msg2convert);
-                // char msg_str[DNS_SEND_BUFLEN] = {0};
-                // int msg_len = form_dns_req_str(msg_str, &msg2convert);
-                // dbg_cp3_d2_printf("line 352 msg_len: %d\n", msg_len);
+                continue;
+            }
 
-                /************* end ************/
-                continue;
-            }
-            else if(dns_flag == 1 && p->dns_info->client_stat[clientfd] == 0)
-            {
-                dbg_cp3_d2_printf("=== line 370, stat is 0 but req is NULL\n");
-            }
-            //get_host_and_port(req_rover, hostname, port);
-            dbg_cp3_d2_printf("line 312 after get_host_and_port\n");
-            // if (p->fd_c2s[clientfd] == -1 && p->dns_info->client_stat[clientfd] = 3)
-            // {
-            //     //dbg_cp3_p3_printf("hostname: %s, port: %s\n", hostname, port);
-            //     set_conn(p, clientfd, proxy_param.fake_ip, proxy_param.www_ip,
-            //              hostname, port);
-            //     dbg_cp3_p3_printf("serverfd: %d\n", p->fd_c2s[clientfd]);
-            //     // exit(1);
-            // }
-            if(dns_flag == 1 && p->dns_info->client_stat[clientfd] != 3)
-            {
-                dbg_cp3_d2_printf("==== line 380, dns stat error, p->dns_info->client_stat[%d]: %d =====\n", 
-                    clientfd, p->dns_info->client_stat[clientfd]);
-                if(reqs == NULL)
-                {
-                    dbg_cp3_d2_printf(" reqs is NULL\n");
-                }
-                exit(-1);
-                continue;
-            }
             if (dns_flag == 0 && p->fd_c2s[clientfd] == -1)
             {
-                //dbg_cp3_p3_printf("hostname: %s, port: %s\n", hostname, port);
                 set_conn(p, clientfd, proxy_param.fake_ip, proxy_param.www_ip,
                          hostname, port);
-                dbg_cp3_p3_printf("serverfd: %d\n", p->fd_c2s[clientfd]);
-                // exit(1);
             }
 
             while (req_rover != NULL)
             {
-                dbg_cp3_d2_printf("line 323 into while\n");
-                if(strcmp(req_rover->http_method, "GET") != 0)
+                if (strcmp(req_rover->http_method, "GET") != 0)
                 {
-                    dbg_cp3_d2_printf("!!! Not GET request !!!\n");
-                    dbg_cp3_d2_printf("Method: %s\n",req_rover->http_method);
-                    dbg_cp3_d2_printf("Uri: %s\n", req_rover->http_uri);
                     continue;
                 }
-                send2s_req_t *request2s = form_request2s(req_rover, p, p->mani_info,p->thr_info, clientfd);
-                dbg_cp3_p3_printf("addr: %p\n", request2s);
+                send2s_req_t *request2s = form_request2s(req_rover, p,
+                                          p->mani_info, p->thr_info, clientfd);
                 if (request2s == NULL)
                 {
-                    print_req(req_rover);
-                    dbg_cp3_p3_printf("line 307\n");
                     Close_conn(clientfd, p);
                 }
-                // print_request2s(request2s);
                 send2s_req_t *last_send2s_req =
                     find_last_send2s_req(p->send2s_list[clientfd]);
                 last_send2s_req->next = request2s;
                 req_rover = req_rover->next_req;
             }
-            dbg_cp3_d2_printf("line 338 before destroy\n");
             destory_requests(reqs);
-            dbg_cp3_d2_printf("line 340 after destroy\n");
             reqs = NULL;
             req_send2s(clientfd, p);
-            // dbg_cp3_d2_printf("line 343 after req_send2s\n");
         }
         else if ((p->clientfd[i] == 1) && (FD_ISSET(i, &p->ready_wt_set)))
         {
             // In this case, client is ready to be send data
-            
-            dbg_cp3_d2_printf("line 361 client: %d\n", i);
             p->num_ready--;
             int clientfd = i;
             if (p->s2c_list[clientfd]->next == NULL)
             {
                 continue;
             }
-            // dbg_cp3_p3_printf("line 331\n");
-            // dbg_cp3_p3_printf("line 332\n");
-            dbg_cp3_d2_printf("line 370\n");
             ret = s2c_list_write_client(p, clientfd);
 
         }
         else if ((p->serverfd[i] == 1) && (FD_ISSET(i, &p->ready_rd_set)))
         {
-            //dbg_cp3_d2_printf("line348,server is ready to read\n");
-            dbg_cp3_d2_printf("line 379, i : %d\n", i);
             int serverfd = i;
             int clientfd = p->fd_s2c[serverfd];
-            dbg_cp3_d2_printf("server returns data\n");
             p->num_ready--;
             ret = s2c_list_read_server(p, serverfd);
-            if(ret == -1)
+            if (ret == -1)
             {
-                dbg_cp3_d2_printf("server %d close connection\n", serverfd);
                 continue;
             }
             else if (ret < -1)
@@ -482,19 +396,14 @@ ssize_t serve_clients(pools_t *p)
             else
             {
                 FD_SET(clientfd, &p->active_wt_set);
-                // dbg_cp3_p3_printf("line 352\n");
-                // dbg_cp3_p3_printf("line 352\n");
-                dbg_cp3_d2_printf("line 476\n");
-                
+
             }
             /*********  Add New Code      **********/
-            //dbg_cp3_d2_printf("--##--clientfd:%d, flag_f4m:%d--##--\n",clientfd,p->mani_info->flag_send_f4m[i]);
-            if(p->mani_info->flag_send_f4m[clientfd] == 2)//receive .f4m file
+            if (p->mani_info->flag_send_f4m[clientfd] == 2) //receive .f4m file
             {
-                req_send2s(clientfd,p);
-                dbg_cp3_p3_printf("receive .f4m file from server\n");
+                req_send2s(clientfd, p);
                 char *mani_file = get_f4m_content(p, clientfd);
-                if(mani_file == NULL)
+                if (mani_file == NULL)
                 {
                     printf("error,mani_file is NULL!\n");
                 }
@@ -505,63 +414,46 @@ ssize_t serve_clients(pools_t *p)
                     p->mani_info->bitrate_rec[clientfd] = parse_manifest(mani_file);
                     p->mani_info->flag_send_f4m[clientfd] = 0;
                     p->thr_info->thr_cur[clientfd] = p->mani_info->bitrate_rec[clientfd]->bitrate[0];
-                    dbg_cp3_d2_printf("-!!!!--- T current %d init by mani: %.6f -!!!---\n", clientfd, p->thr_info->thr_cur[clientfd]);
 
-                    if(p->ip2mani_ht == NULL)
+                    if (p->ip2mani_ht == NULL)
                     {
-                        p->ip2mani_ht = ht_create(HASHTABLE_MINSIZE,\
-                                       HASHTABLE_MAXSIZE, NULL);
+                        p->ip2mani_ht = ht_create(HASHTABLE_MINSIZE, \
+                                                  HASHTABLE_MAXSIZE, NULL);
                     }
                     char ip_str[16] = {0};
-                    strncpy(ip_str,&(p->clientip[clientfd][0]),15);
+                    strncpy(ip_str, &(p->clientip[clientfd][0]), 15);
                     bitrate_t *mani_p =  p->mani_info->bitrate_rec[clientfd];
                     int hret = ht_set_copy(p->ip2mani_ht, ip_str, 15, mani_p, \
-                        sizeof(int)*101, NULL, NULL);
-                    if(hret == -1)
-                    {
-                        printf("line 406, set ip2mani_ht error!\n");
-                    }
+                                           sizeof(int) * 101, NULL, NULL);
 
-                    if(p->ip2thr_ht == NULL)
+                    if (p->ip2thr_ht == NULL)
                     {
-                        p->ip2thr_ht = ht_create(HASHTABLE_MINSIZE,\
-                                       HASHTABLE_MAXSIZE, NULL);
+                        p->ip2thr_ht = ht_create(HASHTABLE_MINSIZE, \
+                                                 HASHTABLE_MAXSIZE, NULL);
                     }
                     double init_thr = p->mani_info->bitrate_rec[clientfd]->bitrate[0];
                     hret = ht_set_copy(p->ip2thr_ht, ip_str, 15, &init_thr, \
-                        sizeof(double), NULL, NULL);
-                    if(hret == -1)
-                    {
-                        printf("line 419, set ip2thr_ht error!\n");
-                    }
+                                       sizeof(double), NULL, NULL);
 
                     continue;
                 }
-                
+
             }
-            else if(p->thr_info->send_fra_req[clientfd] == 1)//receive video frag
+            else if (p->thr_info->send_fra_req[clientfd] == 1) //receive video frag
             {
-                dbg_cp3_d2_printf("\n-----####### receive video frag ######---\n");
-                
-                // int serverfd = p->fd_c2s[clientfd];
-                int frag_len = get_frag_size(p,clientfd);
-                int packet_len = get_package_size(p,clientfd, frag_len);
+                int frag_len = get_frag_size(p, clientfd);
+                int packet_len = get_package_size(p, clientfd, frag_len);
                 p->frag_len[clientfd] = frag_len;
                 p->pack_len[clientfd] = packet_len;
-                dbg_cp3_d2_printf("---- frag_size :%d ----\n",p->frag_len[clientfd]);
-                if(frag_len == 0)
+                if (frag_len == 0)
                 {
-                    dbg_cp3_d2_printf("frag_len is 0, error!\n");
+                    printf("frag_len is 0, error!\n");
                 }
                 else
                 {
                     p->thr_info->send_fra_req[clientfd] = 0;
 
                 }
-                dbg_cp3_d2_printf("--####### END of receive video frag ######---\n");
-                dbg_cp3_d2_printf("line 474, clientfd: %d\n", clientfd);
-                dbg_cp3_d2_printf("line 475, serverfd: %d\n", serverfd);
-                dbg_cp3_d2_printf("line 476, i : %d\n", i);
                 if (!FD_ISSET(clientfd, &p->active_wt_set))
                 {
                     printf("line 459\n");
@@ -569,31 +461,27 @@ ssize_t serve_clients(pools_t *p)
                 }
             }
             /********   End ************/
-            if(p->pack_len[clientfd] != 0)
+            if (p->pack_len[clientfd] != 0)
             {
                 p->pack_len[clientfd] = update_pack_recv_len(p, clientfd, p->pack_len[clientfd]);
-                if(p->pack_len[clientfd] == 0)
+                if (p->pack_len[clientfd] == 0)
                 {
-                    dbg_cp3_d2_printf("\n!!!!line 473, recv complete package!!!!\n");
                     p->log_rec_list[clientfd]->cur_time = time(NULL);
                     struct timeval tf;
-                    gettimeofday(&tf,NULL);
+                    gettimeofday(&tf, NULL);
 
                     update_thr_cur(p->frag_len[clientfd], tf, proxy_param.alpha, \
-                        p->thr_info, clientfd, p);
-                    // dbg_cp3_d2_printf("--!!!-- T current :%.6f ---!!!-\n", p->thr_info->thr_cur[clientfd]);
+                                   p->thr_info, clientfd, p);
                     print_to_log(p->log_rec_list[clientfd]);
                     memset(p->log_rec_list[clientfd], 0, sizeof(log_record_t));
                 }
             }
-            dbg_cp3_p3_printf("line 342 ret: %ld\n", ret);
-            
+
             s2c_list_write_client(p, clientfd);
         }
         else if ((p->serverfd[i] == 1) && (FD_ISSET(i, &p->ready_wt_set)))
         {
             // server is ready to write
-            // dbg_cp3_d2_printf("server is ready to write\n");
             p->num_ready--;
             int serverfd = i;
             if (p->send2s_list[serverfd]->next != NULL)
@@ -636,7 +524,6 @@ ssize_t Close_conn(int connfd, pools_t *p) {
     FD_CLR(connfd, &p->active_wt_set);
     if (p->clientfd[connfd] == 1)
     {
-        dbg_cp3_d2_printf("Closing client fd %d\n", connfd);
         p->fd_c2s[connfd] = -1;
         p->clientfd[connfd] = -1;
         p->ign_first[connfd] = 0;
@@ -668,13 +555,12 @@ ssize_t Close_conn(int connfd, pools_t *p) {
             }
         }
 
-        
+
         p->fd_c2s[connfd] = -1;
         p->dns_info->client_stat[connfd] = -1;
     }
     else if (p->serverfd[connfd] == 1)
     {
-        dbg_cp3_d2_printf("Closing server fd %d\n", connfd);
         p->fd_s2c[connfd] = -1;
         p->serverfd[connfd] = -1;
     }
@@ -729,7 +615,6 @@ ssize_t write_to_socket(int connfd, char *resp_hds_text, char *resp_ct_text,
     char *response_content = NULL;
     size_t write_offset = 0;
     size_t hdr_len = strlen(resp_hds_text);
-    dbg_cp3_printf("resp_hds_text: %s\n", resp_hds_text);
     if (resp_ct_ptr != NULL)
     {
         response_content = resp_ct_ptr;
@@ -744,7 +629,6 @@ ssize_t write_to_socket(int connfd, char *resp_hds_text, char *resp_ct_text,
         response_content = NULL;
     }
 
-    dbg_cp3_printf("response_content:\n%s\n", response_content);
     size_t hdr_attempt = 0;
     while (1)
     {
@@ -842,7 +726,6 @@ void get_host_and_port(Requests *req_rover, char *hostname, char *port)
     if (pos == NULL)
     {
         char *start = strstr(req_rover->http_uri , "http:");
-        dbg_cp3_p3_printf("start: %p\n", start);
         if (start == NULL)
         {
             pos = strstr(req_rover->http_uri , ":");
@@ -872,8 +755,5 @@ void get_host_and_port(Requests *req_rover, char *hostname, char *port)
         strncpy(port, pos + 1, 1023);
         *pos = 0;
     }
-    dbg_cp3_p3_printf("!!!!!!req_rover->http_uri: %s\n", req_rover->http_uri);
-    dbg_cp3_p3_printf("!!!!!!host: %s\n", hostname);
-    dbg_cp3_p3_printf("!!!!!!port: %s\n", port);
 }
 

@@ -1,3 +1,15 @@
+/******************************************************************************
+ *                                 Video CDN                                  *
+ *                          15-641 Computer Network                           *
+ *                                  pool.c                                    *
+ * This file contains the function that can handle with select pool including *
+ * adding and removing action, ti also contains funtion for dns information   *
+ * initialization                                                             *
+ * according to the network bandwidth.                                        *
+ * Author: Qiaoyu Deng; Yangmei Lin                                           *
+ * Andrew ID: qdeng; yangmeil                                                 *
+ ******************************************************************************/
+
 #include <stdlib.h>
 #include <stdio.h>
 #include "proxy.h"
@@ -38,28 +50,24 @@ void init_pool(int listenfd, pools_t *p) {
         p->pack_len[i] = 0;
         p->frag_len[i] = 0;
         p->client_reqs[i] = NULL;
-
-        
     }
     p->mani_info = init_manifest();
     p->thr_info = init_throughput();
     p->ip2mani_ht = NULL;
     p->ip2thr_ht = NULL;
     p->dns_info = init_dns_t();
-
-    
 }
 
 manifest_t * init_manifest()
 {
     manifest_t *mani = malloc(sizeof(manifest_t));
-    memset(mani,0,sizeof(manifest_t));
+    memset(mani, 0, sizeof(manifest_t));
     size_t i;
     for (i = 0; i < FD_SETSIZE; i++) {
         mani->flag_send_f4m[i] = 0;
         mani->f4m_req[i] = NULL;
         mani->bitrate_rec[i] = NULL;
-        
+
     }
     return mani;
 }
@@ -67,10 +75,10 @@ manifest_t * init_manifest()
 throughput_t * init_throughput()
 {
     throughput_t * thr_info = malloc(sizeof(throughput_t));
-    memset(thr_info,0,sizeof(throughput_t));
+    memset(thr_info, 0, sizeof(throughput_t));
     size_t i;
     struct timeval now;
-    gettimeofday(&now,NULL);
+    gettimeofday(&now, NULL);
     for (i = 0; i < FD_SETSIZE; i++) {
 
         thr_info->ts_rec[i] = now;
@@ -85,7 +93,7 @@ dns_t * init_dns_t()
 {
     size_t i;
     dns_t * dns_info = malloc(sizeof(dns_t));
-    memset(dns_info,0,sizeof(dns_t));
+    memset(dns_info, 0, sizeof(dns_t));
     dns_info->cur_id = 0;
     dns_info->dns_sock = 0;
     for (i = 0; i < FD_SETSIZE; i++) {

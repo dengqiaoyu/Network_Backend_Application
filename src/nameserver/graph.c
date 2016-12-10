@@ -1,3 +1,12 @@
+/******************************************************************************
+ *                                 Video CDN                                  *
+ *                          15-641 Computer Network                           *
+ *                                   graph.c                                  *
+ * This file contains function for creating and updating graph.               *
+ * Author: Qiaoyu Deng; Yangmei Lin                                           *
+ * Andrew ID: qdeng; yangmeil                                                 *
+ ******************************************************************************/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "hashtable.h"
@@ -5,62 +14,10 @@
 #include "dijkstra.h"
 #include "round_robin.h"
 
-// int main(int argc, char **argv)
-// {
-//     FILE *lsa_file = fopen("topo1.lsa", "r");
-//     FILE *server_file = fopen("topo1.servers", "r");
-
-//     char line[1024] = {0};
-//     graph_t *graph = init_graph();
-//     while (fgets(line, 1023, lsa_file) != NULL)
-//     {
-//         lsa_msg_t lsa_msg;
-//         parse_lsa_line(&lsa_msg, line);
-//         update_graph(graph, &lsa_msg);
-//     }
-//     fclose(lsa_file);
-//     print_graph(graph);
-
-//     hashtable_t *c2s_ip_ht = ht_create(0, 1024, NULL);
-//     char s_ip_array[MAX_S_NUM][MAX_LINE];
-//     size_t i;
-//     for (i = 0; i < 1024; i++)
-//     {
-//         memset(s_ip_array[i], 0, 1024);
-//     }
-//     size_t s_num = 0;
-//     while (fgets(line, 1023, server_file) != NULL)
-//     {
-//         sscanf(line, "%s\n", s_ip_array[s_num]);
-//         s_num++;
-//     }
-//     fclose(server_file);
-//     printf("\n");
-//     // print_s_ip_array(s_ip_array, s_num);
-//     dijkstra(graph, c2s_ip_ht, s_ip_array, s_num);
-//     print_c2s_ip_ht(c2s_ip_ht);
-//     destroy_graph(graph);
-
-//     server_loop_queue_t server_loop_queue;
-//     memset(&server_loop_queue, 0, sizeof(server_loop_queue_t));
-//     init_server_loop_queue(s_ip_array, s_num, &server_loop_queue);
-//     char server_ip[MAX_LINE] = {0};
-//     memset(server_ip, 0, MAX_LINE);
-//     round_robin(&server_loop_queue, server_ip);
-//     printf("server_ip: %s\n", server_ip);
-//     memset(server_ip, 0, MAX_LINE);
-//     round_robin(&server_loop_queue, server_ip);
-//     printf("server_ip: %s\n", server_ip);
-//     memset(server_ip, 0, MAX_LINE);
-//     round_robin(&server_loop_queue, server_ip);
-//     printf("server_ip: %s\n", server_ip);
-//     memset(server_ip, 0, MAX_LINE);
-//     round_robin(&server_loop_queue, server_ip);
-//     printf("server_ip: %s\n", server_ip);
-
-//     return 0;
-// }
-
+/**
+ * Create graph by using hashtable
+ * @return graph
+ */
 graph_t *init_graph()
 {
     graph_t *graph = malloc(sizeof(graph_t));
@@ -102,6 +59,12 @@ void destroy_graph(graph_t *graph)
     return;
 }
 
+
+/**
+ * For every LSA message, update the structure of graph
+ * @param graph   graph pointer
+ * @param lsa_msg sitimulate graph message
+ */
 void update_graph(graph_t *graph, lsa_msg_t *lsa_msg)
 {
     int8_t ret = 0;
@@ -138,7 +101,6 @@ void update_graph(graph_t *graph, lsa_msg_t *lsa_msg)
     size_t i = 0;
     for (i = 0; i < lsa_msg->adj_num; i++)
     {
-        // printf("lsa_msg->adj_ip[%ld]: %s\n", i, lsa_msg->adj_ip[i]);
         add_neighboor(graph, node->adj_ip_list, source,
                       lsa_msg->adj_ip[i], lsa_msg->seq);
     }
@@ -146,6 +108,14 @@ void update_graph(graph_t *graph, lsa_msg_t *lsa_msg)
     return;
 }
 
+/**
+ * For every node, add new node to the graph
+ * @param graph       The pointer to graph
+ * @param adj_ip_list Original neighbor list
+ * @param source      The node that needs to add those neighbor
+ * @param ip          node's ip
+ * @param max_seq     current LSA's sequence number
+ */
 void add_neighboor(graph_t *graph, adj_ip_t *adj_ip_list,
                    char *source, char *ip, size_t max_seq)
 {
@@ -167,6 +137,7 @@ void add_neighboor(graph_t *graph, adj_ip_t *adj_ip_list,
         next->weight = 1;
     }
 
+    // If neighbor exists
     if (ht_exists(ip2node_ht, ip, strlen(ip)) == 1)
     {
         node_t *neighboor_node = ht_get(ip2node_ht, ip, strlen(ip), NULL);
@@ -214,6 +185,12 @@ void add_neighboor(graph_t *graph, adj_ip_t *adj_ip_list,
     return;
 }
 
+/**
+ * whether a node has that ip as a neighbor
+ * @param  adj_ip_list node's adj list
+ * @param  ip          ip that needs to search
+ * @return             NULL for no result, nodes info for search success
+ */
 adj_ip_t *n_exists(adj_ip_t *adj_ip_list, char *ip)
 {
     adj_ip_t *rover = adj_ip_list->next;
@@ -234,9 +211,6 @@ void parse_lsa_line(lsa_msg_t *lsa_msg, char *line)
     memset(lsa_msg, 0, sizeof(lsa_msg_t));
     char adj_string[1024] = {0};
     sscanf(line, "%s %ld %s\n", lsa_msg->ip, &lsa_msg->seq, adj_string);
-
-    // printf("adj_string: %s\n", adj_string);
-
     char *comma_ptr = NULL;
     char *start_ptr = adj_string;
     uint16_t read_len = 0;
@@ -252,9 +226,7 @@ void parse_lsa_line(lsa_msg_t *lsa_msg, char *line)
         {
             read_len = comma_ptr - start_ptr;
         }
-        // printf("start_ptr: %s\n", start_ptr);
         strncpy(lsa_msg->adj_ip[index], start_ptr, read_len);
-        // printf("lsa_msg->adj_ip[index]: %s\n", lsa_msg->adj_ip[index]);
         if (comma_ptr == NULL)
         {
             start_ptr = NULL;

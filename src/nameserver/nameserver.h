@@ -1,3 +1,12 @@
+/******************************************************************************
+ *                                 Video CDN                                  *
+ *                          15-641 Computer Network                           *
+ *                                nameserver.h                                *
+ * This file contains header file for nameserver.c                            *
+ * Author: Qiaoyu Deng; Yangmei Lin                                           *
+ * Andrew ID: qdeng; yangmeil                                                 *
+ ******************************************************************************/
+
 #ifndef NAMESERVER_H
 #define NAMESERVER_H
 

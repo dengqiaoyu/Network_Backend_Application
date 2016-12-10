@@ -1,3 +1,12 @@
+/******************************************************************************
+ *                                 Video CDN                                  *
+ *                          15-641 Computer Network                           *
+ *                                dijstra.h                                   *
+ * This file contains header file for dijstra.c                               *
+ * Author: Qiaoyu Deng; Yangmei Lin                                           *
+ * Andrew ID: qdeng; yangmeil                                                 *
+ ******************************************************************************/
+
 #ifndef DIJKSTRA_H
 #define DIJKSTRA_H
 
@@ -12,10 +21,10 @@
 
 typedef struct shortest_path_s
 {
-    char ip[16];
-    size_t dist;
-    char path[65536];
-    uint8_t is_fixed;
+  char ip[16];
+  size_t dist;
+  char path[65536];
+  uint8_t is_fixed;
 } shortest_path_t;
 
 void dijkstra(graph_t *graph, hashtable_t *c2s_ip_ht,

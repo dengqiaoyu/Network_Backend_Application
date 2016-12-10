@@ -29,6 +29,8 @@ typedef struct dns_rr_t_s
 typedef struct dns_msg_t_s
 {
     uint16_t id;
+    // I reverse the order of the bit field, because compiler save those bit in
+    // reverse order.
     unsigned char rd: 1;
     unsigned char tc: 1;
     unsigned char aa: 1;
@@ -60,8 +62,6 @@ typedef struct dns_t_s
     int client_stat[FD_SETSIZE];//-1 no connection,0 connect but not resolve,
     //1 dns request formed; 2 dns request sentout; 3 resolve success;
     int dnsid_client[FD_SETSIZE];
-    // fd_set active_rd_set;
-    // fd_set active_wt_set;
     fd_set read_set;
     fd_set write_set;
     dns_msg_list_t *dns_msg_list;

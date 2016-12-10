@@ -1,3 +1,12 @@
+/******************************************************************************
+ *                                 Video CDN                                  *
+ *                          15-641 Computer Network                           *
+ *                                round_robin.h                               *
+ * This file contains header file for round_robin.h                           *
+ * Author: Qiaoyu Deng; Yangmei Lin                                           *
+ * Andrew ID: qdeng; yangmeil                                                 *
+ ******************************************************************************/
+
 #ifndef ROUND_ROBIN_H
 #define ROUND_ROBIN_H
 #include <stdio.h>

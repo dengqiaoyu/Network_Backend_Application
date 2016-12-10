@@ -1,3 +1,13 @@
+/******************************************************************************
+ *                                 Video CDN                                  *
+ *                          15-641 Computer Network                           *
+ *                              nameserver.c                                  *
+ * This file contains main funtion that execute a DNS server for load balance *
+ * It blocks to read and write because it uses UDP                            *
+ * Author: Qiaoyu Deng; Yangmei Lin                                           *
+ * Andrew ID: qdeng; yangmeil                                                 *
+ ******************************************************************************/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -48,49 +58,8 @@ int main(int argc, char **argv)
         fromlen = sizeof(from);
         readret = recvfrom(sock, recv_buf, RECV_BUF_LEN, 0,
                            (struct sockaddr *) &from, &fromlen);
-        // recv_buf[0] = 0x00;
-        // recv_buf[1] = 0x01;
-        // recv_buf[2] = 0x00;
-        // recv_buf[3] = 0x00;
-        // recv_buf[4] = 0x00;
-        // recv_buf[5] = 0x01;
-        // recv_buf[6] = 0x00;
-        // recv_buf[7] = 0x00;
-        // recv_buf[8] = 0x00;
-        // recv_buf[8] = 0x00;
-        // recv_buf[10] = 0x00;
-        // recv_buf[11] = 0x00;
-        // recv_buf[12] = 0x05;
-        // recv_buf[13] = 0x75;
-        // // recv_buf[13] = 0x76;
-        // recv_buf[14] = 0x69;
-        // recv_buf[15] = 0x64;
-        // recv_buf[16] = 0x65;
-        // recv_buf[17] = 0x6f;
-        // recv_buf[18] = 0x02;
-        // recv_buf[19] = 0x63;
-        // recv_buf[20] = 0x73;
-        // recv_buf[21] = 0x03;
-        // recv_buf[22] = 0x63;
-        // recv_buf[23] = 0x6d;
-        // recv_buf[24] = 0x75;
-        // recv_buf[25] = 0x03;
-        // recv_buf[26] = 0x65;
-        // recv_buf[27] = 0x64;
-        // recv_buf[28] = 0x75;
-        // recv_buf[29] = 0x00;
-        // recv_buf[30] = 0x00;
-        // recv_buf[31] = 0x01;
-        // recv_buf[32] = 0x00;
-        // recv_buf[33] = 0x01;
-
-        printf("line 46, readret: %ld, errno: %d\n", readret, errno);
         char c_host[16] = {0};
-        // uint16_t c_port = 0;
-        // strncpy(c_host, "2.0.0.1", 7);
         strncpy(c_host, inet_ntoa(from.sin_addr), 15);
-        printf("\n======= line 92, c_host: %s ======\n\n", c_host);
-        // c_port = ntohs(from.sin_port);
 
         if (ret != 0)
         {
@@ -102,7 +71,6 @@ int main(int argc, char **argv)
         dns_msg_t dns_msg;
         memset(&dns_msg, 0, sizeof(dns_msg_t));
         parse_dns_msg(&dns_msg, recv_buf, packet_len);
-        print_dns_msg(&dns_msg);
         char url[QNAME_LEN] = {0};
         get_url(dns_msg.question.qname, dns_msg.question.qname_len, url);
         uint8_t if_correct = 0;
@@ -121,15 +89,12 @@ int main(int argc, char **argv)
                 strncpy(server_ip, server_ip_ptr, 15);
             }
         }
-        printf("server_ip: %s\n", server_ip);
         char dns_msg_net[DNS_MSG_NET_LEN] = {0};
         size_t msg_len = form_response(&dns_msg, dns_msg_net, if_correct,
                                        server_ip);
-        printf("msg_len: %ld\n", msg_len);
         dns_msg_t dns_msg_tmp;
         memset(&dns_msg_tmp, 0 , sizeof(dns_msg_t));
         parse_dns_msg(&dns_msg_tmp, dns_msg_net, msg_len);
-        print_dns_msg(&dns_msg_tmp);
         sendto(sock, dns_msg_net, msg_len, 0,
                (struct sockaddr *) &from, fromlen);
         fprintf(logfp, "%ld %s %s %s\n", time(NULL), c_host, url,
@@ -138,6 +103,11 @@ int main(int argc, char **argv)
     }
 }
 
+/**
+ * get and check arguments
+ * @param  nameserver_param return value
+ * @return                  0 for success, -1 for error
+ */
 uint8_t get_argv(int argc, char **argv, nameserver_param_t *nameserver_param)
 {
     uint8_t offset = 0;
@@ -215,6 +185,13 @@ uint8_t get_argv(int argc, char **argv, nameserver_param_t *nameserver_param)
     return 0;
 }
 
+/**
+ * initialize dns, and compute dijstra distance, assigning each client a server
+ * @param  server_loop_queue struct that saves information for how many times
+ *                           the server has been choosed
+ * @param  nameserver_param
+ * @return                   hashtable used to assign server IP
+ */
 hashtable_t *init_dns(server_loop_queue_t *server_loop_queue,
                       nameserver_param_t *nameserver_param)
 {
@@ -262,6 +239,12 @@ hashtable_t *init_dns(server_loop_queue_t *server_loop_queue,
     return c2s_ip_ht;
 }
 
+/**
+ * Use fake IP to create a fd to listen and send data
+ * @param  ip   fake ip
+ * @param  port communication port
+ * @return      fd
+ */
 int open_listenfd_withip(char *ip, char *port)
 {
     //SOCK_DGRAM
@@ -284,6 +267,12 @@ int open_listenfd_withip(char *ip, char *port)
     return sockfd;
 }
 
+/**
+ * parse the text message into struct
+ * @param dns_msg    [description]
+ * @param recv_buf   text message pointer
+ * @param packet_len the length of text message
+ */
 void parse_dns_msg(dns_msg_t *dns_msg,
                    char *recv_buf, size_t packet_len)
 {
@@ -292,10 +281,6 @@ void parse_dns_msg(dns_msg_t *dns_msg,
     memcpy(dns_msg, &id_host, sizeof(uint16_t));
 
     memcpy((char *)dns_msg + 2, recv_buf + 2, sizeof(uint16_t));
-    printf("%02hhx\n", *(char *)recv_buf);
-    printf("%02hhx\n", *((char *)recv_buf + 1));
-    printf("%02hhx\n", *((char *)recv_buf + 2));
-    printf("%02hhx\n", *((char *)recv_buf + 3));
 
     uint16_t qdcount_network = *((uint16_t *)(recv_buf + 4));
     uint16_t qdcount_host = ntohs(qdcount_network);
@@ -369,11 +354,15 @@ void parse_dns_msg(dns_msg_t *dns_msg,
     memcpy(dns_msg->answer.rdata,
            recv_buf + 26 + qname_len + name_len, rdlength_host);
 
-    printf("parse_len: %d\n", 28 + qname_len + name_len + rdlength_host);
-
     return;
 }
 
+/**
+ * get url from DNS message
+ * @param qname     qname field
+ * @param qname_len length
+ * @param url       the url that is parsed
+ */
 void get_url(char *qname, size_t qname_len, char *url)
 {
     memcpy(url, qname + 1, qname_len - 1);
@@ -388,19 +377,21 @@ void get_url(char *qname, size_t qname_len, char *url)
     return;
 }
 
+
+/**
+ * Convert struct to text message to be send to proxy
+ * @param  dns_msg     DNS message struct
+ * @param  dns_msg_net text message
+ * @param  if_correct  if it is a valid DNS query
+ * @param  server_ip   server's IP that needs to response
+ * @return             the length of dns_msg_net
+ */
 size_t form_response(dns_msg_t *dns_msg, char *dns_msg_net,
                      uint8_t if_correct, char *server_ip)
 {
-    // printf("%02hhx\n", *(char *)dns_msg);
-    // printf("%02hhx\n", *((char *)dns_msg + 1));
-    // printf("%02hhx\n", *((char *)dns_msg + 2));
-    // printf("%02hhx\n", *((char *)dns_msg + 3));
-    // printf("%02hhx\n", *((char *)dns_msg + 4));
     size_t offset = 0;
     uint16_t id_host = dns_msg->id;
-    // printf("id_host: %d\n", id_host);
     uint16_t id_network = htons(id_host);
-    // printf("id_network: %d\n", id_network);
     memcpy(dns_msg_net + offset, &id_network, sizeof(uint16_t));
     offset += sizeof(uint16_t);
 
@@ -419,24 +410,7 @@ size_t form_response(dns_msg_t *dns_msg, char *dns_msg_net,
         dns_msg->rcode = 3;
     }
 
-    // printf("\n%02hhx\n", *(char *)dns_msg);
-    // printf("%02hhx\n", *((char *)dns_msg + 1));
-    // printf("%02hhx\n", *((char *)dns_msg + 2));
-    // printf("%02hhx\n", *((char *)dns_msg + 3));
-    // printf("%02hhx\n", *((char *)dns_msg + 4));
-
-    // printf("\n%d\n", *(char *)dns_msg);
-    // printf("%d\n", *((char *)dns_msg + 1));
-    // printf("%d\n", *((char *)dns_msg + 2));
-    // printf("%d\n", *((char *)dns_msg + 3));
-    // printf("%d\n", *((char *)dns_msg + 4));
-
     memcpy(dns_msg_net + offset, (char *)dns_msg + 2, sizeof(uint16_t));
-    // printf("\n%02hhx\n", *(char *)dns_msg_net);
-    // printf("%02hhx\n", *((char *)dns_msg_net + 1));
-    // printf("%02hhx\n", *((char *)dns_msg_net + 2));
-    // printf("%02hhx\n", *((char *)dns_msg_net + 3));
-    // printf("%02hhx\n", *((char *)dns_msg_net + 4));
     offset += sizeof(uint16_t);
 
     uint16_t qdcount_host = 1;
@@ -517,6 +491,11 @@ size_t form_response(dns_msg_t *dns_msg, char *dns_msg_net,
     return offset + 4;
 }
 
+/**
+ * IP's string converts to binary
+ * @param server_ip      server IP that needs to be converted
+ * @param ip_address_bin return value
+ */
 void str2bin(char *server_ip, char *ip_address_bin)
 {
     int num1 = 0;

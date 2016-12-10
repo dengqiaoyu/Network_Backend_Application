@@ -1,3 +1,14 @@
+/******************************************************************************
+ *                                 Video CDN                                  *
+ *                          15-641 Computer Network                           *
+ *                                 dijstra.c                                  *
+ * This file contains funtion that get take a graph as input, and then        *
+ * perform the dijstra algriothm on the graph, and return a hashtable mapping *
+ * client ip to its nearest server IP                                         *
+ * Author: Qiaoyu Deng; Yangmei Lin                                           *
+ * Andrew ID: qdeng; yangmeil                                                 *
+ ******************************************************************************/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -6,6 +17,13 @@
 #include "graph.h"
 #include "hashtable.h"
 
+/**
+ * Perform dijstra algriothm on the graph
+ * @param graph      adjcent graph
+ * @param c2s_ip_ht  return hashtable mapping from client IP to nearest server
+ * @param s_ip_array server ip array
+ * @param s_num      number of server
+ */
 void dijkstra(graph_t *graph, hashtable_t *c2s_ip_ht,
               char s_ip_array[MAX_S_NUM][MAX_LINE], size_t s_num)
 {
@@ -14,13 +32,14 @@ void dijkstra(graph_t *graph, hashtable_t *c2s_ip_ht,
     linked_list_t *keys = ht_get_all_keys(graph->ip2node_ht);
     size_t keys_len = list_count(keys);
     size_t i;
+    // For every client IP
     for (i = 0; i < keys_len; i++)
     {
-        // printf("line 19 i: %zu\n", i);
         hashtable_key_t *keys_item = list_pick_value(keys, i);
 
         char client_ip[16] = {0};
         strncpy(client_ip, keys_item->data, keys_item->len);
+        // Skip server
         if (is_server(client_ip, s_ip_array, s_num) == 1)
         {
             continue;
@@ -31,47 +50,31 @@ void dijkstra(graph_t *graph, hashtable_t *c2s_ip_ht,
         char current_path[65536] = {0};
         strncpy(next_hop, client_ip, 15);
         strncpy(current_path, next_hop, 15);
-        // printf("next_hop: %s\n", next_hop);
-        // printf("line 39 i: %zu\n", i);
-        // if (i == 3)
-        // {
-        //     printf("error!\n");
-        //     exit(1);
-        // }
         size_t tmp_i = 0;
+        // If not all nodes is added into horizon
         while (next_hop[0] != 0)
         {
             tmp_i++;
+            // Start from this node to calculate distance
             node_t *hop_node = ht_get(graph->ip2node_ht,
                                       next_hop, strlen(next_hop), NULL);
             adj_ip_t *adj_node_list = hop_node->adj_ip_list->next;
             adj_ip_t *adj_node_rover = adj_node_list;
             size_t tmp_j = 0;
+            // For every node's neighbor
             while (adj_node_rover != NULL)
             {
                 tmp_j++;
                 size_t dist = 0;
                 char neighboor_ip[16] = {0};
                 strncpy(neighboor_ip, adj_node_rover->ip, 15);
-                // printf("neighboor_ip: %s\n", neighboor_ip);
-                // if (tmp_i == 2 && tmp_j == 2)
-                // {
-                //     printf("neighboor_ip: %s\n", neighboor_ip);
-                //     exit(1);
-                // }
                 if (strncmp(neighboor_ip, client_ip, 15) == 0)
                 {
                     adj_node_rover = adj_node_rover->next;
                     continue;
                 }
                 dist = next_hop_dist + adj_node_rover->weight;
-                // if (tmp_i == 2 && tmp_j == 2)
-                // {
-                //     printf("current_path: %s\n", current_path);
-                //     printf("neighboor_ip: %s\n", neighboor_ip);
-                //     printf("dist: %ld\n", dist);
-                //     exit(1);
-                // }
+                // if the node is already reachable
                 if (ht_exists(shortest_path_ht, neighboor_ip, strlen(neighboor_ip)) == 0)
                 {
                     shortest_path_t *shortest_path =
@@ -85,17 +88,12 @@ void dijkstra(graph_t *graph, hashtable_t *c2s_ip_ht,
                              current_path, neighboor_ip);
                     ht_set(shortest_path_ht, neighboor_ip, strlen(neighboor_ip),
                            shortest_path, sizeof(shortest_path_t *));
-                    // if (tmp_i == 2 && tmp_j == 2)
-                    // {
-                    //     print_shortest_path_ht(shortest_path_ht);
-                    //     exit(1);
-                    // }
                 }
                 else
                 {
-                    shortest_path_t *shortest_path = ht_get(shortest_path_ht,
-                                                            neighboor_ip,
-                                                            strlen(neighboor_ip), NULL);
+                    shortest_path_t *shortest_path =
+                        ht_get(shortest_path_ht, neighboor_ip,
+                               strlen(neighboor_ip), NULL);
                     if (shortest_path->dist > dist)
                     {
                         snprintf(shortest_path->path, 65535, "%s->%s",
@@ -105,24 +103,14 @@ void dijkstra(graph_t *graph, hashtable_t *c2s_ip_ht,
                 }
                 adj_node_rover = adj_node_rover->next;
             }
-            // print_shortest_path_ht(shortest_path_ht);
+            // Find the next node that is not determined distance
             find_fixed(shortest_path_ht, next_hop, &next_hop_dist,
                        current_path);
-            // printf("next_hop: %s\n", next_hop);
-            // printf("next_hop_dist: %zu\n", next_hop_dist);
-            // printf("current_path: %s\n", current_path);
-            // print_shortest_path_ht(shortest_path_ht);
         }
         char *server_ip_ptr = NULL;
         char server_ip[1024] = {0};
         server_ip_ptr = find_best_server(shortest_path_ht, s_ip_array, hit_time_array, s_num);
         strncpy(server_ip, server_ip_ptr, 1023);
-        // if (i == 1)
-        // {
-        //     printf("server_ip: %s\n", server_ip);
-        //     print_hit_time_array(s_ip_array, hit_time_array, s_num);
-        //     exit(1);
-        // }
         ht_set_copy(c2s_ip_ht, client_ip, strlen(client_ip),
                     server_ip, strlen(server_ip), NULL, NULL);
         destroy_shortest_path_ht(shortest_path_ht);
@@ -131,6 +119,13 @@ void dijkstra(graph_t *graph, hashtable_t *c2s_ip_ht,
     return;
 }
 
+/**
+ * Find the node that the source have not determined its distance to that node
+ * @param shortest_path_ht hashtable that save the shortest path
+ * @param next_hop         return value
+ * @param next_hop_dist    return value, distance
+ * @param current_path
+ */
 void find_fixed(hashtable_t *shortest_path_ht, char *next_hop,
                 size_t *next_hop_dist, char *current_path)
 {
@@ -170,6 +165,14 @@ void find_fixed(hashtable_t *shortest_path_ht, char *next_hop,
     return;
 }
 
+/**
+ * From the distance hashtable, choose the shotest path that a client can get
+ * @param  shortest_path_ht shortest path to every server
+ * @param  s_ip_array       server ip array
+ * @param  hit_time_array   It is used to balance choice, if all the distance is
+ *                          the same
+ * @param s_num             number of server
+ */
 char *find_best_server(hashtable_t *shortest_path_ht,
                        char s_ip_array[MAX_S_NUM][MAX_LINE],
                        size_t *hit_time_array, size_t s_num)
@@ -219,6 +222,13 @@ char *find_best_server(hashtable_t *shortest_path_ht,
     return best_server_ip;
 }
 
+/**
+ * Given server ip, get how many client has choose this server its own server.
+ * @param  s_ip_array     server ip array
+ * @param  s_num          number of server
+ * @param  best_server_ip server ip
+ * @return                index
+ */
 size_t get_hit_time_index(char s_ip_array[MAX_S_NUM][MAX_LINE], size_t s_num,
                           char *best_server_ip)
 {
@@ -234,6 +244,13 @@ size_t get_hit_time_index(char s_ip_array[MAX_S_NUM][MAX_LINE], size_t s_num,
     return i;
 }
 
+/**
+ * Judge whether it is a server
+ * @param  s_ip       server ip
+ * @param  s_ip_array all server ip array
+ * @param  s_num      number of server
+ * @return            1 for true, 0 for false
+ */
 uint8_t is_server(char *s_ip, char s_ip_array[MAX_S_NUM][MAX_LINE],
                   size_t s_num)
 {

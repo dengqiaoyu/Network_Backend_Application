@@ -1,3 +1,13 @@
+/******************************************************************************
+ *                                 Video CDN                                  *
+ *                          15-641 Computer Network                           *
+ *                             server_to_client.c                             *
+ * This file contains function that can be used to send client response after *
+ * getting video data from server.                                            *
+ * Author: Qiaoyu Deng; Yangmei Lin                                           *
+ * Andrew ID: qdeng; yangmeil                                                 *
+ ******************************************************************************/
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -9,12 +19,18 @@
 
 extern FILE *logfp;
 
+
+/**
+ * The video data received from server can be added into sending list, which
+ * will then be free by sending function
+ * @param  p        pool
+ * @param  serverfd server's fd
+ * @return          0 for success, nagetive for error
+ */
 int8_t s2c_list_read_server(pools_t *p, int serverfd)
 {
     int clientfd = p->fd_s2c[serverfd];
-#ifdef DEBUG_CP1_P3
-    print_s2c_list(p->s2c_list[clientfd]);
-#endif
+
     s2c_data_list_t *s2c_data_list_start = p->s2c_list[clientfd];
     if (s2c_data_list_start->next == NULL)
     {
@@ -31,10 +47,7 @@ int8_t s2c_list_read_server(pools_t *p, int serverfd)
         iter_count++;
         char *data_start_ptr = s2c_data_rover->data + s2c_data_rover->len;
         size_t avail_data_space = BUF_SIZE - s2c_data_rover->len;
-        // dbg_cp3_p3_printf("avail_data_space: %ld\n", avail_data_space);
         read_ret = read(serverfd, data_start_ptr, avail_data_space);
-        dbg_cp3_d2_printf("read_ret in s2c_list_read_server: %ld\n", read_ret);
-        dbg_cp3_d2_printf("len: %ld\n", s2c_data_rover->len);
         if (read_ret == 0)
         {
             if (avail_data_space == BUF_SIZE)
@@ -68,20 +81,24 @@ int8_t s2c_list_read_server(pools_t *p, int serverfd)
             }
         }
     } while (iter_count < MAX_READ_ITER_COUNT);
-#ifdef DEBUG_CP1_P3
-    print_s2c_list(p->s2c_list[clientfd]);
-#endif
+
     if (!FD_ISSET(clientfd, &p->active_wt_set))
     {
         FD_SET(clientfd, &p->active_wt_set);
     }
-    dbg_cp3_d2_printf("line 76, clientfd :%d", clientfd);
+
     return 0;
 }
 
+
+/**
+ * Send data to client from sending list
+ * @param  p        pool
+ * @param  clientfd client's file descriptor
+ * @return          0 for success, -1 for error
+ */
 int8_t s2c_list_write_client(pools_t *p, int clientfd)
 {
-    // dbg_cp3_p3_printf("entering s2c_list_write_client\n");
     s2c_data_list_t *send2s_req_start = p->s2c_list[clientfd];
     s2c_data_list_t *rover = send2s_req_start->next;
     int serverfd = p->fd_c2s[clientfd];
@@ -89,33 +106,17 @@ int8_t s2c_list_write_client(pools_t *p, int clientfd)
     int8_t ret = 0;
     size_t iter_cnt = 0;
 
-    // dbg_cp3_p3_printf("line 72\n");
     while (rover != NULL && iter_cnt <= MAX_WRIT_ITER_COUNT)
     {
-        dbg_cp3_d2_printf("-----------write to clientfd %d\n", clientfd);
-        dbg_cp3_d2_printf("@@@before len: %ld\n", rover->len);
         write_ret = write(clientfd, rover->data + rover->offset,
                           rover->len - rover->offset);
-        dbg_cp3_d2_printf("@@@before write_ret in s2c_list_write_client line 77: %ld\n",
-                          write_ret);
         if (write_ret > 0)
         {
-
-            dbg_cp3_d2_printf("\n----writing to client----\n");
-            // printf("%s", rover->data + rover->offset);
-            printf("len: %ld\n", rover->len);
-            printf("offset: %ld\n", rover->offset);
-            printf("write_ret: %ld\n", write_ret);
-            dbg_cp3_d2_printf("\n----writing to client----\n");
-
             if (write_ret == rover->len - rover->offset)
             {
                 send2s_req_start->next = rover->next;
                 free(rover);
                 rover = send2s_req_start->next;
-#ifdef DEBUG_CP1_P3
-                print_s2c_list(p->s2c_list[clientfd]);
-#endif
             }
             else
             {
@@ -140,7 +141,6 @@ int8_t s2c_list_write_client(pools_t *p, int clientfd)
         }
         else if (write == 0)
         {
-            dbg_cp3_d2_printf("line 141, before Close_conn\n");
             Close_conn(clientfd, p);
             Close_conn(serverfd, p);
             return 0;
@@ -149,10 +149,9 @@ int8_t s2c_list_write_client(pools_t *p, int clientfd)
 
     if (rover == NULL)
     {
-        //dbg_cp3_d2_printf(" ### rover is NULL!###\n");
         FD_CLR(clientfd, &p->active_wt_set);
     }
-    // dbg_cp3_p3_printf("exiting s2c_list_write_client\n");
+
     return 0;
 }
 
