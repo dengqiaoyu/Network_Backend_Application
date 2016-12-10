@@ -99,7 +99,6 @@ int main(int argc, char **argv)
             client_len = sizeof(struct sockaddr_storage);
             connfd = accept(listenfd, (struct sockaddr *)&client_addr,
                             &client_len);
-            dbg_cp3_d2_printf("\n!!!!! accept new clientfd: %d\n", connfd);
             if (connfd < 0)
             {
                 // handle max connection and send error message back
@@ -140,8 +139,6 @@ int main(int argc, char **argv)
                 }
                 // Add client to the read-write pools_t
                 ret = add_client(connfd, &pool, c_host);
-
-                dbg_cp3_d2_printf("c_host: %s, c_port: %s\n", c_host, c_port);
                 if (ret < 0)
                 {
                     Close(connfd);

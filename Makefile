@@ -10,7 +10,7 @@ default:all
 all: proxy nameserver
 
 src/proxy/lex.yy.c: src/proxy/lexer.l
-	flex -d -o src/proxy/lex.yy.c $^
+	flex -o src/proxy/lex.yy.c $^
 
 src/proxy/y.tab.c: src/proxy/parser.y
 	yacc -d -o src/proxy/y.tab.c $^

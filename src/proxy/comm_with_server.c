@@ -154,7 +154,6 @@ send2s_req_t *form_request2s(Requests *req_rover, pools_t *pool,
         strncpy(req_rover->http_uri, new_http_uri, MAX_SIZE);
 
         ret = assemble_req(send2s_req->next, req_rover);
-        print_request2s(send2s_req->next);
         if (ret < 0)
         {
             return NULL;
@@ -228,7 +227,6 @@ int8_t req_send2s(int connfd, pools_t *p)
     ssize_t write_ret = 0;
     int8_t ret = 0;
     size_t iter_cnt = 0;
-    print_request2s(rover);
     time_t time_now = time(NULL);
     time_t time_diff = difftime(time_now, proxy_start_time);
     int minute = time_diff / 60;

@@ -82,7 +82,7 @@
 #define dbg_cp3_p3_fprintf(...)
 #endif
 
-#define DEBUG_CP1_D2
+// #define DEBUG_CP1_D2
 #ifdef DEBUG_CP1_D2
 #define dbg_cp3_d2_printf(...) printf(__VA_ARGS__)
 #define dbg_cp3_d2_fprintf(...) fprintf(__VA_ARGS__)
@@ -146,14 +146,14 @@ typedef struct manifest_s
     bitrate_t *bitrate_rec[FD_SETSIZE];
     //available bitrate of each client's video file
 
-}manifest_t;
+} manifest_t;
 
 typedef struct throughput_s
 {
     int send_fra_req[FD_SETSIZE];
     struct timeval ts_rec[FD_SETSIZE];
     double thr_cur[FD_SETSIZE];//throughput current
-}throughput_t;
+} throughput_t;
 
 typedef struct log_record_s
 {
@@ -165,7 +165,7 @@ typedef struct log_record_s
     char server_ip[16];
     char chunk_name[40];
 
-}log_record_t;
+} log_record_t;
 
 typedef struct pools_t_s
 {
@@ -201,7 +201,7 @@ typedef struct pools_t_s
     dns_t * dns_info;
     Requests *client_reqs[FD_SETSIZE];
 
-    
+
 } pools_t;
 
 
