@@ -1,0 +1,44 @@
+Makefile: make executable file "proxy" and "nameserver"
+src/proxy: source code for proxy
+src/nameserver: source code for nameserver
+src/hashtable: lib for hashtable used in the project
+
+
+src/proxy:
+proxy.c: Main file for runing video proxy
+proxy.h: header for proxy.c
+pool.c: Manage select pool
+param_init.c: Initailize runing parameters for proxy
+param_init.h: header for param_init.c
+parse.c: parse the string type of http request to struct
+comm_with_server.c: Create request to server and send request
+comm_with_server.h: header for comm_with_server.c
+server_to_client: Get response from server and resend it to client
+my_dns.c: Reslove the url to most reasonable server
+my_dns.h: header for my_dns.c
+hlp_func.c: Some helper functions, details are listed inside
+hlp_func.h: header for hlp_func.c
+parse_manifest.c: get the bitrate choice from server, and save it
+parse_manifest.h: header for parse_manifest.c
+throughput.c: Change bitrate according to throughput, and form new request
+throughput.h: header for throughput.c
+log.c: all the loging functions and initializer
+dbg.c: Printf functions that are used to debug
+dbg.h: header for dbg.c
+dns.h: struct for dns message
+constants.h: all constants for proxy
+proxy_check.log: output for debug
+proxy.log: required log
+parser.y: yacc rule
+lexer.l: flex rule
+
+
+src/nameserver:
+dijstra.c Main file for calculating shortest path given graph
+dijstra.h header for dijstra.c
+round_robin.c Choose server by using round robin
+round_robin.h header for round_robin.c
+graph.c Create graph by LSA file
+graph.h header for graph.c
+nameserver.c Run DNS server
+nameserver.h header for nameserver.c
